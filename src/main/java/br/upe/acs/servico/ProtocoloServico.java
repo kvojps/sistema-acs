@@ -26,19 +26,30 @@ public class ProtocoloServico {
 	@Autowired
 	private ProtocoloRepositorio repositorio;
 	
-	public String adicionarProtocolo(ProtocoloFullDTO protocolo) throws IOException {
-		byte[] protocoloArquivo = protocolo.getProtocolo().getBytes();
-		byte[] protocoloJsonBytes = protocolo.getProtocoloJson().getBytes();
-		
-		ProtocoloDTO protocoloJson = converter(protocoloJsonBytes);
+	public String adicionarProtocolo(ProtocoloFullDTO protocolo) throws Exception  {
 		
 		Protocolo protocoloSalvar = new Protocolo();
 		protocoloSalvar.setData(null);
 		protocoloSalvar.setSemestre(protocolo.getSemestre());
 		protocoloSalvar.setQtdCertificados(protocolo.getQtdCertificados());
-		protocoloSalvar.setProtocoloArquivo(protocoloArquivo);
 		
-		Protocolo protocoloSalvo = repositorio.save(protocoloSalvar);
+		ProtocoloDTO protocoloJson = new ProtocoloDTO();
+		try {
+			byte[] protocoloJsonBytes = protocolo.getProtocoloJson().getBytes();
+			protocoloJson = converter(protocoloJsonBytes);
+		} catch (IOException e) {
+			protocoloSalvar = null;
+			e.printStackTrace();
+		}
+		
+		Protocolo protocoloSalvo = new Protocolo();
+		if (protocoloSalvar != null) {
+			byte[] protocoloArquivo = protocolo.getProtocolo().getBytes();
+			protocoloSalvar.setProtocoloArquivo(protocoloArquivo);
+			protocoloSalvo = repositorio.save(protocoloSalvar);			
+		} else {
+			throw new Exception("Falha na conversão do protocoloJson");
+		}
 		
 		MultipartFile[] certificadoArquivos = protocolo.getCertificados();
 		List<CertificadoDTO> certificados = protocoloJson.getCertificados();
