@@ -10,13 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ProtocoloDTO {
-	
-	private String data;
-	
-	private int semestre;
-	
-	private int qtdCertificados;
-	
+		
 	private Long cursoId;
 	
 	private List<CertificadoDTO> certificados;

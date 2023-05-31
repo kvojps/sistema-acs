@@ -21,7 +21,7 @@ public class CertificadoDTO {
 	
 	private int chTotal;
 	
-	private Long certificadoId;
+	private Long atividadeId;
 	
 	private Long protocoloId;
 }
