@@ -24,6 +24,8 @@ public class Atividade {
 	
 	private String descricao;
 	
+	private int chMaxima;
+	
 	@OneToMany(mappedBy = "atividade")
 	private List<Certificado> certificados;
 
@@ -47,6 +49,14 @@ public class Atividade {
 		this.descricao = descricao;
 	}
 
+	public int getChMaxima() {
+		return chMaxima;
+	}
+
+	public void setChMaxima(int chMaxima) {
+		this.chMaxima = chMaxima;
+	}
+	
 	public List<Certificado> getCertificados() {
 		return certificados;
 	}
