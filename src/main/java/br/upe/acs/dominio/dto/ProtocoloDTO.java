@@ -1,6 +1,6 @@
 package br.upe.acs.dominio.dto;
 
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +10,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ProtocoloDTO {
-		
+
+	private String data;
+	
+	private int semestre;
+	
+	private int qtdCertificados;
+	
 	private Long cursoId;
 	
-	private List<CertificadoDTO> certificados;
+	private MultipartFile protocolo;
+	
+	private MultipartFile[] certificados;
+	
+	private MultipartFile protocoloJson;
 }

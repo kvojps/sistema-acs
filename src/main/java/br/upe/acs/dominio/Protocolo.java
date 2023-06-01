@@ -30,6 +30,8 @@ public class Protocolo {
 	
 	private int qtdCertificados;
 	
+	private String token;
+	
 	private byte[] protocoloArquivo;
 
 	@ManyToOne
@@ -72,6 +74,14 @@ public class Protocolo {
 
 	public void setCurso(Curso curso) {
 		this.curso = curso;
+	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public List<Certificado> getCertificados() {

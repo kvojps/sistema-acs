@@ -1,6 +1,9 @@
 package br.upe.acs.servico;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,65 +16,149 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.upe.acs.dominio.Protocolo;
 import br.upe.acs.dominio.dto.CertificadoDTO;
+import br.upe.acs.dominio.dto.CertificadosProtocoloDTO;
 import br.upe.acs.dominio.dto.ProtocoloDTO;
-import br.upe.acs.dominio.dto.ProtocoloFullDTO;
 import br.upe.acs.repositorio.ProtocoloRepositorio;
+import br.upe.acs.utils.AcsExcecao;
 
 @Service
 public class ProtocoloServico {
-	
+
 	@Autowired
 	private CertificadoServico certificadoServico;
-	
+
+	@Autowired
+	private AtividadeServico atividadeServico;
+
 	@Autowired
 	private ProtocoloRepositorio repositorio;
-	
-	public String adicionarProtocolo(ProtocoloFullDTO protocolo) throws Exception  {
-		
+
+	public String adicionarProtocolo(ProtocoloDTO protocolo) throws Exception {
+		if (!validarProtocolo(protocolo)) {
+			// validar cursoID
+			throw new AcsExcecao("Os metadados do protocolo enviado não são válidos!");
+		}
+
 		Protocolo protocoloSalvar = new Protocolo();
-		protocoloSalvar.setData(null);
+		protocoloSalvar.setData(converterParaData(protocolo.getData()));
 		protocoloSalvar.setSemestre(protocolo.getSemestre());
 		protocoloSalvar.setQtdCertificados(protocolo.getQtdCertificados());
-		
-		ProtocoloDTO protocoloJson = new ProtocoloDTO();
+		// adicionarCurso
+
+		CertificadosProtocoloDTO certificadosProtocoloMetaDados = new CertificadosProtocoloDTO();
 		try {
-			byte[] protocoloJsonBytes = protocolo.getProtocoloJson().getBytes();
-			protocoloJson = converter(protocoloJsonBytes);
+			byte[] certificadosProtocoloJsonBytes = protocolo.getProtocoloJson().getBytes();
+			certificadosProtocoloMetaDados = converter(certificadosProtocoloJsonBytes);
 		} catch (IOException e) {
 			protocoloSalvar = null;
-			e.printStackTrace();
 		}
-		
+
 		Protocolo protocoloSalvo = new Protocolo();
 		if (protocoloSalvar != null) {
 			byte[] protocoloArquivo = protocolo.getProtocolo().getBytes();
 			protocoloSalvar.setProtocoloArquivo(protocoloArquivo);
-			protocoloSalvo = repositorio.save(protocoloSalvar);			
+			protocoloSalvo = repositorio.save(protocoloSalvar);
 		} else {
-			throw new Exception("Falha na conversão do protocoloJson");
+			throw new AcsExcecao("Falha na conversão do protocoloJson!");
 		}
-		
+
 		MultipartFile[] certificadoArquivos = protocolo.getCertificados();
-		List<CertificadoDTO> certificados = protocoloJson.getCertificados();
-		
-		for (int i = 0; i < certificadoArquivos.length; i++) {
-			
-			MultipartFile certificadoArquivoSalvar = certificadoArquivos[i];
-			CertificadoDTO certificadoSalvar = certificados.get(i);
-			certificadoSalvar.setProtocoloId(protocoloSalvo.getId());
-			
-			certificadoServico.adicionarCertificado(certificadoSalvar, certificadoArquivoSalvar);
+		List<CertificadoDTO> certificadosMetaDados = certificadosProtocoloMetaDados.getCertificados();
+		if (certificadosMetaDados.size() != protocoloSalvo.getQtdCertificados()) {
+			throw new AcsExcecao(
+					"A quantidade de certificados informadas não é igual a quantidade de certificados cadastrados!");
 		}
-		
+
+		if (validarCertificados(certificadosMetaDados)) {
+			adicionarCertificados(certificadoArquivos, certificadosMetaDados, protocoloSalvo.getId());
+		} else {
+			throw new AcsExcecao("Os metadados dos certificados enviados não são válidos!");
+		}
+
 		return "token";
 	}
-	
-	private ProtocoloDTO converter(byte[] protocoloJson) throws StreamReadException, DatabindException, IOException {
+
+	private boolean validarProtocolo(ProtocoloDTO protocolo) {
+		boolean isValid = true;
+
+		if (!verificarData(protocolo.getData())) {
+			isValid = false;
+		} else if (protocolo.getSemestre() <= 0 || protocolo.getSemestre() > 2) {
+			isValid = false;
+		} else if (protocolo.getQtdCertificados() <= 0 && protocolo.getQtdCertificados() > 20) {
+			isValid = false;
+		}
+
+		return isValid;
+	}
+
+	private static Date converterParaData(String dataString) throws ParseException {
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		return formato.parse(dataString);
+	}
+
+	private boolean validarCertificados(List<CertificadoDTO> certificados) {
+		boolean isValid = true;
+
+		for (CertificadoDTO certificado : certificados) {
+
+			if (certificado.getDescricao().isBlank()) {
+				isValid = false;
+			} else if (!verificarData(certificado.getData())) {
+				isValid = false;
+			} else if (certificado.getHoras() <= 1) {
+				isValid = false;
+			} else if (!verificarAtividade(certificado.getAtividadeId())) {
+				isValid = false;
+			}
+
+			if (!isValid) {
+				break;
+			}
+		}
+
+		return isValid;
+	}
+
+	private static boolean verificarData(String dataString) {
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		formato.setLenient(false);
+
+		try {
+			formato.parse(dataString);
+			return true;
+		} catch (ParseException e) {
+			return false;
+		}
+	}
+
+	private boolean verificarAtividade(Long atividadeId) {
+		try {
+			atividadeServico.buscarAtividadePorId(atividadeId);
+			return true;
+		} catch (AcsExcecao e) {
+			return false;
+		}
+	}
+
+	private void adicionarCertificados(MultipartFile[] certificadoArquivos, List<CertificadoDTO> certificados,
+			Long idProtocolo) throws IOException {
+		for (int i = 0; i < certificadoArquivos.length; i++) {
+
+			MultipartFile certificadoArquivoSalvar = certificadoArquivos[i];
+			CertificadoDTO certificadoSalvar = certificados.get(i);
+			certificadoSalvar.setProtocoloId(idProtocolo);
+
+			certificadoServico.adicionarCertificado(certificadoSalvar, certificadoArquivoSalvar);
+		}
+	}
+
+	private CertificadosProtocoloDTO converter(byte[] protocoloJson) throws StreamReadException, DatabindException, IOException {
 		String jsonString = new String(protocoloJson);
-		
+
 		ObjectMapper objectMapper = new ObjectMapper();
-		ProtocoloDTO protocolo = objectMapper.readValue(jsonString, ProtocoloDTO.class);
-		
+		CertificadosProtocoloDTO protocolo = objectMapper.readValue(jsonString, CertificadosProtocoloDTO.class);
+
 		return protocolo;
 	}
 }

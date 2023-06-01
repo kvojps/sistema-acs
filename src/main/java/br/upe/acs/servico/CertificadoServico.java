@@ -23,10 +23,9 @@ public class CertificadoServico {
 		Certificado certificadoSalvar = new Certificado();
 		certificadoSalvar.setDescricao(certificado.getDescricao());
 		certificadoSalvar.setData(null);
-		certificadoSalvar.setSemestre(certificado.getSemestre());
 		certificadoSalvar.setHoras(certificado.getHoras());
-		certificadoSalvar.setChMaxima(certificado.getChMaxima());
-		certificadoSalvar.setChTotal(certificado.getChTotal());
+		certificadoSalvar.setChMaxima(0);
+		certificadoSalvar.setChTotal(0);
 		certificadoSalvar.setCertificado(certificadoArquivo);
 		certificadoSalvar.setProtocolo(null);
 		certificadoSalvar.setAtividade(null);

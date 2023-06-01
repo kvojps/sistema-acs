@@ -28,8 +28,6 @@ public class Certificado {
 	@Temporal(TemporalType.DATE)
 	private Date data;
 	
-	private int semestre;
-	
 	private int horas;
 	
 	private int chMaxima;
@@ -63,15 +61,7 @@ public class Certificado {
 	public void setData(Date data) {
 		this.data = data;
 	}
-
-	public int getSemestre() {
-		return semestre;
-	}
-
-	public void setSemestre(int semestre) {
-		this.semestre = semestre;
-	}
-
+	
 	public int getHoras() {
 		return horas;
 	}
