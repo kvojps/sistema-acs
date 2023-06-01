@@ -3,8 +3,10 @@ package br.upe.acs.servico;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.upe.acs.dominio.Curso;
 import br.upe.acs.dominio.Protocolo;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.dominio.dto.CertificadosProtocoloDTO;
@@ -25,6 +28,9 @@ import br.upe.acs.utils.AcsExcecao;
 public class ProtocoloServico {
 
 	@Autowired
+	private CursoServico cursoServico;
+
+	@Autowired
 	private CertificadoServico certificadoServico;
 
 	@Autowired
@@ -32,10 +38,13 @@ public class ProtocoloServico {
 
 	@Autowired
 	private ProtocoloRepositorio repositorio;
+	
+	public List<Protocolo> listarProtocolos() {
+		return repositorio.findAll();
+	}
 
 	public String adicionarProtocolo(ProtocoloDTO protocolo) throws Exception {
 		if (!validarProtocolo(protocolo)) {
-			// validar cursoID
 			throw new AcsExcecao("Os metadados do protocolo enviado não são válidos!");
 		}
 
@@ -43,7 +52,8 @@ public class ProtocoloServico {
 		protocoloSalvar.setData(converterParaData(protocolo.getData()));
 		protocoloSalvar.setSemestre(protocolo.getSemestre());
 		protocoloSalvar.setQtdCertificados(protocolo.getQtdCertificados());
-		// adicionarCurso
+		Curso cursoSalvar = cursoServico.buscarCursoPorId(protocolo.getCursoId()).get();
+		protocoloSalvar.setCurso(cursoSalvar);
 
 		CertificadosProtocoloDTO certificadosProtocoloMetaDados = new CertificadosProtocoloDTO();
 		try {
@@ -74,14 +84,21 @@ public class ProtocoloServico {
 		} else {
 			throw new AcsExcecao("Os metadados dos certificados enviados não são válidos!");
 		}
-
-		return "token";
+		
+		String token = gerarTokenProtocolo();
+		
+		protocoloSalvo.setToken(token);
+		repositorio.save(protocoloSalvo);
+		
+		return token;
 	}
 
 	private boolean validarProtocolo(ProtocoloDTO protocolo) {
 		boolean isValid = true;
 
 		if (!verificarData(protocolo.getData())) {
+			isValid = false;
+		} else if (!verificarCurso(protocolo.getCursoId())) {
 			isValid = false;
 		} else if (protocolo.getSemestre() <= 0 || protocolo.getSemestre() > 2) {
 			isValid = false;
@@ -90,6 +107,15 @@ public class ProtocoloServico {
 		}
 
 		return isValid;
+	}
+
+	private boolean verificarCurso(Long cursoId) {
+		try {
+			cursoServico.buscarCursoPorId(cursoId);
+			return true;
+		} catch (AcsExcecao e) {
+			return false;
+		}
 	}
 
 	private static Date converterParaData(String dataString) throws ParseException {
@@ -153,12 +179,30 @@ public class ProtocoloServico {
 		}
 	}
 
-	private CertificadosProtocoloDTO converter(byte[] protocoloJson) throws StreamReadException, DatabindException, IOException {
+	private CertificadosProtocoloDTO converter(byte[] protocoloJson)
+			throws StreamReadException, DatabindException, IOException {
 		String jsonString = new String(protocoloJson);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		CertificadosProtocoloDTO protocolo = objectMapper.readValue(jsonString, CertificadosProtocoloDTO.class);
 
 		return protocolo;
+	}
+	
+	private String gerarTokenProtocolo() {
+        String caracteres = "0123456789!@#$%.*";
+        Random random = new Random();
+        StringBuilder tokenParcial = new StringBuilder();
+        
+        for (int i = 0; i < 6; i++) {
+			int index = random.nextInt(caracteres.length());
+			tokenParcial.append(caracteres.charAt(index));
+		}
+        
+        Instant timeStamp = Instant.now();
+        Long epocaSegundos = timeStamp.getEpochSecond();
+        String tokenFinal = tokenParcial.toString() + epocaSegundos.toString();
+        
+        return tokenFinal;
 	}
 }
