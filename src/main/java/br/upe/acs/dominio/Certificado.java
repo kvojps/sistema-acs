@@ -2,121 +2,49 @@ package br.upe.acs.dominio;
 
 import java.util.Date;
 
+import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class Certificado {
+public class Certificado{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	private String titulo;
+	
+	
 	@Column(columnDefinition = "TEXT")
-	private String descricao;
+	private String observacao;
 	
 	@Temporal(TemporalType.DATE)
-	private Date data;
+	private Date dataInicial;
+
+	@Temporal(TemporalType.DATE)
+	private Date dataFinal;
 	
-	private int semestre;
-	
-	private int horas;
-	
-	private int chMaxima;
-	
-	private int chTotal;
+	private float cargaHoraria;
 	
 	private byte[] certificado;
 	
+	@Enumerated(EnumType.STRING)
+	private CertificadoStatusEnum statusCertificado;
+	
 	@ManyToOne
-	private Protocolo protocolo;
+	private Requisicao requisicao;
 	
 	@ManyToOne
 	private Atividade atividade;
 
-	public Long getId() {
-		return id;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-
-	public int getSemestre() {
-		return semestre;
-	}
-
-	public void setSemestre(int semestre) {
-		this.semestre = semestre;
-	}
-
-	public int getHoras() {
-		return horas;
-	}
-
-	public void setHoras(int horas) {
-		this.horas = horas;
-	}
-
-	public int getChMaxima() {
-		return chMaxima;
-	}
-
-	public void setChMaxima(int chMaxima) {
-		this.chMaxima = chMaxima;
-	}
-
-	public int getChTotal() {
-		return chTotal;
-	}
-
-	public void setChTotal(int chTotal) {
-		this.chTotal = chTotal;
-	}
-
-	public byte[] getCertificado() {
-		return certificado;
-	}
-
-	public void setCertificado(byte[] certificado) {
-		this.certificado = certificado;
-	}
-
-	public Protocolo getProtocolo() {
-		return protocolo;
-	}
-
-	public void setProtocolo(Protocolo protocolo) {
-		this.protocolo = protocolo;
-	}
-
-	public Atividade getAtividade() {
-		return atividade;
-	}
-
-	public void setAtividade(Atividade atividade) {
-		this.atividade = atividade;
-	}
 }

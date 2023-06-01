@@ -9,19 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 public class CertificadoDTO {
 
-	private String descricao;
+	private String titulo;
+		
+	private String dataIncial;
+
+	private String dataFinal;
 	
-	private String data;
-	
-	private int semestre;
-	
-	private int horas;
-	
-	private int chMaxima;
-	
-	private int chTotal;
+	private float quantidadeDeHoras;
 	
 	private Long atividadeId;
-	
-	private Long protocoloId;
 }
