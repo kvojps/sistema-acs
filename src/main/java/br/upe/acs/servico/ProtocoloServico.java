@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,17 @@ public class ProtocoloServico {
 
 	@Autowired
 	private ProtocoloRepositorio repositorio;
-	
+
 	public List<Protocolo> listarProtocolos() {
 		return repositorio.findAll();
+	}
+
+	public Optional<Protocolo> buscarProtocoloPorId(Long id) throws AcsExcecao {
+		if (repositorio.findById(id).isEmpty()) {
+			throw new AcsExcecao("Não existe um protocolo associado a este id!");
+		}
+
+		return repositorio.findById(id);
 	}
 
 	public String adicionarProtocolo(ProtocoloDTO protocolo) throws Exception {
@@ -84,12 +93,12 @@ public class ProtocoloServico {
 		} else {
 			throw new AcsExcecao("Os metadados dos certificados enviados não são válidos!");
 		}
-		
+
 		String token = gerarTokenProtocolo();
-		
+
 		protocoloSalvo.setToken(token);
 		repositorio.save(protocoloSalvo);
-		
+
 		return token;
 	}
 
@@ -168,7 +177,7 @@ public class ProtocoloServico {
 	}
 
 	private void adicionarCertificados(MultipartFile[] certificadoArquivos, List<CertificadoDTO> certificados,
-			Long idProtocolo) throws IOException {
+			Long idProtocolo) throws IOException, ParseException, AcsExcecao {
 		for (int i = 0; i < certificadoArquivos.length; i++) {
 
 			MultipartFile certificadoArquivoSalvar = certificadoArquivos[i];
@@ -188,21 +197,21 @@ public class ProtocoloServico {
 
 		return protocolo;
 	}
-	
+
 	private String gerarTokenProtocolo() {
-        String caracteres = "0123456789!@#$%.*";
-        Random random = new Random();
-        StringBuilder tokenParcial = new StringBuilder();
-        
-        for (int i = 0; i < 6; i++) {
+		String caracteres = "0123456789!@#$%.*";
+		Random random = new Random();
+		StringBuilder tokenParcial = new StringBuilder();
+
+		for (int i = 0; i < 6; i++) {
 			int index = random.nextInt(caracteres.length());
 			tokenParcial.append(caracteres.charAt(index));
 		}
-        
-        Instant timeStamp = Instant.now();
-        Long epocaSegundos = timeStamp.getEpochSecond();
-        String tokenFinal = tokenParcial.toString() + epocaSegundos.toString();
-        
-        return tokenFinal;
+
+		Instant timeStamp = Instant.now();
+		Long epocaSegundos = timeStamp.getEpochSecond();
+		String tokenFinal = tokenParcial.toString() + epocaSegundos.toString();
+
+		return tokenFinal;
 	}
 }
