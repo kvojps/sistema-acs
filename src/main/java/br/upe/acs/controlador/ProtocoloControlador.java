@@ -1,6 +1,7 @@
 package br.upe.acs.controlador;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.upe.acs.dominio.Protocolo;
+import br.upe.acs.controlador.respostas.ProtocoloResposta;
 import br.upe.acs.dominio.dto.ProtocoloDTO;
 import br.upe.acs.servico.ProtocoloCertificadoServico;
 import br.upe.acs.servico.ProtocoloServico;
@@ -29,8 +30,9 @@ public class ProtocoloControlador {
 	private final ProtocoloCertificadoServico protocoloCertificadoServico;
 
 	@GetMapping
-	public ResponseEntity<List<Protocolo>> listarProtocolos() {
-		return ResponseEntity.ok(servico.listarProtocolos());
+	public ResponseEntity<List<ProtocoloResposta>> listarProtocolos() {
+		return ResponseEntity.ok(servico.listarProtocolos().stream().map(protocolo -> new ProtocoloResposta(protocolo))
+				.collect(Collectors.toList()));
 	}
 
 	// adicionar cursoID

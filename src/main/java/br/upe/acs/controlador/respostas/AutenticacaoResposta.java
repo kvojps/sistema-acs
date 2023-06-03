@@ -1,4 +1,4 @@
-package br.upe.acs.dominio.respostas;
+package br.upe.acs.controlador.respostas;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

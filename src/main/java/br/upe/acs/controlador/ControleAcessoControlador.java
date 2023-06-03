@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.upe.acs.controlador.respostas.AutenticacaoResposta;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
-import br.upe.acs.dominio.respostas.AutenticacaoResposta;
 import br.upe.acs.servico.ControleAcessoServico;
 import lombok.RequiredArgsConstructor;
 

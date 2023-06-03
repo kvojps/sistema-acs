@@ -6,11 +6,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.upe.acs.config.JwtService;
+import br.upe.acs.controlador.respostas.AutenticacaoResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.dominio.enums.PerfilEnum;
-import br.upe.acs.dominio.respostas.AutenticacaoResposta;
 import br.upe.acs.repositorio.UsuarioRepositorio;
 import lombok.RequiredArgsConstructor;
 
