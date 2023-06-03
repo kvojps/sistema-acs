@@ -3,18 +3,18 @@ package br.upe.acs.servico;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.upe.acs.dominio.Curso;
 import br.upe.acs.repositorio.CursoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CursoServico {
 	
-	@Autowired
-	private CursoRepositorio repositorio;
+	private final CursoRepositorio repositorio;
 	
 	public List<Curso> listarCursos() {
 		return repositorio.findAll();

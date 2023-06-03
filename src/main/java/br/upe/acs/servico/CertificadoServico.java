@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,18 +15,17 @@ import br.upe.acs.dominio.Protocolo;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.repositorio.CertificadoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CertificadoServico {
 
-	@Autowired
-	private CertificadoRepositorio repositorio;
+	private final CertificadoRepositorio repositorio;
 
-	@Autowired
-	private ProtocoloServico protocoloServico;
+	private final ProtocoloServico protocoloServico;
 
-	@Autowired
-	private AtividadeServico atividadeServico;
+	private final AtividadeServico atividadeServico;
 
 	public Certificado adicionarCertificado(CertificadoDTO certificado, MultipartFile file)
 			throws IOException, ParseException, AcsExcecao {
