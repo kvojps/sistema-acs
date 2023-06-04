@@ -21,4 +21,21 @@ public class UsuarioServico {
 		
 		return repositorio.findById(id);
 	}
+	
+	public String verificarUsuario(Long usuarioId, String codigoVerificacao) throws AcsExcecao {
+		Usuario usuario = buscarUsuarioPorId(usuarioId).get();
+		String resposta = "";
+		
+		if (usuario.isVerificado() == true) {
+			resposta = "Este usuário já é verificado!";
+		} else if (codigoVerificacao.equals(usuario.getCodigoVerificacao())) {
+			usuario.setVerificado(true);
+			repositorio.save(usuario);
+			resposta = "Usuário verificado com sucesso!";
+		} else {
+			resposta = "O código de verificação está incorreto!";
+		}
+		
+		return resposta;
+	}
 }
