@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.upe.acs.dominio.Curso;
 import br.upe.acs.dominio.Protocolo;
+import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.dominio.dto.CertificadosProtocoloDTO;
 import br.upe.acs.dominio.dto.ProtocoloDTO;
@@ -27,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProtocoloCertificadoServico {
+
+	private final UsuarioServico usuarioServico;
 
 	private final CursoServico cursoServico;
 
@@ -47,6 +50,8 @@ public class ProtocoloCertificadoServico {
 		protocoloSalvar.setQtdCertificados(protocolo.getQtdCertificados());
 		Curso cursoSalvar = cursoServico.buscarCursoPorId(protocolo.getCursoId()).get();
 		protocoloSalvar.setCurso(cursoSalvar);
+		Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(protocolo.getUsuarioId()).get();
+		protocoloSalvar.setUsuario(usuarioSalvar);
 
 		CertificadosProtocoloDTO certificadosProtocoloMetaDados = new CertificadosProtocoloDTO();
 		try {
@@ -90,6 +95,8 @@ public class ProtocoloCertificadoServico {
 		boolean isValid = true;
 
 		if (!verificarData(protocolo.getData())) {
+			isValid = false;
+		} else if (!verificarUsuario(protocolo.getUsuarioId())) {
 			isValid = false;
 		} else if (!verificarCurso(protocolo.getCursoId())) {
 			isValid = false;
@@ -147,6 +154,15 @@ public class ProtocoloCertificadoServico {
 			formato.parse(dataString);
 			return true;
 		} catch (ParseException e) {
+			return false;
+		}
+	}
+
+	private boolean verificarUsuario(Long usuarioId) {
+		try {
+			usuarioServico.buscarUsuarioPorId(usuarioId);
+			return true;
+		} catch (AcsExcecao e) {
 			return false;
 		}
 	}

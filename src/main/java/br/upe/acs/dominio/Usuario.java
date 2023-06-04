@@ -14,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -36,8 +37,15 @@ public class Usuario implements UserDetails {
 	
 	private String senha;
 	
+	private String codigoVerificacao;
+	
+	private boolean verificado;
+	
 	@Enumerated(EnumType.STRING)
 	private PerfilEnum perfil;
+	
+	@OneToMany(mappedBy = "usuario")
+	private List<Protocolo> protocolos;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -109,6 +117,22 @@ public class Usuario implements UserDetails {
 	public Long getId() {
 		return id;
 	}
+	
+	public String getCodigoVerificacao() {
+		return codigoVerificacao;
+	}
+
+	public void setCodigoVerificacao(String codigoVerificacao) {
+		this.codigoVerificacao = codigoVerificacao;
+	}
+
+	public boolean isVerificado() {
+		return verificado;
+	}
+
+	public void setVerificado(boolean verificado) {
+		this.verificado = verificado;
+	}
 
 	public PerfilEnum getPerfil() {
 		return perfil;
@@ -116,5 +140,9 @@ public class Usuario implements UserDetails {
 
 	public void setPerfil(PerfilEnum perfil) {
 		this.perfil = perfil;
+	}
+
+	public List<Protocolo> getProtocolos() {
+		return protocolos;
 	}
 }

@@ -19,6 +19,8 @@ public class ProtocoloDTO {
 	
 	private Long cursoId;
 	
+	private Long usuarioId;
+	
 	private MultipartFile protocolo;
 	
 	private MultipartFile[] certificados;

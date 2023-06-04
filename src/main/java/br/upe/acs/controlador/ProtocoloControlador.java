@@ -37,6 +37,7 @@ public class ProtocoloControlador {
 
 	@PostMapping(consumes = { "multipart/form-data" })
 	public ResponseEntity<?> adicionarProtocolo(@RequestParam(value = "data", required = true) String data,
+			@RequestParam(value = "usuarioId", required = true) Long usuarioId,
 			@RequestParam(value = "cursoId", required = true) Long cursoId,
 			@RequestParam(value = "semestre", required = true) int semestre,
 			@RequestParam(value = "qtdCertificados", required = true) int qtdCertificados,
@@ -45,6 +46,7 @@ public class ProtocoloControlador {
 			@RequestPart(value = "certificadosMetadados", required = true) MultipartFile certificadosMetadados) {
 		ProtocoloDTO protocoloDTO = new ProtocoloDTO();
 		protocoloDTO.setCursoId(cursoId);
+		protocoloDTO.setUsuarioId(usuarioId);
 		protocoloDTO.setData(data);
 		protocoloDTO.setSemestre(semestre);
 		protocoloDTO.setQtdCertificados(qtdCertificados);
