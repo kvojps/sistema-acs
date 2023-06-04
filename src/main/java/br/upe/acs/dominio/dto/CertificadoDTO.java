@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class CertificadoDTO {
 
+	private String titulo;
+	
 	private String descricao;
 	
 	private String data;

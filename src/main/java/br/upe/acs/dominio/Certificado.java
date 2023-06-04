@@ -22,6 +22,8 @@ public class Certificado {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	private String titulo;
+	
 	@Column(columnDefinition = "TEXT")
 	private String descricao;
 	
@@ -45,7 +47,7 @@ public class Certificado {
 	public Long getId() {
 		return id;
 	}
-
+	
 	public String getDescricao() {
 		return descricao;
 	}
@@ -108,5 +110,13 @@ public class Certificado {
 
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 }

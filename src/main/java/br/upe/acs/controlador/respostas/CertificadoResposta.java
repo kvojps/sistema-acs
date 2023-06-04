@@ -10,6 +10,8 @@ public class CertificadoResposta {
 	
 	private Long id;
 	
+	private String titulo;
+	
 	private String descricao;
 	
 	private Date data;
@@ -25,6 +27,7 @@ public class CertificadoResposta {
 	public CertificadoResposta(Certificado certificado) {
 		super();
 		this.id = certificado.getId();
+		this.titulo = certificado.getTitulo();
 		this.descricao = certificado.getDescricao();
 		this.data = certificado.getData();
 		this.horas = certificado.getHoras();

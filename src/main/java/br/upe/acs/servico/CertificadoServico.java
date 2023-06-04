@@ -33,6 +33,7 @@ public class CertificadoServico {
 		byte[] certificadoArquivo = file.getBytes();
 
 		Certificado certificadoSalvar = new Certificado();
+		certificadoSalvar.setTitulo(certificado.getTitulo());
 		certificadoSalvar.setDescricao(certificado.getDescricao());
 		certificadoSalvar.setData(converterParaData(certificado.getData()));
 		certificadoSalvar.setHoras(certificado.getHoras());
