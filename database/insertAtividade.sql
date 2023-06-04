@@ -1,5 +1,3 @@
-USE DATABASE acs;
-
 INSERT INTO public.atividade(
 	id, ch_maxima, descricao, eixo)
 	VALUES (36, 30, 'Disciplinas concluídas pelo acadêmico com carga horária mínima de 30h em cursos de graduação de IES credenciadas pelo MEC (presencial ou EAD)', 'ENSINO');

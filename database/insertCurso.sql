@@ -1,5 +1,3 @@
-USE DATABASE acs;
-
 INSERT INTO public.curso(id, nome)
 	VALUES (1, 'Ciências Biológicas');
 

@@ -23,5 +23,5 @@ public class ProtocoloDTO {
 	
 	private MultipartFile[] certificados;
 	
-	private MultipartFile protocoloJson;
+	private MultipartFile certificadosMetadados;
 }

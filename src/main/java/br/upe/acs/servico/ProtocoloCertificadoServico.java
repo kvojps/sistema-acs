@@ -50,7 +50,7 @@ public class ProtocoloCertificadoServico {
 
 		CertificadosProtocoloDTO certificadosProtocoloMetaDados = new CertificadosProtocoloDTO();
 		try {
-			byte[] certificadosProtocoloJsonBytes = protocolo.getProtocoloJson().getBytes();
+			byte[] certificadosProtocoloJsonBytes = protocolo.getCertificadosMetadados().getBytes();
 			certificadosProtocoloMetaDados = converter(certificadosProtocoloJsonBytes);
 		} catch (IOException e) {
 			protocoloSalvar = null;

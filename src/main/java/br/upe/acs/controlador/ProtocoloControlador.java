@@ -35,21 +35,22 @@ public class ProtocoloControlador {
 				.collect(Collectors.toList()));
 	}
 
-	// adicionar cursoID
 	@PostMapping(consumes = { "multipart/form-data" })
 	public ResponseEntity<?> adicionarProtocolo(@RequestParam(value = "data", required = true) String data,
+			@RequestParam(value = "cursoId", required = true) Long cursoId,
 			@RequestParam(value = "semestre", required = true) int semestre,
 			@RequestParam(value = "qtdCertificados", required = true) int qtdCertificados,
 			@RequestPart(value = "protocolo", required = true) MultipartFile protocolo,
 			@RequestPart(value = "certificados", required = true) MultipartFile[] certificados,
-			@RequestPart(value = "protocoloJson", required = true) MultipartFile protocoloJson) {
+			@RequestPart(value = "certificadosMetadados", required = true) MultipartFile certificadosMetadados) {
 		ProtocoloDTO protocoloDTO = new ProtocoloDTO();
+		protocoloDTO.setCursoId(cursoId);
 		protocoloDTO.setData(data);
 		protocoloDTO.setSemestre(semestre);
 		protocoloDTO.setQtdCertificados(qtdCertificados);
 		protocoloDTO.setProtocolo(protocolo);
 		protocoloDTO.setCertificados(certificados);
-		protocoloDTO.setProtocoloJson(protocoloJson);
+		protocoloDTO.setCertificadosMetadados(certificadosMetadados);
 
 		try {
 			return ResponseEntity.ok(protocoloCertificadoServico.adicionarProtocolo(protocoloDTO));

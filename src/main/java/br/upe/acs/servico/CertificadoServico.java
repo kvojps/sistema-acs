@@ -37,13 +37,13 @@ public class CertificadoServico {
 		certificadoSalvar.setDescricao(certificado.getDescricao());
 		certificadoSalvar.setData(converterParaData(certificado.getData()));
 		certificadoSalvar.setHoras(certificado.getHoras());
-		certificadoSalvar.setChMaxima(0);
 		certificadoSalvar.setChTotal(0);
 		certificadoSalvar.setCertificado(certificadoArquivo);
 		Optional<Protocolo> protocoloSalvar = protocoloServico.buscarProtocoloPorId(certificado.getProtocoloId());
 		certificadoSalvar.setProtocolo(protocoloSalvar.get());
 		Optional<Atividade> atividadeSalvar = atividadeServico.buscarAtividadePorId(certificado.getAtividadeId());
 		certificadoSalvar.setAtividade(atividadeSalvar.get());
+		certificadoSalvar.setChMaxima(atividadeSalvar.get().getChMaxima());
 
 		return repositorio.save(certificadoSalvar);
 	}
