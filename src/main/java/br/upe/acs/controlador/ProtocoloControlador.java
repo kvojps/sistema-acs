@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,7 @@ import br.upe.acs.controlador.respostas.ProtocoloResposta;
 import br.upe.acs.dominio.dto.ProtocoloDTO;
 import br.upe.acs.servico.ProtocoloCertificadoServico;
 import br.upe.acs.servico.ProtocoloServico;
+import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,6 +35,13 @@ public class ProtocoloControlador {
 	public ResponseEntity<List<ProtocoloResposta>> listarProtocolos() {
 		return ResponseEntity.ok(servico.listarProtocolos().stream().map(protocolo -> new ProtocoloResposta(protocolo))
 				.collect(Collectors.toList()));
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<ProtocoloResposta> buscarProtocoloPorId(@PathVariable("id") Long id) throws AcsExcecao {
+		ProtocoloResposta protocoloResposta = new ProtocoloResposta(servico.buscarProtocoloPorId(id).get());
+
+		return ResponseEntity.ok(protocoloResposta);
 	}
 
 	@PostMapping(consumes = { "multipart/form-data" })

@@ -27,6 +27,14 @@ public class CertificadoServico {
 
 	private final AtividadeServico atividadeServico;
 
+	public Optional<Certificado> buscarCertificadoPorId(Long id) throws AcsExcecao {
+		if (repositorio.findById(id).isEmpty()) {
+			throw new AcsExcecao("Não existe um certificado associado a este id!");
+		}
+		
+		return repositorio.findById(id);
+	}
+	
 	public Certificado adicionarCertificado(CertificadoDTO certificado, MultipartFile file)
 			throws IOException, ParseException, AcsExcecao {
 
