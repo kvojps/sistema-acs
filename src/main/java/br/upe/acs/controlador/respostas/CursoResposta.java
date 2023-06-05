@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.upe.acs.dominio.Curso;
-import br.upe.acs.dominio.Protocolo;
+import br.upe.acs.dominio.Requisicao;
 import lombok.Getter;
 
 @Getter
@@ -14,17 +14,17 @@ public class CursoResposta {
 
 	private String nome;
 
-	private List<ProtocoloResposta> protocolos;
+	private List<RequisicaoResposta> requisicoes;
 
 	public CursoResposta(Curso curso) {
 		super();
 		this.id = curso.getId();
 		this.nome = curso.getNome();
-		this.protocolos = converterProtocolos(curso.getProtocolos());
+		this.requisicoes = converterRequisicoes(curso.getRequisicoes());
 	}
 
-	private List<ProtocoloResposta> converterProtocolos(List<Protocolo> protocolos) {
-		List<ProtocoloResposta> resposta = protocolos.stream().map(protocolo -> new ProtocoloResposta(protocolo))
+	private List<RequisicaoResposta> converterRequisicoes(List<Requisicao> requisicoes) {
+		List<RequisicaoResposta> resposta = requisicoes.stream().map(requisicao -> new RequisicaoResposta(requisicao))
 				.collect(Collectors.toList());
 
 		return resposta;

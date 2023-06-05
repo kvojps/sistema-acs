@@ -22,7 +22,7 @@ public class CursoServico {
 	
 	public Optional<Curso> buscarCursoPorId(Long id) throws AcsExcecao {
 		if (repositorio.findById(id).isEmpty()) {
-			throw new AcsExcecao("Não existe um curso associada a este id!");
+			throw new AcsExcecao("Não existe um curso associado a este id!");
 		}
 		
 		return repositorio.findById(id);

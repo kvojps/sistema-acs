@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CertificadosProtocoloDTO {
+public class CertificadosMetadadosDTO {
 
 	private List<CertificadoDTO> certificados;
 }

@@ -39,7 +39,7 @@ public class Certificado {
 	private byte[] certificado;
 	
 	@ManyToOne
-	private Protocolo protocolo;
+	private Requisicao requisicao;
 	
 	@ManyToOne
 	private Atividade atividade;
@@ -96,12 +96,12 @@ public class Certificado {
 		this.certificado = certificado;
 	}
 
-	public Protocolo getProtocolo() {
-		return protocolo;
+	public Requisicao getRequisicao() {
+		return requisicao;
 	}
 
-	public void setProtocolo(Protocolo protocolo) {
-		this.protocolo = protocolo;
+	public void setRequisicao(Requisicao requisicao) {
+		this.requisicao = requisicao;
 	}
 
 	public Atividade getAtividade() {

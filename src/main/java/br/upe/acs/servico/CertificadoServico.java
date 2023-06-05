@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.Certificado;
-import br.upe.acs.dominio.Protocolo;
+import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.repositorio.CertificadoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
@@ -23,7 +23,7 @@ public class CertificadoServico {
 
 	private final CertificadoRepositorio repositorio;
 
-	private final ProtocoloServico protocoloServico;
+	private final RequisicaoServico requisicaoServico;
 
 	private final AtividadeServico atividadeServico;
 
@@ -31,10 +31,10 @@ public class CertificadoServico {
 		if (repositorio.findById(id).isEmpty()) {
 			throw new AcsExcecao("Não existe um certificado associado a este id!");
 		}
-		
+
 		return repositorio.findById(id);
 	}
-	
+
 	public Certificado adicionarCertificado(CertificadoDTO certificado, MultipartFile file)
 			throws IOException, ParseException, AcsExcecao {
 
@@ -47,8 +47,8 @@ public class CertificadoServico {
 		certificadoSalvar.setHoras(certificado.getHoras());
 		certificadoSalvar.setChTotal(0);
 		certificadoSalvar.setCertificado(certificadoArquivo);
-		Optional<Protocolo> protocoloSalvar = protocoloServico.buscarProtocoloPorId(certificado.getProtocoloId());
-		certificadoSalvar.setProtocolo(protocoloSalvar.get());
+		Optional<Requisicao> requisicaoSalvar = requisicaoServico.buscarRequisicaoPorId(certificado.getRequisicaoId());
+		certificadoSalvar.setRequisicao(requisicaoSalvar.get());
 		Optional<Atividade> atividadeSalvar = atividadeServico.buscarAtividadePorId(certificado.getAtividadeId());
 		certificadoSalvar.setAtividade(atividadeSalvar.get());
 		certificadoSalvar.setChMaxima(atividadeSalvar.get().getChMaxima());

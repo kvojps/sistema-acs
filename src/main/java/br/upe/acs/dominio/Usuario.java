@@ -45,7 +45,7 @@ public class Usuario implements UserDetails {
 	private PerfilEnum perfil;
 	
 	@OneToMany(mappedBy = "usuario")
-	private List<Protocolo> protocolos;
+	private List<Requisicao> requisicoes;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -142,7 +142,7 @@ public class Usuario implements UserDetails {
 		this.perfil = perfil;
 	}
 
-	public List<Protocolo> getProtocolos() {
-		return protocolos;
+	public List<Requisicao> getRequisicoes() {
+		return requisicoes;
 	}
 }

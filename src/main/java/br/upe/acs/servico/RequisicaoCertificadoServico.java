@@ -16,18 +16,18 @@ import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.upe.acs.dominio.Curso;
-import br.upe.acs.dominio.Protocolo;
+import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.dto.CertificadoDTO;
-import br.upe.acs.dominio.dto.CertificadosProtocoloDTO;
-import br.upe.acs.dominio.dto.ProtocoloDTO;
-import br.upe.acs.repositorio.ProtocoloRepositorio;
+import br.upe.acs.dominio.dto.CertificadosMetadadosDTO;
+import br.upe.acs.dominio.dto.RequisicaoDTO;
+import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProtocoloCertificadoServico {
+public class RequisicaoCertificadoServico {
 
 	private final UsuarioServico usuarioServico;
 
@@ -37,72 +37,72 @@ public class ProtocoloCertificadoServico {
 
 	private final AtividadeServico atividadeServico;
 
-	private final ProtocoloRepositorio repositorio;
+	private final RequisicaoRepositorio repositorio;
 
-	public String adicionarProtocolo(ProtocoloDTO protocolo) throws Exception {
-		if (!validarProtocolo(protocolo)) {
-			throw new AcsExcecao("Os metadados do protocolo enviado não são válidos!");
+	public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
+		if (!validarRequisicao(requisicao)) {
+			throw new AcsExcecao("Os metadados da requisção enviada não são válidos!");
 		}
 
-		Protocolo protocoloSalvar = new Protocolo();
-		protocoloSalvar.setData(converterParaData(protocolo.getData()));
-		protocoloSalvar.setSemestre(protocolo.getSemestre());
-		protocoloSalvar.setQtdCertificados(protocolo.getQtdCertificados());
-		Curso cursoSalvar = cursoServico.buscarCursoPorId(protocolo.getCursoId()).get();
-		protocoloSalvar.setCurso(cursoSalvar);
-		Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(protocolo.getUsuarioId()).get();
-		protocoloSalvar.setUsuario(usuarioSalvar);
+		Requisicao requisicaoSalvar = new Requisicao();
+		requisicaoSalvar.setData(converterParaData(requisicao.getData()));
+		requisicaoSalvar.setSemestre(requisicao.getSemestre());
+		requisicaoSalvar.setQtdCertificados(requisicao.getQtdCertificados());
+		Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).get();
+		requisicaoSalvar.setCurso(cursoSalvar);
+		Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(requisicao.getUsuarioId()).get();
+		requisicaoSalvar.setUsuario(usuarioSalvar);
 
-		CertificadosProtocoloDTO certificadosProtocoloMetaDados = new CertificadosProtocoloDTO();
+		CertificadosMetadadosDTO certificadosMetadados = new CertificadosMetadadosDTO();
 		try {
-			byte[] certificadosProtocoloJsonBytes = protocolo.getCertificadosMetadados().getBytes();
-			certificadosProtocoloMetaDados = converter(certificadosProtocoloJsonBytes);
+			byte[] certificadoMetadadosBytes = requisicao.getCertificadosMetadados().getBytes();
+			certificadosMetadados = converter(certificadoMetadadosBytes);
 		} catch (IOException e) {
-			protocoloSalvar = null;
+			requisicaoSalvar = null;
 		}
 
-		Protocolo protocoloSalvo = new Protocolo();
-		if (protocoloSalvar != null) {
-			byte[] protocoloArquivo = protocolo.getProtocolo().getBytes();
-			protocoloSalvar.setProtocoloArquivo(protocoloArquivo);
-			protocoloSalvo = repositorio.save(protocoloSalvar);
+		Requisicao requisicaoSalva = new Requisicao();
+		if (requisicaoSalvar != null) {
+			byte[] requisicaoArquivo = requisicao.getRequisicaoArquivo().getBytes();
+			requisicaoSalvar.setRequisicaoArquivo(requisicaoArquivo);
+			requisicaoSalva = repositorio.save(requisicaoSalvar);
 		} else {
-			throw new AcsExcecao("Falha na conversão do protocoloJson!");
+			throw new AcsExcecao("Falha na conversão dos metadados relacionados aos certificados!");
 		}
 
-		MultipartFile[] certificadoArquivos = protocolo.getCertificados();
-		List<CertificadoDTO> certificadosMetaDados = certificadosProtocoloMetaDados.getCertificados();
-		if (certificadosMetaDados.size() != protocoloSalvo.getQtdCertificados()) {
+		MultipartFile[] certificadoArquivos = requisicao.getCertificados();
+		List<CertificadoDTO> certificadosMetaDados = certificadosMetadados.getCertificados();
+		if (certificadosMetaDados.size() != requisicaoSalva.getQtdCertificados()) {
 			throw new AcsExcecao(
 					"A quantidade de certificados informadas não é igual a quantidade de certificados cadastrados!");
 		}
 
 		if (validarCertificados(certificadosMetaDados)) {
-			adicionarCertificados(certificadoArquivos, certificadosMetaDados, protocoloSalvo.getId());
+			adicionarCertificados(certificadoArquivos, certificadosMetaDados, requisicaoSalva.getId());
 		} else {
 			throw new AcsExcecao("Os metadados dos certificados enviados não são válidos!");
 		}
 
-		String token = gerarTokenProtocolo();
+		String token = gerarTokenRequisicao();
 
-		protocoloSalvo.setToken(token);
-		repositorio.save(protocoloSalvo);
+		requisicaoSalva.setToken(token);
+		repositorio.save(requisicaoSalva);
 
 		return token;
 	}
 
-	private boolean validarProtocolo(ProtocoloDTO protocolo) {
+	private boolean validarRequisicao(RequisicaoDTO requisicao) {
 		boolean isValid = true;
 
-		if (!verificarData(protocolo.getData())) {
+		if (!verificarData(requisicao.getData())) {
 			isValid = false;
-		} else if (!verificarUsuario(protocolo.getUsuarioId())) {
+		} else if (!verificarUsuario(requisicao.getUsuarioId())) {
 			isValid = false;
-		} else if (!verificarCurso(protocolo.getCursoId())) {
+		} else if (!verificarCurso(requisicao.getCursoId())) {
 			isValid = false;
-		} else if (protocolo.getSemestre() <= 0 || protocolo.getSemestre() > 2) {
+		} else if (requisicao.getSemestre() <= 0 || requisicao.getSemestre() > 2) {
 			isValid = false;
-		} else if (protocolo.getQtdCertificados() <= 0 && protocolo.getQtdCertificados() > 20) {
+		} else if (requisicao.getQtdCertificados() <= 0 && requisicao.getQtdCertificados() > 20) {
 			isValid = false;
 		}
 
@@ -177,28 +177,29 @@ public class ProtocoloCertificadoServico {
 	}
 
 	private void adicionarCertificados(MultipartFile[] certificadoArquivos, List<CertificadoDTO> certificados,
-			Long idProtocolo) throws IOException, ParseException, AcsExcecao {
+			Long idRequisicao) throws IOException, ParseException, AcsExcecao {
 		for (int i = 0; i < certificadoArquivos.length; i++) {
 
 			MultipartFile certificadoArquivoSalvar = certificadoArquivos[i];
 			CertificadoDTO certificadoSalvar = certificados.get(i);
-			certificadoSalvar.setProtocoloId(idProtocolo);
+			certificadoSalvar.setRequisicaoId(idRequisicao);
 
 			certificadoServico.adicionarCertificado(certificadoSalvar, certificadoArquivoSalvar);
 		}
 	}
 
-	private CertificadosProtocoloDTO converter(byte[] protocoloJson)
+	private CertificadosMetadadosDTO converter(byte[] certificadosMetadadosJson)
 			throws StreamReadException, DatabindException, IOException {
-		String jsonString = new String(protocoloJson);
+		String jsonString = new String(certificadosMetadadosJson);
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		CertificadosProtocoloDTO protocolo = objectMapper.readValue(jsonString, CertificadosProtocoloDTO.class);
+		CertificadosMetadadosDTO certificadosMetadados = objectMapper.readValue(jsonString,
+				CertificadosMetadadosDTO.class);
 
-		return protocolo;
+		return certificadosMetadados;
 	}
 
-	private String gerarTokenProtocolo() {
+	private String gerarTokenRequisicao() {
 		String caracteres = "0123456789!@#$%.*";
 		Random random = new Random();
 		StringBuilder tokenParcial = new StringBuilder();

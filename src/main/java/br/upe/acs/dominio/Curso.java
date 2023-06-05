@@ -22,7 +22,7 @@ public class Curso {
 	private String nome;
 	
 	@OneToMany(mappedBy = "curso")
-	private List<Protocolo> protocolos;
+	private List<Requisicao> requisicoes;
 
 	public Long getId() {
 		return id;
@@ -36,11 +36,11 @@ public class Curso {
 		this.nome = nome;
 	}
 
-	public List<Protocolo> getProtocolos() {
-		return protocolos;
+	public List<Requisicao> getRequisicoes() {
+		return requisicoes;
 	}
 
-	public void setProtocolos(List<Protocolo> protocolos) {
-		this.protocolos = protocolos;
+	public void setRequisicoes(List<Requisicao> requisicoes) {
+		this.requisicoes = requisicoes;
 	}
 }

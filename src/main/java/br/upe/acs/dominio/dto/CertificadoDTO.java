@@ -19,5 +19,5 @@ public class CertificadoDTO {
 	
 	private Long atividadeId;
 	
-	private Long protocoloId;
+	private Long requisicaoId;
 }

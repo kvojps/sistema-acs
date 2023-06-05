@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Protocolo {
+public class Requisicao {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,7 +32,7 @@ public class Protocolo {
 
 	private String token;
 
-	private byte[] protocoloArquivo;
+	private byte[] requisicaoArquivo;
 
 	@ManyToOne
 	private Usuario usuario;
@@ -40,7 +40,7 @@ public class Protocolo {
 	@ManyToOne
 	private Curso curso;
 
-	@OneToMany(mappedBy = "protocolo")
+	@OneToMany(mappedBy = "requisicao")
 	private List<Certificado> certificados;
 
 	public Long getId() {
@@ -59,8 +59,8 @@ public class Protocolo {
 		return semestre;
 	}
 
-	public void setSemestre(int protocolo) {
-		this.semestre = protocolo;
+	public void setSemestre(int semestre) {
+		this.semestre = semestre;
 	}
 
 	public int getQtdCertificados() {
@@ -95,12 +95,12 @@ public class Protocolo {
 		this.certificados = certificados;
 	}
 
-	public byte[] getProtocoloArquivo() {
-		return protocoloArquivo;
+	public byte[] getRequisicaoArquivo() {
+		return requisicaoArquivo;
 	}
 
-	public void setProtocoloArquivo(byte[] protocoloArquivo) {
-		this.protocoloArquivo = protocoloArquivo;
+	public void setRequisicaoArquivo(byte[] requisicaoArquivo) {
+		this.requisicaoArquivo = requisicaoArquivo;
 	}
 
 	public Usuario getUsuario() {

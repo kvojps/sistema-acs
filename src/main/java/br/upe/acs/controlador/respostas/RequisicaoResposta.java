@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.upe.acs.dominio.Certificado;
-import br.upe.acs.dominio.Protocolo;
+import br.upe.acs.dominio.Requisicao;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Getter;
 
 @Getter
-public class ProtocoloResposta {
+public class RequisicaoResposta {
 
 	private Long id;
 	
@@ -24,19 +24,19 @@ public class ProtocoloResposta {
 	
 	private String token;
 	
-	private byte[] protocoloArquivo;
+	private byte[] requisicaoArquivo;
 	
 	private List<CertificadoResposta> certificados;
 
-	public ProtocoloResposta(Protocolo protocolo) {
+	public RequisicaoResposta(Requisicao requisicao) {
 		super();
-		this.id = protocolo.getId();
-		this.data = protocolo.getData();
-		this.semestre = protocolo.getSemestre();
-		this.qtdCertificados = protocolo.getQtdCertificados();
-		this.token = protocolo.getToken();
-		this.protocoloArquivo = protocolo.getProtocoloArquivo();
-		this.certificados = converterCertificados(protocolo.getCertificados());
+		this.id = requisicao.getId();
+		this.data = requisicao.getData();
+		this.semestre = requisicao.getSemestre();
+		this.qtdCertificados = requisicao.getQtdCertificados();
+		this.token = requisicao.getToken();
+		this.requisicaoArquivo = requisicao.getRequisicaoArquivo();
+		this.certificados = converterCertificados(requisicao.getCertificados());
 	}
 	
 	private List<CertificadoResposta> converterCertificados(List<Certificado> certificados) {

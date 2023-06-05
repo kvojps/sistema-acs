@@ -3,7 +3,7 @@ package br.upe.acs.controlador.respostas;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.upe.acs.dominio.Protocolo;
+import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.enums.PerfilEnum;
 import jakarta.persistence.EnumType;
@@ -24,7 +24,7 @@ public class UsuarioResposta {
 	@Enumerated(EnumType.STRING)
 	private PerfilEnum perfil;
 
-	private List<ProtocoloResposta> protocolos;
+	private List<RequisicaoResposta> requisicoes;
 
 	public UsuarioResposta(Usuario usuario) {
 		super();
@@ -33,11 +33,11 @@ public class UsuarioResposta {
 		this.ultimoNome = usuario.getUltimoNome();
 		this.email = usuario.getEmail();
 		this.perfil = usuario.getPerfil();
-		this.protocolos = converterProtocolos(usuario.getProtocolos());
+		this.requisicoes = converterRequisicoes(usuario.getRequisicoes());
 	}
 
-	private List<ProtocoloResposta> converterProtocolos(List<Protocolo> protocolos) {
-		List<ProtocoloResposta> resposta = protocolos.stream().map(protocolo -> new ProtocoloResposta(protocolo))
+	private List<RequisicaoResposta> converterRequisicoes(List<Requisicao> requisicoes) {
+		List<RequisicaoResposta> resposta = requisicoes.stream().map(requisicao -> new RequisicaoResposta(requisicao))
 				.collect(Collectors.toList());
 
 		return resposta;

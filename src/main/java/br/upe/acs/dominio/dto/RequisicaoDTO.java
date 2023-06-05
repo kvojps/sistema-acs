@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProtocoloDTO {
+public class RequisicaoDTO {
 
 	private String data;
 	
@@ -21,7 +21,7 @@ public class ProtocoloDTO {
 	
 	private Long usuarioId;
 	
-	private MultipartFile protocolo;
+	private MultipartFile requisicaoArquivo;
 	
 	private MultipartFile[] certificados;
 	
