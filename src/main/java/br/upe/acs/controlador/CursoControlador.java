@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.upe.acs.controlador.respostas.CursoResposta;
 import br.upe.acs.servico.CursoServico;
 import br.upe.acs.utils.AcsExcecao;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,12 +24,14 @@ public class CursoControlador {
 
 	private final CursoServico servico;
 
+	@Operation(summary = "Listar todos os cursos")
 	@GetMapping
 	public ResponseEntity<List<CursoResposta>> listarCursos() {
 		return ResponseEntity.ok(
 				servico.listarCursos().stream().map(curso -> new CursoResposta(curso)).collect(Collectors.toList()));
 	}
 
+	@Operation(summary = "Buscar curso por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<CursoResposta> buscarCursoPorId(@PathVariable("id") Long id) throws AcsExcecao {
 		CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id).get());

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.upe.acs.controlador.respostas.CertificadoResposta;
 import br.upe.acs.servico.CertificadoServico;
 import br.upe.acs.utils.AcsExcecao;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,6 +21,7 @@ public class CertificadoControlador {
 	
 	private final CertificadoServico servico;
 
+	@Operation(summary = "Buscar certificado por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<CertificadoResposta> buscarCertificadoPorId(@PathVariable("id") Long id) throws AcsExcecao {
 		CertificadoResposta certificadoResposta = new CertificadoResposta(servico.buscarCertificadoPorId(id).get());

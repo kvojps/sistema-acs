@@ -11,6 +11,7 @@ import br.upe.acs.controlador.respostas.AutenticacaoResposta;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.servico.ControleAcessoServico;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -21,11 +22,13 @@ public class ControleAcessoControlador {
 	
 	private final ControleAcessoServico servico;
 	
+	@Operation(summary = "Cadastro de usuário")
 	@PostMapping("/cadastro")
 	public ResponseEntity<AutenticacaoResposta> cadastrarUsuario(@RequestBody RegistroDTO registro) {
 		return ResponseEntity.ok(servico.cadastrarUsuario(registro));
 	}
 	
+	@Operation(summary = "Login de usuário")
 	@PostMapping("/login")
 	public ResponseEntity<AutenticacaoResposta> loginUsuario(@RequestBody LoginDTO login) {
 		return ResponseEntity.ok(servico.loginUsuario(login));

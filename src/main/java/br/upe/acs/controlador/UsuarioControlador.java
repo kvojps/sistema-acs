@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.upe.acs.controlador.respostas.UsuarioResposta;
 import br.upe.acs.servico.UsuarioServico;
 import br.upe.acs.utils.AcsExcecao;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,6 +23,7 @@ public class UsuarioControlador {
 
 	private final UsuarioServico servico;
 
+	@Operation(summary = "Buscar usuário por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<UsuarioResposta> buscarUsuarioPorId(@PathVariable("id") Long id) throws AcsExcecao {
 		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).get());
@@ -29,6 +31,7 @@ public class UsuarioControlador {
 		return ResponseEntity.ok(usuarioResposta);
 	}
 
+	@Operation(summary = "Verificar usuário")
 	@PostMapping("/verificacao")
 	public ResponseEntity<?> verificarUsuario(@RequestParam(value = "usuarioId", required = true) Long usuarioId,
 			@RequestParam(value = "codigoVerificacao", required = true) String codigo) {

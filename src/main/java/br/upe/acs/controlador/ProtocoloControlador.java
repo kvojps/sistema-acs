@@ -19,6 +19,7 @@ import br.upe.acs.dominio.dto.ProtocoloDTO;
 import br.upe.acs.servico.ProtocoloCertificadoServico;
 import br.upe.acs.servico.ProtocoloServico;
 import br.upe.acs.utils.AcsExcecao;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -31,12 +32,14 @@ public class ProtocoloControlador {
 
 	private final ProtocoloCertificadoServico protocoloCertificadoServico;
 
+	@Operation(summary = "Listar todos os protocolos")
 	@GetMapping
 	public ResponseEntity<List<ProtocoloResposta>> listarProtocolos() {
 		return ResponseEntity.ok(servico.listarProtocolos().stream().map(protocolo -> new ProtocoloResposta(protocolo))
 				.collect(Collectors.toList()));
 	}
 
+	@Operation(summary = "Buscar protocolo por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<ProtocoloResposta> buscarProtocoloPorId(@PathVariable("id") Long id) throws AcsExcecao {
 		ProtocoloResposta protocoloResposta = new ProtocoloResposta(servico.buscarProtocoloPorId(id).get());
@@ -44,6 +47,7 @@ public class ProtocoloControlador {
 		return ResponseEntity.ok(protocoloResposta);
 	}
 
+	@Operation(summary = "Adicionar protocolo com certificados")
 	@PostMapping(consumes = { "multipart/form-data" })
 	public ResponseEntity<?> adicionarProtocolo(@RequestParam(value = "data", required = true) String data,
 			@RequestParam(value = "usuarioId", required = true) Long usuarioId,
