@@ -58,6 +58,7 @@ public class ControleAcessoServico {
 		usuarioSalvar.setPeriodo(registro.getPeriodo());
 		usuarioSalvar.setTelefone(registro.getTelefone());
 		usuarioSalvar.setEmail(registro.getEmail());
+		senhaValida(registro.getSenha());
 		usuarioSalvar.setSenha(passwordEncoder.encode(registro.getSenha()));
 		usuarioSalvar.setPerfil(PerfilEnum.USUARIO);
 		String codigoVerificacao = gerarCodigoVerificacao();
@@ -113,5 +114,41 @@ public class ControleAcessoServico {
 		}
 
 		return codigo.toString();
+	}
+
+	private void senhaValida(String senha) throws AcsExcecao {
+		boolean comMaiuscula = false, comMinuscula = false, comNumerico = false, comEspecial = false;
+		for (char caracteres: senha.toCharArray()) {
+			if (caracteres >= '0' && caracteres <= '9') {
+				comNumerico = true;
+			} else if (caracteres >= 'A' && caracteres <= 'Z') {
+				comMaiuscula = true;
+			} else if (caracteres >= 'a' && caracteres <= 'z') {
+				comMinuscula = true;
+			} else {
+				comEspecial = true;
+			}
+		}
+		if (!(comMaiuscula && comMinuscula && comNumerico && comEspecial)) {
+			String error = "Senha inválida: A senha necessita de caracteres";
+
+			if (!comMaiuscula) {
+				error += " maiusculos ";
+			}
+
+			if (!comMinuscula) {
+				error += " minusculos;";
+			}
+
+			if (!comNumerico) {
+				error += " numericos;";
+			}
+
+			if (!comEspecial) {
+				error += " especiais;";
+			}
+
+			throw new AcsExcecao(error);
+		}
 	}
 }
