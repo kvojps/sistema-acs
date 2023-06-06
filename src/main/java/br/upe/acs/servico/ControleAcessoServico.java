@@ -58,7 +58,7 @@ public class ControleAcessoServico {
 		usuarioSalvar.setPeriodo(registro.getPeriodo());
 		usuarioSalvar.setTelefone(registro.getTelefone());
 		usuarioSalvar.setEmail(registro.getEmail());
-		senhaValida(registro.getSenha());
+		validarSenha(registro.getSenha());
 		usuarioSalvar.setSenha(passwordEncoder.encode(registro.getSenha()));
 		usuarioSalvar.setPerfil(PerfilEnum.USUARIO);
 		String codigoVerificacao = gerarCodigoVerificacao();
@@ -116,9 +116,9 @@ public class ControleAcessoServico {
 		return codigo.toString();
 	}
 
-	private void senhaValida(String senha) throws AcsExcecao {
+	private void validarSenha(String senha) throws AcsExcecao {
 		boolean comMaiuscula = false, comMinuscula = false, comNumerico = false, comEspecial = false;
-		for (char caracteres: senha.toCharArray()) {
+		for (char caracteres : senha.toCharArray()) {
 			if (caracteres >= '0' && caracteres <= '9') {
 				comNumerico = true;
 			} else if (caracteres >= 'A' && caracteres <= 'Z') {
