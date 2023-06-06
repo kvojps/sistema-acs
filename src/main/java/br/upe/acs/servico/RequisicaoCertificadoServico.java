@@ -21,6 +21,7 @@ import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.dominio.dto.CertificadosMetadadosDTO;
 import br.upe.acs.dominio.dto.RequisicaoDTO;
+import br.upe.acs.dominio.enums.requisicaoStatusEnum;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -45,12 +46,14 @@ public class RequisicaoCertificadoServico {
 		}
 
 		Requisicao requisicaoSalvar = new Requisicao();
-		requisicaoSalvar.setData(converterParaData(requisicao.getData()));
+		Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).get();
+		Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(requisicao.getUsuarioId()).get();
+		
+		requisicaoSalvar.setData(obterDataAtual());
 		requisicaoSalvar.setSemestre(requisicao.getSemestre());
 		requisicaoSalvar.setQtdCertificados(requisicao.getQtdCertificados());
-		Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).get();
+		requisicaoSalvar.setStatusRequisicao(requisicaoStatusEnum.ENCAMINHADO);
 		requisicaoSalvar.setCurso(cursoSalvar);
-		Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(requisicao.getUsuarioId()).get();
 		requisicaoSalvar.setUsuario(usuarioSalvar);
 
 		CertificadosMetadadosDTO certificadosMetadados = new CertificadosMetadadosDTO();
@@ -58,17 +61,10 @@ public class RequisicaoCertificadoServico {
 			byte[] certificadoMetadadosBytes = requisicao.getCertificadosMetadados().getBytes();
 			certificadosMetadados = converter(certificadoMetadadosBytes);
 		} catch (IOException e) {
-			requisicaoSalvar = null;
-		}
-
-		Requisicao requisicaoSalva = new Requisicao();
-		if (requisicaoSalvar != null) {
-			byte[] requisicaoArquivo = requisicao.getRequisicaoArquivo().getBytes();
-			requisicaoSalvar.setRequisicaoArquivo(requisicaoArquivo);
-			requisicaoSalva = repositorio.save(requisicaoSalvar);
-		} else {
 			throw new AcsExcecao("Falha na conversão dos metadados relacionados aos certificados!");
 		}
+
+		Requisicao requisicaoSalva = repositorio.save(requisicaoSalvar);
 
 		MultipartFile[] certificadoArquivos = requisicao.getCertificados();
 		List<CertificadoDTO> certificadosMetaDados = certificadosMetadados.getCertificados();
@@ -94,9 +90,7 @@ public class RequisicaoCertificadoServico {
 	private boolean validarRequisicao(RequisicaoDTO requisicao) {
 		boolean isValid = true;
 
-		if (!verificarData(requisicao.getData())) {
-			isValid = false;
-		} else if (!verificarUsuario(requisicao.getUsuarioId())) {
+		if (!verificarUsuario(requisicao.getUsuarioId())) {
 			isValid = false;
 		} else if (!verificarCurso(requisicao.getCursoId())) {
 			isValid = false;
@@ -118,9 +112,12 @@ public class RequisicaoCertificadoServico {
 		}
 	}
 
-	private static Date converterParaData(String dataString) throws ParseException {
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		return formato.parse(dataString);
+	private static Date obterDataAtual() throws ParseException {
+        SimpleDateFormat dataFormato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date data = new Date();
+        final String dataString = dataFormato.format(data);
+        
+		return dataFormato.parse(dataString);
 	}
 
 	private boolean validarCertificados(List<CertificadoDTO> certificados) {

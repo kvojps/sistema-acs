@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class RequisicaoDTO {
-
-	private String data;
 	
 	private int semestre;
 	
@@ -20,8 +18,6 @@ public class RequisicaoDTO {
 	private Long cursoId;
 	
 	private Long usuarioId;
-	
-	private MultipartFile requisicaoArquivo;
 	
 	private MultipartFile[] certificados;
 	

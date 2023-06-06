@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.enums.requisicaoStatusEnum;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Getter;
@@ -24,6 +27,9 @@ public class RequisicaoResposta {
 	
 	private String token;
 	
+	@Enumerated(EnumType.STRING)
+	private requisicaoStatusEnum requisicaoStatus;
+	
 	private byte[] requisicaoArquivo;
 	
 	private List<CertificadoResposta> certificados;
@@ -35,7 +41,8 @@ public class RequisicaoResposta {
 		this.semestre = requisicao.getSemestre();
 		this.qtdCertificados = requisicao.getQtdCertificados();
 		this.token = requisicao.getToken();
-		this.requisicaoArquivo = requisicao.getRequisicaoArquivo();
+		this.requisicaoStatus = requisicao.getStatusRequisicao();
+		this.requisicaoArquivo = requisicao.getRequisicaoArquivoAssinada();
 		this.certificados = converterCertificados(requisicao.getCertificados());
 	}
 	

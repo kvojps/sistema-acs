@@ -3,7 +3,10 @@ package br.upe.acs.dominio;
 import java.util.Date;
 import java.util.List;
 
+import br.upe.acs.dominio.enums.requisicaoStatusEnum;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +35,10 @@ public class Requisicao {
 
 	private String token;
 
-	private byte[] requisicaoArquivo;
+	private byte[] requisicaoArquivoAssinada;
+	
+	@Enumerated(EnumType.STRING)
+	private requisicaoStatusEnum statusRequisicao;
 
 	@ManyToOne
 	private Usuario usuario;
@@ -95,12 +101,12 @@ public class Requisicao {
 		this.certificados = certificados;
 	}
 
-	public byte[] getRequisicaoArquivo() {
-		return requisicaoArquivo;
+	public byte[] getRequisicaoArquivoAssinada() {
+		return requisicaoArquivoAssinada;
 	}
 
-	public void setRequisicaoArquivo(byte[] requisicaoArquivo) {
-		this.requisicaoArquivo = requisicaoArquivo;
+	public void setRequisicaoArquivoAssinada(byte[] requisicaoArquivoAssinada) {
+		this.requisicaoArquivoAssinada = requisicaoArquivoAssinada;
 	}
 
 	public Usuario getUsuario() {
@@ -109,5 +115,13 @@ public class Requisicao {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public requisicaoStatusEnum getStatusRequisicao() {
+		return statusRequisicao;
+	}
+
+	public void setStatusRequisicao(requisicaoStatusEnum statusRequisicao) {
+		this.statusRequisicao = statusRequisicao;
 	}
 }
