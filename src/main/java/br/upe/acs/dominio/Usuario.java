@@ -14,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -29,9 +30,13 @@ public class Usuario implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private String primeiroNome;
+	private String nomeCompleto;
 	
-	private String ultimoNome;
+	private String cpf;
+	
+	private int periodo;
+	
+	private String telefone;
 	
 	private String email;
 	
@@ -43,6 +48,12 @@ public class Usuario implements UserDetails {
 	
 	@Enumerated(EnumType.STRING)
 	private PerfilEnum perfil;
+	
+	@ManyToOne
+	private Endereco endereco;
+	
+	@ManyToOne
+	private Curso curso;
 	
 	@OneToMany(mappedBy = "usuario")
 	private List<Requisicao> requisicoes;
@@ -81,21 +92,37 @@ public class Usuario implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-	
-	public String getPrimeiroNome() {
-		return primeiroNome;
+
+	public String getNomeCompleto() {
+		return nomeCompleto;
 	}
 
-	public void setPrimeiroNome(String primeiroNome) {
-		this.primeiroNome = primeiroNome;
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 
-	public String getUltimoNome() {
-		return ultimoNome;
+	public String getCpf() {
+		return cpf;
 	}
 
-	public void setUltimoNome(String ultimoNome) {
-		this.ultimoNome = ultimoNome;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public int getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(int periodo) {
+		this.periodo = periodo;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public String getEmail() {
@@ -114,10 +141,6 @@ public class Usuario implements UserDetails {
 		this.senha = senha;
 	}
 
-	public Long getId() {
-		return id;
-	}
-	
 	public String getCodigoVerificacao() {
 		return codigoVerificacao;
 	}
@@ -142,7 +165,31 @@ public class Usuario implements UserDetails {
 		this.perfil = perfil;
 	}
 
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+
 	public List<Requisicao> getRequisicoes() {
 		return requisicoes;
+	}
+
+	public void setRequisicoes(List<Requisicao> requisicoes) {
+		this.requisicoes = requisicoes;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

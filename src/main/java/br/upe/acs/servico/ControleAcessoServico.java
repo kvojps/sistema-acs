@@ -10,12 +10,16 @@ import org.springframework.stereotype.Service;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.AutenticacaoResposta;
+import br.upe.acs.dominio.Curso;
+import br.upe.acs.dominio.Endereco;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.dto.EmailDTO;
+import br.upe.acs.dominio.dto.EnderecoDTO;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.dominio.enums.PerfilEnum;
 import br.upe.acs.repositorio.UsuarioRepositorio;
+import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -31,18 +35,37 @@ public class ControleAcessoServico {
 	private final AuthenticationManager authenticationManager;
 
 	private final EmailServico emailServico;
+	
+	private final EnderecoServico enderecoServico;
+	
+	private final CursoServico cursoServico;
 
-	public AutenticacaoResposta cadastrarUsuario(RegistroDTO registro) {
+	public AutenticacaoResposta cadastrarUsuario(RegistroDTO registro) throws AcsExcecao {
 		Usuario usuarioSalvar = new Usuario();
+		
+		EnderecoDTO enderecoSalvar = new EnderecoDTO();
+		enderecoSalvar.setCep(registro.getCep());
+		enderecoSalvar.setCidade(registro.getCidade());
+		enderecoSalvar.setBairro(registro.getBairro());
+		enderecoSalvar.setRua(registro.getRua());
+		enderecoSalvar.setNumero(registro.getNumero());
+		enderecoSalvar.setUF(registro.getUF());
+		
+		Endereco enderecoSalvo = enderecoServico.adicionarEndereco(enderecoSalvar);
 
+		usuarioSalvar.setNomeCompleto(registro.getNomeCompleto());
+		usuarioSalvar.setCpf(registro.getCpf());
+		usuarioSalvar.setPeriodo(registro.getPeriodo());
+		usuarioSalvar.setTelefone(registro.getTelefone());
 		usuarioSalvar.setEmail(registro.getEmail());
-		usuarioSalvar.setPrimeiroNome(registro.getPrimeiroNome());
-		usuarioSalvar.setUltimoNome(registro.getUltimoNome());
 		usuarioSalvar.setSenha(passwordEncoder.encode(registro.getSenha()));
 		usuarioSalvar.setPerfil(PerfilEnum.USUARIO);
 		String codigoVerificacao = gerarCodigoVerificacao();
 		usuarioSalvar.setCodigoVerificacao(codigoVerificacao);
 		usuarioSalvar.setVerificado(false);
+		usuarioSalvar.setEndereco(enderecoSalvo);
+		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId()).get();
+		usuarioSalvar.setCurso(cursoSalvar);
 
 		repositorio.save(usuarioSalvar);
 

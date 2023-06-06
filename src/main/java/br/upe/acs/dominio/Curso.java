@@ -23,6 +23,9 @@ public class Curso {
 	
 	@OneToMany(mappedBy = "curso")
 	private List<Requisicao> requisicoes;
+	
+	@OneToMany(mappedBy = "curso")
+	private List<Usuario> usuarios;
 
 	public Long getId() {
 		return id;

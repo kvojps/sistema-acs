@@ -7,19 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RegistroDTO {
-	
-	private String nomeCompleto;
-	
-	private String cpf;
-	
-	private int periodo;
-	
-	private String telefone;
-	
-	private String email;
-	
-	private String senha;
+public class EnderecoDTO {
+	private Long id;
 	
 	private String cep;
 	
@@ -32,6 +21,4 @@ public class RegistroDTO {
 	private String UF;
 	
 	private int numero;
-	
-	private Long cursoId;
 }
