@@ -42,6 +42,8 @@ public class ControleAcessoServico {
 
 	public AutenticacaoResposta cadastrarUsuario(RegistroDTO registro) throws AcsExcecao {
 		Usuario usuarioSalvar = new Usuario();
+		validarSenha(registro.getSenha());
+		validarEmailInstitucional(registro.getEmail());
 
 		EnderecoDTO enderecoSalvar = new EnderecoDTO();
 		enderecoSalvar.setCep(registro.getCep());
@@ -57,9 +59,7 @@ public class ControleAcessoServico {
 		usuarioSalvar.setCpf(registro.getCpf());
 		usuarioSalvar.setPeriodo(registro.getPeriodo());
 		usuarioSalvar.setTelefone(registro.getTelefone());
-		validarEmailInstitucional(registro.getEmail());
 		usuarioSalvar.setEmail(registro.getEmail());
-		validarSenha(registro.getSenha());
 		usuarioSalvar.setSenha(passwordEncoder.encode(registro.getSenha()));
 		usuarioSalvar.setPerfil(PerfilEnum.USUARIO);
 		String codigoVerificacao = gerarCodigoVerificacao();
