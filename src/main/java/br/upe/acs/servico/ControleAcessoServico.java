@@ -35,14 +35,14 @@ public class ControleAcessoServico {
 	private final AuthenticationManager authenticationManager;
 
 	private final EmailServico emailServico;
-	
+
 	private final EnderecoServico enderecoServico;
-	
+
 	private final CursoServico cursoServico;
 
 	public AutenticacaoResposta cadastrarUsuario(RegistroDTO registro) throws AcsExcecao {
 		Usuario usuarioSalvar = new Usuario();
-		
+
 		EnderecoDTO enderecoSalvar = new EnderecoDTO();
 		enderecoSalvar.setCep(registro.getCep());
 		enderecoSalvar.setCidade(registro.getCidade());
@@ -50,7 +50,7 @@ public class ControleAcessoServico {
 		enderecoSalvar.setRua(registro.getRua());
 		enderecoSalvar.setNumero(registro.getNumero());
 		enderecoSalvar.setUF(registro.getUF());
-		
+
 		Endereco enderecoSalvo = enderecoServico.adicionarEndereco(enderecoSalvar);
 
 		usuarioSalvar.setNomeCompleto(registro.getNomeCompleto());
@@ -118,37 +118,41 @@ public class ControleAcessoServico {
 
 	private void validarSenha(String senha) throws AcsExcecao {
 		boolean comMaiuscula = false, comMinuscula = false, comNumerico = false, comEspecial = false;
+
+		if (senha.length() < 8) {
+			throw new AcsExcecao("A senha informada deve ter 8 ou mais caracteres!");
+		}
+
 		for (char caracteres : senha.toCharArray()) {
-			if (caracteres >= '0' && caracteres <= '9') {
+			if (Character.isDigit(caracteres)) {
 				comNumerico = true;
-			} else if (caracteres >= 'A' && caracteres <= 'Z') {
+			} else if (Character.isUpperCase(caracteres)) {
 				comMaiuscula = true;
-			} else if (caracteres >= 'a' && caracteres <= 'z') {
+			} else if (Character.isLowerCase(caracteres)) {
 				comMinuscula = true;
 			} else {
 				comEspecial = true;
 			}
 		}
+
 		if (!(comMaiuscula && comMinuscula && comNumerico && comEspecial)) {
-			String error = "Senha inválida: A senha necessita de caracteres";
+			StringBuilder error = new StringBuilder("Senha inválida: A senha necessita de caracteres");
 
 			if (!comMaiuscula) {
-				error += " maiusculos ";
+				error.append(" maiúsculos;");
 			}
-
 			if (!comMinuscula) {
-				error += " minusculos;";
+				error.append(" minúsculos;");
 			}
-
 			if (!comNumerico) {
-				error += " numericos;";
+				error.append(" numéricos;");
 			}
-
 			if (!comEspecial) {
-				error += " especiais;";
+				error.append(" especiais;");
 			}
 
-			throw new AcsExcecao(error);
+			throw new AcsExcecao(error.toString());
 		}
 	}
+
 }

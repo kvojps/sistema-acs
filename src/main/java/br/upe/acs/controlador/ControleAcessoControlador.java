@@ -11,7 +11,6 @@ import br.upe.acs.controlador.respostas.AutenticacaoResposta;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.servico.ControleAcessoServico;
-import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +24,7 @@ public class ControleAcessoControlador {
 	
 	@Operation(summary = "Cadastro de usuário")
 	@PostMapping("/cadastro")
-	public ResponseEntity<?> cadastrarUsuario(@RequestBody RegistroDTO registro) throws AcsExcecao {
+	public ResponseEntity<?> cadastrarUsuario(@RequestBody RegistroDTO registro) {
 		try {
 			return ResponseEntity.ok(servico.cadastrarUsuario(registro));
 		} catch (Exception e) {
