@@ -57,6 +57,7 @@ public class ControleAcessoServico {
 		usuarioSalvar.setCpf(registro.getCpf());
 		usuarioSalvar.setPeriodo(registro.getPeriodo());
 		usuarioSalvar.setTelefone(registro.getTelefone());
+		validarEmailInstitucional(registro.getEmail());
 		usuarioSalvar.setEmail(registro.getEmail());
 		validarSenha(registro.getSenha());
 		usuarioSalvar.setSenha(passwordEncoder.encode(registro.getSenha()));
@@ -75,6 +76,12 @@ public class ControleAcessoServico {
 		});
 
 		return gerarAutenticacaoResposta(usuarioSalvar);
+	}
+
+	private void validarEmailInstitucional(String email) throws AcsExcecao {
+		if (!email.split("@")[1].equals("upe.br")) {
+			throw new AcsExcecao("Email inválido! Por favor insira o email institucional.");
+		}
 	}
 
 	public AutenticacaoResposta loginUsuario(LoginDTO login) {
