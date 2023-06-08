@@ -11,19 +11,19 @@ node "Sistema ACs" {
     back -right--> PostgreSQL: CRUD
 }
 
-node "Cliente SMTP" as SMTP #GreenYellow {
+node "Cliente SMTP" as SMTP #fcd487 {
     note as N0
         Lógica de envio de e-mails - Gmail
     end note
 }
 
-node "Sistema de autenticação" as Auth #GreenYellow {
+node "Sistema de autenticação" as Auth #fcd487 {
     note as N1
         Sistema de Logon único do google OAuth
     end note
 }
 
-node "Via Cep WS" as ViaCep #GreenYellow {
+node "Via Cep WS" as ViaCep #fcd487 {
     note as N2
         Consumo do API ViaCep
     end note
