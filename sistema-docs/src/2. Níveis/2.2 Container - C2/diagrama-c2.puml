@@ -3,7 +3,7 @@
 skinparam actorStyle awesome
 
 node "Sistema ACs" {
-    [Aplicação web\nTs + React + NestJs] as front
+    [Aplicação web\nTs + React + NextJs] as front
     [API\nJava + Spring boot] as back
     database "PostgreSQL"
 
