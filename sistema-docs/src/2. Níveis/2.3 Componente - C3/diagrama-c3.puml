@@ -1,0 +1,82 @@
+@startuml Diagrama C3 - Componentes
+!theme spacelab
+
+node "Front-End" as front {
+
+}
+
+package "API" as api #White {
+    
+    folder "Serviço" as servico #e1ce8a {
+        [ControleAcessoServico]
+        [UsuarioServico]
+        [RequisicaoCertificadoServico]
+        [RequisicaoServico]
+        [CertificadoServico]
+        [AtividadeServico]
+        [CursoServico]
+        [EnderecoServico]
+        [EmailServico]
+    }
+    
+    folder "Controlador" as controlador #e1ce8a {
+        [ControleAcessoControlador]
+        [UsuarioControlador]
+        [RequisicaoControlador]
+        [CertificadoControlador]
+        [AtividadeControlador]
+        [CursoControlador]
+        [EnderecoControlador]
+    }
+
+    folder "Repositório" as repositorio #e1ce8a {
+        [UsuarioRepositorio]
+        [RequisicaoRepositorio]
+        [CertificadoRepositorio]
+        [AtividadeRepositorio]
+        [CursoRepositorio]
+        [EnderecoRepositorio]
+    }
+
+    folder "Domínio" as dominio #e1ce8a {
+        [Modelo] as modelo
+        [DTO] as dto
+        [Resposta] as resposta
+    }
+
+    front -right--> api
+
+    controlador -right-> servico #text:blue : usa
+    servico -down--> repositorio #text:blue : usa
+
+    controlador --> resposta #line.dashed;text:blue : manipula
+    servico --> dto #line.dashed;text:blue : manipula
+    repositorio --> modelo #line.dashed;text:blue : ORM
+
+    note as controlador_note
+        Atua como um intermediário entre
+        a interface do usuário e a lógica
+        do sistema.
+    end note
+
+    note as servico_note
+        Possui a lógica de negócio do
+        sistema.
+    end note
+        
+    note as repositorio_note
+        Responsável por fazer as operações
+        de CRUD no banco de dados.
+    end note
+
+    note as dominio_note
+        Representa as entidades principais
+        dos sistema.
+    end note
+
+    controlador -up-> controlador_note
+    servico -up-> servico_note
+    repositorio -down-> repositorio_note
+    dominio -down-> dominio_note
+}
+@enduml
