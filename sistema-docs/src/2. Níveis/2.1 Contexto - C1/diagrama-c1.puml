@@ -4,8 +4,9 @@ skinparam actorStyle awesome
 
 actor Usuário #gray;line.dashed;text:blue
 actor Aluno #text:blue
-actor Coordenador #text:blue
 actor Comissão #text:blue
+actor Coordenador #text:blue
+actor Administrador #text:blue
 
 note top of Aluno
     O aluno envia a requisição com os
@@ -30,9 +31,14 @@ note bottom of Comissão
     sua respectiva atividade e eixo.
 end note
 
+note right of Administrador
+    Atribui perfis a usuários.
+end note
+
 Aluno  -right-> Usuário
 Comissão -up-> Aluno
 Coordenador -up--> Comissão
+Administrador -up--> Coordenador
 
 rectangle Sistema_Acs
 
@@ -52,17 +58,17 @@ end note
 agent OAuth2 as "Sistema de autenticação"
 note bottom of OAuth2
     Sistema de Logon único do
-    google OAuth
+    google OAuth.
 end note
 
 Agent ViaCep as "Via Cep WS"
 note bottom of ViaCep
     Obter informações do 
-    endereço por meio do CEP
+    endereço por meio do CEP.
 end note
 
 Usuário -right-> Sistema_Acs #text:blue : usa
 Sistema_Acs -right-> Cliente_SMTP #line:gray;text:blue : envia e-mail
-Sistema_Acs -down-> OAuth2
-Sistema_Acs -down-> ViaCep
+Sistema_Acs -down-> OAuth2 #text:blue : usa
+Sistema_Acs -down-> ViaCep #text:blue : usa
 @enduml
