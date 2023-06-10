@@ -1,0 +1,1 @@
+As principal atividade do sistema é o cadastro da requisição. Para ilustrar o fluxo de atividades que devem ser realizadas pelo usuário e pelo aplicativo para se realizar os casos de uso, diagramas de atividades foram confeccionados. Uma observação importante é que essas funcionalidades exigem o acesso à internet como ilustram os diagramas.
