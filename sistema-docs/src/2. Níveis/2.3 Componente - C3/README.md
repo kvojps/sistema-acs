@@ -11,7 +11,7 @@ Antes de entrarmos definitivamente no C3 é importante ressaltar que são utiliz
 *  Convenção de nomenclaturas de arquivos e diretórios ([Oracle](https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html))
 *  Convenção de fluxo de trabalho Git - com adapatações e aderência parcial ([Gitflow](https://danielkummer.github.io/git-flow-cheatsheet/))
 *  Convenção de commits ([Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/))
-  
+
 ## Convenções Front-end
 ⚒️🏗️
 

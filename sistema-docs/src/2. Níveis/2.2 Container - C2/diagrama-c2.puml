@@ -13,19 +13,19 @@ node "Sistema ACs" #a7ba59 {
 
 node "Cliente SMTP" as SMTP #f0d890 {
     note as N0 #Gray
-        Lógica de envio de e-mails - Gmail
+        Lógica de envio de e-mails - Gmail.
     end note
 }
 
 node "Sistema de autenticação" as Auth #f0d890 {
     note as N1 #Gray
-        Sistema de Logon único do google OAuth
+        Sistema de Logon único do google OAuth.
     end note
 }
 
 node "Via Cep WS" as ViaCep #f0d890 {
     note as N2 #Gray
-        Consumo do API ViaCep
+        Consumo de API ViaCep.
     end note
 }
 
