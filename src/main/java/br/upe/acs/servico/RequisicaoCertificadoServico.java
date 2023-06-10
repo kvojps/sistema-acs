@@ -67,14 +67,14 @@ public class RequisicaoCertificadoServico {
 		Requisicao requisicaoSalva = repositorio.save(requisicaoSalvar);
 
 		MultipartFile[] certificadoArquivos = requisicao.getCertificados();
-		List<CertificadoDTO> certificadosMetaDados = certificadosMetadados.getCertificados();
-		if (certificadosMetaDados.size() != requisicaoSalva.getQtdCertificados()) {
+		List<CertificadoDTO> certificados = certificadosMetadados.getCertificados();
+		if (certificados.size() != requisicaoSalva.getQtdCertificados()) {
 			throw new AcsExcecao(
 					"A quantidade de certificados informadas não é igual a quantidade de certificados cadastrados!");
 		}
 
-		if (validarCertificados(certificadosMetaDados)) {
-			adicionarCertificados(certificadoArquivos, certificadosMetaDados, requisicaoSalva.getId());
+		if (validarCertificados(certificados)) {
+			adicionarCertificados(certificadoArquivos, certificados, requisicaoSalva.getId());
 		} else {
 			throw new AcsExcecao("Os metadados dos certificados enviados não são válidos!");
 		}
