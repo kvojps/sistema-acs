@@ -1,13 +1,23 @@
 @startuml Diagrama C3 - Componentes
 !theme spacelab
 
-node "Front-End" as front {
+node "Front-End" as front #a7ba59 {
 
 }
 
-package "API" as api #White {
+package "API" as api #a7ba59 {
     
-    folder "Serviço" as servico #e1ce8a {
+    folder "Domínio" as dominio #White {
+        [Modelo] as modelo
+        [DTO] as dto
+        [Resposta] as resposta
+        note as dominio_note #Gray
+            Representa as entidades principais
+            dos sistemas.
+        end note
+    }
+
+    folder "Serviço" as servico #White {
         [ControleAcessoServico]
         [UsuarioServico]
         [RequisicaoCertificadoServico]
@@ -17,9 +27,13 @@ package "API" as api #White {
         [CursoServico]
         [EnderecoServico]
         [EmailServico]
+        note as servico_note #Gray
+            Possui a lógica de negócio do
+            sistema.
+        end note
     }
     
-    folder "Controlador" as controlador #e1ce8a {
+    folder "Controlador" as controlador #White {
         [ControleAcessoControlador]
         [UsuarioControlador]
         [RequisicaoControlador]
@@ -27,56 +41,34 @@ package "API" as api #White {
         [AtividadeControlador]
         [CursoControlador]
         [EnderecoControlador]
+
+        note as controlador_note #Gray
+            Atua como um intermediário entre
+            a interface do usuário e a lógica
+            do sistema.
+        end note
     }
 
-    folder "Repositório" as repositorio #e1ce8a {
+    folder "Repositório" as repositorio #White {
         [UsuarioRepositorio]
         [RequisicaoRepositorio]
         [CertificadoRepositorio]
         [AtividadeRepositorio]
         [CursoRepositorio]
         [EnderecoRepositorio]
-    }
-
-    folder "Domínio" as dominio #e1ce8a {
-        [Modelo] as modelo
-        [DTO] as dto
-        [Resposta] as resposta
+        note as repositorio_note #Gray
+            Responsável por fazer as operações
+            de CRUD no banco de dados.
+        end note
     }
 
     front -right--> api
 
-    controlador -right-> servico #text:blue : usa
-    servico -down--> repositorio #text:blue : usa
+    controlador -right-> servico #line:gray;text:blue : usa
+    servico -down--> repositorio #line:gray;text:blue : usa
 
-    controlador --> resposta #line.dashed;text:blue : manipula
-    servico --> dto #line.dashed;text:blue : manipula
-    repositorio --> modelo #line.dashed;text:blue : ORM
-
-    note as controlador_note
-        Atua como um intermediário entre
-        a interface do usuário e a lógica
-        do sistema.
-    end note
-
-    note as servico_note
-        Possui a lógica de negócio do
-        sistema.
-    end note
-        
-    note as repositorio_note
-        Responsável por fazer as operações
-        de CRUD no banco de dados.
-    end note
-
-    note as dominio_note
-        Representa as entidades principais
-        dos sistema.
-    end note
-
-    controlador -up-> controlador_note
-    servico -up-> servico_note
-    repositorio -down-> repositorio_note
-    dominio -down-> dominio_note
+    controlador --> resposta #line:gray;line.dashed;text:blue : manipula
+    servico --> dto #line:gray;line.dashed;text:blue : manipula
+    repositorio --> modelo #line:gray;line.dashed;text:blue : ORM
 }
 @enduml
