@@ -1,0 +1,6 @@
+Por fim, é possível expandir cada componente para exibir sua implementação em forma de código, utilizando diagramas como UML (Linguagem de Modelagem Unificada), diagramas de entidade-relacionamento ou outros similares. Esse nível de detalhe é opcional e geralmente está disponível mediante solicitação em ferramentas como IDEs (Ambientes de Desenvolvimento Integrado). Idealmente, tais diagramas seriam gerados automaticamente por meio de ferramentas, como uma ferramenta de modelagem UML ou IDE, e seria aconselhável mostrar apenas os atributos e métodos relevantes para a narrativa pretendida. Recomenda-se aplicar esse nível de detalhe somente aos componentes mais importantes ou complexos.
+
+* **Escopo:** Um único componente.
+* **Elementos primários:** Elementos de código (por exemplo, classes, interfaces, objetos, funções, tabelas de banco de dados, etc.) dentro do componente no escopo.
+*  **Elementos de suporte:** Containers (dentro do sistema de software em escopo) mais pessoas e sistemas de software diretamente conectados aos componentes.
+*  **Público Alvo:** Arquitetos e desenvolvedores de software.
