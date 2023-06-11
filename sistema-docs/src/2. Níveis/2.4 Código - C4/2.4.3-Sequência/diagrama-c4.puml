@@ -16,14 +16,14 @@
     servico_req -> servico_req: CertificadosMetadadosDTO\nconverterMultParfile()
     servico_req -> repo_req: Requisicao salvarRequisicao()
     repo_req -> servico_req: Requisicao\nrequisicao
-    servico_req -> servico_req: validarCertificadosMetadados()
-    servico_req -> servico_cert: adicionarCertificados\n(certificadosMetadados,\ncertificadosArquivos,\nrequisicao)
-    servico_cert -> repo_cert: salvarCertificado()
+    servico_req -> servico_req: void\nalidarCertificadosMetadados()
+    servico_req -> servico_cert: void\nadicionarCertificados\n(certificadosMetadados,\ncertificadosArquivos,\nrequisicao)
+    servico_cert -> repo_cert: void\nsalvarCertificado()
     repo_cert -> servico_cert
     servico_cert -> servico_req
-    servico_req -> servico_req: gerarTokenRequisicao()
+    servico_req -> servico_req: String\ngerarTokenRequisicao()
     servico_req -> servico_req: requisicao.setToken(token)
-    servico_req -> repo_req: salvarRequisicao()
+    servico_req -> repo_req: Requisicao\nsalvarRequisicao()
     repo_req -> servico_req: Requisicao\nrequisicao
     servico_req -> controlador_req: Requisicao\nrequisicao
     controlador_req -> front: RequisicaoResposta\nrequisicaoResposta

@@ -6,41 +6,20 @@ node "Front-End" as front #a7ba59 {
 }
 
 package "API" as api #a7ba59 {
-    
-    folder "Domínio" as dominio #White {
-        [Modelo] as modelo
-        [DTO] as dto
-        [Resposta] as resposta
-        note as dominio_note #Gray
-            Representa as entidades principais
-            dos sistemas.
-        end note
-    }
-
     folder "Serviço" as servico #White {
         [ControleAcessoServico]
-        [UsuarioServico]
         [RequisicaoCertificadoServico]
         [RequisicaoServico]
         [CertificadoServico]
-        [AtividadeServico]
-        [CursoServico]
-        [EnderecoServico]
-        [EmailServico]
         note as servico_note #Gray
             Possui a lógica de negócio do
             sistema.
         end note
     }
-    
+
     folder "Controlador" as controlador #White {
         [ControleAcessoControlador]
-        [UsuarioControlador]
         [RequisicaoControlador]
-        [CertificadoControlador]
-        [AtividadeControlador]
-        [CursoControlador]
-        [EnderecoControlador]
 
         note as controlador_note #Gray
             Atua como um intermediário entre
@@ -53,19 +32,26 @@ package "API" as api #a7ba59 {
         [UsuarioRepositorio]
         [RequisicaoRepositorio]
         [CertificadoRepositorio]
-        [AtividadeRepositorio]
-        [CursoRepositorio]
-        [EnderecoRepositorio]
         note as repositorio_note #Gray
             Responsável por fazer as operações
             de CRUD no banco de dados.
         end note
     }
 
+    folder "Domínio" as dominio #White {
+        [Modelo] as modelo
+        [DTO] as dto
+        [Resposta] as resposta
+        note as dominio_note #Gray
+            Representa as entidades principais
+            dos sistemas.
+        end note
+    }
+
     front -right--> api
 
-    controlador -right-> servico #line:gray;text:blue : usa
-    servico -down--> repositorio #line:gray;text:blue : usa
+    controlador -> servico #line:gray;text:blue : usa
+    servico -> repositorio #line:gray;text:blue : usa
 
     controlador --> resposta #line:gray;line.dashed;text:blue : manipula
     servico --> dto #line:gray;line.dashed;text:blue : manipula

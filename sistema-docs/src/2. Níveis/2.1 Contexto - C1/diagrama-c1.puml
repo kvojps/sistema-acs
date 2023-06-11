@@ -7,6 +7,7 @@ actor Aluno #text:blue
 actor Comissão #text:blue
 actor Coordenador #text:blue
 actor Administrador #text:blue
+actor Escolaridade #f0d890;text:blue
 
 note top of Aluno #Gray
     O aluno envia a requisição com os
@@ -50,9 +51,9 @@ end note
 
 agent Cliente_SMTP as "Cliente SMTP" #f0d890
 note top of Cliente_SMTP #Gray
-    Envio de emails automáticos
-    para a escolaridade relacio-
-    nados as requisições.
+    Envio de emails automáticos 
+    relacionados as requisições entre 
+    os atores e para a escolaridade.
 end note
 
 agent OAuth2 as "Sistema de autenticação" #f0d890
@@ -69,6 +70,7 @@ end note
 
 Usuário -right-> Sistema_Acs #line:gray;text:blue : usa
 Sistema_Acs -right-> Cliente_SMTP #line:gray;text:blue : envia e-mail
+Escolaridade -left-> Cliente_SMTP #line:gray;text:blue : recebe e-mails
 Sistema_Acs -down-> OAuth2 #line:gray;text:blue : usa
 Sistema_Acs -down-> ViaCep #line:gray;text:blue : usa
 @enduml
