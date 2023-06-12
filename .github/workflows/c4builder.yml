@@ -15,4 +15,4 @@ jobs:
       - name: C4Builder
         uses: clippings/c4builder-action@v1
         with:
-          path: "sistema_docs"
+          path: "sistema-docs"
