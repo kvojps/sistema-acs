@@ -10,7 +10,7 @@
 
 | **RF 002** | Realizar login via sistema |
 |----------|----------|
-| **Descrição**  | Um usuário deve ser capaz de realizar login via sistema.|
+| **Descrição**  | Um usuário deve ser capaz de realizar login via sistema. Após a realização do login é retornado um JWT que identifica o usuário.|
 | **Atores**  | Usuário geral.  |
 | **Prioridade**  | Média.  |
 | **Entrada e pré-condições**  | Entradas: E-mail e senha; Pré-condições: O usuário deve estar cadastrado.   |
@@ -29,7 +29,7 @@
 | **Descrição**  | O usuário deve ser capaz de sair do sistema.|
 | **Atores**  | Usuário geral.  |
 | **Prioridade**  | Baixa.  |
-| **Entrada e pré-condições**  | Entradas: Selecionar botão de logoff; Pré-condições: O usuário deve estar logado.  |
+| **Entrada e pré-condições**  | Entradas: Selecionar botão de logoff presente na tela inicial do sistema; Pré-condições: O usuário deve estar logado.  |
 | **Saída e pós-condições**  | Saídas: Confirmação de logoff; Pós-condições: O usuário será direcionado para tela de login.  |
 
 | **RF 005** | Verificar usuário institucional |
@@ -45,7 +45,7 @@
 | **Descrição**  | O usuário deve ser capaz de alterar sua própria senha.|
 | **Atores**  | Usuário geral.  |
 | **Prioridade**  | Baixa.  |
-| **Entrada e pré-condições**  | Entradas: Inserir nova senha; Pré-condições: O usuário deve estar logado.  |
+| **Entrada e pré-condições**  | Entradas: Inserir a senha antiga para ser possível realizar alteração da nova senha; Pré-condições: O usuário deve estar logado.  |
 | **Saída e pós-condições**  | Saídas: Confirmação da alteração da senha; Pós-condições: O usuário recebe uma mensagem informando que a senha foi alterada com sucesso.  |
 
 | **RF 007** | Recuperar senha |
@@ -58,7 +58,7 @@
 
 | **RF 008** | Consultar dados do próprio usuário |
 |----------|----------|
-| **Descrição**  | O usuário deve ser capaz de visualizar todos os seus dados.|
+| **Descrição**  | O usuário deve ser capaz de visualizar todos os seus dados. Sendo possível visualizar o nome completo, cpf, período, telefone, e-mail, senha oculta, status de verificação, curso e endereço.|
 | **Atores**  | Usuário geral.  |
 | **Prioridade**  | Baixa.  |
 | **Entrada e pré-condições**  | Entradas: Não possui entradas; Pré-condições: O usuário deve estar logado.  |
@@ -124,7 +124,7 @@
 
 | **RF 016** | Visualizar indicadores sobre as requisições enviadas |
 |----------|----------|
-| **Descrição**  | Em construção. |
+| **Descrição**  | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. |
 | **Atores**  | Usuário com perfil de aluno.  |
 | **Prioridade**  | Média.  |
 | **Entrada e pré-condições**  | Entradas: Em construção; Pré-condições: Em construção.  |
@@ -182,7 +182,7 @@
 
 | **RF 023** | Visualizar indicadores sobre as requisições enviadas |
 |----------|----------|
-| **Descrição**  | Em construção. |
+| **Descrição**  | Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. |
 | **Atores**  | Coordenador.  |
 | **Prioridade**  | Média.  |
 | **Entrada e pré-condições**  | Entradas: Em construção; Pré-condições: Em construção.  |
@@ -225,7 +225,7 @@ Esta área define as métricas de desempenho que deverão ser atingidas para que
 
 | RNF 002 | Usuários online |
 |----------|----------|
-| Descrição: | 	O aplicativo deverá permitir a conexão de até 100 usuários online simultaneamente. |
+| Descrição: | 	O aplicativo deve ser altamente eficiente e capaz de gerenciar perfeitamente a conexão de até 100 usuários online simultaneamente, proporcionando uma experiência fluida e sem interrupções para todos os usuários.  |
 | Prioridade: | Alta |
 
 ### Disponibilidade
@@ -239,14 +239,14 @@ Esta área define as métricas de desempenho que deverão ser atingidas para que
 
 | RNF 004 | Compatibilidade |
 |----------|----------|
-| Descrição: | 	Para o sistema funcionar é necessário apenas possuir um navegador com internet |
+| Descrição: | 	Para o perfeito funcionamento do sistema, é necessário apenas possuir um navegador com acesso à internet. Essa simplicidade na exigência de recursos garante que o aplicativo seja facilmente acessível e utilizado por uma ampla variedade de usuários. |
 | Prioridade: | Alta |
 
 ### Segurança
 
 | RNF 005 | Criptografia |
 |----------|----------|
-| Descrição: | 	O sistema deverá utilizar o HTTPS (Hyper Text Transfer Protocol Secure) como forma de criptografia. |
+| Descrição: | 	O sistema deve priorizar a segurança dos dados e a proteção da privacidade dos usuários, adotando o uso do protocolo HTTPS (Hyper Text Transfer Protocol Secure) como uma camada de criptografia confiável. Ao utilizar o HTTPS, todas as informações transmitidas entre o aplicativo e os usuários serão criptografadas, garantindo a confidencialidade e a integridade dos dados durante a comunicação. |
 | Prioridade: | Baixa |
 
 | RNF 006 | Autenticação |
@@ -258,6 +258,6 @@ Esta área define as métricas de desempenho que deverão ser atingidas para que
 
 | RNF 007 | Documentação APIs REST |
 |----------|----------|
-| Descrição: | 	O endpoint do aplicativo deve ser bem documentado para facilitar integrações futuras com outros sistemas ou correções de implementações no front-end. Para este fim é utilizado o Swagger. |
+| Descrição: | É fundamental que o endpoint do aplicativo seja cuidadosamente documentado, a fim de facilitar integrações futuras com outros sistemas e permitir correções eficientes de implementações no front-end. Nesse sentido, o uso da ferramenta Swagger desempenha um papel crucial. O Swagger proporciona uma abordagem estruturada e padronizada para documentação de API, permitindo que os desenvolvedores compreendam facilmente a funcionalidade e os parâmetros do endpoint. |
 | Prioridade: | Alta |
 
