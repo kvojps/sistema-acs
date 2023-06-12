@@ -1,3 +1,0 @@
-# Sistema ACS | Docs
-
-**HOME**
