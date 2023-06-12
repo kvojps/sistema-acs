@@ -1,4 +1,4 @@
-# Requisitos funcionais
+## Requisitos funcionais
 
 Os requisitos funcionais desempenham um papel fundamental no desenvolvimento de um sistema ou software, pois eles definem as funcionalidades e comportamentos esperados do sistema. Eles descrevem o que o sistema deve ser capaz de fazer, quais tarefas deve executar e como deve responder a determinados inputs do usuário ou do ambiente.
 
@@ -116,7 +116,7 @@ Ao utilizar essa técnica de classificação, é possível estabelecer uma hiera
 | **Saída:** Confirmação da exclusão dos dados.                                                           |
 | **Pós-condições:** O usuário é redirecionado para a tela de login do sistema.                           |
 
-## Perfil Aluno
+### Perfil Aluno
 
 O aluno possui acesso ao sistema para enviar requisições juntamente com suas atividades complementares. Além de obter informações sobre o progresso da validação da sua requisição, permitindo que você acompanhe em qual etapa do processo ela se encontra.
 
@@ -180,7 +180,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Em construção.                                     |
 | **Pós-condições:** Em construção.                             |
 
-## Perfil Coordenador
+### Perfil Coordenador
 
 O coordenador é responsável pelo gerenciamento das requisições. Ele é o primeiro a receber as requisições e realiza validações iniciais, tendo autoridade para indeferir uma requisição sem envolvê-la com a comissão responsável. Somente um usuário com esse perfil possui a autoridade para concluir o fluxo da requisição.
 
@@ -254,7 +254,7 @@ O coordenador é responsável pelo gerenciamento das requisições. Ele é o pri
 | **Saída:** Em construção.                                     |
 | **Pós-condições:** Em construção.                             |
 
-### Comissão
+### Perfil Comissão
 
 A comissão desempenha um papel fundamental na avaliação das requisições de atividades complementares. Sua responsabilidade principal é verificar cuidadosamente os dados da requisição e os certificados apresentados. Além disso, é sua responsabilidade atribuir a quantidade de horas correspondente às atividades e definir o status da requisição como deferido ou indeferido, com base nas informações fornecidas e nos critérios estabelecidos.
 
