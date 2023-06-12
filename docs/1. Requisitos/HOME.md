@@ -2,6 +2,22 @@
 
 # Requisitos funcionais
 
+Os requisitos funcionais desempenham um papel fundamental no desenvolvimento de um sistema ou software, pois eles definem as funcionalidades e comportamentos esperados do sistema. Eles descrevem o que o sistema deve ser capaz de fazer, quais tarefas deve executar e como deve responder a determinados inputs do usuário ou do ambiente.
+
+O papel dos requisitos funcionais é estabelecer uma base clara para o projeto, implementação e teste do sistema. Eles servem como um contrato entre os stakeholders (partes interessadas) e os desenvolvedores, garantindo que todas as partes envolvidas tenham uma compreensão comum das funcionalidades esperadas.
+
+## Prioridade dos requisitos
+
+No processo de priorização dos requisitos, adotamos uma técnica baseada no uso de tags classificadoras, sendo elas: Alta, Média e Baixa.
+
+A prioridade alta é atribuída aos requisitos indispensáveis para o sistema. Esses requisitos são essenciais e sua ausência resultaria na interrupção do funcionamento adequado do sistema, impedindo o cumprimento de seus objetivos. Portanto, é imperativo que esses requisitos sejam implementados obrigatoriamente e de forma impreterível.
+
+A prioridade média é atribuída aos requisitos que são extremamente relevantes para o sistema. A ausência desses requisitos não impede que o sistema seja executado, porém, pode resultar no cumprimento parcial de seus objetivos ou procedimentos, geralmente de maneira insatisfatória. Esses requisitos devem ser implementados, mas caso não sejam, o sistema pode ser implantado em sua forma atual.
+
+A prioridade baixa é atribuída aos requisitos que não comprometem as funcionalidades básicas do sistema, permitindo sua execução de forma satisfatória. Esses requisitos podem ser deixados para versões futuras do software, sendo introduzidos como recursos adicionais em um pacote de atualização.
+
+Ao utilizar essa técnica de classificação, é possível estabelecer uma hierarquia de importância para os requisitos, permitindo uma melhor alocação de recursos e garantindo que os aspectos essenciais do sistema sejam tratados prioritariamente. Isso ajuda a orientar o desenvolvimento de acordo com as necessidades críticas do projeto, enquanto permite o planejamento de implementações futuras para requisitos de menor prioridade
+
 | RF 001 - Realizar cadastro via sistema                                                                                                                            |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Descrição:**   Um usuário deve ser capaz de realizar cadastro no sistema, vale ressaltar que para todo cadastro feito é atribuído ao usuário o perfil de aluno. |
@@ -104,6 +120,8 @@
 
 ## Perfil Aluno
 
+O aluno possui acesso ao sistema para enviar requisições juntamente com suas atividades complementares. Além de obter informações sobre o progresso da validação da sua requisição, permitindo que você acompanhe em qual etapa do processo ela se encontra.
+
 | RF 011 - Cadastrar requisição                                                                                                                                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Descrição:** O usuário deve ser capaz de cadastrar uma requisição com o intuito de ratificar uma determinada quantidade de horas das suas atividades complementares.                            |
@@ -165,6 +183,8 @@
 | **Pós-condições:** Em construção.                             |
 
 ## Perfil Coordenador
+
+O coordenador é responsável pelo gerenciamento das requisições. Ele é o primeiro a receber as requisições e realiza validações iniciais, tendo autoridade para indeferir uma requisição sem envolvê-la com a comissão responsável. Somente um usuário com esse perfil possui a autoridade para concluir o fluxo da requisição.
 
 | RF 017 - Solicitar permissões de coordenação                                                                                                                                      |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -238,6 +258,8 @@
 
 ### Comissão
 
+A comissão desempenha um papel fundamental na avaliação das requisições de atividades complementares. Sua responsabilidade principal é verificar cuidadosamente os dados da requisição e os certificados apresentados. Além disso, é sua responsabilidade atribuir a quantidade de horas correspondente às atividades e definir o status da requisição como deferido ou indeferido, com base nas informações fornecidas e nos critérios estabelecidos.
+
 | RF 024 - Consultar lista de requisições                                                                                                                                                                                                   |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Descrição:** A comissão deve ser capaz de visualizar a lista de requisições encaminhadas para a comissão do seu respectivo curso. Também deve ser possível filtrar as requisições por campos de interesse, como data, semestre e aluno. |
@@ -270,8 +292,11 @@
 
 ## Requisitos não funcionais
 
+Os requisitos não funcionais fornecem diretrizes e critérios para avaliar a qualidade do sistema ou software, além de definir os padrões e metas a serem alcançados em relação a essas características. Eles desempenham um papel fundamental na satisfação dos usuários finais, garantindo que o sistema ou software atenda aos requisitos e expectativas não apenas em termos de funcionalidade, mas também em relação a outros atributos que afetam sua usabilidade, desempenho e segurança.
+
 ### Desempenho
-Esta área define as métricas de desempenho que deverão ser atingidas para que o sistema tenha uma boa usabilidade e não afete a experiência do usuário.
+
+A velocidade de resposta, a capacidade de processamento e a eficiência são fatores críticos que influenciam diretamente a experiência do usuário e o sucesso de um sistema. Logo, os requisitos abaixo definem as métricas de desempenho que deverão ser atingidas para alcançar uma boa usabilidade e experiência do usuário.
 
 | RNF 001 - Tempo de Resposta                                                                                                                          |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -284,7 +309,8 @@ Esta área define as métricas de desempenho que deverão ser atingidas para que
 | **Prioridade:** Alta.                                                                                                                                                                                                              |
 
 ### Disponibilidade
-Esta área define metricamente o quão disponível o sistema estaria para uso, isto é, quão disponível o sistema estaria para efetuar um serviço solicitado por algum usuário.
+
+A disponibilidade é um fator crítico para a confiabilidade e eficácia de um sistema, especialmente em ambientes onde a interrupção de serviços pode resultar em perdas financeiras, danos à reputação e insatisfação dos usuários.Os requisitos a seguir estabelecem métricas que determinam o nível de disponibilidade do sistema, ou seja, a capacidade do sistema de estar prontamente disponível para executar um serviço solicitado por um usuário.
 
 | RNF 003 - Período ativo                                                                                                                                                                                           |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -292,7 +318,8 @@ Esta área define metricamente o quão disponível o sistema estaria para uso, i
 | **Prioridade:** Média                                                                                                                                                                                             |
 
 ### Hardware
-Está área define requisitos que relacionam o sistema com recursos físicos, retratando como ele se comporta em hardwares com diferentes especificações.
+
+É fundamental considerar as características e limitações do hardware que será utilizado, para permitir que os desenvolvedores entendam claramente quais requisitos são necessários para garantir o desempenho, a compatibilidade e a estabilidade do sistema.
 
 | RNF 004 - Compatibilidade                                                                                                                                                                                                                                               |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -300,7 +327,8 @@ Está área define requisitos que relacionam o sistema com recursos físicos, re
 | **Prioridade:** Alta                                                                                                                                                                                                                                                    |
 
 ### Segurança
-Esta área busca caracterizar a segurança como a não permissão de acessos não autorizados ao sistema e aos dados associados. Portanto, é assegurada a integridade do sistema quanto a ataques intencionais ou acidentes.
+
+São descritas as medidas necessárias para proteger o sistema contra ameaças internas e externas, garantindo a confidencialidade, integridade e disponibilidade dos dados. Com isso, garantir que os desenvolvedores compreendam claramente os desafios e requisitos de segurança envolvidos no projeto, fornecendo diretrizes claras para a implementação de medidas de proteção eficazes.
 
 | RNF 005  Criptografia                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -313,9 +341,10 @@ Esta área busca caracterizar a segurança como a não permissão de acessos nã
 | **Prioridade:** Alta.                                                                                                                                                                                                                             |
 
 ### Documentação
-Essa área aborda as documentações de caráter importante para o desenvolvimento do sistema.
+
+A documentação de sistemas desempenha um papel fundamental no desenvolvimento, implementação e manutenção eficazes de um software ou sistema. A importância de documentar sistemas reside em fornecer um registro completo e estruturado de informações essenciais sobre o sistema, suas funcionalidades, configurações, requisitos, fluxos de trabalho e outras características relevantes. Abaixo são descritas as documentações de caráter importante para o desenvolvimento do sistema.
 
 | RNF 007  Documentação APIs REST                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Descrição:** É fundamental que o endpoint do aplicativo seja cuidadosamente documentado, a fim de facilitar integrações futuras com outros sistemas e permitir correções eficientes de implementações no front-end. Nesse sentido, o uso da ferramenta Swagger desempenha um papel crucial. O Swagger proporciona uma abordagem estruturada e padronizada para documentação de API, permitindo que os desenvolvedores compreendam facilmente a funcionalidade e os parâmetros do endpoint. |
-| **Prioridade:** Alta.                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| **Prioridade:** Alta.|
