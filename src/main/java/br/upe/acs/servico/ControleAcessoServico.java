@@ -28,19 +28,21 @@ public class ControleAcessoServico {
 
 	private final UsuarioRepositorio repositorio;
 
-	private final PasswordEncoder passwordEncoder;
-
 	private final JwtService jwtService;
-
-	private final AuthenticationManager authenticationManager;
-
-	private final EmailServico emailServico;
 
 	private final EnderecoServico enderecoServico;
 
 	private final CursoServico cursoServico;
 
+	private final EmailServico emailServico;
+
+	private final PasswordEncoder passwordEncoder;
+
+	private final AuthenticationManager authenticationManager;
+
 	public AutenticacaoResposta cadastrarUsuario(RegistroDTO registro) throws AcsExcecao {
+		verificarDadosUnicos(registro.getEmail(), registro.getCpf());
+
 		Usuario usuarioSalvar = new Usuario();
 		validarSenha(registro.getSenha());
 		validarEmailInstitucional(registro.getEmail());
@@ -76,12 +78,6 @@ public class ControleAcessoServico {
 		});
 
 		return gerarAutenticacaoResposta(usuarioSalvar);
-	}
-
-	private void validarEmailInstitucional(String email) throws AcsExcecao {
-		if (!email.split("@")[1].equals("upe.br")) {
-			throw new AcsExcecao("Email inválido! Por favor insira o email institucional.");
-		}
 	}
 
 	public AutenticacaoResposta loginUsuario(LoginDTO login) {
@@ -123,6 +119,28 @@ public class ControleAcessoServico {
 		return codigo.toString();
 	}
 
+	private void verificarDadosUnicos(String email, String cpf) throws AcsExcecao {
+		String mensagem = "";
+
+		if (repositorio.findByCpf(cpf).isPresent()) {
+			mensagem += "cpf";
+		}
+
+		if (repositorio.findByEmail(email).isPresent()) {
+			mensagem += "/email";
+		}
+
+		if (!mensagem.isBlank()) {
+			throw new AcsExcecao("Os dados a seguir " + mensagem + " já estão cadastrados!");
+		}
+	}
+
+	private void validarEmailInstitucional(String email) throws AcsExcecao {
+		if (!email.split("@")[1].equals("upe.br")) {
+			throw new AcsExcecao("Email inválido! Por favor insira o email institucional.");
+		}
+	}
+
 	private void validarSenha(String senha) throws AcsExcecao {
 		boolean comMaiuscula = false, comMinuscula = false, comNumerico = false, comEspecial = false;
 
@@ -161,5 +179,4 @@ public class ControleAcessoServico {
 			throw new AcsExcecao(error.toString());
 		}
 	}
-
 }
