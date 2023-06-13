@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.Usuario;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,16 @@ public class RequisicaoServico {
 	
 	private final RequisicaoRepositorio repositorio;
 	
+	private final UsuarioServico usuarioServico;
+	
 	public List<Requisicao> listarRequisicoes() {
 		return repositorio.findAll();
+	}
+	
+	public List<Requisicao> listarRequisicoesPorUsuario(Long usuarioId) throws AcsExcecao {
+		Usuario usuario = usuarioServico.buscarUsuarioPorId(usuarioId).get();
+		
+		return repositorio.findByUsuario(usuario);
 	}
 
 	public Optional<Requisicao> buscarRequisicaoPorId(Long id) throws AcsExcecao {

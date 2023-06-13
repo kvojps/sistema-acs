@@ -52,7 +52,7 @@ public class RequisicaoCertificadoServico {
 		requisicaoSalvar.setData(obterDataAtual());
 		requisicaoSalvar.setSemestre(requisicao.getSemestre());
 		requisicaoSalvar.setQtdCertificados(requisicao.getQtdCertificados());
-		requisicaoSalvar.setStatusRequisicao(requisicaoStatusEnum.ENCAMINHADO);
+		requisicaoSalvar.setStatusRequisicao(requisicaoStatusEnum.ENCAMINHADO_COORDENACAO);
 		requisicaoSalvar.setCurso(cursoSalvar);
 		requisicaoSalvar.setUsuario(usuarioSalvar);
 
