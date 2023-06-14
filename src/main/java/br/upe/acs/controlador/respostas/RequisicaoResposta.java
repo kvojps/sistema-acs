@@ -16,23 +16,23 @@ import lombok.Getter;
 @Getter
 public class RequisicaoResposta {
 
-	private Long id;
+	private final Long id;
 	
 	@Temporal(TemporalType.DATE)
-	private Date data;
+	private final Date data;
 	
-	private int semestre;
+	private final int semestre;
 	
-	private int qtdCertificados;
+	private final int qtdCertificados;
 	
-	private String token;
+	private final String token;
 	
 	@Enumerated(EnumType.STRING)
-	private requisicaoStatusEnum requisicaoStatus;
+	private final requisicaoStatusEnum requisicaoStatus;
 	
-	private byte[] requisicaoArquivo;
+	private final byte[] requisicaoArquivo;
 	
-	private List<CertificadoResposta> certificados;
+	private final List<CertificadoResposta> certificados;
 
 	public RequisicaoResposta(Requisicao requisicao) {
 		super();
@@ -47,9 +47,7 @@ public class RequisicaoResposta {
 	}
 	
 	private List<CertificadoResposta> converterCertificados(List<Certificado> certificados) {
-		List<CertificadoResposta> resposta = certificados.stream()
-				.map(certificado -> new CertificadoResposta(certificado)).collect(Collectors.toList());
-		
-		return resposta;
+		return certificados.stream()
+				.map(CertificadoResposta::new).collect(Collectors.toList());
 	}
 }

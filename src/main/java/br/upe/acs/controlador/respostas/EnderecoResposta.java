@@ -10,21 +10,21 @@ import lombok.Getter;
 @Getter
 public class EnderecoResposta {
 
-	private Long id;
+	private final Long id;
 	
-	private String cep;
+	private final String cep;
 	
-	private String rua;
+	private final String rua;
 	
-	private String bairro;
+	private final String bairro;
 	
-	private String cidade;
+	private final String cidade;
 	
-	private String UF;
+	private final String UF;
 	
-	private int numero;
+	private final int numero;
 	
-	private List<UsuarioResposta> usuarios;
+	private final List<UsuarioResposta> usuarios;
 
 	public EnderecoResposta(Endereco endereco) {
 		super();
@@ -39,10 +39,8 @@ public class EnderecoResposta {
 	}
 	
 	private List<UsuarioResposta> converterUsuario(List<Usuario> usuarios) {
-		List<UsuarioResposta> resposta = usuarios.stream().map(requisicao -> new UsuarioResposta(requisicao))
+		return usuarios.stream().map(UsuarioResposta::new)
 				.collect(Collectors.toList());
-
-		return resposta;
 	}
 	
 }

@@ -10,11 +10,11 @@ import lombok.Getter;
 @Getter
 public class CursoResposta {
 
-	private Long id;
+	private final Long id;
 
-	private String nome;
+	private final String nome;
 
-	private List<RequisicaoResposta> requisicoes;
+	private final List<RequisicaoResposta> requisicoes;
 
 	public CursoResposta(Curso curso) {
 		super();
@@ -24,9 +24,7 @@ public class CursoResposta {
 	}
 
 	private List<RequisicaoResposta> converterRequisicoes(List<Requisicao> requisicoes) {
-		List<RequisicaoResposta> resposta = requisicoes.stream().map(requisicao -> new RequisicaoResposta(requisicao))
+		return requisicoes.stream().map(RequisicaoResposta::new)
 				.collect(Collectors.toList());
-
-		return resposta;
 	}
 }

@@ -8,21 +8,21 @@ import lombok.Getter;
 @Getter
 public class CertificadoResposta {
 	
-	private Long id;
+	private final Long id;
 	
-	private String titulo;
+	private final String titulo;
 	
-	private String descricao;
+	private final String descricao;
 	
-	private Date data;
+	private final Date data;
 	
-	private int horas;
+	private final int horas;
 	
-	private int chMaxima;
+	private final int chMaxima;
 	
-	private int chTotal;
+	private final int chTotal;
 	
-	private byte[] certificadoArquivo;
+	private final byte[] certificadoArquivo;
 
 	public CertificadoResposta(Certificado certificado) {
 		super();
@@ -35,6 +35,4 @@ public class CertificadoResposta {
 		this.chTotal = certificado.getChTotal();
 		this.certificadoArquivo = certificado.getCertificado();
 	}
-	
-	
 }

@@ -12,31 +12,31 @@ import lombok.Getter;
 @Getter
 public class UsuarioResposta {
 
-	private Long id;
+	private final Long id;
 
-	private String nomeCompleto;
+	private final String nomeCompleto;
 
-	private String cpf;
+	private final String cpf;
 
-	private int periodo;
+	private final int periodo;
 
-	private String telefone;
+	private final String telefone;
 
-	private String email;
+	private final String email;
 
-	private String senha;
+	private final String senha;
 
-	private String codigoVerificacao;
+	private final String codigoVerificacao;
 
-	private boolean verificado;
+	private final boolean verificado;
 
-	private PerfilEnum perfil;
+	private final PerfilEnum perfil;
 
-	private Endereco endereco;
+	private final Endereco endereco;
 
-	private CursoResposta curso;
+	private final CursoResposta curso;
 
-	private List<RequisicaoResposta> requisicoes;
+	private final List<RequisicaoResposta> requisicoes;
 
 	public UsuarioResposta(Usuario usuario) {
 		super();
@@ -56,9 +56,7 @@ public class UsuarioResposta {
 	}
 
 	private List<RequisicaoResposta> converterRequisicoes(List<Requisicao> requisicoes) {
-		List<RequisicaoResposta> resposta = requisicoes.stream().map(requisicao -> new RequisicaoResposta(requisicao))
+		return requisicoes.stream().map(RequisicaoResposta::new)
 				.collect(Collectors.toList());
-
-		return resposta;
 	}
 }
