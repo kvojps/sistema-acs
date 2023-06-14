@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UsuarioServico {
+
 	private final UsuarioRepositorio repositorio;
 	
 	public Optional<Usuario> buscarUsuarioPorId(Long id) throws AcsExcecao {
@@ -23,10 +24,10 @@ public class UsuarioServico {
 	}
 	
 	public String verificarUsuario(Long usuarioId, String codigoVerificacao) throws AcsExcecao {
-		Usuario usuario = buscarUsuarioPorId(usuarioId).get();
-		String resposta = "";
+		Usuario usuario = buscarUsuarioPorId(usuarioId).orElseThrow();
+		String resposta;
 		
-		if (usuario.isVerificado() == true) {
+		if (usuario.isVerificado()) {
 			resposta = "Este usuário já é verificado!";
 		} else if (codigoVerificacao.equals(usuario.getCodigoVerificacao())) {
 			usuario.setVerificado(true);

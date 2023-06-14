@@ -22,9 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class CertificadoServico {
 
 	private final CertificadoRepositorio repositorio;
-
 	private final RequisicaoServico requisicaoServico;
-
 	private final AtividadeServico atividadeServico;
 
 	public Optional<Certificado> buscarCertificadoPorId(Long id) throws AcsExcecao {
@@ -35,9 +33,8 @@ public class CertificadoServico {
 		return repositorio.findById(id);
 	}
 
-	public Certificado adicionarCertificado(CertificadoDTO certificado, MultipartFile file)
+	public void adicionarCertificado(CertificadoDTO certificado, MultipartFile file)
 			throws IOException, ParseException, AcsExcecao {
-
 		byte[] certificadoArquivo = file.getBytes();
 
 		Certificado certificadoSalvar = new Certificado();
@@ -47,13 +44,15 @@ public class CertificadoServico {
 		certificadoSalvar.setHoras(certificado.getHoras());
 		certificadoSalvar.setChTotal(0);
 		certificadoSalvar.setCertificado(certificadoArquivo);
+
 		Optional<Requisicao> requisicaoSalvar = requisicaoServico.buscarRequisicaoPorId(certificado.getRequisicaoId());
-		certificadoSalvar.setRequisicao(requisicaoSalvar.get());
+		certificadoSalvar.setRequisicao(requisicaoSalvar.orElseThrow());
+
 		Optional<Atividade> atividadeSalvar = atividadeServico.buscarAtividadePorId(certificado.getAtividadeId());
-		certificadoSalvar.setAtividade(atividadeSalvar.get());
+		certificadoSalvar.setAtividade(atividadeSalvar.orElseThrow());
 		certificadoSalvar.setChMaxima(atividadeSalvar.get().getChMaxima());
 
-		return repositorio.save(certificadoSalvar);
+		repositorio.save(certificadoSalvar);
 	}
 
 	private static Date converterParaData(String dataString) throws ParseException {

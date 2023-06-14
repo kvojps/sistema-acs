@@ -14,9 +14,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RequisicaoServico {
-	
+
 	private final RequisicaoRepositorio repositorio;
-	
 	private final UsuarioServico usuarioServico;
 	
 	public List<Requisicao> listarRequisicoes() {
@@ -24,7 +23,7 @@ public class RequisicaoServico {
 	}
 	
 	public List<Requisicao> listarRequisicoesPorUsuario(Long usuarioId) throws AcsExcecao {
-		Usuario usuario = usuarioServico.buscarUsuarioPorId(usuarioId).get();
+		Usuario usuario = usuarioServico.buscarUsuarioPorId(usuarioId).orElseThrow();
 		
 		return repositorio.findByUsuario(usuario);
 	}
