@@ -28,53 +28,59 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin
 public class RequisicaoControlador {
 
-	private final RequisicaoServico servico;
+    private final RequisicaoServico servico;
 
-	private final RequisicaoCertificadoServico requisicaoCertificadoServico;
+    private final RequisicaoCertificadoServico requisicaoCertificadoServico;
 
-	@Operation(summary = "Listar todas as requisições")
-	@GetMapping
-	public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
-		return ResponseEntity.ok(servico.listarRequisicoes().stream()
-				.map(requisicao -> new RequisicaoResposta(requisicao)).collect(Collectors.toList()));
-	}
+    @Operation(summary = "Listar todas as requisições")
+    @GetMapping
+    public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
+        return ResponseEntity.ok(servico.listarRequisicoes().stream()
+                .map(RequisicaoResposta::new).collect(Collectors.toList()));
+    }
 
-	@Operation(summary = "Listar as requisições de um usuário específico")
-	@GetMapping("/usuario/{id}")
-	public ResponseEntity<List<RequisicaoResposta>> listarRequisicoesPorUsuario(@PathVariable("id") Long usuarioId)
-			throws AcsExcecao {
-		return ResponseEntity.ok(servico.listarRequisicoesPorUsuario(usuarioId).stream()
-				.map(requisicao -> new RequisicaoResposta(requisicao)).collect(Collectors.toList()));
-	}
+    @Operation(summary = "Listar as requisições de um usuário específico")
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<List<RequisicaoResposta>> listarRequisicoesPorUsuario(@PathVariable("id") Long usuarioId)
+            throws AcsExcecao {
+        return ResponseEntity.ok(servico.listarRequisicoesPorUsuario(usuarioId).stream()
+                .map(RequisicaoResposta::new).collect(Collectors.toList()));
+    }
 
-	@Operation(summary = "Buscar requisição por id")
-	@GetMapping("/{id}")
-	public ResponseEntity<RequisicaoResposta> buscarRequisicaoPorId(@PathVariable("id") Long id) throws AcsExcecao {
-		RequisicaoResposta requisicaoResposta = new RequisicaoResposta(servico.buscarRequisicaoPorId(id).get());
+    @Operation(summary = "Buscar requisição por id")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarRequisicaoPorId(@PathVariable("id") Long id) {
+        try {
+            RequisicaoResposta requisicaoResposta = new RequisicaoResposta(servico.buscarRequisicaoPorId(id).orElseThrow());
+            return ResponseEntity.ok(requisicaoResposta);
+        } catch (AcsExcecao e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
-		return ResponseEntity.ok(requisicaoResposta);
-	}
+    @Operation(summary = "Adicionar requisição com certificados")
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<?> adicionarRequisicao(@RequestParam(value = "usuarioId") Long usuarioId,
+                                                 @RequestParam(value = "cursoId") Long cursoId,
+                                                 @RequestParam(value = "semestre") int semestre,
+                                                 @RequestParam(value = "qtdCertificados") int qtdCertificados,
+                                                 @RequestPart(value = "certificados") MultipartFile[] certificados,
+                                                 @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados) {
+        RequisicaoDTO requisicaoDTO = new RequisicaoDTO();
+        requisicaoDTO.setCursoId(cursoId);
+        requisicaoDTO.setUsuarioId(usuarioId);
+        requisicaoDTO.setSemestre(semestre);
+        requisicaoDTO.setQtdCertificados(qtdCertificados);
+        requisicaoDTO.setCertificados(certificados);
+        requisicaoDTO.setCertificadosMetadados(certificadosMetadados);
 
-	@Operation(summary = "Adicionar requisição com certificados")
-	@PostMapping(consumes = { "multipart/form-data" })
-	public ResponseEntity<?> adicionarRequisicao(@RequestParam(value = "usuarioId", required = true) Long usuarioId,
-			@RequestParam(value = "cursoId", required = true) Long cursoId,
-			@RequestParam(value = "semestre", required = true) int semestre,
-			@RequestParam(value = "qtdCertificados", required = true) int qtdCertificados,
-			@RequestPart(value = "certificados", required = true) MultipartFile[] certificados,
-			@RequestPart(value = "certificadosMetadados", required = true) MultipartFile certificadosMetadados) {
-		RequisicaoDTO requisicaoDTO = new RequisicaoDTO();
-		requisicaoDTO.setCursoId(cursoId);
-		requisicaoDTO.setUsuarioId(usuarioId);
-		requisicaoDTO.setSemestre(semestre);
-		requisicaoDTO.setQtdCertificados(qtdCertificados);
-		requisicaoDTO.setCertificados(certificados);
-		requisicaoDTO.setCertificadosMetadados(certificadosMetadados);
+        ResponseEntity<?> resposta;
+        try {
+            resposta = ResponseEntity.ok(requisicaoCertificadoServico.adicionarRequisicao(requisicaoDTO));
+        } catch (Exception e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-		try {
-			return ResponseEntity.ok(requisicaoCertificadoServico.adicionarRequisicao(requisicaoDTO));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
+        return resposta;
+    }
 }

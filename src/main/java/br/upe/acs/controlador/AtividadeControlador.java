@@ -22,20 +22,26 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin
 public class AtividadeControlador {
 
-	private final AtividadeServico servico;
+    private final AtividadeServico servico;
 
-	@Operation(summary = "Listar todas as atividades")
-	@GetMapping
-	public ResponseEntity<List<AtividadeResposta>> listarAtividades() {
-		return ResponseEntity.ok(servico.listarAtividades().stream().map(atividade -> new AtividadeResposta(atividade))
-				.collect(Collectors.toList()));
-	}
+    @Operation(summary = "Listar todas as atividades")
+    @GetMapping
+    public ResponseEntity<List<AtividadeResposta>> listarAtividades() {
+        return ResponseEntity.ok(servico.listarAtividades().stream().map(AtividadeResposta::new)
+                .collect(Collectors.toList()));
+    }
 
-	@Operation(summary = "Buscar atividade por id")
-	@GetMapping("/{id}")
-	public ResponseEntity<AtividadeResposta> buscarAtividadePorId(@PathVariable("id") Long id) throws AcsExcecao {
-		AtividadeResposta atividadeResposta = new AtividadeResposta(servico.buscarAtividadePorId(id).get());
+    @Operation(summary = "Buscar atividade por id")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarAtividadePorId(@PathVariable("id") Long id) {
+        ResponseEntity<?> resposta;
+        try {
+            AtividadeResposta atividadeResposta = new AtividadeResposta(servico.buscarAtividadePorId(id).orElseThrow());
+            resposta = ResponseEntity.ok(atividadeResposta);
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-		return ResponseEntity.ok(atividadeResposta);
-	}
+        return resposta;
+    }
 }

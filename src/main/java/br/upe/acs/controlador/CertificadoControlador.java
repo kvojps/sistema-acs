@@ -18,14 +18,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @CrossOrigin
 public class CertificadoControlador {
-	
-	private final CertificadoServico servico;
 
-	@Operation(summary = "Buscar certificado por id")
-	@GetMapping("/{id}")
-	public ResponseEntity<CertificadoResposta> buscarCertificadoPorId(@PathVariable("id") Long id) throws AcsExcecao {
-		CertificadoResposta certificadoResposta = new CertificadoResposta(servico.buscarCertificadoPorId(id).get());
+    private final CertificadoServico servico;
 
-		return ResponseEntity.ok(certificadoResposta);
-	}
+    @Operation(summary = "Buscar certificado por id")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarCertificadoPorId(@PathVariable("id") Long id) {
+        ResponseEntity<?> resposta;
+        try {
+            CertificadoResposta certificadoResposta = new CertificadoResposta(servico.buscarCertificadoPorId(id).orElseThrow());
+            resposta = ResponseEntity.ok(certificadoResposta);
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+        
+        return resposta;
+    }
 }

@@ -16,11 +16,14 @@ public class EnderecoControlador {
 
     @GetMapping("/{cep}")
     public ResponseEntity<?> buscarEnderecoPorCep(@PathVariable String cep) {
+        ResponseEntity<?> resposta;
         try {
             ViaCepResposta viaCepResposta = new ViaCepResposta(servico.buscarEnderecoPorCep(cep));
-            return ResponseEntity.ok(viaCepResposta);
+            resposta = ResponseEntity.ok(viaCepResposta);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
+
+        return resposta;
     }
 }

@@ -21,24 +21,33 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin
 public class UsuarioControlador {
 
-	private final UsuarioServico servico;
+    private final UsuarioServico servico;
 
-	@Operation(summary = "Buscar usuário por id")
-	@GetMapping("/{id}")
-	public ResponseEntity<UsuarioResposta> buscarUsuarioPorId(@PathVariable("id") Long id) throws AcsExcecao {
-		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).get());
-
-		return ResponseEntity.ok(usuarioResposta);
-	}
-
-	@Operation(summary = "Verificar usuário")
-	@PostMapping("/verificacao")
-	public ResponseEntity<?> verificarUsuario(@RequestParam(value = "usuarioId", required = true) Long usuarioId,
-			@RequestParam(value = "codigoVerificacao", required = true) String codigo) {
-		try {
-			return ResponseEntity.ok(servico.verificarUsuario(usuarioId, codigo));
+    @Operation(summary = "Buscar usuário por id")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarUsuarioPorId(@PathVariable("id") Long id) {
+        ResponseEntity<?> resposta;
+        try {
+			UsuarioResposta usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).orElseThrow());
+			resposta = ResponseEntity.ok(usuarioResposta);
 		} catch (AcsExcecao e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+			resposta = ResponseEntity.badRequest().body(e.getMessage());
 		}
-	}
+
+        return resposta;
+    }
+
+    @Operation(summary = "Verificar usuário")
+    @PostMapping("/verificacao")
+    public ResponseEntity<?> verificarUsuario(@RequestParam(value = "usuarioId") Long usuarioId,
+                                              @RequestParam(value = "codigoVerificacao") String codigo) {
+        ResponseEntity<?> resposta;
+        try {
+            resposta = ResponseEntity.ok(servico.verificarUsuario(usuarioId, codigo));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
 }

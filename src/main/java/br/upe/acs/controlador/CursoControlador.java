@@ -28,14 +28,20 @@ public class CursoControlador {
 	@GetMapping
 	public ResponseEntity<List<CursoResposta>> listarCursos() {
 		return ResponseEntity.ok(
-				servico.listarCursos().stream().map(curso -> new CursoResposta(curso)).collect(Collectors.toList()));
+				servico.listarCursos().stream().map(CursoResposta::new).collect(Collectors.toList()));
 	}
 
 	@Operation(summary = "Buscar curso por id")
 	@GetMapping("/{id}")
-	public ResponseEntity<CursoResposta> buscarCursoPorId(@PathVariable("id") Long id) throws AcsExcecao {
-		CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id).get());
+	public ResponseEntity<?> buscarCursoPorId(@PathVariable("id") Long id) {
+		ResponseEntity<?> resposta;
+		try {
+			CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id).orElseThrow());
+			resposta =  ResponseEntity.ok(cursoResposta);
+		} catch (AcsExcecao e) {
+			resposta = ResponseEntity.badRequest().body(e.getMessage());
+		}
 
-		return ResponseEntity.ok(cursoResposta);
+		return resposta;
 	}
 }

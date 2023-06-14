@@ -24,25 +24,28 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin
 public class ControleAcessoControlador {
 
-	private final ControleAcessoServico servico;
+    private final ControleAcessoServico servico;
 
-	@Operation(summary = "Cadastro de usuário")
-	@PostMapping("/cadastro")
-	public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody RegistroDTO registro, BindingResult bindingResult) {
-		try {
-			if (bindingResult.hasErrors()) {
-				throw new AcsExcecao(String.join("; ", bindingResult.getAllErrors().stream()
-						.map(DefaultMessageSourceResolvable::getDefaultMessage).toList()));
-			}
-			return ResponseEntity.ok(servico.cadastrarUsuario(registro));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
+    @Operation(summary = "Cadastro de usuário")
+    @PostMapping("/cadastro")
+    public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody RegistroDTO registro, BindingResult bindingResult) {
+        ResponseEntity<?> resposta;
+        try {
+            if (bindingResult.hasErrors()) {
+                throw new AcsExcecao(String.join("; ", bindingResult.getAllErrors().stream()
+                        .map(DefaultMessageSourceResolvable::getDefaultMessage).toList()));
+            }
+            resposta = ResponseEntity.ok(servico.cadastrarUsuario(registro));
+        } catch (Exception e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-	@Operation(summary = "Login de usuário")
-	@PostMapping("/login")
-	public ResponseEntity<AutenticacaoResposta> loginUsuario(@RequestBody LoginDTO login) {
-		return ResponseEntity.ok(servico.loginUsuario(login));
-	}
+        return resposta;
+    }
+
+    @Operation(summary = "Login de usuário")
+    @PostMapping("/login")
+    public ResponseEntity<AutenticacaoResposta> loginUsuario(@RequestBody LoginDTO login) {
+        return ResponseEntity.ok(servico.loginUsuario(login));
+    }
 }
