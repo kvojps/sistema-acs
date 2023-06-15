@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
-import br.upe.acs.dominio.enums.requisicaoStatusEnum;
+import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Temporal;
@@ -28,7 +28,7 @@ public class RequisicaoResposta {
 	private final String token;
 	
 	@Enumerated(EnumType.STRING)
-	private final requisicaoStatusEnum requisicaoStatus;
+	private final RequisicaoStatusEnum requisicaoStatus;
 	
 	private final byte[] requisicaoArquivo;
 	

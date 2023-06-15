@@ -19,7 +19,7 @@ import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.dominio.dto.CertificadosMetadadosDTO;
 import br.upe.acs.dominio.dto.RequisicaoDTO;
-import br.upe.acs.dominio.enums.requisicaoStatusEnum;
+import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class RequisicaoCertificadoServico {
         requisicaoSalvar.setData(obterDataAtual());
         requisicaoSalvar.setSemestre(requisicao.getSemestre());
         requisicaoSalvar.setQtdCertificados(requisicao.getQtdCertificados());
-        requisicaoSalvar.setStatusRequisicao(requisicaoStatusEnum.ENCAMINHADO_COORDENACAO);
+        requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.ENCAMINHADO_COORDENACAO);
         requisicaoSalvar.setCurso(cursoSalvar);
         requisicaoSalvar.setUsuario(usuarioSalvar);
 

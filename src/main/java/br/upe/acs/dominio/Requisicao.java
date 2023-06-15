@@ -3,7 +3,7 @@ package br.upe.acs.dominio;
 import java.util.Date;
 import java.util.List;
 
-import br.upe.acs.dominio.enums.requisicaoStatusEnum;
+import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -38,7 +38,7 @@ public class Requisicao {
 	private byte[] requisicaoArquivoAssinada;
 	
 	@Enumerated(EnumType.STRING)
-	private requisicaoStatusEnum statusRequisicao;
+	private RequisicaoStatusEnum statusRequisicao;
 
 	@ManyToOne
 	private Usuario usuario;
@@ -117,11 +117,11 @@ public class Requisicao {
 		this.usuario = usuario;
 	}
 
-	public requisicaoStatusEnum getStatusRequisicao() {
+	public RequisicaoStatusEnum getStatusRequisicao() {
 		return statusRequisicao;
 	}
 
-	public void setStatusRequisicao(requisicaoStatusEnum statusRequisicao) {
+	public void setStatusRequisicao(RequisicaoStatusEnum statusRequisicao) {
 		this.statusRequisicao = statusRequisicao;
 	}
 }
