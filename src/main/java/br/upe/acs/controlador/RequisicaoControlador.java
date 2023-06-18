@@ -1,6 +1,7 @@
 package br.upe.acs.controlador;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,13 @@ public class RequisicaoControlador {
     public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
         return ResponseEntity.ok(servico.listarRequisicoes().stream()
                 .map(RequisicaoResposta::new).collect(Collectors.toList()));
+    }
+
+    @Operation(summary = "Listar as requisições com paginação")
+    @GetMapping("/paginacao")
+    public ResponseEntity<Map<String, Object>> listarRequisicoesPaginas(@RequestParam(defaultValue = "0") int pagina,
+                                                                        @RequestParam(defaultValue = "10") int quantidade) {
+        return ResponseEntity.ok(servico.listarRequisicoesPaginadas(pagina, quantidade));
     }
 
     @Operation(summary = "Listar as requisições de um usuário específico")
