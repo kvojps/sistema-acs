@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import br.upe.acs.dominio.RequisicaoRascunho;
+import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
+import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,13 +34,33 @@ public class RequisicaoCertificadoServico {
     private final UsuarioServico usuarioServico;
     private final CursoServico cursoServico;
     private final CertificadoServico certificadoServico;
+    private final CertificadoRascunhoServico certificadoRascunhoServico;
     private final AtividadeServico atividadeServico;
     private final RequisicaoRepositorio repositorio;
+    private final RequisicaoRascunhoRepositorio rascunhoRepositorio;
+
+    public void salvarRascunho(RequisicaoRascunhoDTO requisicaoRascunho) throws AcsExcecao, IOException, ParseException {
+        CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicaoRascunho.getCertificadosMetadados());
+
+        RequisicaoRascunho rascunhoSalvar = new RequisicaoRascunho();
+        rascunhoSalvar.setSemestre(requisicaoRascunho.getSemestre());
+        rascunhoSalvar.setQtdCertificados(requisicaoRascunho.getQtdCertificados());
+        rascunhoSalvar.setUsuarioId(requisicaoRascunho.getUsuarioId());
+        rascunhoSalvar.setCursoId(requisicaoRascunho.getCursoId());
+        rascunhoSalvar.setDataExpiracao(null);
+
+        RequisicaoRascunho rascunhoSalvo = rascunhoRepositorio.save(rascunhoSalvar);
+
+        MultipartFile[] certificadoArquivosRascunho = requisicaoRascunho.getCertificadoArquivos();
+        List<CertificadoDTO> certificadosRascunho = certificadosMetadados.getCertificados();
+
+       adicionarCertificadosRascunho(certificadoArquivosRascunho, certificadosRascunho, rascunhoSalvo.getId());
+    }
 
     public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
         Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).orElseThrow();
         Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(requisicao.getUsuarioId()).orElseThrow();
-        CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicao);
+        CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicao.getCertificadosMetadados());
 
         validarRequisicao(requisicao, certificadosMetadados.getCertificados());
         Requisicao requisicaoSalvar = new Requisicao();
@@ -91,10 +114,10 @@ public class RequisicaoCertificadoServico {
         return dataFormato.parse(dataString);
     }
 
-    private CertificadosMetadadosDTO converterCertificadosMetadados(RequisicaoDTO requisicao) throws AcsExcecao {
+    private CertificadosMetadadosDTO converterCertificadosMetadados(MultipartFile certificadosMetadadosArquivo) throws AcsExcecao {
         CertificadosMetadadosDTO certificadosMetadados;
         try {
-            byte[] certificadoMetadadosBytes = requisicao.getCertificadosMetadados().getBytes();
+            byte[] certificadoMetadadosBytes = certificadosMetadadosArquivo.getBytes();
             certificadosMetadados = converter(certificadoMetadadosBytes);
         } catch (IOException e) {
             throw new AcsExcecao("Falha na conversão dos metadados relacionados aos certificados!");
@@ -128,7 +151,20 @@ public class RequisicaoCertificadoServico {
         }
     }
 
-    private void validarCertificados(List<CertificadoDTO> certificados) throws AcsExcecao  {
+    private void adicionarCertificadosRascunho(MultipartFile[] certificadoArquivos, List<CertificadoDTO> certificados,
+                                               Long idRequisicao) throws AcsExcecao, IOException, ParseException {
+
+        for (int i = 0; i < certificadoArquivos.length; i++) {
+
+            MultipartFile certificadoArquivoSalvar = certificadoArquivos[i];
+            CertificadoDTO certificadoSalvar = certificados.get(i);
+            certificadoSalvar.setRequisicaoId(idRequisicao);
+
+            certificadoRascunhoServico.adicionarCertificadoRascunho(certificadoSalvar, certificadoArquivoSalvar);
+        }
+    }
+
+    private void validarCertificados(List<CertificadoDTO> certificados) throws AcsExcecao {
         boolean isValid = true;
 
         for (CertificadoDTO certificado : certificados) {
@@ -183,6 +219,6 @@ public class RequisicaoCertificadoServico {
         Instant timeStamp = Instant.now();
         long epocaSegundos = timeStamp.getEpochSecond();
 
-		return tokenParcial + Long.toString(epocaSegundos);
+        return tokenParcial + Long.toString(epocaSegundos);
     }
 }

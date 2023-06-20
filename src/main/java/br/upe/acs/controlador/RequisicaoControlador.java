@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,6 +86,32 @@ public class RequisicaoControlador {
         ResponseEntity<?> resposta;
         try {
             resposta = ResponseEntity.ok(requisicaoCertificadoServico.adicionarRequisicao(requisicaoDTO));
+        } catch (Exception e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
+    @PostMapping(path = "/rascunho", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> adicionarRequisicaoRascunho(@RequestParam(value = "usuarioId") Long usuarioId,
+                                                         @RequestParam(value = "cursoId") Long cursoId,
+                                                         @RequestParam(value = "semestre") int semestre,
+                                                         @RequestParam(value = "qtdCertificados") int qtdCertificados,
+                                                         @RequestPart(value = "certificados") MultipartFile[] certificados,
+                                                         @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados) {
+        RequisicaoRascunhoDTO requisicaoRascunhoDTO = new RequisicaoRascunhoDTO();
+        requisicaoRascunhoDTO.setSemestre(semestre);
+        requisicaoRascunhoDTO.setQtdCertificados(qtdCertificados);
+        requisicaoRascunhoDTO.setUsuarioId(usuarioId);
+        requisicaoRascunhoDTO.setCursoId(cursoId);
+        requisicaoRascunhoDTO.setCertificadoArquivos(certificados);
+        requisicaoRascunhoDTO.setCertificadosMetadados(certificadosMetadados);
+
+        ResponseEntity<?> resposta;
+        try {
+            requisicaoCertificadoServico.salvarRascunho(requisicaoRascunhoDTO);
+            resposta = ResponseEntity.ok().build();
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
