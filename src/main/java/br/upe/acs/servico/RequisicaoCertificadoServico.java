@@ -10,6 +10,7 @@ import java.util.Random;
 
 import br.upe.acs.dominio.RequisicaoRascunho;
 import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
+import br.upe.acs.dominio.vo.RascunhoVO;
 import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +55,13 @@ public class RequisicaoCertificadoServico {
         MultipartFile[] certificadoArquivosRascunho = requisicaoRascunho.getCertificadoArquivos();
         List<CertificadoDTO> certificadosRascunho = certificadosMetadados.getCertificados();
 
-       adicionarCertificadosRascunho(certificadoArquivosRascunho, certificadosRascunho, rascunhoSalvo.getId());
+        RascunhoVO rascunhoVO = new RascunhoVO();
+        rascunhoVO.setCertificadoArquivos(certificadoArquivosRascunho);
+        rascunhoVO.setCertificados(certificadosRascunho);
+        rascunhoVO.setQtdCertificados(requisicaoRascunho.getQtdCertificados());
+        rascunhoVO.setIdRequisicao(rascunhoSalvo.getId());
+
+       adicionarCertificadosRascunho(rascunhoVO);
     }
 
     public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
@@ -151,14 +158,20 @@ public class RequisicaoCertificadoServico {
         }
     }
 
-    private void adicionarCertificadosRascunho(MultipartFile[] certificadoArquivos, List<CertificadoDTO> certificados,
-                                               Long idRequisicao) throws AcsExcecao, IOException, ParseException {
+    private void adicionarCertificadosRascunho(RascunhoVO rascunho) throws AcsExcecao, IOException, ParseException {
 
-        for (int i = 0; i < certificadoArquivos.length; i++) {
+        for (int i = 0; i < rascunho.getQtdCertificados(); i++) {
 
-            MultipartFile certificadoArquivoSalvar = certificadoArquivos[i];
-            CertificadoDTO certificadoSalvar = certificados.get(i);
-            certificadoSalvar.setRequisicaoId(idRequisicao);
+            MultipartFile certificadoArquivoSalvar = null;
+            if(rascunho.getCertificadoArquivos().length >= i + 1) {
+                certificadoArquivoSalvar = rascunho.getCertificadoArquivos()[i];
+            }
+
+            CertificadoDTO certificadoSalvar = new CertificadoDTO();
+            if (rascunho.getCertificados().size() >= i + 1) {
+                certificadoSalvar = rascunho.getCertificados().get(i);
+                certificadoSalvar.setRequisicaoId(rascunho.getIdRequisicao());
+            }
 
             certificadoRascunhoServico.adicionarCertificadoRascunho(certificadoSalvar, certificadoArquivoSalvar);
         }

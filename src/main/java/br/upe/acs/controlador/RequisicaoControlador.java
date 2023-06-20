@@ -98,7 +98,7 @@ public class RequisicaoControlador {
                                                          @RequestParam(value = "cursoId") Long cursoId,
                                                          @RequestParam(value = "semestre") int semestre,
                                                          @RequestParam(value = "qtdCertificados") int qtdCertificados,
-                                                         @RequestPart(value = "certificados") MultipartFile[] certificados,
+                                                         @RequestPart(value = "certificados", required = false) MultipartFile[] certificados,
                                                          @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados) {
         RequisicaoRascunhoDTO requisicaoRascunhoDTO = new RequisicaoRascunhoDTO();
         requisicaoRascunhoDTO.setSemestre(semestre);

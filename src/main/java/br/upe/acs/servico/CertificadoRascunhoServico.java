@@ -4,6 +4,7 @@ import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.CertificadoRascunho;
 import br.upe.acs.dominio.RequisicaoRascunho;
 import br.upe.acs.dominio.dto.CertificadoDTO;
+import br.upe.acs.repositorio.AtividadeRepositorio;
 import br.upe.acs.repositorio.CertificadoRascunhoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -21,24 +22,38 @@ import java.util.Optional;
 public class CertificadoRascunhoServico {
 
     private final CertificadoRascunhoRepositorio repositorio;
-    private final AtividadeServico atividadeServico;
+    private final AtividadeRepositorio atividadeRepositorio;
     private final RequisicaoRascunhoServico requisicaoRascunhoServicoServico;
 
     public void adicionarCertificadoRascunho(CertificadoDTO certificado, MultipartFile arquivo) throws IOException, ParseException, AcsExcecao {
-        byte[] certificadoArquivo = arquivo.getBytes();
-        Optional<Atividade> atividadeSalvar = atividadeServico.buscarAtividadePorId(certificado.getAtividadeId());
         Optional<RequisicaoRascunho> requisicaoRascunhoSalvar = requisicaoRascunhoServicoServico.buscarRequisicaoRascunhoPorId(certificado.getRequisicaoId());
 
         CertificadoRascunho certificadoRascunhoSalvar = new CertificadoRascunho();
-        certificadoRascunhoSalvar.setTitulo(certificado.getTitulo());
-        certificadoRascunhoSalvar.setDescricao(certificado.getDescricao());
-        certificadoRascunhoSalvar.setData(converterParaData(certificado.getData()));
-        certificadoRascunhoSalvar.setHoras(certificado.getHoras());
-        certificadoRascunhoSalvar.setChMaxima(atividadeSalvar.orElseThrow().getChMaxima());
-        certificadoRascunhoSalvar.setCertificadoArquivo(certificadoArquivo);
-        certificadoRascunhoSalvar.setEixoAtividade(atividadeSalvar.orElseThrow().getEixo());
-        certificadoRascunhoSalvar.setDescricaoAtividade(atividadeSalvar.orElseThrow().getDescricao());
-        certificadoRascunhoSalvar.setRequisicaoRascunho(requisicaoRascunhoSalvar.orElseThrow());
+        if (certificado.getTitulo() != null) {
+            certificadoRascunhoSalvar.setTitulo(certificado.getTitulo());
+        }
+        if (certificado.getDescricao() != null) {
+            certificadoRascunhoSalvar.setDescricao(certificado.getDescricao());
+        }
+        if (certificado.getData() != null) {
+            certificadoRascunhoSalvar.setData(converterParaData(certificado.getData()));
+        }
+        if (certificado.getHoras() != null) {
+            certificadoRascunhoSalvar.setHoras(certificado.getHoras());
+        }
+        if (arquivo != null) {
+            byte[] certificadoArquivo = arquivo.getBytes();
+            certificadoRascunhoSalvar.setCertificadoArquivo(certificadoArquivo);
+        }
+        if (certificado.getAtividadeId() != null) {
+            Optional<Atividade> atividadeSalvar = atividadeRepositorio.findById(certificado.getAtividadeId());
+            if (atividadeRepositorio.findById(certificado.getAtividadeId()).isEmpty()) {
+                certificadoRascunhoSalvar.setChMaxima(atividadeSalvar.orElseThrow().getChMaxima());
+                certificadoRascunhoSalvar.setEixoAtividade(atividadeSalvar.orElseThrow().getEixo());
+                certificadoRascunhoSalvar.setDescricaoAtividade(atividadeSalvar.orElseThrow().getDescricao());
+            }
+            certificadoRascunhoSalvar.setRequisicaoRascunho(requisicaoRascunhoSalvar.orElseThrow());
+        }
 
         repositorio.save(certificadoRascunhoSalvar);
     }

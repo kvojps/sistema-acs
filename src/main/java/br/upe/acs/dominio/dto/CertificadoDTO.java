@@ -15,7 +15,7 @@ public class CertificadoDTO {
 	
 	private String data;
 	
-	private int horas;
+	private Integer horas;
 	
 	private Long atividadeId;
 	
