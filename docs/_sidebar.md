@@ -16,4 +16,5 @@
       * [2.4.1-Atividades](2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.1-Atividades/HOME)
       * [2.4.2-Classes](2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.2-Classes/HOME)
       * [2.4.3-Sequência](2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.3-Sequ%C3%AAncia/HOME)
+      * [2.4.4 Máquina de estados](2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.4%20M%C3%A1quina%20de%20estados/HOME)
   * [3. Manutenção da arquitetura](3.%20Manuten%C3%A7%C3%A3o%20da%20arquitetura/HOME)

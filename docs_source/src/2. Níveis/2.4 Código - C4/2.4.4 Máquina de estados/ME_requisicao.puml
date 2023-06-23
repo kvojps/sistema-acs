@@ -1,0 +1,15 @@
+@startuml Requisição
+
+[*] -> EmRascunho : Requisicao Criada
+EmRascunho --> EmSubmissao : Requisicao submetida
+EmSubmissao -> EmAnaliseCoordenacao : Requisicao encaminhada\npara coordenacao
+EmAnaliseCoordenacao -> EmAnaliseComissao : Enviado\npara comissao
+EmAnaliseComissao -> EmAnaliseCoordenacao : Analisado\npela comissao
+EmAnaliseCoordenacao --> EncaminhadoParaEscolaridade : AnalisadoCoordenacao
+EncaminhadoParaEscolaridade --> EmRecurso : Pedido de\ncontagem
+EmRecurso --> EmSubmissao : Revisao aprovada
+EmRecurso --> Concluido : Revisao negada
+EncaminhadoParaEscolaridade --> Concluido : Finalizado
+Concluido --> [*]
+
+@enduml
