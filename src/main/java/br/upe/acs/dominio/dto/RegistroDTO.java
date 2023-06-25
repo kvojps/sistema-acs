@@ -15,6 +15,8 @@ public class RegistroDTO {
 
 	@CPF(message = "CPF inválido!")
 	private String cpf;
+
+	private String matricula;
 	
 	private int periodo;
 	
