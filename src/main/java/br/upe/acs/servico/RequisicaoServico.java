@@ -56,7 +56,7 @@ public class RequisicaoServico {
 		Map<String, Object> resposta = new HashMap<>();
 		resposta.put("requisicoes", requisicoesConteudo);
 		resposta.put("paginaAtual", pagina.getNumber());
-		resposta.put("totalItens", pagina.getTotalElements());
+		resposta.put("totalItens", requisicoesConteudo.size());
 		resposta.put("totalPaginas", pagina.getTotalPages());
 
 		return resposta;
