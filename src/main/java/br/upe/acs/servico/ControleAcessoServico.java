@@ -49,7 +49,7 @@ public class ControleAcessoServico {
 		Aluno usuarioSalvar = new Aluno();
 		Endereco enderecoSalvo = adicionarEnderecoUsuario(registro);
 		String codigoVerificacao = gerarCodigoVerificacao();
-//		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId()).orElseThrow();
+		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId()).orElseThrow();
 
 
 		usuarioSalvar.setNomeCompleto(registro.getNomeCompleto());
@@ -62,7 +62,7 @@ public class ControleAcessoServico {
 		usuarioSalvar.setCodigoVerificacao(codigoVerificacao);
 		usuarioSalvar.setVerificado(false);
 		usuarioSalvar.setEndereco(enderecoSalvo);
-//        usuarioSalvar.setCurso(cursoSalvar);
+        usuarioSalvar.setCurso(cursoSalvar);
 
        	alunoRepositorio.save(usuarioSalvar);
 

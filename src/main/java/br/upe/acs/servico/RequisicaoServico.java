@@ -1,8 +1,8 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
+import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.Requisicao;
-import br.upe.acs.dominio.Usuario;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.Optional;
 public class RequisicaoServico {
 
 	private final RequisicaoRepositorio repositorio;
-//	private final UsuarioServico usuarioServico;
+	private final AlunoServico alunoServico;
 	
 	public List<Requisicao> listarRequisicoes() {
 		return repositorio.findAll();
@@ -35,11 +35,11 @@ public class RequisicaoServico {
 		return gerarPaginacao(requisicoesPagina);
 	}
 
-//	public List<Requisicao> listarRequisicoesPorUsuario(Long usuarioId) throws AcsExcecao {
-//		Usuario usuario = usuarioServico.buscarUsuarioPorId(usuarioId).orElseThrow();
-//
-//		return repositorio.findByUsuario(usuario);
-//	}
+	public List<Requisicao> listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
+		Aluno aluno = alunoServico.buscarAlunoPorId(alunoId).orElseThrow();
+
+		return repositorio.findByAluno(aluno);
+	}
 
 	public Optional<Requisicao> buscarRequisicaoPorId(Long id) throws AcsExcecao {
 		if (repositorio.findById(id).isEmpty()) {

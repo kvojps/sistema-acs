@@ -1,5 +1,23 @@
 package br.upe.acs.servico;
 
+import br.upe.acs.dominio.Aluno;
+import br.upe.acs.dominio.Curso;
+import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.RequisicaoRascunho;
+import br.upe.acs.dominio.dto.CertificadoDTO;
+import br.upe.acs.dominio.dto.CertificadosMetadadosDTO;
+import br.upe.acs.dominio.dto.RequisicaoDTO;
+import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
+import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
+import br.upe.acs.dominio.vo.RascunhoVO;
+import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
+import br.upe.acs.repositorio.RequisicaoRepositorio;
+import br.upe.acs.utils.AcsExcecao;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,31 +26,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import br.upe.acs.dominio.RequisicaoRascunho;
-import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
-import br.upe.acs.dominio.vo.RascunhoVO;
-import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.upe.acs.dominio.Curso;
-import br.upe.acs.dominio.Requisicao;
-import br.upe.acs.dominio.Usuario;
-import br.upe.acs.dominio.dto.CertificadoDTO;
-import br.upe.acs.dominio.dto.CertificadosMetadadosDTO;
-import br.upe.acs.dominio.dto.RequisicaoDTO;
-import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
-import br.upe.acs.repositorio.RequisicaoRepositorio;
-import br.upe.acs.utils.AcsExcecao;
-import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
 public class RequisicaoCertificadoServico {
 
-//    private final UsuarioServico usuarioServico;
+    private final AlunoServico alunoServico;
     private final CursoServico cursoServico;
     private final CertificadoServico certificadoServico;
     private final CertificadoRascunhoServico certificadoRascunhoServico;
@@ -66,7 +64,7 @@ public class RequisicaoCertificadoServico {
 
     public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
         Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).orElseThrow();
-//        Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(requisicao.getUsuarioId()).orElseThrow();
+        Aluno alunoSalvar = alunoServico.buscarAlunoPorId(requisicao.getUsuarioId()).orElseThrow();
         CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicao.getCertificadosMetadados());
 
         validarRequisicao(requisicao, certificadosMetadados.getCertificados());
@@ -76,7 +74,7 @@ public class RequisicaoCertificadoServico {
         requisicaoSalvar.setQtdCertificados(requisicao.getQtdCertificados());
         requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.ENCAMINHADO_COORDENACAO);
         requisicaoSalvar.setCurso(cursoSalvar);
-//        requisicaoSalvar.setUsuario(usuarioSalvar);
+        requisicaoSalvar.setAluno(alunoSalvar);
 
         Requisicao requisicaoSalva = repositorio.save(requisicaoSalvar);
 

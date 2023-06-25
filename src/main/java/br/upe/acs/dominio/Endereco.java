@@ -12,27 +12,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class Endereco {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String cep;
-	
+
 	private String rua;
-	
+
 	private String bairro;
-	
+
 	private String cidade;
-	
+
 	private String UF;
-	
+
 	private int numero;
-	
+
 	@OneToMany(mappedBy = "endereco")
 	private List<Aluno> alunos;
 }
+
+
+
+

@@ -21,6 +21,10 @@ public class Aluno extends Usuario {
 
     private String matricula;
 
+    private String codigoVerificacao;
+
+    private boolean verificado;
+
     @OneToMany(mappedBy = "aluno")
     private List<Requisicao> requisicoes;
 

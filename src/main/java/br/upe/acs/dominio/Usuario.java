@@ -35,10 +35,6 @@ public class Usuario implements UserDetails {
 	
 	private String senha;
 	
-	private String codigoVerificacao;
-	
-	private boolean verificado;
-	
 	@Enumerated(EnumType.STRING)
 	private PerfilEnum perfil;
 	
