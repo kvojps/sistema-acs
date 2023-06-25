@@ -22,19 +22,11 @@ public class AtividadeResposta {
 
     private final int chMaxima;
 
-    private final List<CertificadoResposta> certificados;
-
     public AtividadeResposta(Atividade atividade) {
         super();
         this.id = atividade.getId();
         this.eixo = atividade.getEixo();
         this.descricao = atividade.getDescricao();
         this.chMaxima = atividade.getChMaxima();
-        this.certificados = converterCertificados(atividade.getCertificados());
-    }
-
-    private List<CertificadoResposta> converterCertificados(List<Certificado> certificados) {
-        return certificados.stream()
-				.map(CertificadoResposta::new).collect(Collectors.toList());
     }
 }

@@ -18,6 +18,8 @@ public class AlunoResposta {
 
 	private final String cpf;
 
+	private final String matricula;
+
 	private final String telefone;
 
 	private final String email;
@@ -29,8 +31,6 @@ public class AlunoResposta {
 	private final CursoResposta curso;
 
 	private final int periodo;
-
-	private final String matricula;
 
 	private final String codigoVerificacao;
 

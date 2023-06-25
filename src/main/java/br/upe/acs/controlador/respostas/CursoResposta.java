@@ -14,17 +14,9 @@ public class CursoResposta {
 
 	private final String nome;
 
-	private final List<RequisicaoResposta> requisicoes;
-
 	public CursoResposta(Curso curso) {
 		super();
 		this.id = curso.getId();
 		this.nome = curso.getNome();
-		this.requisicoes = converterRequisicoes(curso.getRequisicoes());
-	}
-
-	private List<RequisicaoResposta> converterRequisicoes(List<Requisicao> requisicoes) {
-		return requisicoes.stream().map(RequisicaoResposta::new)
-				.collect(Collectors.toList());
 	}
 }
