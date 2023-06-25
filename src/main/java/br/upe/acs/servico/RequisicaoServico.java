@@ -21,7 +21,7 @@ import java.util.Optional;
 public class RequisicaoServico {
 
 	private final RequisicaoRepositorio repositorio;
-	private final UsuarioServico usuarioServico;
+//	private final UsuarioServico usuarioServico;
 	
 	public List<Requisicao> listarRequisicoes() {
 		return repositorio.findAll();
@@ -35,11 +35,11 @@ public class RequisicaoServico {
 		return gerarPaginacao(requisicoesPagina);
 	}
 
-	public List<Requisicao> listarRequisicoesPorUsuario(Long usuarioId) throws AcsExcecao {
-		Usuario usuario = usuarioServico.buscarUsuarioPorId(usuarioId).orElseThrow();
-
-		return repositorio.findByUsuario(usuario);
-	}
+//	public List<Requisicao> listarRequisicoesPorUsuario(Long usuarioId) throws AcsExcecao {
+//		Usuario usuario = usuarioServico.buscarUsuarioPorId(usuarioId).orElseThrow();
+//
+//		return repositorio.findByUsuario(usuario);
+//	}
 
 	public Optional<Requisicao> buscarRequisicaoPorId(Long id) throws AcsExcecao {
 		if (repositorio.findById(id).isEmpty()) {

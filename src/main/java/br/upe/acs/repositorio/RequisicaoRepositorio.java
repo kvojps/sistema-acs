@@ -8,5 +8,5 @@ import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 
 public interface RequisicaoRepositorio extends JpaRepository<Requisicao, Long> {
-	List<Requisicao> findByUsuario(Usuario usuario);
+//	List<Requisicao> findByUsuario(Usuario usuario);
 }

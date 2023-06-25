@@ -24,7 +24,7 @@ public class EnderecoResposta {
 	
 	private final int numero;
 	
-	private final List<UsuarioResposta> usuarios;
+//	private final List<UsuarioResposta> usuarios;
 
 	public EnderecoResposta(Endereco endereco) {
 		super();
@@ -35,12 +35,12 @@ public class EnderecoResposta {
 		this.cidade = endereco.getCidade();
 		UF = endereco.getUF();
 		this.numero = endereco.getNumero();
-		this.usuarios = converterUsuario(endereco.getUsuarios());
+//		this.usuarios = converterUsuario(endereco.getUsuarios());
 	}
 	
-	private List<UsuarioResposta> converterUsuario(List<Usuario> usuarios) {
-		return usuarios.stream().map(UsuarioResposta::new)
-				.collect(Collectors.toList());
-	}
+//	private List<UsuarioResposta> converterUsuario(List<Usuario> usuarios) {
+//		return usuarios.stream().map(UsuarioResposta::new)
+//				.collect(Collectors.toList());
+//	}
 	
 }

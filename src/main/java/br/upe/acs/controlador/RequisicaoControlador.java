@@ -48,13 +48,13 @@ public class RequisicaoControlador {
         return ResponseEntity.ok(servico.listarRequisicoesPaginadas(pagina, quantidade));
     }
 
-    @Operation(summary = "Listar as requisições de um usuário específico")
-    @GetMapping("/usuario/{id}")
-    public ResponseEntity<List<RequisicaoResposta>> listarRequisicoesPorUsuario(@PathVariable("id") Long usuarioId)
-            throws AcsExcecao {
-        return ResponseEntity.ok(servico.listarRequisicoesPorUsuario(usuarioId).stream()
-                .map(RequisicaoResposta::new).collect(Collectors.toList()));
-    }
+//    @Operation(summary = "Listar as requisições de um usuário específico")
+//    @GetMapping("/usuario/{id}")
+//    public ResponseEntity<List<RequisicaoResposta>> listarRequisicoesPorUsuario(@PathVariable("id") Long usuarioId)
+//            throws AcsExcecao {
+//        return ResponseEntity.ok(servico.listarRequisicoesPorUsuario(usuarioId).stream()
+//                .map(RequisicaoResposta::new).collect(Collectors.toList()));
+//    }
 
     @Operation(summary = "Buscar requisição por id")
     @GetMapping("/{id}")

@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RequisicaoCertificadoServico {
 
-    private final UsuarioServico usuarioServico;
+//    private final UsuarioServico usuarioServico;
     private final CursoServico cursoServico;
     private final CertificadoServico certificadoServico;
     private final CertificadoRascunhoServico certificadoRascunhoServico;
@@ -66,7 +66,7 @@ public class RequisicaoCertificadoServico {
 
     public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
         Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).orElseThrow();
-        Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(requisicao.getUsuarioId()).orElseThrow();
+//        Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(requisicao.getUsuarioId()).orElseThrow();
         CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicao.getCertificadosMetadados());
 
         validarRequisicao(requisicao, certificadosMetadados.getCertificados());
@@ -76,7 +76,7 @@ public class RequisicaoCertificadoServico {
         requisicaoSalvar.setQtdCertificados(requisicao.getQtdCertificados());
         requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.ENCAMINHADO_COORDENACAO);
         requisicaoSalvar.setCurso(cursoSalvar);
-        requisicaoSalvar.setUsuario(usuarioSalvar);
+//        requisicaoSalvar.setUsuario(usuarioSalvar);
 
         Requisicao requisicaoSalva = repositorio.save(requisicaoSalvar);
 

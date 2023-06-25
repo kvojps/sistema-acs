@@ -8,9 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Curso {
@@ -25,25 +27,14 @@ public class Curso {
 	private List<Requisicao> requisicoes;
 	
 	@OneToMany(mappedBy = "curso")
-	private List<Usuario> usuarios;
+	private List<Aluno> alunos;
 
-	public Long getId() {
-		return id;
-	}
+	@OneToMany(mappedBy = "curso")
+	private List<Coordenador> coordenadores;
 
-	public String getNome() {
-		return nome;
-	}
+	@OneToMany(mappedBy = "curso")
+	private List<Comissao> comissao;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public List<Requisicao> getRequisicoes() {
-		return requisicoes;
-	}
-
-	public void setRequisicoes(List<Requisicao> requisicoes) {
-		this.requisicoes = requisicoes;
-	}
+	@OneToMany(mappedBy = "curso")
+	private List<Administrador> administradores;
 }

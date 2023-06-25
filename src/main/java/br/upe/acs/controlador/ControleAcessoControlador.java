@@ -1,15 +1,5 @@
 package br.upe.acs.controlador;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import br.upe.acs.controlador.respostas.AutenticacaoResposta;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.servico.ControleAcessoServico;
@@ -17,6 +7,10 @@ import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/acesso/auth")
@@ -45,7 +39,14 @@ public class ControleAcessoControlador {
 
     @Operation(summary = "Login de usuário")
     @PostMapping("/login")
-    public ResponseEntity<AutenticacaoResposta> loginUsuario(@RequestBody LoginDTO login) {
-        return ResponseEntity.ok(servico.loginUsuario(login));
+    public ResponseEntity<?> loginUsuario(@RequestBody LoginDTO login) {
+        ResponseEntity<?> resposta;
+        try {
+            resposta = ResponseEntity.ok(servico.loginUsuario(login));
+        } catch (Exception e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
     }
 }

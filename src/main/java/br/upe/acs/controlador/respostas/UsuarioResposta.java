@@ -1,13 +1,13 @@
 package br.upe.acs.controlador.respostas;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.upe.acs.dominio.Endereco;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.enums.PerfilEnum;
 import lombok.Getter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class UsuarioResposta {
@@ -18,7 +18,7 @@ public class UsuarioResposta {
 
 	private final String cpf;
 
-	private final int periodo;
+//	private final int periodo;
 
 	private final String telefone;
 
@@ -36,14 +36,14 @@ public class UsuarioResposta {
 
 	private final CursoResposta curso;
 
-	private final List<RequisicaoResposta> requisicoes;
+//	private final List<RequisicaoResposta> requisicoes;
 
 	public UsuarioResposta(Usuario usuario) {
 		super();
 		this.id = usuario.getId();
 		this.nomeCompleto = usuario.getNomeCompleto();
 		this.cpf = usuario.getCpf();
-		this.periodo = usuario.getPeriodo();
+//		this.periodo = usuario.getPeriodo();
 		this.telefone = usuario.getTelefone();
 		this.email = usuario.getEmail();
 		this.senha = usuario.getSenha();
@@ -52,11 +52,11 @@ public class UsuarioResposta {
 		this.perfil = usuario.getPerfil();
 		this.endereco = null; // TODO
 		this.curso = new CursoResposta(usuario.getCurso());
-		this.requisicoes = converterRequisicoes(usuario.getRequisicoes());
+//		this.requisicoes = converterRequisicoes(usuario.getRequisicoes());
 	}
 
-	private List<RequisicaoResposta> converterRequisicoes(List<Requisicao> requisicoes) {
-		return requisicoes.stream().map(RequisicaoResposta::new)
-				.collect(Collectors.toList());
-	}
+//	private List<RequisicaoResposta> converterRequisicoes(List<Requisicao> requisicoes) {
+//		return requisicoes.stream().map(RequisicaoResposta::new)
+//				.collect(Collectors.toList());
+//	}
 }
