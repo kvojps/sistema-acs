@@ -1,10 +1,6 @@
 package br.upe.acs.controlador.respostas;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.upe.acs.dominio.Curso;
-import br.upe.acs.dominio.Requisicao;
 import lombok.Getter;
 
 @Getter
