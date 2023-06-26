@@ -7,7 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -23,6 +26,14 @@ public class Aluno extends Usuario {
 
     private String codigoVerificacao;
 
+    private int horasEnsino;
+
+    private int horasExtensao;
+
+    private int horasGestao;
+
+    private int horasPesquisa;
+
     private boolean verificado;
 
     @OneToMany(mappedBy = "aluno")
@@ -30,4 +41,5 @@ public class Aluno extends Usuario {
 
     @ManyToOne
     private Endereco endereco;
+
 }

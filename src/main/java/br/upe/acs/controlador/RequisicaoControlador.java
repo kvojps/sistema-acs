@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import br.upe.acs.controlador.respostas.RegistroRequisicoesResposta;
 import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,10 +51,9 @@ public class RequisicaoControlador {
 
     @Operation(summary = "Listar as requisições de um usuário específico")
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<List<RequisicaoResposta>> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId)
+    public ResponseEntity<RegistroRequisicoesResposta> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId)
             throws AcsExcecao {
-        return ResponseEntity.ok(servico.listarRequisicoesPorAluno(alunoId).stream()
-                .map(RequisicaoResposta::new).collect(Collectors.toList()));
+        return ResponseEntity.ok(new RegistroRequisicoesResposta(servico.listarRequisicoesPorAluno(alunoId)));
     }
 
     @Operation(summary = "Buscar requisição por id")
