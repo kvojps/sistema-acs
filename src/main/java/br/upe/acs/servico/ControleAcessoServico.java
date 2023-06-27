@@ -3,7 +3,7 @@ package br.upe.acs.servico;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
-import br.upe.acs.dominio.Aluno;
+import br.upe.acs.dominio.*;
 import br.upe.acs.repositorio.AdministradorRepositorio;
 import br.upe.acs.repositorio.AlunoRepositorio;
 import br.upe.acs.repositorio.ComissaoRepositorio;
@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.AutenticacaoResposta;
-import br.upe.acs.dominio.Curso;
-import br.upe.acs.dominio.Endereco;
-import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.dto.EmailDTO;
 import br.upe.acs.dominio.dto.EnderecoDTO;
 import br.upe.acs.dominio.dto.LoginDTO;
@@ -90,6 +87,30 @@ public class ControleAcessoServico {
 
 		return gerarAutenticacaoResposta(usuario);
     }
+
+	public void alterarSenha(String token, String senha, String novaSenha) throws AcsExcecao {
+//        TODO
+		validarSenha(novaSenha);
+		String email = jwtService.extractUsername(token);
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
+		if (alunoRepositorio.findByEmail(email).isPresent()) {
+			Aluno usuario = alunoRepositorio.findByEmail(email).orElseThrow();
+			usuario.setSenha(passwordEncoder.encode(novaSenha));
+			alunoRepositorio.save(usuario);
+		} else if (comissaoRepositorio.findByEmail(email).isPresent()) {
+			Comissao usuario = comissaoRepositorio.findByEmail(email).orElseThrow();
+			usuario.setSenha(passwordEncoder.encode(novaSenha));
+			comissaoRepositorio.save(usuario);
+		} else if (coordenadorRepositorio.findByEmail(email).isPresent()) {
+			Coordenador usuario = coordenadorRepositorio.findByEmail(email).orElseThrow();
+			usuario.setSenha(passwordEncoder.encode(novaSenha));
+			coordenadorRepositorio.save(usuario);
+		} else if (administradorRepositorio.findByEmail(email).isPresent()) {
+			Administrador usuario = administradorRepositorio.findByEmail(email).orElseThrow();
+			usuario.setSenha(passwordEncoder.encode(novaSenha));
+			administradorRepositorio.save(usuario);
+		}
+	}
 
 	private void verificarDadosUnicos(String email, String cpf) throws AcsExcecao {
 		String mensagem = "";
