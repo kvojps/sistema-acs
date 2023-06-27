@@ -51,9 +51,12 @@ public class RequisicaoControlador {
 
     @Operation(summary = "Listar as requisições de um usuário específico")
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<RegistroRequisicoesResposta> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId)
-            throws AcsExcecao {
-        return ResponseEntity.ok(new RegistroRequisicoesResposta(servico.listarRequisicoesPorAluno(alunoId)));
+    public ResponseEntity<?> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId) {
+        try {
+            return ResponseEntity.ok(new RegistroRequisicoesResposta(servico.listarRequisicoesPorAluno(alunoId)));
+        } catch (AcsExcecao e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @Operation(summary = "Buscar requisição por id")
