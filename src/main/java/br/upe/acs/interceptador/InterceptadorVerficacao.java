@@ -24,7 +24,7 @@ public class InterceptadorVerficacao implements HandlerInterceptor {
         final String token = request.getHeader("Authorization").substring(7);
         final String email = jwtService.extractUsername(token);
         Optional<Aluno> aluno = alunoRepositorio.findByEmail(email);
-        if (aluno.isPresent()) {
+        if (aluno.isPresent() && !aluno.get().isVerificado()) {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.setStatus(403);
@@ -33,7 +33,7 @@ public class InterceptadorVerficacao implements HandlerInterceptor {
                         "mensagem": "Usuário não verificado"
                     }
                     """);
-            return aluno.orElseThrow().isVerificado();
+            return false;
         }
         return true;
     }
