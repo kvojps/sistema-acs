@@ -5,11 +5,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -19,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.dto.RequisicaoDTO;
 import br.upe.acs.servico.RequisicaoCertificadoServico;
+import br.upe.acs.servico.RequisicaoRascunhoServico;
 import br.upe.acs.servico.RequisicaoServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +38,8 @@ public class RequisicaoControlador {
     private final RequisicaoServico servico;
 
     private final RequisicaoCertificadoServico requisicaoCertificadoServico;
+    
+    private final RequisicaoRascunhoServico requisicaoRascunhoServico;
 
     @Operation(summary = "Listar todas as requisições")
     @GetMapping
@@ -117,5 +124,20 @@ public class RequisicaoControlador {
         }
 
         return resposta;
+    }
+    
+    @DeleteMapping("/rascunho/{id}")
+    public ResponseEntity<?> deletarRequisicaoRascunho(@PathVariable("id") Long id, 
+    												   @RequestHeader(name = "Authorization", required = true) String token){
+    	ResponseEntity<?> resposta;
+    	String jwt =  token.substring(7);
+    	try {
+    		requisicaoRascunhoServico.deletarRequisicaoRascunho(id,jwt);
+    		resposta = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    	} catch(Exception e) {
+    		resposta = ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    	}
+    	
+    	return resposta;
     }
 }
