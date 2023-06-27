@@ -1,6 +1,7 @@
 package br.upe.acs.config;
 
 import br.upe.acs.dominio.Usuario;
+import br.upe.acs.interceptador.InterceptadorVerficacao;
 import br.upe.acs.repositorio.AdministradorRepositorio;
 import br.upe.acs.repositorio.AlunoRepositorio;
 import br.upe.acs.repositorio.ComissaoRepositorio;
