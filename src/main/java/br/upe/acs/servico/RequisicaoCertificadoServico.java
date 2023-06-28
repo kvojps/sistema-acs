@@ -37,7 +37,7 @@ public class RequisicaoCertificadoServico {
     private final AtividadeServico atividadeServico;
     private final RequisicaoRepositorio repositorio;
     private final RequisicaoRascunhoRepositorio rascunhoRepositorio;
-
+    
     public void salvarRascunho(RequisicaoRascunhoDTO requisicaoRascunho) throws AcsExcecao, IOException, ParseException {
         CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicaoRascunho.getCertificadosMetadados());
 
@@ -60,7 +60,7 @@ public class RequisicaoCertificadoServico {
         rascunhoVO.setIdRequisicao(rascunhoSalvo.getId());
 
        adicionarCertificadosRascunho(rascunhoVO);
-    }
+    }    
 
     public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
         Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).orElseThrow();

@@ -126,18 +126,21 @@ public class RequisicaoControlador {
         return resposta;
     }
     
+    @Operation(summary = "Deletar rascunho de uma requisição")
     @DeleteMapping("/rascunho/{id}")
     public ResponseEntity<?> deletarRequisicaoRascunho(@PathVariable("id") Long id, 
     												   @RequestHeader(name = "Authorization", required = true) String token){
     	ResponseEntity<?> resposta;
     	String jwt =  token.substring(7);
     	try {
-    		requisicaoRascunhoServico.deletarRequisicaoRascunho(id,jwt);
+    		requisicaoRascunhoServico.deletarRequisicaoRascunho(id, jwt);
     		resposta = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    		
     	} catch(Exception e) {
     		resposta = ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     	}
     	
     	return resposta;
     }
+    
 }
