@@ -5,11 +5,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -22,6 +26,7 @@ import br.upe.acs.servico.RequisicaoCertificadoServico;
 import br.upe.acs.servico.RequisicaoServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -118,4 +123,36 @@ public class RequisicaoControlador {
 
         return resposta;
     }
+    
+    @Operation(summary = "Editar rascunho da requisição com certificados")
+    @PutMapping(path = "rascunho/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> editarRequisicaoRascunho(HttpServletRequest request, 
+    												 @PathVariable ("id") Long id,	
+											          @RequestParam(value = "cursoId") Long cursoId,
+											          @RequestParam(value = "semestre") int semestre,
+											          @RequestParam(value = "qtdCertificados") int qtdCertificados,
+											          @RequestPart(value = "certificados", required = false) MultipartFile[] certificados,
+											          @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados){
+       
+    	RequisicaoRascunhoDTO requisicaoRascunhoDTO = new RequisicaoRascunhoDTO();
+        requisicaoRascunhoDTO.setSemestre(semestre);
+        requisicaoRascunhoDTO.setQtdCertificados(qtdCertificados);
+        requisicaoRascunhoDTO.setCursoId(cursoId);
+        requisicaoRascunhoDTO.setCertificadoArquivos(certificados);
+        requisicaoRascunhoDTO.setCertificadosMetadados(certificadosMetadados);
+        
+        
+    	ResponseEntity<?> resposta;
+    	String token = request.getHeader("Authorization").substring(7);
+    	try {
+    		requisicaoCertificadoServico.editarRequisicaoRascunho(id, token, requisicaoRascunhoDTO);
+    		resposta = ResponseEntity.ok().build();    		
+    	} catch(Exception e) {
+    		resposta = ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    	}
+    	
+    	return resposta;
+    }
+    
+    
 }
