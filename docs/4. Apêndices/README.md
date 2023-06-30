@@ -1,9 +1,9 @@
-# 1. Requisitos
+# 4. Apêndices
 
-`/1. Requisitos`
+`/4. Apêndices`
 
 * [Sistema ACS | Docs](../README.md)
-  * [**1. Requisitos**](../1.%20Requisitos/README.md)
+  * [1. Requisitos](../1.%20Requisitos/README.md)
     * [1.1 Requisitos do Sistema](../1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/README.md)
       * [1.1.1 Usuário geral](../1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.1%20Usu%C3%A1rio%20geral/README.md)
       * [1.1.2 Aluno](../1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.2%20Aluno/README.md)
@@ -26,13 +26,11 @@
       * [2.4.4 Máquina de estados](../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.4%20M%C3%A1quina%20de%20estados/README.md)
       * [2.4.5 Sequência](../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.5%20Sequ%C3%AAncia/README.md)
   * [3. Manutenção da arquitetura](../3.%20Manuten%C3%A7%C3%A3o%20da%20arquitetura/README.md)
-  * [4. Apêndices](../4.%20Ap%C3%AAndices/README.md)
+  * [**4. Apêndices**](../4.%20Ap%C3%AAndices/README.md)
     * [4.1 Reuniões](../4.%20Ap%C3%AAndices/4.1%20Reuni%C3%B5es/README.md)
 
 ---
 
-Os requisitos do sistema são descrições das funcionalidades e características que um sistema de software deve possuir para atender às necessidades dos usuários, clientes e outras partes interessadas. Eles definem o que o sistema deve fazer e como ele deve se comportar em diferentes cenários. Os requisitos do sistema podem incluir funcionalidades específicas, desempenho esperado, restrições de tempo real, interfaces com outros sistemas, segurança, usabilidade e muito mais. Eles são geralmente capturados em documentos formais, como a especificação de requisitos do sistema.
+Esta seção de apêndice contém recursos suplementares que complementam e aprofundam o conteúdo principal deste documento. Os materiais apresentados aqui são de natureza opcional e podem fornecer informações adicionais relevantes para os leitores interessados em explorar tópicos específicos em maior detalhe.
 
-Por outro lado, os requisitos arquiteturais se concentram na estrutura e organização do sistema de software. Eles definem a arquitetura geral do sistema, incluindo a divisão em componentes, a interação entre esses componentes e as restrições arquiteturais que devem ser atendidas. Os requisitos arquiteturais são normalmente derivados dos requisitos do sistema, mas com foco na estrutura do sistema em vez das funcionalidades específicas. Eles podem incluir aspectos como a distribuição de componentes em diferentes servidores, a escalabilidade do sistema, a integração com sistemas externos, a modularidade da arquitetura, a segurança da informação e outros.
-
-Os requisitos do sistema e os requisitos arquiteturais são interdependentes e influenciam-se mutuamente. Os requisitos do sistema fornecem a base para a definição da arquitetura do sistema, enquanto os requisitos arquiteturais ajudam a garantir que o sistema atenda aos requisitos funcionais e não funcionais de maneira adequada. Ambos os tipos de requisitos são importantes para o sucesso de um projeto de software, pois ajudam a guiar o processo de desenvolvimento, fornecendo direção e critérios para avaliar a qualidade e a adequação do sistema final.
+A inclusão deste apêndice tem o objetivo de fornecer aos leitores acesso a recursos adicionais que podem enriquecer sua compreensão e aprofundar seus conhecimentos sobre o projeto. Cabe ao leitor decidir se deseja explorar esses materiais complementares para uma visão mais abrangente do conteúdo apresentado.

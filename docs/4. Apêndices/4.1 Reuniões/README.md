@@ -1,6 +1,6 @@
-# 2.4 Código - C4
+# 4.1 Reuniões
 
-`/2. Níveis/2.4 Código - C4`
+`/4. Apêndices/4.1 Reuniões`
 
 * [Sistema ACS | Docs](../../README.md)
   * [1. Requisitos](../../1.%20Requisitos/README.md)
@@ -15,7 +15,7 @@
     * [2.2 Container - C2](../../2.%20N%C3%ADveis/2.2%20Container%20-%20C2/README.md)
     * [2.3 Componente - C3](../../2.%20N%C3%ADveis/2.3%20Componente%20-%20C3/README.md)
       * [2.3.1 Back](../../2.%20N%C3%ADveis/2.3%20Componente%20-%20C3/2.3.1%20Back/README.md)
-    * [**2.4 Código - C4**](../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/README.md)
+    * [2.4 Código - C4](../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/README.md)
       * [2.4.1 Casos de uso](../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.1%20Casos%20de%20uso/README.md)
         * [2.4.1 Usuário geral](../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.1%20Casos%20de%20uso/2.4.1%20Usu%C3%A1rio%20geral/README.md)
         * [2.4.2 Aluno](../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.1%20Casos%20de%20uso/2.4.2%20Aluno/README.md)
@@ -27,10 +27,22 @@
       * [2.4.5 Sequência](../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.5%20Sequ%C3%AAncia/README.md)
   * [3. Manutenção da arquitetura](../../3.%20Manuten%C3%A7%C3%A3o%20da%20arquitetura/README.md)
   * [4. Apêndices](../../4.%20Ap%C3%AAndices/README.md)
-    * [4.1 Reuniões](../../4.%20Ap%C3%AAndices/4.1%20Reuni%C3%B5es/README.md)
+    * [**4.1 Reuniões**](../../4.%20Ap%C3%AAndices/4.1%20Reuni%C3%B5es/README.md)
 
 ---
 
-O nível de código no C4 Model tem como objetivo principal representar a implementação detalhada dos componentes de software em um sistema. Ela está relacionada à perspectiva de implementação técnica do sistema, mostrando como o código é organizado, estruturado e interage entre si. Permite aos desenvolvedores e engenheiros de software entenderem a estrutura interna dos componentes, como classes, métodos, interfaces e relacionamentos, além de possibilitar a análise das dependências entre eles.
+Nesta página, você encontrará as atas que registram as reuniões entre a equipe de desenvolvimento de software e nossos clientes. Essas atas são um registro detalhado das discussões, decisões e tópicos abordados durante cada encontro. Além disso, as atas também incluem a lista dos participantes presentes, permitindo uma visão clara de quem esteve envolvido em cada reunião.
 
-Este nível fornece informações cruciais sobre como o sistema está sendo implementado em termos de código. Ela ajuda a garantir a consistência e a clareza na implementação, permitindo uma compreensão detalhada da estrutura e do funcionamento interno dos componentes de software. Ao visualizar a camada de código, os desenvolvedores podem identificar padrões de design, resolver problemas de implementação, entender a lógica de negócio e realizar melhorias no código existente. Além disso, ela pode servir como uma referência valiosa para a manutenção, depuração e evolução do sistema ao longo do tempo.
+Além das discussões e participantes, as atas também fornecem informações sobre os pontos de entrega acordados para as próximas sprints. Esses pontos de entrega são os objetivos e metas estabelecidos para o desenvolvimento do projeto, delineando as tarefas a serem concluídas e os resultados esperados ao final de cada sprint.
+
+Em resumo, esta página serve como um repositório centralizado de informações das reuniões entre a equipe de desenvolvimento de software e os clientes. Aqui você encontrará atas detalhadas das discussões, lista de participantes e os pontos de entrega definidos para guiar o progresso do projeto nas próximas sprints.
+
+[Ata 01: 08-06-2023](https://docs.google.com/document/d/1EkaMxbGLnxatYoRL-bTcHPWb2NKSnkKPGaSHJXCgOZU/edit?usp=sharing)
+[Ata 02: 12-06-2023](https://docs.google.com/document/d/1KW0mvg3e_g0mTcsuIakc1d7ErvuEq4hZ9_BpoxdfHKs/edit?usp=sharing)
+[Ata 03: 15-06-2023 e 16-06-2023](https://docs.google.com/document/d/1CWM3oMtQYIVZUuik1XLoGnuH8945taNt8wncCRAe9RU/edit?usp=sharing)
+[Ata 04: 17-06-2023](https://docs.google.com/document/d/1pHxhQv7OuLunAYteSInY7sv0v7uTOupfKsosY3A67-0/edit?usp=sharing)
+[Ata 05: 19-06-2023](https://docs.google.com/document/d/1Y7nvqB4BKssAm-0sel3OAzUqF4pfvwFS3lVNApff_ew/edit?usp=sharing)
+[Ata 06: 20-06-2023](https://docs.google.com/document/d/14ZIb3yIG6kb0tQF9jJmvQvRMgFN7_lJ23guPwy5ohqU/edit?usp=sharing)
+[Ata 07: 21-06-2023](https://docs.google.com/document/d/1VD8Ir_C8a5uYLUTpSmvpOYYw5qM7rMNSn4oE_xIFgp4/edit?usp=sharing)
+[Ata 08: 23-06-2023](https://docs.google.com/document/d/12lzIsKb-IcP_TGSF40qczBYgbtbNe7JigDY7YoWvnLo/edit?usp=sharing)
+[Ata 09: 27-06-2023](https://docs.google.com/document/d/1t2qMhog9ZPlt14Dh5Ysf5Ar0ugI32lBdnUgqaNs_Epc/edit?usp=sharing)
