@@ -1,4 +1,4 @@
-# 1.2 Casos de uso
+# 2.4.1-Casos de uso
 
 Os casos de uso são utilizados para capturar os requisitos funcionais do sistema, ou seja, referem-se a serviços, tarefas ou funcionalidades identificados como necessários ao software e que podem ser utilizados de alguma maneira pelos atores que interagem com o sistema. Assim, casos de uso expressam e documentam os comportamentos pretendidos para as funções do software.
 
