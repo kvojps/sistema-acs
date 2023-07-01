@@ -6,6 +6,7 @@ import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,11 @@ public class UsuarioControlador {
         String token = request.getHeader("Authorization").substring(7);
         try {
             var usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).orElseThrow());
-            resposta = ResponseEntity.ok(usuarioResposta);
+            if (!usuarioResposta.isVerificado()) {
+                resposta = new ResponseEntity<>("Usuário não verificado.", HttpStatus.FORBIDDEN);
+            } else {
+                resposta = ResponseEntity.ok(usuarioResposta);
+            }
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
