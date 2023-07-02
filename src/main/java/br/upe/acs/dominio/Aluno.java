@@ -8,7 +8,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import br.upe.acs.dominio.enums.PerfilEnum;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -29,5 +35,10 @@ public class Aluno extends Usuario {
     private List<Requisicao> requisicoes;
 
     @ManyToOne
-    private Endereco endereco;
+    private Endereco endereco; 
+    
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(PerfilEnum.USUARIO.name()));
+	}
 }
