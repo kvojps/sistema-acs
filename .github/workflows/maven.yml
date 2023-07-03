@@ -45,9 +45,9 @@ jobs:
     - name: Build with Maven
       run: mvn package
       env:
-        JDBC_DATABASE_URL: ${{  secrets.DATABASE_URL }}
-        JDBC_DATABASE_USERNAME: ${{  secrets.DATABASE_USERNAME }}
-        JDBC_DATABASE_PASSWORD: ${{  secrets.DATABASE_PASSWORD }}
+        DATABASE_URL: ${{  secrets.DATABASE_URL }}
+        DATABASE_USERNAME: ${{  secrets.DATABASE_USERNAME }}
+        DATABASE_PASSWORD: ${{  secrets.DATABASE_PASSWORD }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
