@@ -46,7 +46,7 @@ jobs:
       run: mvn package
       env:
         DATABASE_URL: ${{  secrets.DATABASE_URL }}
-        DATABASE_USER: ${{  secrets.DATABASE_USERNAME }}
+        DATABASE_USER: ${{  secrets.DATABASE_USER }}
         DATABASE_PASSWORD: ${{  secrets.DATABASE_PASSWORD }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
