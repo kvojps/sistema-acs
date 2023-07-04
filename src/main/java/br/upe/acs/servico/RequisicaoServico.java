@@ -3,6 +3,7 @@ package br.upe.acs.servico;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.vo.RegistroRequisicoesVO;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,16 @@ public class RequisicaoServico {
 		return gerarPaginacao(requisicoesPagina);
 	}
 
-	public List<Requisicao> listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
+	public RegistroRequisicoesVO listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
 		Aluno aluno = alunoServico.buscarAlunoPorId(alunoId).orElseThrow();
-
-		return repositorio.findByAluno(aluno);
+		RegistroRequisicoesVO registroRequisicoesVO = new RegistroRequisicoesVO();
+		registroRequisicoesVO.setHorasEnsino(aluno.getHorasEnsino());
+		registroRequisicoesVO.setHorasExtensao(aluno.getHorasExtensao());
+		registroRequisicoesVO.setHorasGestao(aluno.getHorasGestao());
+		registroRequisicoesVO.setHorasPesquisa(aluno.getHorasPesquisa());
+		registroRequisicoesVO.setHorasTotaisCurso(aluno.getCurso().getHorasComplementares());
+		registroRequisicoesVO.setRequisicoes(aluno.getRequisicoes());
+		return registroRequisicoesVO;
 	}
 
 	public Optional<Requisicao> buscarRequisicaoPorId(Long id) throws AcsExcecao {
