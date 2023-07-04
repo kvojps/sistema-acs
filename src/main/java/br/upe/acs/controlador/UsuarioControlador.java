@@ -1,6 +1,8 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.controlador.respostas.UsuarioResposta;
+import br.upe.acs.dominio.dto.AlterarSenhaDTO;
+import br.upe.acs.servico.ControleAcessoServico;
 import br.upe.acs.servico.UsuarioServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @CrossOrigin
 public class UsuarioControlador {
+
     private final UsuarioServico servico;
+
+    private final ControleAcessoServico controleAcessoServico;
 
     @Operation(summary = "Retornar dados de perfil do usuário")
     @GetMapping("/me")
@@ -46,6 +51,24 @@ public class UsuarioControlador {
         ResponseEntity<?> resposta;
         try {
             resposta = ResponseEntity.ok(servico.verificarUsuario(id, codigo));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
+    @Operation(summary = "Alterar senha do usuário")
+    @PatchMapping
+    public ResponseEntity<?> alterarSenha(
+            HttpServletRequest request,
+            @RequestBody AlterarSenhaDTO alterarSenhaDTO
+            ) {
+        String token = request.getHeader("Authorization").substring(7);
+        ResponseEntity<?> resposta;
+        try {
+            controleAcessoServico.alterarSenha(token, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
+            resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
