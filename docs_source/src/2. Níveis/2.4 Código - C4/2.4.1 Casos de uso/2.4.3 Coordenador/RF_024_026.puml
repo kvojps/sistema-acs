@@ -12,8 +12,8 @@ rectangle "RF 024/026"
 coordenador --> enviar_requisicoes_comissao
 coordenador --> rejeitar_avaliacao_requisicao
 sistema -right-->(enviar_email_comissao)
-rejeitar_avaliacao_requisicao ..> solicitar_reavaliacao_requisicao #text:blue : <<include>>  
-enviar_requisicoes_comissao ..> enviar_email_comissao #text:blue : <<include>>  
-rejeitar_avaliacao_requisicao ..> enviar_email_comissao #text:blue : <<include>>  
+rejeitar_avaliacao_requisicao ..> solicitar_reavaliacao_requisicao #line:gray;text:blue : <<include>>  
+enviar_requisicoes_comissao ..> enviar_email_comissao #line:gray;text:blue : <<include>>  
+rejeitar_avaliacao_requisicao ..> enviar_email_comissao #line:gray;text:blue : <<include>>  
 
 @enduml

@@ -1,8 +1,8 @@
 @startuml comissao
 skinparam actorStyle awesome
 !theme spacelab 
-:comissão: as comissao #text:Blue
-:sistema: as sistema #text:Blue
+:comissão: as comissao #text:blue
+:sistema: as sistema #text:blue
 
 rectangle "RF024/025/026"
 
@@ -15,9 +15,9 @@ rectangle "RF024/025/026"
 
 comissao --> consultar
 comissao --> validar
-validar ..> avaliar_ac #text:blue : <<include>>
+validar ..> avaliar_ac #line:gray;text:blue : <<include>>
 sistema --> enviar_email 
-consultar <.. buscar #text:Blue : <<extend>>
-validar ..>enviar_email #text:blue : <<include>>
+consultar <.. buscar #line:gray;text:blue : <<extend>>
+validar ..>enviar_email #line:gray;text:blue : <<include>>
 
 @enduml

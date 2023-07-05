@@ -18,23 +18,23 @@ rectangle " RF 017/018/019"
 (Ordem alfabética) as ordem_alfabetica
 (Período) as periodo
 
-(Acessar requisições) as acessar_requisicoes
+(Detalhar requisição) as acessar_requisicoes
 
 
 coordenador -left--> visualizar_requisicoes
 coordenador -down--> filtrar_requisicoes
 coordenador -right--> ordenar_requisicoes
 coordenador --> acessar_requisicoes
-filtrar_requisicoes <.. status  #text:blue : <<extend>>
-filtrar_requisicoes <.. cpf  #text:blue : <<extend>>
-filtrar_requisicoes <.. nome_aluno  #text:blue : <<extend>>
-filtrar_requisicoes <.. matricula  #text:blue : <<extend>>
-filtrar_requisicoes <.. id  #text:blue : <<extend>>
-filtrar_requisicoes <.. token  #text:blue : <<extend>>
-filtrar_requisicoes <.. data_submissao #text:blue : <<extend>>
-filtrar_requisicoes <.. periodo  #text:blue : <<extend>>
-ordenar_requisicoes <.. periodo  #text:blue : <<extend>>
-ordenar_requisicoes <...data_submissao #text:blue : <<extend>>
-ordenar_requisicoes <.. ordem_alfabetica #text:blue : <<extend>>
+filtrar_requisicoes <.. status  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. cpf  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. nome_aluno  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. matricula  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. id  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. token  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. data_submissao #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. periodo  #line:gray;text:blue : <<extend>>
+ordenar_requisicoes <.. periodo  #line:gray;text:blue : <<extend>>
+ordenar_requisicoes <...data_submissao #line:gray;text:blue : <<extend>>
+ordenar_requisicoes <.. ordem_alfabetica #line:gray;text:blue : <<extend>>
 
 @enduml

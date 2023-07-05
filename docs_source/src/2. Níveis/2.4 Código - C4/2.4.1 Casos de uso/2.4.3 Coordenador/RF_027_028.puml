@@ -6,14 +6,17 @@ rectangle "RF 027/028"
 :Sistema: as sistema #text:blue
 
 (Ratificar requisição) as ratificar_requisicao
-(Assinar digitalmente a requisição) as assinar_requisicao
-(Encaminhar requisição para a escolaridade) as encaminhar_requisicao
+(Assinar digitalmente\na requisição) as assinar_requisicao
+(Encaminhar requisição\npara a escolaridade) as encaminhar_requisicao
 (Alterar status da requisição) as alterar_status_requisicao
+(Notificar atores por e-mail) as notificar_atores
 
 
-coordenador --> assinar_requisicao
+coordenador --> ratificar_requisicao
+ratificar_requisicao  ..> assinar_requisicao  #line:gray;text:blue : <<include>>
+ratificar_requisicao ..> encaminhar_requisicao #line:gray;text:blue : <<include>>  
+encaminhar_requisicao ..> alterar_status_requisicao #line:gray;text:blue : <<include>> 
+encaminhar_requisicao ..> notificar_atores #line:gray;text:blue : <<include>>   
 sistema --> alterar_status_requisicao
-assinar_requisicao ..> ratificar_requisicao #text:blue : <<include>>
-ratificar_requisicao ..> encaminhar_requisicao #text:blue : <<include>>  
-encaminhar_requisicao ..> alterar_status_requisicao #text:blue : <<include>>  
+sistema --> notificar_atores
 @enduml
