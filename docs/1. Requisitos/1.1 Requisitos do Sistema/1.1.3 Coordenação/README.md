@@ -32,74 +32,124 @@
 
 ---
 
-O coordenador é responsável pelo gerenciamento das requisições. Ele é o primeiro a receber as requisições e realiza validações iniciais, tendo autoridade para indeferir uma requisição sem envolvê-la com a comissão responsável. Somente um usuário com esse perfil possui a autoridade para concluir o fluxo da requisição.
+O coordenador é responsável pelo gerenciamento das requisições. Ele é o primeiro a receber as requisições e realiza validações iniciais, tendo autoridade para indeferir uma requisição sem envolvê-la com a comissão responsável. Somente um coordenador com esse perfil possui a autoridade para concluir o fluxo da requisição.
 
-| RF 017 - Solicitar permissões de coordenação                                                                                                                                      |
+| RF 017 - Visualizar as requisições recebidas.                                                                                                                                    |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Descrição:** O usuário pode solicitar ao administrador o perfil de coordenação, é necessário validar se o usuário é docente e faz parte da coordenação de um determinado curso. |
-| **Atores:** Usuário geral.                                                                                                                                                        |
-| **Prioridade:** Média.                                                                                                                                                            |
-| **Entrada:** O usuário deve enviar alguma documentação que confirme a veracidade da sua posição.                                                                                  |
-| **Pré-condições:** O usuário deve estar logado no sistema.                                                                                                                        |
-| **Saída:** Confirmação da solicitação de autorização.                                                                                                                             |
-| **Pós-condições:** O usuário deve receber por e-mail um retorno sobre a sua solicitação.                                                                                          |
-
-| RF 018 - Consultar lista de requisições                                                                                                                                                                                                                                          |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Descrição:** O coordenador deve ser capaz de visualizar a lista de requisições encaminhadas para a coordenação e comissão do seu respectivo curso. Também deve ser possível filtrar as requisições por campos de interesse, como data, semestre, status da requisição e aluno. |
-| **Atores:** Coordenador.                                                                                                                                                                                                                                                         |
-| **Prioridade:** Média.                                                                                                                                                                                                                                                           |
-| **Entrada:** Nenhuma.                                                                                                                                                                                                                                                            |
-| **Pré-condições:** O usuário deve estar logado.                                                                                                                                                                                                                                  |
-| **Saída:** Não possui saídas.                                                                                                                                                                                                                                                    |
-| **Pós-condições:** Caso selecione alguma requisição, o usuário é redirecionado para tela de requisição selecionada.                                                                                                                                                              |
-
-| RF 019 - Encaminhar requisição para a comissão                                                                                                             |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Descrição:** O coordenador deve ser capaz de encaminhar a requisição para a comissão do seu curso.                                                       |
-| **Atores:** Coordenador.                                                                                                                                   |
-| **Prioridade:** Alta.                                                                                                                                      |
-| **Entrada:** Não possui entradas.                                                                                                                          |
-| **Pré-condições:** O usuário deve estar logado.                                                                                                            |
-| **Saída:** Confirmação de encaminhamento de requisição.                                                                                                    |
-| **Pós-condições:** O coordenador recebe uma mensagem informando que a requisição foi encaminhada com sucesso e a comissão recebe por e-mail a notificação. |
-
-| RF 020 - Assinar documento requisição                                                                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Descrição:** Antes de deferir ou indeferir uma requisição, o coordenador deve ser capaz de baixar o documento da requisição em sua máquina e submetê-lo assinado ao sistema. |
-| **Atores:** Coordenador.                                                                                                                                                       |
+| **Descrição:** O coordenador deve ser capaz visualizar todas as solicitações submetidas pelos alunos do seu respectivo curso. Também deve ser possível filtrar as solicitações com base em critérios como status , data de submissão,  período,  nome do aluno, número de matrícula e CPF. Além disso, deve ter a opção de ordenar as requisições por diferentes campos, como data de submissão crescente ou decrescente, ordem alfabética e período. |
+| **Atores:** Coordenador.                                                                                                                                                |
 | **Prioridade:** Alta.                                                                                                                                                          |
-| **Entrada:** O usuário deve submeter o documento assinado.                                                                                                                     |
-| **Pré-condições:** O usuário deve estar logado e selecionar a opção de fazer download do arquivo em PDF, assiná-lo e realizar a submissão.                                     |
-| **Saída:** Confirmação de submissão do documento assinado.                                                                                                                     |
-| **Pós-condições:** O coordenador recebe uma mensagem informando que a requisição foi assinada com sucesso.                                                                     |
+| **Entrada:** O coordenador pode inserir filtros para especificar sua busca.                                                                                  |
+| **Pré-condições:** O coordenador deve estar logado.                                                                                                                      |
+| **Saída:** Exibição da lista de requisições.                                                                                                                             |
+| **Pós-condições:** Nenhuma.                                                                                          |
 
-| RF 021 - Ratificar requisição                                                                                                      |
+| RF 018 - Detalhar uma requisição                                                                                                                                                                                                                                         |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Descrição:** O coordenador deve ser capaz de acessar informações detalhadas sobre uma requisição específica de um determinado aluno. |
+| **Atores:** Coordenador.                                                                                                                                                                                                                                                         |
+| **Prioridade:** Alta.                                                                                                                                                                                                                                                         |
+| **Entrada:** O coordenador deve selecionar uma requisição.                                                                                                                                                                                                                                                            |
+| **Pré-condições:** O coordenador deve estar logado.                                                                                                                                                                                                                                  |
+| **Saída:**   O coordenador é redirecionado para tela da requisição em específico.                                                                                                                                                                                                                                                    |
+| **Pós-condições:** Nenhuma.                                                                                                                                                              |
+
+| RF 019 - Buscar requisição por id ou token.                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Descrição:** O coordenador deve ser capaz de buscar uma requisição por id ou token (identificadores únicos).                                                     |
+| **Atores:** Coordenador.                                                                                                                                   |
+| **Prioridade:** Média.                                                                                                                                      |
+| **Entrada:** O coordenador deve inserir o id ou token da requisição.                                                                                                                          |
+| **Pré-condições:** O coordenador deve estar logado.                                                                                                            |
+| **Saída:** O coordenador é redirecionado para tela da requisição em específico.                                                                                                    |
+| **Pós-condições:** Nenhuma. |
+
+| RF 020 - Pesquisar informações do aluno.                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Descrição:** O coordenador deve ser capaz de pesquisar e acessar as informações específicas de um aluno registrado no sistema. Vale ressaltar que, o histórico de atividades complementares está incluso nestas informações. |
+| **Atores:** Coordenador.                                                                                                                                                       |
+| **Prioridade:** Média.                                                                                                                                                          |
+| **Entrada:** O coordenador deve inserir as informações do aluno.                                                                                                                     |
+| **Pré-condições:** O coordenador deve estar logado.                                    |
+| **Saída:** O coordenador é redirecionado para a tela com informações do aluno.                                                                                                                    |
+| **Pós-condições:** Nenhuma.                                                                    |
+
+| RF 021 - Visualizar histórico de atividades complementares da turma.                                                                                                     |
 | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **Descrição:** O coordenador deve ser capaz de finalizar o fluxo da requisição, deferindo-a ou indeferindo-a.                      |
+| **Descrição:** O coordenador deve ser capaz de visualizar o histórico completo das atividades complementares de uma turma específica.                   |
 | **Atores:** Coordenador                                                                                                            |
-| **Prioridade:** Alta                                                                                                               |
+| **Prioridade:** Média.                                                                                                             |
 | **Entrada:** Nenhuma                                                                                                               |
-| **Pré-condições:** O usuário deve estar logado e, em casos de aprovação, a requisição deve ter passado pela comissão.              |
-| **Saída:** Confirmação da ratificação da requisição                                                                                |
-| **Pós-condições:** O coordenador recebe uma mensagem informando que a requisição foi ratificada e encaminhada para a escolaridade. |
+| **Pré-condições:** O coordenador deve estar logado.              |
+| **Saída:** O coordenador é redirecionado para a tela com informações do histórico de atividades complementares.                                                                               |
+| **Pós-condições:** Nenhuma. |
 
-| RF 022 - Atribuir perfil para a comissão                                                       |
+| RF 022 - Visualizar o extrato de horas de atividade complementares por discente.                                                      |
 | ---------------------------------------------------------------------------------------------- |
-| **Descrição:** O coordenador pode atribuir perfis de comissão para os usuários da sua escolha. |
+| **Descrição:** O coordenador deve visualizar o extrato de horas das atividades complementares. A seleção pode ser feita com base no nome do discente, CPF ou número de matrícula. |
 | **Atores:** Coordenador.                                                                       |
-| **Prioridade:** Média.                                                                         |
-| **Entrada:** Informar o usuário que deseja adicionar as permissões de comissão.                |
-| **Pré-condições:** O usuário deve estar logado no sistema.                                     |
-| **Saída:** Confirmação da atribuição do perfil.                                                |
-| **Pós-condições:** O usuário que recebeu as permissões deve receber por e-mail a notificação.  |
+| **Prioridade:** Alta.                                                                        |
+| **Entrada:** O coordenador pode inserir informações relacionadas ao aluno para realizar a busca.                |
+| **Pré-condições:** O coordenador deve estar logado no sistema.                                     |
+| **Saída:** O coordenador é redirecionado para a tela com as informações do extrato de horas.                                                |
+| **Pós-condições:** Nenhuma.  |
 
-| RF 016 - Visualizar indicadores sobre as requisições enviadas |
-| ------------------------------------------------------------- |
-| **Descrição:** Em construção.                                 |
-| **Atores:** Coordenador.                                      |
-| **Prioridade:** Média.                                        |
-| **Entrada:** Em construção.                                   |
-| **Pré-condições:** Em construção.                             |
-| **Saída:** Em construção.                                     |
-| **Pós-condições:** Em construção.                             |
+| RF 023 - Alertar o discente sobre poucas solicitações realizadas.                                                      |
+| ---------------------------------------------------------------------------------------------- |
+| **Descrição:** O coordenador deve alertar o(s) discente(s) de maneira detalhada sobre a baixa quantidade de solicitações em um momento crítico. Este alerta é enviado por e-mail de maneira automática pelo sistema.|
+| **Atores:** Coordenador.                                                                       |
+| **Prioridade:** Baixa.                                                                     |
+| **Entrada:** O coordenador deve selcionar o aluno para enviar o alerta.                |
+| **Pré-condições:** O coordenador deve estar logado no sistema.                                     |
+| **Saída:** O coordenador recebe uma mensagem de confirmação do envio do alerta.                                               |
+| **Pós-condições:** O sistema envia um e-mail para o aluno que informa sobre a baixa quantidade de solicitações.  |
+
+| RF 024 - Encaminhar requisição para a comissão.                                                      |
+| ---------------------------------------------------------------------------------------------- |
+| **Descrição:** O coordenador deve ser capaz de enviar uma requisição ou conjunto de requisições para serem analisadas pela comissão. É necessário que a comissão seja notificada por e-mail sobre o que foi recebido pela coordenação.|
+| **Atores:** Coordenador.                                                                       |
+| **Prioridade:** Alta.                                                                        |
+| **Entrada:** O coordenador deve selecionar as requisições do aluno.                |
+| **Pré-condições:** O coordenador deve estar logado no sistema.                                     |
+| **Saída:** O coordenador recebe uma mensagem de confirmação do envio das requisições.                                               |
+| **Pós-condições:** O sistema troca o status da requisição e envia um e-mail para a comissão.  |
+
+| RF 025 - Modificar a composição da contagem das horas de atividades complementares.                                                     |
+| ---------------------------------------------------------------------------------------------- |
+| **Descrição:** Após a avaliação da comissão, a coordenação pode ajustar a composição das horas atribuídas às atividades complementares de um aluno.|
+| **Atores:** Coordenador.                                                                       |
+| **Prioridade:** Média.                                                                        |
+| **Entrada:** O coordenador deve selecionar a requisição.               |
+| **Pré-condições:** O coordenador deve estar logado no sistema.                                     |
+| **Saída:** O coordenador recebe uma mensagem de confirmação da alteração de composição das horas.                                               |
+| **Pós-condições:** O sistema envia um e-mail para a comissão informando sobre a alteração na composição de horas.  |
+
+| RF 026 - Rejeitar uma avaliação de requisição feita pela comissão.                                                     |
+| ---------------------------------------------------------------------------------------------- |
+| **Descrição:** O coordenador deve ser capaz de rejeitar uma requisição avaliada pela comissão.|
+| **Atores:** Coordenador.                                                                       |
+| **Prioridade:** Média.                                                                        |
+| **Entrada:** O coordenador deve selecionar a requisição.               |
+| **Pré-condições:** O coordenador deve estar logado no sistema.                                     |
+| **Saída:** O coordenador recebe uma mensagem de confirmação da rejeição da requisição.                                              |
+| **Pós-condições:** O sistema envia um e-mail para a comissão informando sobre a rejeição da requisição.  |
+
+| RF 027 - Assinar o documento referente a requisição.                                                     |
+| ---------------------------------------------------------------------------------------------- |
+| **Descrição:** Após uma requisição ser avaliada, o coordenador deve ser capaz de assinar digitalmente o documento da requisição antes do encaminhamento para a escolaridade.|
+| **Atores:** Coordenador.                                                                       |
+| **Prioridade:** Média.                                                                        |
+| **Entrada:** O coordenador deve selecionar a requisição.               |
+| **Pré-condições:** O coordenador deve estar logado no sistema.                                     |
+| **Saída:** O coordenador recebe uma mensagem de confirmação da assinatura.                                              |
+| **Pós-condições:** Nenhuma.  |
+
+| RF 028 - Ratificar requisição.                                                    |
+| ---------------------------------------------------------------------------------------------- |
+| **Descrição:** Após uma requisição ser avaliada, o coordenador deve ser capaz  de ratificá-la. Ao realizar esta ação, é necessário que o status da requisição seja alterado para “Encaminhado  à escolaridade”.|
+| **Atores:** Coordenador.                                                                       |
+| **Prioridade:** Alta.                                                                      |
+| **Entrada:** O coordenador deve selecionar a requisição.               |
+| **Pré-condições:** O coordenador deve estar logado no sistema.                                     |
+| **Saída:** O coordenador recebe uma mensagem de confirmação da ratificação.                                             |
+| **Pós-condições:** O sistema envia um e-mail para a escolaridade com a avaliação final da requisição.   |
