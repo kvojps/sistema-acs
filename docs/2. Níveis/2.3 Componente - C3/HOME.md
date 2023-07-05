@@ -6,15 +6,6 @@ O objetivo principal dos diagramas de componentes no C4 Model é mostrar a estru
 * **Elementos primários:** Componentes dentro do contêiner no escopo.
 * **Público alvo:** Arquitetos e desenvolvedores de software.
 ****
-## Convenções Back-end
-
-Antes de nos aprofundarmos no C3, é importante ressaltar que são utilizadas algumas convenções que apoiam a arquitetura proposta. Essas convenções são as seguintes
-*  Convenção de nomenclaturas de arquivos e diretórios ([Oracle](https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html))
-*  Convenção de fluxo de trabalho Git - com adapatações e aderência parcial ([Gitflow](https://danielkummer.github.io/git-flow-cheatsheet/))
-*  Convenção de commits ([Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/))
-
-## Convenções Front-end
-⚒️🏗️
 
 ## Restrições e metas arquiteturais
 * As tecnologias de desenvolvimento utilizadas são: 
@@ -24,4 +15,3 @@ Antes de nos aprofundarmos no C3, é importante ressaltar que são utilizadas al
 * A aplicação será disponibilizada como página web.
 * O sistema deve permanecer online 24 horas por dia, 7 dias por semana, com tolerância a interrupções de no máximo 2 horas em situações excepcionais para manutenções ou atualizações planejadas.
 * O serviço de API deve ser criado com um banco de dados completo, com gerenciamento de concorrência e maior capacidade de armazenamento, dado que o sistema será desenvolvido com foco em manter múltiplos usuários acessando concorrentemente.
-
