@@ -10,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.upe.acs.dominio.enums.PerfilEnum;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -35,14 +34,13 @@ public abstract class Usuario implements UserDetails {
 	
 	private String senha;
 	
-	@Enumerated(EnumType.STRING)
-	private PerfilEnum perfil;
-	
 	@ManyToOne
 	private Curso curso;
 
 	@Override
-	public abstract Collection<? extends GrantedAuthority> getAuthorities();
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(getClass().getSimpleName()));
+	};
 
 	@Override
 	public String getPassword() {
