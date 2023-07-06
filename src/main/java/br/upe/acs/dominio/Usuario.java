@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Usuario implements UserDetails {
+public abstract class Usuario implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,9 +42,7 @@ public class Usuario implements UserDetails {
 	private Curso curso;
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(perfil.name()));
-	}
+	public abstract Collection<? extends GrantedAuthority> getAuthorities();
 
 	@Override
 	public String getPassword() {

@@ -13,6 +13,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.List;
 
+import br.upe.acs.dominio.enums.PerfilEnum;
+
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -40,6 +42,10 @@ public class Aluno extends Usuario {
     private List<Requisicao> requisicoes;
 
     @ManyToOne
-    private Endereco endereco;
-
+    private Endereco endereco; 
+    
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(PerfilEnum.USUARIO.name()));
+	}
 }

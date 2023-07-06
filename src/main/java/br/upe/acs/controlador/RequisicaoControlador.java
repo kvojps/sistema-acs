@@ -86,6 +86,7 @@ public class RequisicaoControlador {
                                                  @RequestParam(value = "cursoId") Long cursoId,
                                                  @RequestParam(value = "semestre") int semestre,
                                                  @RequestParam(value = "qtdCertificados") int qtdCertificados,
+                                                 @RequestParam(value = "observacao") String observacao,
                                                  @RequestPart(value = "certificados") MultipartFile[] certificados,
                                                  @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados) {
         RequisicaoDTO requisicaoDTO = new RequisicaoDTO();
@@ -93,6 +94,7 @@ public class RequisicaoControlador {
         requisicaoDTO.setUsuarioId(usuarioId);
         requisicaoDTO.setSemestre(semestre);
         requisicaoDTO.setQtdCertificados(qtdCertificados);
+        requisicaoDTO.setObservacao(observacao);
         requisicaoDTO.setCertificados(certificados);
         requisicaoDTO.setCertificadosMetadados(certificadosMetadados);
 
@@ -110,6 +112,7 @@ public class RequisicaoControlador {
     public ResponseEntity<?> adicionarRequisicaoRascunho(@RequestParam(value = "usuarioId") Long usuarioId,
                                                          @RequestParam(value = "cursoId") Long cursoId,
                                                          @RequestParam(value = "semestre") int semestre,
+                                                         @RequestParam(value = "observacao") String observacao,
                                                          @RequestParam(value = "qtdCertificados") int qtdCertificados,
                                                          @RequestPart(value = "certificados", required = false) MultipartFile[] certificados,
                                                          @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados) {
@@ -118,6 +121,7 @@ public class RequisicaoControlador {
         requisicaoRascunhoDTO.setQtdCertificados(qtdCertificados);
         requisicaoRascunhoDTO.setUsuarioId(usuarioId);
         requisicaoRascunhoDTO.setCursoId(cursoId);
+        requisicaoRascunhoDTO.setObservacao(observacao);
         requisicaoRascunhoDTO.setCertificadoArquivos(certificados);
         requisicaoRascunhoDTO.setCertificadosMetadados(certificadosMetadados);
 
