@@ -19,7 +19,6 @@ import br.upe.acs.dominio.dto.EmailDTO;
 import br.upe.acs.dominio.dto.EnderecoDTO;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
-import br.upe.acs.dominio.enums.PerfilEnum;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
 
@@ -56,7 +55,6 @@ public class ControleAcessoServico {
 		usuarioSalvar.setTelefone(registro.getTelefone());
 		usuarioSalvar.setEmail(registro.getEmail());
 		usuarioSalvar.setSenha(passwordEncoder.encode(registro.getSenha()));
-		usuarioSalvar.setPerfil(PerfilEnum.USUARIO);
 		usuarioSalvar.setCodigoVerificacao(codigoVerificacao);
 		usuarioSalvar.setVerificado(false);
 		usuarioSalvar.setEndereco(enderecoSalvo);

@@ -1,10 +1,7 @@
 package br.upe.acs.controlador.respostas;
 
-import br.upe.acs.controlador.respostas.CursoResposta;
-import br.upe.acs.controlador.respostas.EnderecoResposta;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.Endereco;
-import br.upe.acs.dominio.enums.PerfilEnum;
 import lombok.Getter;
 
 @Getter
@@ -15,8 +12,6 @@ public class UsuarioResposta {
     private final String matricula;
     private final String telefone;
     private final String email;
-
-    private final PerfilEnum perfil;
     private final CursoResposta curso;
     private final int periodo;
     private final boolean verificado;
@@ -28,7 +23,6 @@ public class UsuarioResposta {
         this.cpf = aluno.getCpf();
         this.telefone = aluno.getTelefone();
         this.email = aluno.getEmail();
-        this.perfil = aluno.getPerfil();
         this.curso = new CursoResposta(aluno.getCurso());
         this.periodo = aluno.getPeriodo();
         this.matricula = aluno.getMatricula();
