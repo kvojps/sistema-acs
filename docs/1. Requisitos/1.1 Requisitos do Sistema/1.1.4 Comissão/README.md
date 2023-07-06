@@ -1,6 +1,6 @@
 # 1.1.4 Comissão
 
-`/1. Requisitos/1.1 Requisitos do Sistema/1.1.4 Comissão`
+`\1. Requisitos\1.1 Requisitos do Sistema\1.1.4 Comissão`
 
 * [Sistema ACS | Docs](../../../README.md)
   * [1. Requisitos](../../../1.%20Requisitos/README.md)

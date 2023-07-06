@@ -1,6 +1,6 @@
 # 2.3.2 Front
 
-`/2. Níveis/2.3 Componente - C3/2.3.2 Front`
+`\2. Níveis\2.3 Componente - C3\2.3.2 Front`
 
 * [Sistema ACS | Docs](../../../README.md)
   * [1. Requisitos](../../../1.%20Requisitos/README.md)
