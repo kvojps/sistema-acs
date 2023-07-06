@@ -4,12 +4,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import br.upe.acs.controlador.respostas.RegistroRequisicoesResposta;
 import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -19,9 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.dto.RequisicaoDTO;
 import br.upe.acs.servico.RequisicaoCertificadoServico;
+import br.upe.acs.servico.RequisicaoRascunhoServico;
 import br.upe.acs.servico.RequisicaoServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,6 +42,8 @@ public class RequisicaoControlador {
     private final RequisicaoServico servico;
 
     private final RequisicaoCertificadoServico requisicaoCertificadoServico;
+    
+    private final RequisicaoRascunhoServico requisicaoRascunhoServico;
 
     @Operation(summary = "Listar todas as requisições")
     @GetMapping
@@ -50,10 +61,12 @@ public class RequisicaoControlador {
 
     @Operation(summary = "Listar as requisições de um usuário específico")
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<List<RequisicaoResposta>> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId)
-            throws AcsExcecao {
-        return ResponseEntity.ok(servico.listarRequisicoesPorAluno(alunoId).stream()
-                .map(RequisicaoResposta::new).collect(Collectors.toList()));
+    public ResponseEntity<?> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId) {
+        try {
+            return ResponseEntity.ok(new RegistroRequisicoesResposta(servico.listarRequisicoesPorAluno(alunoId)));
+        } catch (AcsExcecao e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @Operation(summary = "Buscar requisição por id")
@@ -122,4 +135,53 @@ public class RequisicaoControlador {
 
         return resposta;
     }
+    
+    @Operation(summary = "Editar rascunho da requisição com certificados")
+    @PutMapping(path = "rascunho/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> editarRequisicaoRascunho(HttpServletRequest request, 
+    												 @PathVariable ("id") Long id,	
+											          @RequestParam(value = "cursoId") Long cursoId,
+											          @RequestParam(value = "semestre") int semestre,
+											          @RequestParam(value = "qtdCertificados") int qtdCertificados,
+											          @RequestPart(value = "certificados", required = false) MultipartFile[] certificados,
+											          @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados){
+       
+    	RequisicaoRascunhoDTO requisicaoRascunhoDTO = new RequisicaoRascunhoDTO();
+        requisicaoRascunhoDTO.setSemestre(semestre);
+        requisicaoRascunhoDTO.setQtdCertificados(qtdCertificados);
+        requisicaoRascunhoDTO.setCursoId(cursoId);
+        requisicaoRascunhoDTO.setCertificadoArquivos(certificados);
+        requisicaoRascunhoDTO.setCertificadosMetadados(certificadosMetadados);
+        
+        
+    	ResponseEntity<?> resposta;
+    	String token = request.getHeader("Authorization").substring(7);
+    	try {
+    		requisicaoCertificadoServico.editarRequisicaoRascunho(id, token, requisicaoRascunhoDTO);
+    		resposta = ResponseEntity.ok().build();    		
+    	} catch(Exception e) {
+    		resposta = ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    	}
+    	
+    	return resposta;
+    }
+
+    @Operation(summary = "Deletar rascunho de uma requisição")
+    @DeleteMapping("/rascunho/{id}")
+    public ResponseEntity<?> deletarRequisicaoRascunho(@PathVariable("id") Long id, 
+    												   @RequestHeader(name = "Authorization", required = true) String token){
+    	ResponseEntity<?> resposta;
+    	String jwt =  token.substring(7);
+    	try {
+    		requisicaoRascunhoServico.deletarRequisicaoRascunho(id, jwt);
+    		resposta = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    		
+    	} catch(Exception e) {
+    		resposta = ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    	}
+    	
+    	return resposta;
+    }
+    
+    
 }
