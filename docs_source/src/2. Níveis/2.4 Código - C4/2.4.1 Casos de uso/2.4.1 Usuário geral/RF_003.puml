@@ -1,0 +1,26 @@
+@startuml RF_003
+
+!theme spacelab
+skinparam actorStyle awesome
+
+:Usuário Geral: as usuario_geral #text:blue
+
+rectangle requisito_funcional as "RF 003"
+(Caixa de Seleção de Conta) as selecionar_perfil
+(Dashboard do Discente) as dashboard_discente
+(Dashboard do Coordenador) as dashboard_coordenador
+
+usuario_geral --> selecionar_perfil
+
+selecionar_perfil --> (Discente) : Seleciona Discente
+selecionar_perfil --> (Coordenador) : Seleciona Coordenador
+
+(Discente) --> dashboard_discente : Acessa Dashboard do Discente
+(Coordenador) --> dashboard_coordenador : Acessa Dashboard do Coordenador
+
+selecionar_perfil ..> (Conta de Discente) : <<include>>
+selecionar_perfil ..> (Conta de Coordenador) : <<include>>
+
+note right of selecionar_perfil : <<Usuário seleciona a conta de Discente ou Coordenador>>
+
+@enduml
