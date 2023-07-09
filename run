@@ -1,4 +1,0 @@
-#!/bin/bash
-
-java -jar target/*.jar $(head -n6 .env | sed -z 's/^/--/ ; s/\n/ --/g ; s/ --$//')
-
