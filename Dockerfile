@@ -5,8 +5,7 @@ WORKDIR /app
 ARG JAR_FILE=target/*.jar
 
 COPY ${JAR_FILE} app.jar
-COPY run .
 
 EXPOSE 8080
 
-ENTRYPOINT ["./run"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
