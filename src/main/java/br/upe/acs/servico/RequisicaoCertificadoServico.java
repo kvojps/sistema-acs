@@ -50,7 +50,6 @@ public class RequisicaoCertificadoServico {
         rascunhoSalvar.setQtdCertificados(requisicaoRascunho.getQtdCertificados());
         rascunhoSalvar.setUsuarioId(requisicaoRascunho.getUsuarioId());
         rascunhoSalvar.setCursoId(requisicaoRascunho.getCursoId());
-        rascunhoSalvar.setObservacao(requisicaoRascunho.getObservacao());
         rascunhoSalvar.setDataExpiracao(null);
 
         RequisicaoRascunho rascunhoSalvo = rascunhoRepositorio.save(rascunhoSalvar);

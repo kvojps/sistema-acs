@@ -17,8 +17,6 @@ public class CertificadoResposta {
 	
 	private final Date data;
 	
-	private final String observacao;
-	
 	private final CertificadoStatusEnum statusCertificado;
 	
 	private final int horas;
@@ -39,7 +37,6 @@ public class CertificadoResposta {
 		this.chMaxima = certificado.getChMaxima();
 		this.chTotal = certificado.getChTotal();
 		this.certificadoArquivo = certificado.getCertificado();
-		this.observacao = certificado.getObservacao();
 		this.statusCertificado = certificado.getStatusCertificado();
 	}
 }
