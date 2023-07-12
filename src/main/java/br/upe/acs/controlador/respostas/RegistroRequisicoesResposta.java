@@ -1,6 +1,5 @@
 package br.upe.acs.controlador.respostas;
 
-import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.vo.RegistroRequisicoesVO;
 import lombok.Getter;
 
