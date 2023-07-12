@@ -34,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/requisicao")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class RequisicaoControlador {
 
     private final RequisicaoServico servico;

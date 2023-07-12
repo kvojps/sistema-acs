@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/aluno")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class AlunoControlador {
 
     private final AlunoServico servico;
