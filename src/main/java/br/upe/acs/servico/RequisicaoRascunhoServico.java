@@ -1,5 +1,6 @@
 package br.upe.acs.servico;
 
+import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.RequisicaoRascunho;
 import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
@@ -28,21 +29,21 @@ public class RequisicaoRascunhoServico {
     }
     
     public void deletarRequisicaoRascunho(Long id, String token) throws AcsExcecao {
-    	Optional<RequisicaoRascunho> rascunho = buscarRequisicaoRascunhoPorId(id);
+    	RequisicaoRascunho rascunho = buscarRequisicaoRascunhoPorId(id).orElseThrow();
 
-    	var user = jwtService.extractUsername(token);
-    	var autor = alunoServico.buscarAlunoPorId(rascunho.get().getUsuarioId());
+    	String usuario = jwtService.extractUsername(token);
+    	Aluno autor =  alunoServico.buscarAlunoPorId(rascunho.getUsuarioId()).orElseThrow();
     	
-    	if(!Objects.equals(user, autor.get().getEmail())) {
+    	if(!Objects.equals(usuario, autor.getEmail())) {
     		throw new AcsExcecao("Você não possui permissão para excluir esse rascunho");    		
     	};
     	
-    	if(!autor.get().isVerificado()) {
+    	if(!autor.isVerificado()) {
     		throw new AcsExcecao("Usuário não verificado");    	
     	}
     	
     	
-    	repositorio.delete(rascunho.get());
+    	repositorio.delete(rascunho);
     	
     }
     

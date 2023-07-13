@@ -79,8 +79,7 @@ public class RequisicaoCertificadoServico {
     	if(!autor.isVerificado()) {
     		throw new AcsExcecao("Sua conta não foi verificada");
     	}
-    	    	
-    //	int qtdTotal = requisicaoRascunho.getQtdCertificados() + rascunho.getQtdCertificados();  
+    	    	  
     	
     	CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicaoRascunho.getCertificadosMetadados());
     	rascunho.setCursoId(requisicaoRascunho.getCursoId());
@@ -101,14 +100,10 @@ public class RequisicaoCertificadoServico {
         	rascunhoVO.setIdRequisicao(rascunho.getId());
         	rascunhoVO.setQtdCertificados(requisicaoRascunho.getQtdCertificados());       
         	
-        	adicionarCertificadosRascunho(rascunhoVO);
-        	//rascunho.setQtdCertificados(qtdTotal);    		
-    	}
-    	
-    	
-    	
-    
-    	
+        	adicionarCertificadosRascunho(rascunhoVO);  		
+    	}	
+    	 	
+       	
     }
 
     public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
