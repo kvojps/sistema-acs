@@ -3,6 +3,7 @@ package br.upe.acs.controlador.respostas;
 import java.util.Date;
 
 import br.upe.acs.dominio.Certificado;
+import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import lombok.Getter;
 
 @Getter
@@ -15,6 +16,8 @@ public class CertificadoResposta {
 	private final String descricao;
 	
 	private final Date data;
+	
+	private final CertificadoStatusEnum statusCertificado;
 	
 	private final int horas;
 	
@@ -34,5 +37,6 @@ public class CertificadoResposta {
 		this.chMaxima = certificado.getChMaxima();
 		this.chTotal = certificado.getChTotal();
 		this.certificadoArquivo = certificado.getCertificado();
+		this.statusCertificado = certificado.getStatusCertificado();
 	}
 }

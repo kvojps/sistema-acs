@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,6 +35,9 @@ public class Requisicao {
 	private int semestre;
 
 	private int qtdCertificados;
+	
+	@Column(columnDefinition = "TEXT")
+	private String observacao;
 
 	private String token;
 

@@ -13,6 +13,7 @@ import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.dto.CertificadoDTO;
+import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import br.upe.acs.repositorio.CertificadoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,8 @@ public class CertificadoServico {
 		certificadoSalvar.setHoras(certificado.getHoras());
 		certificadoSalvar.setChTotal(0);
 		certificadoSalvar.setCertificado(certificadoArquivo);
+		certificadoSalvar.setObservacao(certificado.getObservacao());
+		certificadoSalvar.setStatusCertificado(CertificadoStatusEnum.ENCAMINHADO_ESCOLARIDADE);
 
 		Optional<Requisicao> requisicaoSalvar = requisicaoServico.buscarRequisicaoPorId(certificado.getRequisicaoId());
 		certificadoSalvar.setRequisicao(requisicaoSalvar.orElseThrow());
