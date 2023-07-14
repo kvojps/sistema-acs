@@ -121,3 +121,13 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Não possui.                                         |
 | **Pós-condições:** Não possui.                                 |
 
+| RF 025 - Visualizar Modal Lateral                              |
+| -------------------------------------------------------------- |
+| **Descrição:** O usuário deve possuir um modal lateral (barra lateral) que faz parte do sistema fora em conjunto com o dashboard, mas como uma funcionalidade a mais, a qual vai ter funções integradas de notificação, lixeira, logout e visualização de perfil. (Estas serão melhor detalhadas em outros requisitos). |
+| **Atores:** Discente.                                          |
+| **Prioridade:** Importante                                     |
+| **Entrada:** Não possui.                                       |
+| **Pré-condições:** Estar logado no sistema.                    |
+| **Saída:** Não possui.                                         |
+| **Pós-condições:** Não possui.                                 |
+
