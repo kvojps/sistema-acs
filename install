@@ -1,3 +1,0 @@
-#!/bin/bash
-
-mvn clean $(head -n6 .install | while read line ; do printf " -D $line " ; done) install
