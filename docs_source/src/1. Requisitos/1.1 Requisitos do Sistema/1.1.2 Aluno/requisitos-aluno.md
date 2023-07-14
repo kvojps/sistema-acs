@@ -131,3 +131,12 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Não possui.                                         |
 | **Pós-condições:** Não possui.                                 |
 
+| RF 026 - Visualização de Perfil                                |
+| -------------------------------------------------------------- |
+| **Descrição:** O usuário deve possuir um modal para a visualização de ser perfil; visualizando foto, nome de usuário e e-mail institucional.                          |
+| **Atores:** Discente.                                          |
+| **Prioridade:** Importante.                                    |
+| **Entrada:** Não possui.                                       |
+| **Pré-condições:** Estar logado no sistema e ter pressionado o modal na parte de perfil                                                           |
+| **Saída:** Foto de perfil, nome e e-mail institucional.        |
+| **Pós-condições:** Será mostrado foto, nome e e-mail em um modal de perfil.                                                          |
