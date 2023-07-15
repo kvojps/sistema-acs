@@ -17,7 +17,7 @@ public class EnderecoServico {
 	private final EnderecoRepositorio repositorio;
 
 	public Endereco adicionarEndereco(EnderecoDTO enderecoDTO) {
-		Endereco enderecoSalvar = new Endereco();
+		Endereco enderecoSalvar = new Endereco();		
 		enderecoSalvar.setCep(enderecoDTO.getCep());
 		enderecoSalvar.setUF(enderecoDTO.getUF());
 		enderecoSalvar.setCidade(enderecoDTO.getCidade());
