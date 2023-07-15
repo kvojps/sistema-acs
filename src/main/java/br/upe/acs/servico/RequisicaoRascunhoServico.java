@@ -8,6 +8,7 @@ import br.upe.acs.config.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,6 +20,10 @@ public class RequisicaoRascunhoServico {
     private final AlunoServico alunoServico;
     
 	private final JwtService jwtService;
+
+	public List<RequisicaoRascunho> buscarRequisicaoRascunhoPorAluno(Long id) {
+		return repositorio.findRequisicaoRascunhoByUsuarioId(id);
+	}
 
     public Optional<RequisicaoRascunho> buscarRequisicaoRascunhoPorId(Long id) throws AcsExcecao {
         if (repositorio.findById(id).isEmpty()) {
@@ -46,5 +51,4 @@ public class RequisicaoRascunhoServico {
     	repositorio.delete(rascunho);
     	
     }
-    
 }

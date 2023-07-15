@@ -20,8 +20,6 @@ public class RequisicaoRascunho {
     private int semestre;
 
     private int qtdCertificados;
-    
-    private String observacao;
 
     private Long usuarioId;
 

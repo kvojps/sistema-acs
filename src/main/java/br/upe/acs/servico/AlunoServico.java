@@ -22,6 +22,15 @@ public class AlunoServico {
 
 		return repositorio.findById(id);
 	}
+
+	public Aluno buscarAlunoPorEmail(String email) throws AcsExcecao {
+		Optional<Aluno> aluno = repositorio.findByEmail(email);
+		if (aluno.isEmpty()) {
+			throw new AcsExcecao("Não existe um usuário associado a este email!");
+		}
+
+		return aluno.get();
+	}
 	
 	public String verificarAluno(Long alunoId, String codigoVerificacao) throws AcsExcecao {
 		Aluno usuario = buscarAlunoPorId(alunoId).orElseThrow();

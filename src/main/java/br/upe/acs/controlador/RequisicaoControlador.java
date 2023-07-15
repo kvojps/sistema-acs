@@ -7,15 +7,13 @@ import java.util.stream.Collectors;
 import br.upe.acs.controlador.respostas.RegistroRequisicoesResposta;
 import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/requisicao")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class RequisicaoControlador {
 
     private final RequisicaoServico servico;
@@ -181,6 +179,24 @@ public class RequisicaoControlador {
     	}
     	
     	return resposta;
+    }
+
+    @Operation(summary = "Baixar pdf de uma requisição")
+    @GetMapping("{id}/pdf")
+    public ResponseEntity<?> gerarRequisicaoPDF(@PathVariable("id") Long requisicaoId) {
+        ResponseEntity<?> resposta;
+
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(ContentDisposition.attachment()
+                    .filename("requisição" + requisicaoId + ".pdf").build());
+            resposta = ResponseEntity.ok().headers(headers).body(servico.gerarRequisicaoPDF(requisicaoId));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
     }
     
     
