@@ -50,6 +50,7 @@ public class RequisicaoCertificadoServico {
         rascunhoSalvar.setQtdCertificados(requisicaoRascunho.getQtdCertificados());
         rascunhoSalvar.setUsuarioId(requisicaoRascunho.getUsuarioId());
         rascunhoSalvar.setCursoId(requisicaoRascunho.getCursoId());
+        rascunhoSalvar.setObservacao(requisicaoRascunho.getObservacao());
         rascunhoSalvar.setDataExpiracao(null);
 
         RequisicaoRascunho rascunhoSalvo = rascunhoRepositorio.save(rascunhoSalvar);
@@ -119,6 +120,7 @@ public class RequisicaoCertificadoServico {
         requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.ENCAMINHADO_COORDENACAO);
         requisicaoSalvar.setCurso(cursoSalvar);
         requisicaoSalvar.setAluno(alunoSalvar);
+        requisicaoSalvar.setObservacao(requisicao.getObservacao());
 
         Requisicao requisicaoSalva = repositorio.save(requisicaoSalvar);
 

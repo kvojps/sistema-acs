@@ -1,0 +1,3 @@
+Esta seção de apêndice contém recursos suplementares que complementam e aprofundam o conteúdo principal deste documento. Os materiais apresentados aqui são de natureza opcional e podem fornecer informações adicionais relevantes para os leitores interessados em explorar tópicos específicos em maior detalhe.
+
+A inclusão deste apêndice tem o objetivo de fornecer aos leitores acesso a recursos adicionais que podem enriquecer sua compreensão e aprofundar seus conhecimentos sobre o projeto. Cabe ao leitor decidir se deseja explorar esses materiais complementares para uma visão mais abrangente do conteúdo apresentado.

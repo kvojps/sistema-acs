@@ -20,6 +20,8 @@ public class CertificadoRascunho {
     private String titulo;
 
     private String descricao;
+    
+    private String observacao;
 
     @Temporal(TemporalType.DATE)
     private Date data;
