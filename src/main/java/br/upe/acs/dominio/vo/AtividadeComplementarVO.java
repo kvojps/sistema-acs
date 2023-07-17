@@ -1,27 +1,42 @@
 package br.upe.acs.dominio.vo;
 
-import br.upe.acs.dominio.Requisicao;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import br.upe.acs.dominio.Aluno;
+import lombok.Getter;
 
-import java.util.List;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@Getter
 public class AtividadeComplementarVO {
 
-    private int horasExtensao;
+    private final int horasExtensao;
 
-    private int horasGestao;
+    private final int horasGestao;
 
-    private int horasEnsino;
+    private final int horasEnsino;
 
-    private int horasPesquisa;
+    private final int horasPesquisa;
 
-    private int horasTotaisCurso;
+    private final String horasExtensaoPercentual;
 
-    private List<Requisicao> requisicoes;
+    private final String horasGestaoPercentual;
 
+    private final String horasEnsinoPercentual;
+
+    private final String horasPesquisaPercentual;
+
+    private final int horasTotaisCurso;
+
+    public AtividadeComplementarVO(Aluno aluno) {
+        this.horasExtensao = aluno.getHorasExtensao();
+        this.horasGestao = aluno.getHorasGestao();
+        this.horasEnsino = aluno.getHorasEnsino();
+        this.horasPesquisa = aluno.getHorasPesquisa();
+        this.horasExtensaoPercentual = percentual(aluno.getHorasExtensao(), aluno.getCurso().getHorasComplementares());
+        this.horasGestaoPercentual = percentual(aluno.getHorasGestao(), aluno.getCurso().getHorasComplementares());
+        this.horasEnsinoPercentual = percentual(aluno.getHorasEnsino(), aluno.getCurso().getHorasComplementares());
+        this.horasPesquisaPercentual = percentual(aluno.getHorasPesquisa(), aluno.getCurso().getHorasComplementares());
+        this.horasTotaisCurso = aluno.getCurso().getHorasComplementares();
+    }
+
+    private String percentual(int dividendo, int divisor) {
+        return Math.round(((double) dividendo /divisor) * 100.0) + "%";
+    }
 }
