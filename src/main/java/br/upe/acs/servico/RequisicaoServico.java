@@ -3,10 +3,8 @@ package br.upe.acs.servico;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.Requisicao;
-import br.upe.acs.dominio.vo.RegistroRequisicoesVO;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,17 +18,28 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 public class RequisicaoServico {
 
 	private final RequisicaoRepositorio repositorio;
 	private final AlunoServico alunoServico;
 	private final TemplateEngine templateEngine;
-	
+
+	public RequisicaoServico(RequisicaoRepositorio repositorio, AlunoServico alunoServico, TemplateEngine templateEngine) {
+		this.repositorio = repositorio;
+		this.alunoServico = alunoServico;
+		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+
+		templateResolver.setSuffix(".html");
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+		templateEngine.setTemplateResolver(templateResolver);
+		this.templateEngine = templateEngine;
+	}
+
 	public List<Requisicao> listarRequisicoes() {
 		return repositorio.findAll();
 	}
@@ -43,24 +52,18 @@ public class RequisicaoServico {
 		return gerarPaginacao(requisicoesPagina);
 	}
 
-	public RegistroRequisicoesVO listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
+	public List<Requisicao> listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
 		Aluno aluno = alunoServico.buscarAlunoPorId(alunoId).orElseThrow();
-		RegistroRequisicoesVO registroRequisicoesVO = new RegistroRequisicoesVO();
-		registroRequisicoesVO.setHorasEnsino(aluno.getHorasEnsino());
-		registroRequisicoesVO.setHorasExtensao(aluno.getHorasExtensao());
-		registroRequisicoesVO.setHorasGestao(aluno.getHorasGestao());
-		registroRequisicoesVO.setHorasPesquisa(aluno.getHorasPesquisa());
-		registroRequisicoesVO.setHorasTotaisCurso(aluno.getCurso().getHorasComplementares());
-		registroRequisicoesVO.setRequisicoes(aluno.getRequisicoes());
-		return registroRequisicoesVO;
+		return aluno.getRequisicoes();
 	}
 
-	public Optional<Requisicao> buscarRequisicaoPorId(Long id) throws AcsExcecao {
-		if (repositorio.findById(id).isEmpty()) {
+	public Requisicao buscarRequisicaoPorId(Long id) throws AcsExcecao {
+		Optional<Requisicao> requisicao = repositorio.findById(id);
+		if (requisicao.isEmpty()) {
 			throw new AcsExcecao("Não existe uma requisição associada a este id!");
 		}
 
-		return repositorio.findById(id);
+		return requisicao.get();
 	}
 
 	private Map<String, Object> gerarPaginacao (Page<Requisicao> pagina) {
@@ -77,32 +80,25 @@ public class RequisicaoServico {
 	}
 
 	public byte[] gerarRequisicaoPDF(Long id) throws AcsExcecao {
-		Optional<Requisicao> requisicao = repositorio.findById(id);
-		if (requisicao.isEmpty()) {
-			throw new AcsExcecao("Requisição não encontrada!");
-		}
+		Requisicao requisicao = buscarRequisicaoPorId(id);
 
-		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		Context contexto = definirValoresTemplateHTML(requisicao);
 
-		templateResolver.setSuffix(".html");
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		templateEngine.setTemplateResolver(templateResolver);
+		String htmlDoDocumento = templateEngine.process("requisicao.html", contexto);
+		Path pathDoPdf = Paths.get("src/main/resources/requisicao" + id +".pdf");
 
-		Context contexto = definirVariaveis(requisicao.get());
-
-		String texto = templateEngine.process("requisicao.html", contexto);
-
-		try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/requisicao.pdf")) {
+		try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/requisicao" + id +".pdf")) {
 			ITextRenderer renderer = new ITextRenderer();
 			SharedContext sharedContext = renderer.getSharedContext();
 			sharedContext.setPrint(true);
 			sharedContext.setInteractive(false);
-			renderer.setDocumentFromString(texto);
+			renderer.setDocumentFromString(htmlDoDocumento);
 			renderer.layout();
 			renderer.createPDF(outputStream);
 			outputStream.close();
-			byte[] arquivoPDF = Files.readAllBytes(Paths.get("src/main/resources/requisicao.pdf"));
-			Files.delete(Paths.get("src/main/resources/requisicao.pdf"));
+
+			byte[] arquivoPDF = Files.readAllBytes(pathDoPdf);
+			Files.delete(pathDoPdf);
 			return arquivoPDF;
 
 		} catch (Exception e) {
@@ -111,7 +107,7 @@ public class RequisicaoServico {
 
 	}
 
-	private Context definirVariaveis(Requisicao requisicao) {
+	private Context definirValoresTemplateHTML(Requisicao requisicao) {
 		Context contexto = new Context();
 
 		contexto.setVariable("protocolo", requisicao.getToken());

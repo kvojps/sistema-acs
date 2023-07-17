@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RegistroRequisicoesVO {
+public class AtividadeComplementarVO {
 
     private int horasExtensao;
 
