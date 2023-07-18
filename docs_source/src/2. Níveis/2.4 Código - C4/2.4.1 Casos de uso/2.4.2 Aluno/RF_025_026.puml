@@ -1,0 +1,24 @@
+@startuml RF_05_025_026
+!theme spacelab
+skinparam actorStyle awesome
+:Perfil Discente: as PD
+rectangle requisito_funcional as "RF 05/025/026"
+
+(Modal Lateral) as RF25
+(Visualização de Perfil) as RF26
+(Lixeira) as lixeira
+(Logout) as RF05
+(Notificações) as notes
+(Perfil do Usuário) as pu
+(Perfil) as perfil
+
+PD --> RF25
+RF25 --> perfil
+perfil --> RF26
+RF25 ..> lixeira #line:gray;text:blue : <<include>>
+RF25 ..> RF05 #line:gray;text:blue : <<include>>
+RF25 ..> notes #line:gray;text:blue : <<include>>
+RF25 ..> pu #line:gray;text:blue : <<include>>
+perfil --> pu #line:gray;text:blue : <<extends>>
+
+@enduml
