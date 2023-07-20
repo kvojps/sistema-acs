@@ -1,0 +1,32 @@
+@startuml RF_013_028
+!theme spacelab
+skinparam actorStyle awesome
+:Perfil Discente: as PD
+rectangle requisito_funcional as "RF 013/025"
+
+(Dashboard do Discente) as RF17
+(Cadastrar Solicitação) as RF13
+(Modal de Anexar Arquivos) as RF25
+(Anexar Certificados) as anexararquivos
+
+PD --> RF17
+RF17 -right-> RF13 : Navegar para o Dashboard e Cadastrar
+RF13 =down-> RF25: Tela para anexar os arquivos (Certificados)
+RF25 -left-> anexararquivos
+
+note right of RF25
+    O usuário vai para uma tela
+    cuja vai ser apenas para
+    arrastar ou escolher arquivos
+    de um explorador e anexar a 
+    solicitação.
+end note
+
+note right of RF13
+    A tela de cadastro vai possuir
+    um espaço para anexar arquivos
+    onde o usuário vai clicar para 
+    abrir o modal de anexar arquivos
+end note
+
+@enduml
