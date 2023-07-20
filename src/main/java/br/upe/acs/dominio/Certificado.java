@@ -13,22 +13,33 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class Certificado extends CertificadoBase {
+public class Certificado{
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	private String titulo;
+	
 	
 	@Column(columnDefinition = "TEXT")
 	private String observacao;
 	
 	@Temporal(TemporalType.DATE)
-	private Date dataDeSubmissao;
+	private Date dataInicial;
+
+	@Temporal(TemporalType.DATE)
+	private Date dataFinal;
+	
+	private int cargaHoraria;
+	
+	private byte[] certificado;
 	
 	@Enumerated(EnumType.STRING)
 	private CertificadoStatusEnum statusCertificado;

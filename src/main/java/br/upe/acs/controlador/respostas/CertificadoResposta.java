@@ -14,21 +14,19 @@ public class CertificadoResposta {
 	
 	private final String titulo;
 	
-	private final String descricao;
+	private final String observacao;
 	
-	private final Date data;
+	private final Date dataInicial;
 
+	private final Date dataFinal;
+	
 	private final EixoEnum eixoAtividade;
 
 	private final String atividade;
 	
 	private final CertificadoStatusEnum statusCertificado;
 	
-	private final int horas;
-	
-	private final int chMaxima;
-	
-	private final int chTotal;
+	private final int cargaHoraria;
 	
 	private final byte[] certificadoArquivo;
 
@@ -36,13 +34,12 @@ public class CertificadoResposta {
 		super();
 		this.id = certificado.getId();
 		this.titulo = certificado.getTitulo();
-		this.descricao = certificado.getDescricao();
-		this.data = certificado.getDataInicial();
-		this.horas = certificado.getQuantidadeDeHoras();
-		this.chMaxima = certificado.getChMaxima();
-		this.chTotal = certificado.getChTotal();
+		this.observacao = certificado.getObservacao();
+		this.dataInicial = certificado.getDataInicial();
+		this.dataFinal = certificado.getDataFinal();
 		this.atividade = certificado.getAtividade().getDescricao();
 		this.eixoAtividade = certificado.getAtividade().getEixo();
+		this.cargaHoraria = certificado.getCargaHoraria();
 		this.certificadoArquivo = certificado.getCertificado();
 		this.statusCertificado = certificado.getStatusCertificado();
 	}

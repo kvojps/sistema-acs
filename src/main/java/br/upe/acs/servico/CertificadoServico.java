@@ -40,12 +40,8 @@ public class CertificadoServico {
 
 		Certificado certificadoSalvar = new Certificado();
 		certificadoSalvar.setTitulo(certificado.getTitulo());
-		certificadoSalvar.setDescricao(certificado.getDescricao());
 		certificadoSalvar.setDataInicial(converterParaData(certificado.getData()));
-		certificadoSalvar.setQuantidadeDeHoras(certificado.getHoras());
-		certificadoSalvar.setChTotal(0);
 		certificadoSalvar.setCertificado(certificadoArquivo);
-		certificadoSalvar.setObservacao(certificado.getObservacao());
 		certificadoSalvar.setStatusCertificado(CertificadoStatusEnum.ENCAMINHADO_ESCOLARIDADE);
 
 		Requisicao requisicaoSalvar = requisicaoServico.buscarRequisicaoPorId(certificado.getRequisicaoId());
@@ -53,7 +49,6 @@ public class CertificadoServico {
 
 		Optional<Atividade> atividadeSalvar = atividadeServico.buscarAtividadePorId(certificado.getAtividadeId());
 		certificadoSalvar.setAtividade(atividadeSalvar.orElseThrow());
-		certificadoSalvar.setChMaxima(atividadeSalvar.get().getChMaxima());
 
 		repositorio.save(certificadoSalvar);
 	}
