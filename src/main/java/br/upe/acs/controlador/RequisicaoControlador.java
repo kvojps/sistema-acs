@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
-
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,11 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.dto.RequisicaoDTO;
 import br.upe.acs.servico.RequisicaoCertificadoServico;
-import br.upe.acs.servico.RequisicaoRascunhoServico;
 import br.upe.acs.servico.RequisicaoServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -40,8 +36,6 @@ public class RequisicaoControlador {
 
     private final RequisicaoCertificadoServico requisicaoCertificadoServico;
     
-    private final RequisicaoRascunhoServico requisicaoRascunhoServico;
-
     @Operation(summary = "Listar todas as requisições")
     @GetMapping
     public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
@@ -105,82 +99,7 @@ public class RequisicaoControlador {
 
         return resposta;
     }
-
-    @PostMapping(path = "/rascunho", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> adicionarRequisicaoRascunho(@RequestParam(value = "usuarioId") Long usuarioId,
-                                                         @RequestParam(value = "cursoId") Long cursoId,
-                                                         @RequestParam(value = "semestre") int semestre,
-                                                         @RequestParam(value = "observacao") String observacao,
-                                                         @RequestParam(value = "qtdCertificados") int qtdCertificados,
-                                                         @RequestPart(value = "certificados", required = false) MultipartFile[] certificados,
-                                                         @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados) {
-        RequisicaoRascunhoDTO requisicaoRascunhoDTO = new RequisicaoRascunhoDTO();
-        requisicaoRascunhoDTO.setSemestre(semestre);
-        requisicaoRascunhoDTO.setQtdCertificados(qtdCertificados);
-        requisicaoRascunhoDTO.setUsuarioId(usuarioId);
-        requisicaoRascunhoDTO.setCursoId(cursoId);
-        requisicaoRascunhoDTO.setObservacao(observacao);
-        requisicaoRascunhoDTO.setCertificadoArquivos(certificados);
-        requisicaoRascunhoDTO.setCertificadosMetadados(certificadosMetadados);
-
-        ResponseEntity<?> resposta;
-        try {
-            requisicaoCertificadoServico.salvarRascunho(requisicaoRascunhoDTO);
-            resposta = ResponseEntity.ok().build();
-        } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        return resposta;
-    }
-    
-    @Operation(summary = "Editar rascunho da requisição com certificados")
-    @PutMapping(path = "rascunho/{id}", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> editarRequisicaoRascunho(HttpServletRequest request, 
-    												 @PathVariable ("id") Long id,	
-											          @RequestParam(value = "cursoId") Long cursoId,
-											          @RequestParam(value = "semestre") int semestre,
-											          @RequestParam(value = "qtdCertificados") int qtdCertificados,
-											          @RequestPart(value = "certificados", required = false) MultipartFile[] certificados,
-											          @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados){
-       
-    	RequisicaoRascunhoDTO requisicaoRascunhoDTO = new RequisicaoRascunhoDTO();
-        requisicaoRascunhoDTO.setSemestre(semestre);
-        requisicaoRascunhoDTO.setQtdCertificados(qtdCertificados);
-        requisicaoRascunhoDTO.setCursoId(cursoId);
-        requisicaoRascunhoDTO.setCertificadoArquivos(certificados);
-        requisicaoRascunhoDTO.setCertificadosMetadados(certificadosMetadados);
-        
-        
-    	ResponseEntity<?> resposta;
-    	String token = request.getHeader("Authorization").substring(7);
-    	try {
-    		requisicaoCertificadoServico.editarRequisicaoRascunho(id, token, requisicaoRascunhoDTO);
-    		resposta = ResponseEntity.ok().build();    		
-    	} catch(Exception e) {
-    		resposta = ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    	}
-    	
-    	return resposta;
-    }
-
-    @Operation(summary = "Deletar rascunho de uma requisição")
-    @DeleteMapping("/rascunho/{id}")
-    public ResponseEntity<?> deletarRequisicaoRascunho(@PathVariable("id") Long id, 
-    												   @RequestHeader(name = "Authorization", required = true) String token){
-    	ResponseEntity<?> resposta;
-    	String jwt =  token.substring(7);
-    	try {
-    		requisicaoRascunhoServico.deletarRequisicaoRascunho(id, jwt);
-    		resposta = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    		
-    	} catch(Exception e) {
-    		resposta = ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    	}
-    	
-    	return resposta;
-    }
-
+   
     @Operation(summary = "Baixar pdf de uma requisição")
     @GetMapping("{id}/pdf")
     public ResponseEntity<?> gerarRequisicaoPDF(@PathVariable("id") Long requisicaoId) {

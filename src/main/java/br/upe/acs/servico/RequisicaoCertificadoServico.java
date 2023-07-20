@@ -1,17 +1,12 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.config.JwtService;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.Curso;
 import br.upe.acs.dominio.Requisicao;
-import br.upe.acs.dominio.RequisicaoRascunho;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.dominio.dto.CertificadosMetadadosDTO;
 import br.upe.acs.dominio.dto.RequisicaoDTO;
-import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
-import br.upe.acs.dominio.vo.RascunhoVO;
-import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 @Service
@@ -35,76 +29,8 @@ public class RequisicaoCertificadoServico {
     private final AlunoServico alunoServico;
     private final CursoServico cursoServico;
     private final CertificadoServico certificadoServico;
-    private final CertificadoRascunhoServico certificadoRascunhoServico;
     private final AtividadeServico atividadeServico;
     private final RequisicaoRepositorio repositorio;
-    private final RequisicaoRascunhoRepositorio rascunhoRepositorio;
-    private final RequisicaoRascunhoServico rascunhoServico;
-    private final JwtService jwtService;
-
-    public void salvarRascunho(RequisicaoRascunhoDTO requisicaoRascunho) throws AcsExcecao, IOException, ParseException {
-        CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicaoRascunho.getCertificadosMetadados());
-
-        RequisicaoRascunho rascunhoSalvar = new RequisicaoRascunho();
-        rascunhoSalvar.setSemestre(requisicaoRascunho.getSemestre());
-        rascunhoSalvar.setQtdCertificados(requisicaoRascunho.getQtdCertificados());
-        rascunhoSalvar.setUsuarioId(requisicaoRascunho.getUsuarioId());
-        rascunhoSalvar.setCursoId(requisicaoRascunho.getCursoId());
-        rascunhoSalvar.setDataExpiracao(null);
-
-        RequisicaoRascunho rascunhoSalvo = rascunhoRepositorio.save(rascunhoSalvar);
-
-        MultipartFile[] certificadoArquivosRascunho = requisicaoRascunho.getCertificadoArquivos();
-        List<CertificadoDTO> certificadosRascunho = certificadosMetadados.getCertificados();
-
-        RascunhoVO rascunhoVO = new RascunhoVO();
-        rascunhoVO.setCertificadoArquivos(certificadoArquivosRascunho);
-        rascunhoVO.setCertificados(certificadosRascunho);
-        rascunhoVO.setQtdCertificados(requisicaoRascunho.getQtdCertificados());
-        rascunhoVO.setIdRequisicao(rascunhoSalvo.getId());
-
-       adicionarCertificadosRascunho(rascunhoVO);
-    }
-    
-    public void editarRequisicaoRascunho(Long id, String token, RequisicaoRascunhoDTO requisicaoRascunho) throws AcsExcecao, IOException, ParseException{
-    	RequisicaoRascunho rascunho = rascunhoServico.buscarRequisicaoRascunhoPorId(id).orElseThrow();
-    	String usuario = jwtService.extractUsername(token);
-    	Aluno autor = alunoServico.buscarAlunoPorId(rascunho.getUsuarioId()).orElseThrow();
-    	
-    	if(!Objects.equals(autor.getEmail(), usuario)) {
-    		throw new AcsExcecao("Você não possui autorização para editar esse rascunho");
-    	}
-    	
-    	if(!autor.isVerificado()) {
-    		throw new AcsExcecao("Sua conta não foi verificada");
-    	}
-
-    	
-    	CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicaoRascunho.getCertificadosMetadados());
-    	rascunho.setCursoId(requisicaoRascunho.getCursoId());
-    	rascunho.setQtdCertificados(requisicaoRascunho.getQtdCertificados());
-    	rascunho.setSemestre(requisicaoRascunho.getSemestre());
-    	rascunho.setDataExpiracao(null);
-    	    	
-        	
-    	
-    	if(requisicaoRascunho.getCertificadoArquivos() != null) {
-    		MultipartFile[] certificadoArquivosRascunho = requisicaoRascunho.getCertificadoArquivos();
-    		
-    		List<CertificadoDTO> certificadosRascunho = certificadosMetadados.getCertificados();  
-    		
-        	RascunhoVO rascunhoVO = new RascunhoVO();
-        	rascunhoVO.setCertificadoArquivos(certificadoArquivosRascunho);
-        	rascunhoVO.setCertificados(certificadosRascunho);
-        	rascunhoVO.setIdRequisicao(rascunho.getId());
-        	rascunhoVO.setQtdCertificados(requisicaoRascunho.getQtdCertificados());       
-
-        	adicionarCertificadosRascunho(rascunhoVO);   		
-    	}	
-    	
-    	 
-    	
-    }
 
     public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
         Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).orElseThrow();
@@ -113,10 +39,7 @@ public class RequisicaoCertificadoServico {
 
         validarRequisicao(requisicao, certificadosMetadados.getCertificados());
         Requisicao requisicaoSalvar = new Requisicao();
-        requisicaoSalvar.setData(obterDataAtual());
-        requisicaoSalvar.setSemestre(requisicao.getSemestre());
-        requisicaoSalvar.setQtdCertificados(requisicao.getQtdCertificados());
-        requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.ENCAMINHADO_COORDENACAO);
+        requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.TRÂNSITO);
         requisicaoSalvar.setCurso(cursoSalvar);
         requisicaoSalvar.setAluno(alunoSalvar);
         requisicaoSalvar.setObservacao(requisicao.getObservacao());
@@ -201,24 +124,6 @@ public class RequisicaoCertificadoServico {
         }
     }
 
-    private void adicionarCertificadosRascunho(RascunhoVO rascunho) throws AcsExcecao, IOException, ParseException {
-
-        for (int i = 0; i < rascunho.getQtdCertificados(); i++) {
-
-            MultipartFile certificadoArquivoSalvar = null;
-            if(rascunho.getCertificadoArquivos().length >= i + 1) {
-                certificadoArquivoSalvar = rascunho.getCertificadoArquivos()[i];
-            }
-
-            CertificadoDTO certificadoSalvar = new CertificadoDTO();
-            if (rascunho.getCertificados().size() >= i + 1) {
-                certificadoSalvar = rascunho.getCertificados().get(i);
-                certificadoSalvar.setRequisicaoId(rascunho.getIdRequisicao());
-            }
-
-            certificadoRascunhoServico.adicionarCertificadoRascunho(certificadoSalvar, certificadoArquivoSalvar);
-        }
-    }
 
     private void validarCertificados(List<CertificadoDTO> certificados) throws AcsExcecao {
         boolean isValid = true;
@@ -229,7 +134,7 @@ public class RequisicaoCertificadoServico {
                 isValid = false;
             } else if (!verificarData(certificado.getData())) {
                 isValid = false;
-            } else if (certificado.getHoras() <= 1) {
+            } else if (certificado.getQuantidadeDeHoras() <= 1) {
                 isValid = false;
             } else if (!verificarAtividade(certificado.getAtividadeId())) {
                 isValid = false;

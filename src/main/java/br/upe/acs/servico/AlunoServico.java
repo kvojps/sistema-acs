@@ -1,10 +1,9 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.controlador.respostas.RequisicaoBaseResposta;
+import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
 import br.upe.acs.repositorio.AlunoRepositorio;
-import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import java.util.*;
 public class AlunoServico {
 
 	private final AlunoRepositorio repositorio;
-	private final RequisicaoRascunhoRepositorio requisicaoRascunhoRepositorio;
 
 	public Optional<Aluno> buscarAlunoPorId(Long id) throws AcsExcecao {
 		if (repositorio.findById(id).isEmpty()) {
@@ -57,15 +55,12 @@ public class AlunoServico {
 	public Map<String, Object> requisicoesAlunoPaginada(String email, int pagina, int quantidade) throws AcsExcecao {
 		Aluno aluno = buscarAlunoPorEmail(email);
 		Pageable paginaFormato = PageRequest.of(pagina, quantidade);
-		List<RequisicaoBaseResposta> requisicoesAluno = new ArrayList<>(aluno.getRequisicoes()
-				.stream().map(RequisicaoBaseResposta::new).toList());
-		requisicoesAluno.addAll(requisicaoRascunhoRepositorio.findRequisicaoRascunhoByUsuarioId(aluno.getId())
-				.stream().map(RequisicaoBaseResposta::new).toList());
-
+		List<RequisicaoResposta> requisicoesAluno = new ArrayList<>(aluno.getRequisicoes()
+				.stream().map(RequisicaoResposta::new).toList());
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
 	}
 
-	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoBaseResposta> lista, int pagina, int quantidade) {
+	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoResposta> lista, int pagina, int quantidade) {
 		Map<String, Object> resposta = new HashMap<>();
 		resposta.put("requisicoes", gerarPaginacao(lista, pagina, quantidade));
 		resposta.put("paginaAtual", pagina);

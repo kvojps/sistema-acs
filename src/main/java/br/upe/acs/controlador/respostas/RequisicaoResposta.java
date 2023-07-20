@@ -9,8 +9,6 @@ import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.Getter;
 
 @Getter
@@ -18,12 +16,9 @@ public class RequisicaoResposta {
 
 	private final Long id;
 	
-	@Temporal(TemporalType.DATE)
-	private final Date data;
+	private final Date criacao;
 	
-	private final int semestre;
-	
-	private final int qtdCertificados;
+	private final Date dataDeSubmissao;
 	
 	private final String token;
 
@@ -39,9 +34,8 @@ public class RequisicaoResposta {
 	public RequisicaoResposta(Requisicao requisicao) {
 		super();
 		this.id = requisicao.getId();
-		this.data = requisicao.getData();
-		this.semestre = requisicao.getSemestre();
-		this.qtdCertificados = requisicao.getQtdCertificados();
+		this.criacao = requisicao.getCriacao();
+		this.dataDeSubmissao = requisicao.getDataDeSubmissao();
 		this.token = requisicao.getToken();
 		this.requisicaoStatus = requisicao.getStatusRequisicao();
 		this.requisicaoArquivo = requisicao.getRequisicaoArquivoAssinada();
