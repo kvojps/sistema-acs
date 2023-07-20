@@ -1,5 +1,5 @@
 package br.upe.acs.dominio.enums;
 
 public enum RequisicaoStatusEnum {
-	RASCUNHO, TRÂNSITO, ACEITO, NEGADO
+	RASCUNHO, TRANSITO, ACEITO, NEGADO
 }

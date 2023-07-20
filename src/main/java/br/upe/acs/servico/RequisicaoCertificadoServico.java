@@ -39,7 +39,7 @@ public class RequisicaoCertificadoServico {
 
         validarRequisicao(requisicao, certificadosMetadados.getCertificados());
         Requisicao requisicaoSalvar = new Requisicao();
-        requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.TRÂNSITO);
+        requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.TRANSITO);
         requisicaoSalvar.setCurso(cursoSalvar);
         requisicaoSalvar.setAluno(alunoSalvar);
         requisicaoSalvar.setObservacao(requisicao.getObservacao());
