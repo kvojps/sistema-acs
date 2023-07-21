@@ -3,6 +3,7 @@ package br.upe.acs.servico;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import org.springframework.data.domain.Page;
@@ -64,6 +65,23 @@ public class RequisicaoServico {
 		}
 
 		return requisicao.get();
+	}
+
+	public Long adicionarRequisicao(String email) throws AcsExcecao {
+		Aluno aluno = alunoServico.buscarAlunoPorEmail(email);
+		List <Requisicao> requisicoesRacunhos = aluno.getRequisicoes().stream()
+				.filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
+		if (requisicoesRacunhos.size() >= 2) {
+			throw new AcsExcecao("aluno só pode possuir 2 requisições em rascunho!");
+		}
+
+		Requisicao requisicao = new Requisicao();
+		requisicao.setStatusRequisicao(RequisicaoStatusEnum.RASCUNHO);
+		requisicao.setCriacao(new Date());
+		requisicao.setAluno(aluno);
+		requisicao.setCurso(aluno.getCurso());
+		Requisicao requisicaoSalva = repositorio.save(requisicao);
+		return requisicaoSalva.getId();
 	}
 
 	private Map<String, Object> gerarPaginacao (Page<Requisicao> pagina) {

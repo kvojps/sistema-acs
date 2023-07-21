@@ -1,13 +1,8 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.dominio.Aluno;
-import br.upe.acs.dominio.Curso;
-import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.dominio.dto.CertificadosMetadadosDTO;
 import br.upe.acs.dominio.dto.RequisicaoDTO;
-import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
-import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,36 +21,8 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class RequisicaoCertificadoServico {
 
-    private final AlunoServico alunoServico;
-    private final CursoServico cursoServico;
     private final CertificadoServico certificadoServico;
     private final AtividadeServico atividadeServico;
-    private final RequisicaoRepositorio repositorio;
-
-    public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
-        Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).orElseThrow();
-        Aluno alunoSalvar = alunoServico.buscarAlunoPorId(requisicao.getUsuarioId()).orElseThrow();
-        CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicao.getCertificadosMetadados());
-
-        validarRequisicao(requisicao, certificadosMetadados.getCertificados());
-        Requisicao requisicaoSalvar = new Requisicao();
-        requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.TRANSITO);
-        requisicaoSalvar.setCurso(cursoSalvar);
-        requisicaoSalvar.setAluno(alunoSalvar);
-        requisicaoSalvar.setObservacao(requisicao.getObservacao());
-
-        Requisicao requisicaoSalva = repositorio.save(requisicaoSalvar);
-
-        MultipartFile[] certificadoArquivos = requisicao.getCertificados();
-        List<CertificadoDTO> certificados = certificadosMetadados.getCertificados();
-        adicionarCertificados(certificadoArquivos, certificados, requisicaoSalva.getId());
-
-        String token = gerarTokenRequisicao();
-        requisicaoSalva.setToken(token);
-        repositorio.save(requisicaoSalva);
-
-        return token;
-    }
 
     private void validarRequisicao(RequisicaoDTO requisicao, List<CertificadoDTO> certificados) throws AcsExcecao {
         boolean isValid = true;
@@ -119,8 +86,6 @@ public class RequisicaoCertificadoServico {
             MultipartFile certificadoArquivoSalvar = certificadoArquivos[i];
             CertificadoDTO certificadoSalvar = certificados.get(i);
             certificadoSalvar.setRequisicaoId(idRequisicao);
-
-            certificadoServico.adicionarCertificado(certificadoSalvar, certificadoArquivoSalvar);
         }
     }
 

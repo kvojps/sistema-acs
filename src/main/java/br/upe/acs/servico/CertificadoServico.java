@@ -34,23 +34,16 @@ public class CertificadoServico {
 		return repositorio.findById(id);
 	}
 
-	public void adicionarCertificado(CertificadoDTO certificado, MultipartFile file)
-			throws IOException, ParseException, AcsExcecao {
-		byte[] certificadoArquivo = file.getBytes();
-
-		Certificado certificadoSalvar = new Certificado();
-		certificadoSalvar.setTitulo(certificado.getTitulo());
-		certificadoSalvar.setDataInicial(converterParaData(certificado.getData()));
-		certificadoSalvar.setCertificado(certificadoArquivo);
-		certificadoSalvar.setStatusCertificado(CertificadoStatusEnum.ENCAMINHADO_ESCOLARIDADE);
-
-		Requisicao requisicaoSalvar = requisicaoServico.buscarRequisicaoPorId(certificado.getRequisicaoId());
-		certificadoSalvar.setRequisicao(requisicaoSalvar);
-
-		Optional<Atividade> atividadeSalvar = atividadeServico.buscarAtividadePorId(certificado.getAtividadeId());
-		certificadoSalvar.setAtividade(atividadeSalvar.orElseThrow());
-
-		repositorio.save(certificadoSalvar);
+	public Long adicionarCertificado(MultipartFile file, Long requisicaoId, String email) throws AcsExcecao, IOException {
+		Requisicao requisicao = requisicaoServico.buscarRequisicaoPorId(requisicaoId);
+		if (!requisicao.getAluno().getEmail().equals(email)) {
+			throw new AcsExcecao("Esse id não pertence a nenhuma requisição do aluno!");
+		}
+		Certificado certificado = new Certificado();
+		certificado.setCertificado(file.getBytes());
+		certificado.setRequisicao(requisicao);
+		Certificado certificadoSalvo = repositorio.save(certificado);
+		return certificadoSalvo.getId();
 	}
 
 	private static Date converterParaData(String dataString) throws ParseException {

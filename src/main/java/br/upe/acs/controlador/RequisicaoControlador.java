@@ -4,23 +4,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import br.upe.acs.config.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
-import br.upe.acs.dominio.dto.RequisicaoDTO;
-import br.upe.acs.servico.RequisicaoCertificadoServico;
 import br.upe.acs.servico.RequisicaoServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +29,9 @@ public class RequisicaoControlador {
 
     private final RequisicaoServico servico;
 
-    private final RequisicaoCertificadoServico requisicaoCertificadoServico;
+    private final JwtService jwtService;
+
+    private final RequisicaoServico requisicaoServico;
     
     @Operation(summary = "Listar todas as requisições")
     @GetMapping
@@ -72,27 +69,13 @@ public class RequisicaoControlador {
         }
     }
 
-    @Operation(summary = "Adicionar requisição com certificados")
-    @PostMapping(consumes = {"multipart/form-data"})
-    public ResponseEntity<?> adicionarRequisicao(@RequestParam(value = "usuarioId") Long usuarioId,
-                                                 @RequestParam(value = "cursoId") Long cursoId,
-                                                 @RequestParam(value = "semestre") int semestre,
-                                                 @RequestParam(value = "qtdCertificados") int qtdCertificados,
-                                                 @RequestParam(value = "observacao") String observacao,
-                                                 @RequestPart(value = "certificados") MultipartFile[] certificados,
-                                                 @RequestPart(value = "certificadosMetadados") MultipartFile certificadosMetadados) {
-        RequisicaoDTO requisicaoDTO = new RequisicaoDTO();
-        requisicaoDTO.setCursoId(cursoId);
-        requisicaoDTO.setUsuarioId(usuarioId);
-        requisicaoDTO.setSemestre(semestre);
-        requisicaoDTO.setQtdCertificados(qtdCertificados);
-        requisicaoDTO.setObservacao(observacao);
-        requisicaoDTO.setCertificados(certificados);
-        requisicaoDTO.setCertificadosMetadados(certificadosMetadados);
-
+    @Operation(summary = "Adicionar requisição")
+    @PostMapping
+    public ResponseEntity<?> adicionarRequisicao(HttpServletRequest request) {
         ResponseEntity<?> resposta;
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.ok(requisicaoCertificadoServico.adicionarRequisicao(requisicaoDTO));
+            resposta = ResponseEntity.ok(requisicaoServico.adicionarRequisicao(email));
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
