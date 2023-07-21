@@ -6,14 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
-import br.upe.acs.dominio.dto.CertificadoDTO;
-import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import br.upe.acs.repositorio.CertificadoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +40,7 @@ public class CertificadoServico {
 		Certificado certificado = new Certificado();
 		certificado.setCertificado(file.getBytes());
 		certificado.setRequisicao(requisicao);
+		certificado.setStatusCertificado(CertificadoStatusEnum.RASCUNHO);
 		Certificado certificadoSalvo = repositorio.save(certificado);
 		return certificadoSalvo.getId();
 	}
