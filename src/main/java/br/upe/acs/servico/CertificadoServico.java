@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+import br.upe.acs.dominio.Atividade;
+import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,15 +23,18 @@ import lombok.RequiredArgsConstructor;
 public class CertificadoServico {
 
 	private final CertificadoRepositorio repositorio;
+
 	private final RequisicaoServico requisicaoServico;
+
 	private final AtividadeServico atividadeServico;
 
-	public Optional<Certificado> buscarCertificadoPorId(Long id) throws AcsExcecao {
-		if (repositorio.findById(id).isEmpty()) {
+	public Certificado buscarCertificadoPorId(Long id) throws AcsExcecao {
+		Optional<Certificado> certificado = repositorio.findById(id);
+		if (certificado.isEmpty()) {
 			throw new AcsExcecao("Não existe um certificado associado a este id!");
 		}
 
-		return repositorio.findById(id);
+		return certificado.get();
 	}
 
 	public Long adicionarCertificado(MultipartFile file, Long requisicaoId, String email) throws AcsExcecao, IOException {
@@ -45,8 +50,22 @@ public class CertificadoServico {
 		return certificadoSalvo.getId();
 	}
 
+	public void alterarCertificado(Long certificadoId, CertificadoDTO certificadoDTO, String email) throws AcsExcecao, ParseException {
+		Certificado certificado = buscarCertificadoPorId(certificadoId);
+		if (!certificado.getRequisicao().getAluno().getEmail().equals(email)) {
+			throw new AcsExcecao("Esse id não pertence a nenhuma certificado do aluno!");
+		}
+		Atividade atividade = atividadeServico.buscarAtividadePorId(certificadoDTO.getAtividadeId());
+		certificado.setTitulo(certificadoDTO.getTitulo());
+		certificado.setAtividade(atividade);
+		certificado.setDataInicial(converterParaData(certificadoDTO.getDataIncial()));
+		certificado.setDataFinal(converterParaData(certificadoDTO.getDataFinal()));
+		certificado.setCargaHoraria((int) (certificadoDTO.getQuantidadeDeHoras() * 60));
+		repositorio.save(certificado);
+	}
+
 	private static Date converterParaData(String dataString) throws ParseException {
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		return formato.parse(dataString);
 	}
 }

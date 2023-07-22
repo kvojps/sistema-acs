@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class AlunoControlador {
 
     private final AlunoServico servico;
+
     private final JwtService jwtService;
 
     @Operation(summary = "Buscar aluno por id")

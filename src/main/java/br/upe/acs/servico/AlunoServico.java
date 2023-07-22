@@ -1,6 +1,7 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
+import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
 import br.upe.acs.repositorio.AlunoRepositorio;
@@ -54,13 +55,12 @@ public class AlunoServico {
 
 	public Map<String, Object> requisicoesAlunoPaginada(String email, int pagina, int quantidade) throws AcsExcecao {
 		Aluno aluno = buscarAlunoPorEmail(email);
-		Pageable paginaFormato = PageRequest.of(pagina, quantidade);
-		List<RequisicaoResposta> requisicoesAluno = new ArrayList<>(aluno.getRequisicoes()
-				.stream().map(RequisicaoResposta::new).toList());
+		List<RequisicaoSimplesResposta> requisicoesAluno = new ArrayList<>(aluno.getRequisicoes()
+				.stream().map(RequisicaoSimplesResposta::new).toList());
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
 	}
 
-	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoResposta> lista, int pagina, int quantidade) {
+	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoSimplesResposta> lista, int pagina, int quantidade) {
 		Map<String, Object> resposta = new HashMap<>();
 		resposta.put("requisicoes", gerarPaginacao(lista, pagina, quantidade));
 		resposta.put("paginaAtual", pagina);
