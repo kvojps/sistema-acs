@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import br.upe.acs.controlador.respostas.RegistroRequisicoesResposta;
 import br.upe.acs.dominio.dto.RequisicaoRascunhoDTO;
 
 import org.springframework.http.*;
@@ -61,7 +60,8 @@ public class RequisicaoControlador {
     @GetMapping("/usuario/{id}")
     public ResponseEntity<?> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId) {
         try {
-            return ResponseEntity.ok(new RegistroRequisicoesResposta(servico.listarRequisicoesPorAluno(alunoId)));
+            return ResponseEntity.ok(servico.listarRequisicoesPorAluno(alunoId).stream()
+                    .map(RequisicaoResposta::new).toList());
         } catch (AcsExcecao e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -71,7 +71,7 @@ public class RequisicaoControlador {
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarRequisicaoPorId(@PathVariable("id") Long id) {
         try {
-            RequisicaoResposta requisicaoResposta = new RequisicaoResposta(servico.buscarRequisicaoPorId(id).orElseThrow());
+            RequisicaoResposta requisicaoResposta = new RequisicaoResposta(servico.buscarRequisicaoPorId(id));
             return ResponseEntity.ok(requisicaoResposta);
         } catch (AcsExcecao e) {
             return ResponseEntity.badRequest().body(e.getMessage());
