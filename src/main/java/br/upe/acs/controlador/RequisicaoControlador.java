@@ -7,13 +7,7 @@ import java.util.stream.Collectors;
 import br.upe.acs.config.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.servico.RequisicaoServico;
@@ -100,6 +94,19 @@ public class RequisicaoControlador {
 
         return resposta;
     }
-    
-    
+
+    @Operation(summary = "excluir requisição")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirCertificado(HttpServletRequest request, @PathVariable("id") Long requisicaoId) {
+        ResponseEntity<?> resposta;
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+        try {
+            servico.excluirRequisicao(requisicaoId, email);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
 }

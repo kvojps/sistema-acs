@@ -3,6 +3,8 @@ package br.upe.acs.servico;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
@@ -125,6 +127,19 @@ public class RequisicaoServico {
 
 	}
 
+	public void excluirRequisicao(Long requisicaoId, String email) throws AcsExcecao {
+		Requisicao requisicao = buscarRequisicaoPorId(requisicaoId);
+		if (!requisicao.getAluno().getEmail().equals(email)) {
+			throw new AcsExcecao("Usuário sem premissão para excluir esse requisição!");
+		}
+
+		if (!requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)) {
+			throw new AcsExcecao("Um requisição já submetido não pode ser apagado!");
+		}
+
+		repositorio.deleteById(requisicaoId);
+	}
+
 	private Context definirValoresTemplateHTML(Requisicao requisicao) {
 		Context contexto = new Context();
 
@@ -144,5 +159,4 @@ public class RequisicaoServico {
 
 		return contexto;
 	}
-
 }

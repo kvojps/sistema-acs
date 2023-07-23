@@ -42,6 +42,11 @@ public class CertificadoServico {
 		if (!requisicao.getAluno().getEmail().equals(email)) {
 			throw new AcsExcecao("Esse id não pertence a nenhuma requisição do aluno!");
 		}
+
+		if (requisicao.getCertificados().size() >= 10) {
+			throw new AcsExcecao("Essa requisição já possui muitos certificados!");
+		}
+
 		Certificado certificado = new Certificado();
 		certificado.setCertificado(file.getBytes());
 		certificado.setRequisicao(requisicao);
@@ -62,6 +67,18 @@ public class CertificadoServico {
 		certificado.setDataFinal(converterParaData(certificadoDTO.getDataFinal()));
 		certificado.setCargaHoraria((int) (certificadoDTO.getQuantidadeDeHoras() * 60));
 		repositorio.save(certificado);
+	}
+
+	public void excluirCertificado(Long certificadoId, String email) throws AcsExcecao {
+		Certificado certificado = buscarCertificadoPorId(certificadoId);
+		if (!certificado.getRequisicao().getAluno().getEmail().equals(email)) {
+			throw new AcsExcecao("Usuário sem premissão para excluir esse certificado!");
+		}
+
+		if (!certificado.getStatusCertificado().equals(CertificadoStatusEnum.RASCUNHO)) {
+			throw new AcsExcecao("Um certificado já submetido não pode ser apagado!");
+		}
+		repositorio.deleteById(certificadoId);
 	}
 
 	private static Date converterParaData(String dataString) throws ParseException {

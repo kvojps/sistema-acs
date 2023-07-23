@@ -13,9 +13,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.text.ParseException;
-
 @RestController
 @RequestMapping("api/certificado")
 @RequiredArgsConstructor
@@ -45,7 +42,7 @@ public class CertificadoControlador {
     public ResponseEntity<?> adicionarCertificado(
             HttpServletRequest request,
             Long requisicaoId,
-            @RequestPart(value = "certificadosMetadados") MultipartFile certificado) {
+            @RequestPart(value = "certificado") MultipartFile certificado) {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
@@ -70,6 +67,21 @@ public class CertificadoControlador {
             servico.alterarCertificado(id, certificadoDTO, email);
             resposta = ResponseEntity.noContent().build();
         } catch (Exception e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
+    @Operation(summary = "excluir certificados")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirCertificado(HttpServletRequest request, @PathVariable("id") Long certificadoId) {
+        ResponseEntity<?> resposta;
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+        try {
+            servico.excluirCertificado(certificadoId, email);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
 
