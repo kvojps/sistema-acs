@@ -75,7 +75,7 @@ public class RequisicaoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.ok(requisicaoServico.adicionarRequisicao(email));
+            resposta = ResponseEntity.status(201).body(requisicaoServico.adicionarRequisicao(email));
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
