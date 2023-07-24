@@ -95,6 +95,19 @@ public class RequisicaoControlador {
         return resposta;
     }
 
+    @Operation(summary = "Submissão de requisição")
+    @PutMapping("/submissão/{id}")
+    public ResponseEntity<?> submeterRequisicao(@PathVariable("id") Long requisicaoId) {
+        ResponseEntity<?> resposta;
+        try {
+            resposta = ResponseEntity.ok(servico.submeterRequisicao(requisicaoId));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
     @Operation(summary = "excluir requisição")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirCertificado(HttpServletRequest request, @PathVariable("id") Long requisicaoId) {
