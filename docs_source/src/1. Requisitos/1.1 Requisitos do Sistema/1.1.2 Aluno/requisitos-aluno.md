@@ -141,15 +141,15 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Foto de perfil, nome e e-mail institucional.        |
 | **Pós-condições:** Será mostrado foto, nome e e-mail em um modal de perfil.                                                          |
 
-| RF 027 - Arquivar Requisição                                                    |
-| --------------------------------------------------------------                  |
-| **Descrição:** O usuário deve ter a habilidade de arquivar requisições caso seja viável -- como no caso de requisições negadas ou com erros visíveis -- para limpar a tela inicial.  |
-| **Atores:** Discente.                                                           |
-| **Prioridade:** Baixo.                                                          |
-| **Entrada:** Abrir modal de detalhes da requisição.                             |
-| **Pré-condições:** Ter requisição enviada.                                      |
-| **Saída:** Requisição ser realocada para a aba de Arquivados.                                                                       |
-| **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                                                       |
+| RF 027 - Arquivar Solicitação                                                                              |
+| ---------------------------------------------------------------------------------------------------------- |
+| **Descrição:** O usuário deve ter a habilidade de arquivar requisições caso seja viável -- como no caso de requisições negadas -- para limpar a tela inicial.                                                                       |
+| **Atores:** Discente.                                                                                      |
+| **Prioridade:** Médio.                                                                                     |
+| **Entrada:** Abrir modal de detalhes da requisição.                                                        |
+| **Pré-condições:** Ter requisição fora do modo de rascunho.                                                |
+| **Saída:** Requisição ser realocada para a aba de Arquivados.                                              |
+| **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                 |
 
 | RF 028 - Visualizar Modal de anexar arquivos                                    |
 | --------------------------------------------------------------                  |
