@@ -28,10 +28,10 @@ public class CertificadoRascunhoResposta {
     public CertificadoRascunhoResposta(CertificadoRascunho certificadoRascunho) {
         this.id = certificadoRascunho.getId();
         this.titulo = certificadoRascunho.getTitulo();
-        this.horas = certificadoRascunho.getHoras();
-        this.certificadoArquivo = certificadoRascunho.getCertificadoArquivo();
+        this.horas = certificadoRascunho.getQuantidadeDeHoras();
+        this.certificadoArquivo = certificadoRascunho.getCertificado();
         this.eixoAtividade = certificadoRascunho.getEixoAtividade();
-        this.data = certificadoRascunho.getData();
+        this.data = certificadoRascunho.getDataInicial();
         this.atividade = certificadoRascunho.getDescricaoAtividade();
     }
 }

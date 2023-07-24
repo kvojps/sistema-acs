@@ -2,10 +2,6 @@ package br.upe.acs.controlador;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.AlunoResposta;
-import br.upe.acs.controlador.respostas.RequisicaoRascunhoResposta;
-import br.upe.acs.controlador.respostas.RequisicaoResposta;
-import br.upe.acs.dominio.Aluno;
-import br.upe.acs.servico.RequisicaoRascunhoServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import br.upe.acs.servico.AlunoServico;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 @RequestMapping("api/aluno")
 @RequiredArgsConstructor
@@ -26,7 +19,6 @@ public class AlunoControlador {
 
     private final AlunoServico servico;
     private final JwtService jwtService;
-    private final RequisicaoRascunhoServico requisicaoRascunhoServico;
 
     @Operation(summary = "Buscar aluno por id")
     @GetMapping("/{id}")
@@ -57,20 +49,16 @@ public class AlunoControlador {
     }
 
     @Operation(summary = "Listar todas as requisições do aluno")
-    @GetMapping("/requisicao")
-    public  ResponseEntity<?> listarRequisicaoDeAluno(HttpServletRequest request) {
-        //TODO AS:
+    @GetMapping("/requisicao/paginacao")
+    public  ResponseEntity<?> listarRequisicaoAlunoPaginacao(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int quantidade
+    ) {
         ResponseEntity<?> resposta;
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            Aluno aluno = servico.buscarAlunoPorEmail(email);
-            List<Object> requisicoesRascunhosRespostas = new ArrayList<>(aluno.getRequisicoes()
-                    .stream().map(RequisicaoResposta::new).toList());
-            requisicoesRascunhosRespostas.addAll(requisicaoRascunhoServico.buscarRequisicaoRascunhoPorAluno(aluno.getId())
-                    .stream().map(RequisicaoRascunhoResposta::new).toList());
-
-
-            resposta = ResponseEntity.ok(requisicoesRascunhosRespostas);
+            resposta = ResponseEntity.ok(servico.requisicoesAlunoPaginada(email, pagina, quantidade));
 
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
@@ -78,5 +66,20 @@ public class AlunoControlador {
 
         return resposta;
     }
+
+    @Operation(summary = "Carga horaria dos alunos")
+    @GetMapping("/horas")
+    public ResponseEntity<?> atividadesComplementaresAluno(HttpServletRequest request) {
+        ResponseEntity<?> resposta;
+        try {
+            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+            resposta = ResponseEntity.ok(servico.atividadesComplementaresAluno(email));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
 
 }

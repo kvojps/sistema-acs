@@ -4,6 +4,7 @@ import java.util.Date;
 
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.enums.CertificadoStatusEnum;
+import br.upe.acs.dominio.enums.EixoEnum;
 import lombok.Getter;
 
 @Getter
@@ -16,6 +17,10 @@ public class CertificadoResposta {
 	private final String descricao;
 	
 	private final Date data;
+
+	private final EixoEnum eixoAtividade;
+
+	private final String atividade;
 	
 	private final CertificadoStatusEnum statusCertificado;
 	
@@ -32,10 +37,12 @@ public class CertificadoResposta {
 		this.id = certificado.getId();
 		this.titulo = certificado.getTitulo();
 		this.descricao = certificado.getDescricao();
-		this.data = certificado.getData();
-		this.horas = certificado.getHoras();
+		this.data = certificado.getDataInicial();
+		this.horas = certificado.getQuantidadeDeHoras();
 		this.chMaxima = certificado.getChMaxima();
 		this.chTotal = certificado.getChTotal();
+		this.atividade = certificado.getAtividade().getDescricao();
+		this.eixoAtividade = certificado.getAtividade().getEixo();
 		this.certificadoArquivo = certificado.getCertificado();
 		this.statusCertificado = certificado.getStatusCertificado();
 	}
