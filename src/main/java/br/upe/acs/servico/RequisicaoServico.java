@@ -4,7 +4,6 @@ import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Aluno;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
-import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.CertificadoRepositorio;
@@ -200,13 +199,15 @@ public class RequisicaoServico {
 
 			if (certificado.getCertificado() == null){
 				isValid = false;
-			} else if (certificado.getTitulo().isBlank()) {
+			} else if (certificado.getTitulo() == null || certificado.getTitulo().isBlank()) {
 				isValid = false;
 			} else if (certificado.getDataInicial().after(new Date())) {
 				isValid = false;
 			} else if (certificado.getDataFinal().after(new Date())) {
 				isValid = false;
 			} else if (certificado.getCargaHoraria() <= 1) {
+				isValid = false;
+			} else if (certificado.getAtividade() == null) {
 				isValid = false;
 			}
 

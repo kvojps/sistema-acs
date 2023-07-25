@@ -60,11 +60,22 @@ public class CertificadoServico {
 		if (!certificado.getRequisicao().getAluno().getEmail().equals(email)) {
 			throw new AcsExcecao("Esse id não pertence a nenhuma certificado do aluno!");
 		}
-		Atividade atividade = atividadeServico.buscarAtividadePorId(certificadoDTO.getAtividadeId());
+		Atividade atividade = null;
+		if (certificadoDTO.getAtividadeId() != 0) {
+			atividade = atividadeServico.buscarAtividadePorId(certificadoDTO.getAtividadeId());
+		}
+
 		certificado.setTitulo(certificadoDTO.getTitulo());
 		certificado.setAtividade(atividade);
-		certificado.setDataInicial(converterParaData(certificadoDTO.getDataIncial()));
-		certificado.setDataFinal(converterParaData(certificadoDTO.getDataFinal()));
+
+		if (certificadoDTO.getDataIncial() != null) {
+			certificado.setDataInicial(converterParaData(certificadoDTO.getDataIncial()));
+		}
+
+		if (certificadoDTO.getDataFinal() != null) {
+			certificado.setDataFinal(converterParaData(certificadoDTO.getDataFinal()));
+		}
+
 		certificado.setCargaHoraria((int) (certificadoDTO.getQuantidadeDeHoras() * 60));
 		repositorio.save(certificado);
 	}
