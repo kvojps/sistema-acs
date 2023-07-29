@@ -76,17 +76,6 @@ public class ControleAcessoServico {
 		return gerarAutenticacaoResposta(usuario);
     }
 
-	public void alterarSenha(String token, String senha, String novaSenha) throws AcsExcecao {
-		validarSenha(novaSenha);
-		String email = jwtService.extractUsername(token);
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
-		if (usuarioRepositorio.findByEmail(email).isPresent()) {
-			Usuario usuario = usuarioRepositorio.findByEmail(email).orElseThrow();
-			usuario.setSenha(passwordEncoder.encode(novaSenha));
-			usuarioRepositorio.save(usuario);
-		} 
-	}
-
 	private void verificarDadosUnicos(String email, String cpf) throws AcsExcecao {
 		String mensagem = "";
 		
@@ -105,7 +94,7 @@ public class ControleAcessoServico {
 		}
 	}
 
-	private void validarSenha(String senha) throws AcsExcecao {
+	protected static void validarSenha(String senha) throws AcsExcecao {
 		boolean comMaiuscula = false, comMinuscula = false, comNumerico = false, comEspecial = false;
 
 		if (senha.length() < 8) {

@@ -1,5 +1,6 @@
 package br.upe.acs.servico;
 
+import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
@@ -9,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,11 +22,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
+
 @Service
 @RequiredArgsConstructor
 public class UsuarioServico {
 	
     private final UsuarioRepositorio repositorio;
+	private final JwtService jwtService;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthenticationManager authenticationManager;
 
     public Optional<Usuario> buscarUsuarioPorId(Long id) throws AcsExcecao {
         if (repositorio.findById(id).isEmpty()) {
@@ -74,6 +83,17 @@ public class UsuarioServico {
 		resposta.put("totalPaginas", Math.floorDiv(lista.size(), quantidade) + (lista.size() % quantidade == 0? 0: 1));
 
 		return resposta;
+	}
+
+	public void alterarSenha(String token, String senha, String novaSenha) throws AcsExcecao {
+		validarSenha(novaSenha);
+		String email = jwtService.extractUsername(token);
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
+		if (repositorio.findByEmail(email).isPresent()) {
+			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
+			usuario.setSenha(passwordEncoder.encode(novaSenha));
+			repositorio.save(usuario);
+		}
 	}
     
     private <T> List<T> gerarPaginacao(List<T> lista, int pagina, int quantidade) {

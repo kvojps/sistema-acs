@@ -3,7 +3,6 @@ package br.upe.acs.controlador;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.UsuarioResposta;
 import br.upe.acs.dominio.dto.AlterarSenhaDTO;
-import br.upe.acs.servico.ControleAcessoServico;
 import br.upe.acs.servico.UsuarioServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,8 +20,6 @@ public class UsuarioControlador {
     private final UsuarioServico servico;
     
     private final JwtService jwtService;
-
-    private final ControleAcessoServico controleAcessoServico;
     
     @Operation(summary = "Buscar usuário por id")
     @GetMapping("/{id}")
@@ -104,7 +101,7 @@ public class UsuarioControlador {
     }
 
     @Operation(summary = "Alterar senha do usuário")
-    @PatchMapping
+    @PatchMapping("/senha")
     public ResponseEntity<?> alterarSenha(
             HttpServletRequest request,
             @RequestBody AlterarSenhaDTO alterarSenhaDTO
@@ -112,7 +109,7 @@ public class UsuarioControlador {
         String token = request.getHeader("Authorization").substring(7);
         ResponseEntity<?> resposta;
         try {
-            controleAcessoServico.alterarSenha(token, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
+            servico.alterarSenha(token, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
