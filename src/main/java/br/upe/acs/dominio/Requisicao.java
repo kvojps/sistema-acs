@@ -36,7 +36,7 @@ public class Requisicao extends RequisicaoBase {
 	private RequisicaoStatusEnum statusRequisicao;
 
 	@ManyToOne
-	private Aluno aluno;
+	private Usuario usuario;
 
 	@ManyToOne
 	private Curso curso;
