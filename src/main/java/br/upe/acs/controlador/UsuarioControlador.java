@@ -70,14 +70,12 @@ public class UsuarioControlador {
 
     @Operation(summary = "Retornar dados de perfil do usuário")
     @GetMapping("/me")
-    public ResponseEntity<?> retornarPerfilDoUsuario(HttpServletRequest request,
-                                                     @RequestParam(value = "usuarioId") Long id,
-                                                     @RequestParam(value = "codigoDeVerificacao") String codigo) {
+    public ResponseEntity<?> retornarPerfilDoUsuario(HttpServletRequest request) {
 
         ResponseEntity<?> resposta;
-        String token = request.getHeader("Authorization").substring(7);
         try {
-            var usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).orElseThrow());
+            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+            var usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorEmail(email));
             resposta = ResponseEntity.ok(usuarioResposta);
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
