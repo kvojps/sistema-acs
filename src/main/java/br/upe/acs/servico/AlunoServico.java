@@ -33,23 +33,6 @@ public class AlunoServico {
 
 		return aluno.get();
 	}
-	
-	public String verificarAluno(Long alunoId, String codigoVerificacao) throws AcsExcecao {
-		Usuario usuario = buscarAlunoPorId(alunoId).orElseThrow();
-		String resposta;
-
-		if (usuario.isVerificado()) {
-			resposta = "Este Aluno já é verificado!";
-		} else if (codigoVerificacao.equals(usuario.getCodigoVerificacao())) {
-			usuario.setVerificado(true);
-			repositorio.save(usuario);
-			resposta = "Aluno verificado com sucesso!";
-		} else {
-			resposta = "O código de verificação está incorreto!";
-		}
-
-		return resposta;
-	}
 
 	public Map<String, Object> requisicoesAlunoPaginada(String email, int pagina, int quantidade) throws AcsExcecao {
 		Usuario aluno = buscarAlunoPorEmail(email);

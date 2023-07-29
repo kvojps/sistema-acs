@@ -88,11 +88,12 @@ public class UsuarioControlador {
 
     @Operation(summary = "Verificar usuário")
     @PostMapping("/verificacao")
-    public ResponseEntity<?> verificarUsuario(@RequestParam(value = "usuarioId") Long id,
+    public ResponseEntity<?> verificarUsuario(HttpServletRequest request,
                                               @RequestParam(value = "codigoDeVerificacao") String codigo) {
         ResponseEntity<?> resposta;
         try {
-            resposta = ResponseEntity.ok(servico.verificarUsuario(id, codigo));
+            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+            resposta = ResponseEntity.ok(servico.verificarUsuario(email, codigo));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -35,20 +35,6 @@ public class AlunoControlador {
         return resposta;
     }
 
-    @Operation(summary = "Verificar aluno")
-    @PostMapping("/verificacao")
-    public ResponseEntity<?> verificarAluno(@RequestParam(value = "usuarioId") Long alunoId,
-                                              @RequestParam(value = "codigoVerificacao") String codigo) {
-        ResponseEntity<?> resposta;
-        try {
-            resposta = ResponseEntity.ok(servico.verificarAluno(alunoId, codigo));
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        return resposta;
-    }
-
     @Operation(summary = "Listar todas as requisições do aluno")
     @GetMapping("/requisicao/paginacao")
     public  ResponseEntity<?> listarRequisicaoAlunoPaginacao(

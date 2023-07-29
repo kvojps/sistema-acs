@@ -50,8 +50,8 @@ public class UsuarioServico {
     	
     }
 
-    public String verificarUsuario(Long usuarioId, String codigoVerificacao) throws AcsExcecao {
-        Usuario usuario = buscarUsuarioPorId(usuarioId).orElseThrow();
+    public String verificarUsuario(String email, String codigoVerificacao) throws AcsExcecao {
+        Usuario usuario = buscarUsuarioPorEmail(email);
         String resposta;
         if (usuario.isVerificado()) {
             resposta = "Este usuário já é verificado!";
