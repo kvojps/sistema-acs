@@ -32,11 +32,7 @@ public class UsuarioControlador {
         String token = request.getHeader("Authorization").substring(7);
         try {
             var usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).orElseThrow());
-            if (!usuarioResposta.isVerificado()) {
-                resposta = new ResponseEntity<>("Usuário não verificado.", HttpStatus.FORBIDDEN);
-            } else {
-                resposta = ResponseEntity.ok(usuarioResposta);
-            }
+            resposta = ResponseEntity.ok(usuarioResposta);
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -47,7 +43,7 @@ public class UsuarioControlador {
     @Operation(summary = "Verificar usuário")
     @PostMapping("/verificacao")
     public ResponseEntity<?> verificarUsuario(@RequestParam(value = "usuarioId") Long id,
-                                            @RequestParam(value = "codigoDeVerificacao") String codigo) {
+                                              @RequestParam(value = "codigoDeVerificacao") String codigo) {
         ResponseEntity<?> resposta;
         try {
             resposta = ResponseEntity.ok(servico.verificarUsuario(id, codigo));
@@ -63,7 +59,7 @@ public class UsuarioControlador {
     public ResponseEntity<?> alterarSenha(
             HttpServletRequest request,
             @RequestBody AlterarSenhaDTO alterarSenhaDTO
-            ) {
+    ) {
         String token = request.getHeader("Authorization").substring(7);
         ResponseEntity<?> resposta;
         try {

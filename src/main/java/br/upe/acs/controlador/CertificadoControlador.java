@@ -48,7 +48,7 @@ public class CertificadoControlador {
         try {
             resposta = ResponseEntity.status(201).body(servico.adicionarCertificado(certificado, requisicaoId, email));
         } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.status(404).body(e.getMessage());
         }
 
         return resposta;
