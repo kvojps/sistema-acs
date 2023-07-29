@@ -16,6 +16,8 @@ public class UsuarioResposta {
 	private final String nomeCompleto;
 
 	private final String cpf;
+	
+	private final String matricula;
 
 	private final String telefone;
 
@@ -39,6 +41,7 @@ public class UsuarioResposta {
 		this.id = usuario.getId();
 		this.nomeCompleto = usuario.getNomeCompleto();
 		this.cpf = usuario.getCpf();
+		this.matricula = usuario.getMatricula();
 		this.telefone = usuario.getTelefone();
 		this.email = usuario.getEmail();
 		this.senha = usuario.getSenha();

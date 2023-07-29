@@ -27,6 +27,8 @@ public class Usuario implements UserDetails {
 	
 	private String cpf;
 	
+	private String matricula;
+	
 	private int periodo;
 	
 	private String telefone;
