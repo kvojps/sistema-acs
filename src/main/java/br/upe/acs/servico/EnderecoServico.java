@@ -34,7 +34,7 @@ public class EnderecoServico {
 		try {
 			viaCepDTO = new RestTemplate().getForEntity(String.format("https://viacep.com.br/ws/%s/json/", cep), ViaCepDTO.class).getBody();
 			assert viaCepDTO != null;
-			if (viaCepDTO.getLogradouro().isEmpty()) {
+			if (viaCepDTO.getLocalidade().isEmpty()) {
 				throw new CepInvalidoExcecao("CEP não encontrado!");
 			}
 		} catch (Exception e) {
