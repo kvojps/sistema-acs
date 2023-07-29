@@ -1,9 +1,8 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.controlador.respostas.RequisicaoBaseResposta;
+import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
-import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
 import br.upe.acs.repositorio.UsuarioRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import java.util.Optional;
 public class UsuarioServico {
 	
     private final UsuarioRepositorio repositorio;
-	private final RequisicaoRascunhoRepositorio requisicaoRascunhoRepositorio;
 
     public Optional<Usuario> buscarUsuarioPorId(Long id) throws AcsExcecao {
         if (repositorio.findById(id).isEmpty()) {
@@ -62,15 +60,13 @@ public class UsuarioServico {
     public Map<String, Object> requisicoesAlunoPaginada(String email, int pagina, int quantidade) throws AcsExcecao {
 		Usuario usuario = buscarUsuarioPorEmail(email);
 		Pageable paginaFormato = PageRequest.of(pagina, quantidade);
-		List<RequisicaoBaseResposta> requisicoesAluno = new ArrayList<>(usuario.getRequisicoes()
-				.stream().map(RequisicaoBaseResposta::new).toList());
-		requisicoesAluno.addAll(requisicaoRascunhoRepositorio.findRequisicaoRascunhoByUsuarioId(usuario.getId())
-				.stream().map(RequisicaoBaseResposta::new).toList());
+		List<RequisicaoResposta> requisicoesAluno = new ArrayList<>(usuario.getRequisicoes()
+				.stream().map(RequisicaoResposta::new).toList());
 
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
 	}
     
-    private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoBaseResposta> lista, int pagina, int quantidade) {
+    private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoResposta> lista, int pagina, int quantidade) {
 		Map<String, Object> resposta = new HashMap<>();
 		resposta.put("requisicoes", gerarPaginacao(lista, pagina, quantidade));
 		resposta.put("paginaAtual", pagina);

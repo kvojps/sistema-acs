@@ -4,29 +4,27 @@ import java.util.Date;
 import java.util.List;
 
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class Requisicao extends RequisicaoBase {
-
+public class Requisicao {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
 	@Temporal(TemporalType.DATE)
-	private Date data;
+	private Date criacao;
 	
 	@Column(columnDefinition = "TEXT")
 	private String observacao;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dataDeSubmissao;
 
 	private String token;
 
@@ -41,6 +39,6 @@ public class Requisicao extends RequisicaoBase {
 	@ManyToOne
 	private Curso curso;
 
-	@OneToMany(mappedBy = "requisicao")
+	@OneToMany(mappedBy = "requisicao",cascade = CascadeType.REMOVE)
 	private List<Certificado> certificados;
 }

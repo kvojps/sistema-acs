@@ -14,36 +14,32 @@ public class CertificadoResposta {
 	
 	private final String titulo;
 	
-	private final String descricao;
+	private final String observacao;
 	
-	private final Date data;
+	private final Date dataInicial;
 
-	private final EixoEnum eixoAtividade;
+	private final Date dataFinal;
+	
+	private EixoEnum eixoAtividade;
 
-	private final String atividade;
+	private String atividade;
 	
 	private final CertificadoStatusEnum statusCertificado;
 	
-	private final int horas;
-	
-	private final int chMaxima;
-	
-	private final int chTotal;
-	
-	private final byte[] certificadoArquivo;
+	private final float cargaHoraria;
 
 	public CertificadoResposta(Certificado certificado) {
 		super();
 		this.id = certificado.getId();
 		this.titulo = certificado.getTitulo();
-		this.descricao = certificado.getDescricao();
-		this.data = certificado.getDataInicial();
-		this.horas = certificado.getQuantidadeDeHoras();
-		this.chMaxima = certificado.getChMaxima();
-		this.chTotal = certificado.getChTotal();
-		this.atividade = certificado.getAtividade().getDescricao();
-		this.eixoAtividade = certificado.getAtividade().getEixo();
-		this.certificadoArquivo = certificado.getCertificado();
+		this.observacao = certificado.getObservacao();
+		this.dataInicial = certificado.getDataInicial();
+		this.dataFinal = certificado.getDataFinal();
+		if (certificado.getAtividade() != null) {
+			this.atividade = certificado.getAtividade().getDescricao();
+			this.eixoAtividade = certificado.getAtividade().getEixo();
+		}
+		this.cargaHoraria = certificado.getCargaHoraria() / 60.0f;
 		this.statusCertificado = certificado.getStatusCertificado();
 	}
 }
