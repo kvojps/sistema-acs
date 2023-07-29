@@ -1,4 +1,4 @@
-package br.upe.acs.Certificado;
+package br.upe.acs.certificado;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;

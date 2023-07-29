@@ -1,4 +1,4 @@
-package br.upe.acs.Requisicao;
+package br.upe.acs.requisicao;
 
 
 import static org.mockito.Mockito.*;
