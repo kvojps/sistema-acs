@@ -4,10 +4,7 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 import br.upe.acs.dominio.*;
-import br.upe.acs.repositorio.AdministradorRepositorio;
-import br.upe.acs.repositorio.AlunoRepositorio;
-import br.upe.acs.repositorio.ComissaoRepositorio;
-import br.upe.acs.repositorio.CoordenadorRepositorio;
+import br.upe.acs.repositorio.UsuarioRepositorio;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +16,7 @@ import br.upe.acs.dominio.dto.EmailDTO;
 import br.upe.acs.dominio.dto.EnderecoDTO;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
+import br.upe.acs.dominio.enums.PerfilEnum;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
 
@@ -26,10 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ControleAcessoServico {
 
-	private final AlunoRepositorio alunoRepositorio;
-	private final CoordenadorRepositorio coordenadorRepositorio;
-	private final ComissaoRepositorio comissaoRepositorio;
-	private final AdministradorRepositorio administradorRepositorio;
+	private final UsuarioRepositorio usuarioRepositorio;
     private final JwtService jwtService;
     private final EnderecoServico enderecoServico;
     private final CursoServico cursoServico;
@@ -42,7 +37,7 @@ public class ControleAcessoServico {
 		validarSenha(registro.getSenha());
 		validarEmailInstitucional(registro.getEmail());
 
-		Aluno usuarioSalvar = new Aluno();
+		Usuario usuarioSalvar = new Usuario();
 		Endereco enderecoSalvo = adicionarEnderecoUsuario(registro);
 		String codigoVerificacao = gerarCodigoVerificacao();
 		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId()).orElseThrow();
@@ -50,7 +45,6 @@ public class ControleAcessoServico {
 
 		usuarioSalvar.setNomeCompleto(registro.getNomeCompleto());
 		usuarioSalvar.setCpf(registro.getCpf());
-		usuarioSalvar.setMatricula(registro.getMatricula());
 		usuarioSalvar.setPeriodo(registro.getPeriodo());
 		usuarioSalvar.setTelefone(registro.getTelefone());
 		usuarioSalvar.setEmail(registro.getEmail());
@@ -59,8 +53,9 @@ public class ControleAcessoServico {
 		usuarioSalvar.setVerificado(false);
 		usuarioSalvar.setEndereco(enderecoSalvo);
         usuarioSalvar.setCurso(cursoSalvar);
+        usuarioSalvar.setPerfil(PerfilEnum.ALUNO);
 
-       	alunoRepositorio.save(usuarioSalvar);
+       	usuarioRepositorio.save(usuarioSalvar);
 
         CompletableFuture.runAsync(() -> enviarEmail(registro, codigoVerificacao));
 
@@ -71,14 +66,8 @@ public class ControleAcessoServico {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getSenha()));
 
 		Usuario usuario;
-		if (alunoRepositorio.findByEmail(login.getEmail()).isPresent()) {
-			usuario = alunoRepositorio.findByEmail(login.getEmail()).orElseThrow();
-		} else if (coordenadorRepositorio.findByEmail(login.getEmail()).isPresent()) {
-			usuario = coordenadorRepositorio.findByEmail(login.getEmail()).orElseThrow();
-		} else if (comissaoRepositorio.findByEmail(login.getEmail()).isPresent()) {
-			usuario = comissaoRepositorio.findByEmail(login.getEmail()).orElseThrow();
-		} else if (administradorRepositorio.findByEmail(login.getEmail()).isPresent()) {
-			usuario = administradorRepositorio.findByEmail(login.getEmail()).orElseThrow();
+		if (usuarioRepositorio.findByEmail(login.getEmail()).isPresent()) {
+			usuario = usuarioRepositorio.findByEmail(login.getEmail()).orElseThrow();
 		} else {
 			throw new AcsExcecao("Usuário não encontrado!");
 		}
@@ -90,23 +79,11 @@ public class ControleAcessoServico {
 		validarSenha(novaSenha);
 		String email = jwtService.extractUsername(token);
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
-		if (alunoRepositorio.findByEmail(email).isPresent()) {
-			Aluno usuario = alunoRepositorio.findByEmail(email).orElseThrow();
+		if (usuarioRepositorio.findByEmail(email).isPresent()) {
+			Usuario usuario = usuarioRepositorio.findByEmail(email).orElseThrow();
 			usuario.setSenha(passwordEncoder.encode(novaSenha));
-			alunoRepositorio.save(usuario);
-		} else if (comissaoRepositorio.findByEmail(email).isPresent()) {
-			Comissao usuario = comissaoRepositorio.findByEmail(email).orElseThrow();
-			usuario.setSenha(passwordEncoder.encode(novaSenha));
-			comissaoRepositorio.save(usuario);
-		} else if (coordenadorRepositorio.findByEmail(email).isPresent()) {
-			Coordenador usuario = coordenadorRepositorio.findByEmail(email).orElseThrow();
-			usuario.setSenha(passwordEncoder.encode(novaSenha));
-			coordenadorRepositorio.save(usuario);
-		} else if (administradorRepositorio.findByEmail(email).isPresent()) {
-			Administrador usuario = administradorRepositorio.findByEmail(email).orElseThrow();
-			usuario.setSenha(passwordEncoder.encode(novaSenha));
-			administradorRepositorio.save(usuario);
-		}
+			usuarioRepositorio.save(usuario);
+		} 
 	}
 
 	private void verificarDadosUnicos(String email, String cpf) throws AcsExcecao {
@@ -114,11 +91,11 @@ public class ControleAcessoServico {
 		
 		String cpfFormatado = cpf.replaceAll("[^0-9]", "");
 		
-		if (alunoRepositorio.findByCpf(cpfFormatado).isPresent()) {
+		if (usuarioRepositorio.findByCpf(cpfFormatado).isPresent()) {
 			mensagem += "cpf";
 		}
 
-		if (alunoRepositorio.findByEmail(email).isPresent()) {
+		if (usuarioRepositorio.findByEmail(email).isPresent()) {
 			mensagem += "/email";
 		}
 

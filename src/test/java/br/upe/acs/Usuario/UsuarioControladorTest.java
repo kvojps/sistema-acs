@@ -2,7 +2,7 @@ package br.upe.acs.Usuario;
 
 import br.upe.acs.controlador.UsuarioControlador;
 import br.upe.acs.controlador.respostas.UsuarioResposta;
-import br.upe.acs.dominio.Aluno;
+import br.upe.acs.dominio.Usuario;
 import br.upe.acs.servico.UsuarioServico;
 import br.upe.acs.utils.AcsExcecao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ class UsuarioControladorTest {
         Long usuarioId = 1L;
         String codigoDeVerificacao = "123456";
         String token = "valid_token";
-        Aluno aluno = new Aluno();
+        Usuario aluno = new Usuario();
         UsuarioResposta usuarioResposta = new UsuarioResposta(aluno);
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
         when(servico.buscarUsuarioPorId(usuarioId)).thenAnswer(invocation -> {
@@ -57,7 +57,7 @@ class UsuarioControladorTest {
         Long usuarioId = 1L;
         String codigoDeVerificacao = "123456";
         String token = "valid_token";
-        Aluno aluno = new Aluno();
+        Usuario aluno = new Usuario();
         UsuarioResposta usuarioResposta = new UsuarioResposta(aluno);
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
         when(servico.buscarUsuarioPorId(usuarioId)).thenAnswer(invocation -> {

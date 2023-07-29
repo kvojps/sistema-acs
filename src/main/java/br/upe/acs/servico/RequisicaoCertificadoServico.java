@@ -1,7 +1,7 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.dominio.Aluno;
+import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Curso;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.RequisicaoRascunho;
@@ -32,7 +32,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class RequisicaoCertificadoServico {
 
-    private final AlunoServico alunoServico;
+    private final UsuarioServico usuarioServico;
     private final CursoServico cursoServico;
     private final CertificadoServico certificadoServico;
     private final CertificadoRascunhoServico certificadoRascunhoServico;
@@ -69,7 +69,7 @@ public class RequisicaoCertificadoServico {
     public void editarRequisicaoRascunho(Long id, String token, RequisicaoRascunhoDTO requisicaoRascunho) throws AcsExcecao, IOException, ParseException{
     	RequisicaoRascunho rascunho = rascunhoServico.buscarRequisicaoRascunhoPorId(id).orElseThrow();
     	String usuario = jwtService.extractUsername(token);
-    	Aluno autor = alunoServico.buscarAlunoPorId(rascunho.getUsuarioId()).orElseThrow();
+    	Usuario autor = usuarioServico.buscarUsuarioPorId(rascunho.getUsuarioId()).orElseThrow();
     	
     	if(!Objects.equals(autor.getEmail(), usuario)) {
     		throw new AcsExcecao("Você não possui autorização para editar esse rascunho");
@@ -100,15 +100,13 @@ public class RequisicaoCertificadoServico {
         	rascunhoVO.setQtdCertificados(requisicaoRascunho.getQtdCertificados());       
 
         	adicionarCertificadosRascunho(rascunhoVO);   		
-    	}	
-    	
-    	 
+    	}	    	   	 
     	
     }
 
     public String adicionarRequisicao(RequisicaoDTO requisicao) throws Exception {
         Curso cursoSalvar = cursoServico.buscarCursoPorId(requisicao.getCursoId()).orElseThrow();
-        Aluno alunoSalvar = alunoServico.buscarAlunoPorId(requisicao.getUsuarioId()).orElseThrow();
+        Usuario usuarioSalvar = usuarioServico.buscarUsuarioPorId(requisicao.getUsuarioId()).orElseThrow();
         CertificadosMetadadosDTO certificadosMetadados = converterCertificadosMetadados(requisicao.getCertificadosMetadados());
 
         validarRequisicao(requisicao, certificadosMetadados.getCertificados());
@@ -118,7 +116,7 @@ public class RequisicaoCertificadoServico {
         requisicaoSalvar.setQtdCertificados(requisicao.getQtdCertificados());
         requisicaoSalvar.setStatusRequisicao(RequisicaoStatusEnum.ENCAMINHADO_COORDENACAO);
         requisicaoSalvar.setCurso(cursoSalvar);
-        requisicaoSalvar.setAluno(alunoSalvar);
+        requisicaoSalvar.setUsuario(usuarioSalvar);
         requisicaoSalvar.setObservacao(requisicao.getObservacao());
 
         Requisicao requisicaoSalva = repositorio.save(requisicaoSalvar);

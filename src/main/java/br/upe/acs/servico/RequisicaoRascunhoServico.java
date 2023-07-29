@@ -1,6 +1,6 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.dominio.Aluno;
+import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.RequisicaoRascunho;
 import br.upe.acs.repositorio.RequisicaoRascunhoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class RequisicaoRascunhoServico {
     private final RequisicaoRascunhoRepositorio repositorio;
     
-    private final AlunoServico alunoServico;
+    private final UsuarioServico usuarioServico;
     
 	private final JwtService jwtService;
 
@@ -37,7 +37,7 @@ public class RequisicaoRascunhoServico {
     	RequisicaoRascunho rascunho = buscarRequisicaoRascunhoPorId(id).orElseThrow();
 
     	String usuario = jwtService.extractUsername(token);
-    	Aluno autor =  alunoServico.buscarAlunoPorId(rascunho.getUsuarioId()).orElseThrow();
+    	Usuario autor =  usuarioServico.buscarUsuarioPorId(rascunho.getUsuarioId()).orElseThrow();
     	
     	if(!Objects.equals(usuario, autor.getEmail())) {
     		throw new AcsExcecao("Você não possui permissão para excluir esse rascunho");    		

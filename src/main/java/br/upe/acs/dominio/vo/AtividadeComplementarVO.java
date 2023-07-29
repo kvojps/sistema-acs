@@ -1,18 +1,18 @@
 package br.upe.acs.dominio.vo;
 
-import br.upe.acs.dominio.Aluno;
+import br.upe.acs.dominio.Usuario;
 import lombok.Getter;
 
 @Getter
 public class AtividadeComplementarVO {
 
-    private final int horasExtensao;
+    private final float horasExtensao;
 
-    private final int horasGestao;
+    private final float horasGestao;
 
-    private final int horasEnsino;
+    private final float horasEnsino;
 
-    private final int horasPesquisa;
+    private final float horasPesquisa;
 
     private final String horasExtensaoPercentual;
 
@@ -24,7 +24,7 @@ public class AtividadeComplementarVO {
 
     private final int horasTotaisCurso;
 
-    public AtividadeComplementarVO(Aluno aluno) {
+    public AtividadeComplementarVO(Usuario aluno) {
         this.horasExtensao = aluno.getHorasExtensao();
         this.horasGestao = aluno.getHorasGestao();
         this.horasEnsino = aluno.getHorasEnsino();
@@ -36,7 +36,7 @@ public class AtividadeComplementarVO {
         this.horasTotaisCurso = aluno.getCurso().getHorasComplementares();
     }
 
-    private String percentual(int dividendo, int divisor) {
-        return Math.round(((double) dividendo /divisor) * 100.0) + "%";
+    private String percentual(float f, int divisor) {
+        return Math.round(((double) f /divisor) * 100.0) + "%";
     }
 }

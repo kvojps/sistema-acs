@@ -1,7 +1,7 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
-import br.upe.acs.dominio.Aluno;
+import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
@@ -26,12 +26,12 @@ import java.util.*;
 public class RequisicaoServico {
 
 	private final RequisicaoRepositorio repositorio;
-	private final AlunoServico alunoServico;
+	private final UsuarioServico usuarioServico;
 	private final TemplateEngine templateEngine;
 
-	public RequisicaoServico(RequisicaoRepositorio repositorio, AlunoServico alunoServico, TemplateEngine templateEngine) {
+	public RequisicaoServico(RequisicaoRepositorio repositorio, UsuarioServico usuarioServico, TemplateEngine templateEngine) {
 		this.repositorio = repositorio;
-		this.alunoServico = alunoServico;
+		this.usuarioServico = usuarioServico;
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
 		templateResolver.setSuffix(".html");
@@ -53,7 +53,7 @@ public class RequisicaoServico {
 	}
 
 	public List<Requisicao> listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
-		Aluno aluno = alunoServico.buscarAlunoPorId(alunoId).orElseThrow();
+		Usuario aluno = usuarioServico.buscarUsuarioPorId(alunoId).orElseThrow();
 		return aluno.getRequisicoes();
 	}
 
@@ -111,19 +111,19 @@ public class RequisicaoServico {
 		Context contexto = new Context();
 
 		contexto.setVariable("protocolo", requisicao.getToken());
-		contexto.setVariable("cpf", requisicao.getAluno().getCpf());
+		contexto.setVariable("cpf", requisicao.getUsuario().getCpf());
 		contexto.setVariable("data", requisicao.getData().toString());
-		contexto.setVariable("nome", requisicao.getAluno().getNomeCompleto());
-		contexto.setVariable("curso", requisicao.getAluno().getCurso().getNome());
+		contexto.setVariable("nome", requisicao.getUsuario().getNomeCompleto());
+		contexto.setVariable("curso", requisicao.getUsuario().getCurso().getNome());
 		contexto.setVariable("periodo", requisicao.getSemestre());
-		contexto.setVariable("rua", requisicao.getAluno().getEndereco().getRua());
-		contexto.setVariable("bairro", requisicao.getAluno().getEndereco().getBairro());
-		contexto.setVariable("numero", requisicao.getAluno().getEndereco().getNumero());
-		contexto.setVariable("cidade", requisicao.getAluno().getEndereco().getCidade());
-		contexto.setVariable("uf", requisicao.getAluno().getEndereco().getUF());
-		contexto.setVariable("cep", requisicao.getAluno().getEndereco().getCep());
-		contexto.setVariable("email", requisicao.getAluno().getEmail());
-		contexto.setVariable("telefone", requisicao.getAluno().getTelefone());
+		contexto.setVariable("rua", requisicao.getUsuario().getEndereco().getRua());
+		contexto.setVariable("bairro", requisicao.getUsuario().getEndereco().getBairro());
+		contexto.setVariable("numero", requisicao.getUsuario().getEndereco().getNumero());
+		contexto.setVariable("cidade", requisicao.getUsuario().getEndereco().getCidade());
+		contexto.setVariable("uf", requisicao.getUsuario().getEndereco().getUF());
+		contexto.setVariable("cep", requisicao.getUsuario().getEndereco().getCep());
+		contexto.setVariable("email", requisicao.getUsuario().getEmail());
+		contexto.setVariable("telefone", requisicao.getUsuario().getTelefone());
 
 		return contexto;
 	}
