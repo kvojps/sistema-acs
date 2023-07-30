@@ -1,5 +1,6 @@
 package br.upe.acs.servico;
 
+import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Certificado;
@@ -72,6 +73,54 @@ public class RequisicaoServico {
 
 		return requisicao.get();
 	}
+	
+	public String arquivarRequisicao(Long id, String email) throws AcsExcecao{
+		Requisicao requisicao = repositorio.findById(id).orElseThrow();
+		String resposta;
+		Usuario usuario = usuarioServico.buscarUsuarioPorEmail(email);
+		
+		if(!usuario.equals(requisicao.getUsuario())) {
+			throw new AcsExcecao("Usuário não tem permissão para arquivar essa requisição");
+		}
+		
+		if(!requisicao.isArquivada()) {
+			requisicao.setArquivada(true);
+			repositorio.save(requisicao);
+			resposta = "Requisição arquivada com sucesso";			
+		} else {
+			resposta = "Requisição já está arquivada!";				
+		}
+		return resposta;
+		
+	}
+	
+	public String desarquivarRequisicao(Long id, String email) throws AcsExcecao{
+		Requisicao requisicao = repositorio.findById(id).orElseThrow();
+		Usuario usuario = usuarioServico.buscarUsuarioPorEmail(email);
+		
+		if(!usuario.equals(requisicao.getUsuario())) {
+			throw new AcsExcecao("Usuário não tem permissão para desarquivar essa requisição");
+		}
+		
+		String resposta;
+		if(requisicao.isArquivada()) {
+			requisicao.setArquivada(false);
+			repositorio.save(requisicao);
+			resposta = "Requisicao desarquivada com sucesso!";
+		} else {
+			resposta = "Requisicao não está arquivada";
+		}		
+		return resposta;
+	}
+	
+	public List<Requisicao> listarRequisicoesArquivadas(String email) throws AcsExcecao{
+		Usuario aluno = usuarioServico.buscarUsuarioPorEmail(email);
+		
+		List<Requisicao> requisicoesArquivadas = aluno.getRequisicoes().stream()
+				.filter(requisicao -> requisicao.isArquivada()).toList();
+		
+		return requisicoesArquivadas;
+	}
 
 	public Long adicionarRequisicao(String email) throws AcsExcecao {
 		Usuario aluno = usuarioServico.buscarUsuarioPorEmail(email);
@@ -92,7 +141,7 @@ public class RequisicaoServico {
 
 	private Map<String, Object> gerarPaginacao (Page<Requisicao> pagina) {
 		List<RequisicaoResposta> requisicoesConteudo = pagina.getContent().stream()
-				.map(RequisicaoResposta::new).toList();
+				.filter(requisicao -> !requisicao.isArquivada()).map(RequisicaoResposta::new).toList();
 
 		Map<String, Object> resposta = new HashMap<>();
 		resposta.put("requisicoes", requisicoesConteudo);
