@@ -26,7 +26,7 @@ public class AlunoControlador {
     public ResponseEntity<?> buscarAlunoPorId(@PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
         try {
-			UsuarioResposta alunoResposta = new UsuarioResposta(servico.buscarAlunoPorId(id).orElseThrow());
+			UsuarioResposta alunoResposta = new UsuarioResposta(servico.buscarAlunoPorId(id));
 			resposta = ResponseEntity.ok(alunoResposta);
 		} catch (AcsExcecao e) {
 			resposta = ResponseEntity.badRequest().body(e.getMessage());
@@ -37,7 +37,7 @@ public class AlunoControlador {
 
     @Operation(summary = "Listar todas as requisições do aluno")
     @GetMapping("/requisicao/paginacao")
-    public  ResponseEntity<?> listarRequisicaoAlunoPaginacao(
+    public  ResponseEntity<?> listarRequisicoesPaginadas(
             HttpServletRequest request,
             @RequestParam(defaultValue = "0") int pagina,
             @RequestParam(defaultValue = "10") int quantidade
@@ -45,7 +45,7 @@ public class AlunoControlador {
         ResponseEntity<?> resposta;
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.requisicoesAlunoPaginada(email, pagina, quantidade));
+            resposta = ResponseEntity.ok(servico.listarRequisicoesPaginadas(email, pagina, quantidade));
 
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());

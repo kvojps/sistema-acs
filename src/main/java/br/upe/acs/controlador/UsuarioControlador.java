@@ -40,14 +40,14 @@ public class UsuarioControlador {
             description = "Atualmente somente para Coordenadores e Administradores"
     )
     @GetMapping("/requisicao/paginacao")
-    public  ResponseEntity<?> listarRequisicaoAlunoPaginacao(
+    public  ResponseEntity<?> listarRequisicaoPorAlunoPaginacao(
             @RequestParam Long alunoId,
             @RequestParam(defaultValue = "0") int pagina,
             @RequestParam(defaultValue = "10") int quantidade
     ) {
         ResponseEntity<?> resposta;
         try {
-            resposta = ResponseEntity.ok(servico.requisicoesAlunoPaginada(alunoId, pagina, quantidade));
+            resposta = ResponseEntity.ok(servico.listarRequisicoesPorAlunoPaginadas(alunoId, pagina, quantidade));
 
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());

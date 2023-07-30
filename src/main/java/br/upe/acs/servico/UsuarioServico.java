@@ -67,7 +67,7 @@ public class UsuarioServico {
         return resposta;
     }
     
-    public Map<String, Object> requisicoesAlunoPaginada(Long alunoId, int pagina, int quantidade) throws AcsExcecao {
+    public Map<String, Object> listarRequisicoesPorAlunoPaginadas(Long alunoId, int pagina, int quantidade) throws AcsExcecao {
 		Usuario usuario = buscarUsuarioPorId(alunoId);
 		List<RequisicaoResposta> requisicoesAluno = new ArrayList<>(usuario.getRequisicoes().stream()
 				.filter(requisicao -> requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO)
