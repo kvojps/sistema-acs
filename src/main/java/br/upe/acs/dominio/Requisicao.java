@@ -28,6 +28,8 @@ public class Requisicao {
 
 	private String token;
 
+	private boolean arquivada;
+	
 	private byte[] requisicaoArquivoAssinada;
 	
 	@Enumerated(EnumType.STRING)

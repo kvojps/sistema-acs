@@ -22,6 +22,8 @@ public class RequisicaoResposta {
 	
 	private final String token;
 
+	private final boolean arquivada;
+
 	private final String observacao;
 	
 	@Enumerated(EnumType.STRING)
@@ -37,6 +39,7 @@ public class RequisicaoResposta {
 		this.criacao = requisicao.getCriacao();
 		this.dataDeSubmissao = requisicao.getDataDeSubmissao();
 		this.token = requisicao.getToken();
+		this.arquivada = requisicao.isArquivada();
 		this.requisicaoStatus = requisicao.getStatusRequisicao();
 		this.requisicaoArquivo = requisicao.getRequisicaoArquivoAssinada();
 		this.certificados = converterCertificados(requisicao.getCertificados());
