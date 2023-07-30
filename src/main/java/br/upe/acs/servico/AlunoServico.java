@@ -1,6 +1,6 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
+import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
@@ -38,9 +38,9 @@ public class AlunoServico {
 
 	public Map<String, Object> listarRequisicoesPaginadas(String email, int pagina, int quantidade) throws AcsExcecao {
 		Usuario aluno = buscarAlunoPorEmail(email);
-		List<RequisicaoSimplesResposta> requisicoesAluno = new ArrayList<>(aluno.getRequisicoes().stream()
+		List<RequisicaoResposta> requisicoesAluno = new ArrayList<>(aluno.getRequisicoes().stream()
 				.sorted(Comparator.comparing(Requisicao::getStatusRequisicao))
-				.map(RequisicaoSimplesResposta::new).toList());
+				.map(RequisicaoResposta::new).toList());
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
 	}
 
@@ -50,7 +50,7 @@ public class AlunoServico {
 		return new AtividadeComplementarVO(aluno);
 	}
 
-	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoSimplesResposta> lista, int pagina, int quantidade) {
+	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoResposta> lista, int pagina, int quantidade) {
 		Map<String, Object> resposta = new HashMap<>();
 		resposta.put("requisicoes", gerarPaginacao(lista, pagina, quantidade));
 		resposta.put("paginaAtual", pagina);

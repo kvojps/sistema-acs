@@ -37,6 +37,6 @@ public class AtividadeComplementarVO {
     }
 
     private String percentual(float f, int divisor) {
-        return Math.round(((double) f /divisor) * 100.0) + "%";
+        return Math.round((f /divisor) * 100.0) + "%";
     }
 }

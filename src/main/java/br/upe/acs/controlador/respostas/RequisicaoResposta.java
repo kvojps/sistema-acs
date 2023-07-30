@@ -15,36 +15,28 @@ import lombok.Getter;
 public class RequisicaoResposta {
 
 	private final Long id;
-	
-	private final Date criacao;
-	
-	private final Date dataDeSubmissao;
+
+	private final RequisicaoStatusEnum status;
+
+	private final Date data;
 	
 	private final String token;
 
 	private final String observacao;
 	
-	@Enumerated(EnumType.STRING)
-	private final RequisicaoStatusEnum requisicaoStatus;
-	
-	private final byte[] requisicaoArquivo;
-	
-	private final List<CertificadoResposta> certificados;
+	private final List<Long> certificados;
+
+	private final float QuantidadeDeHoras;
 
 	public RequisicaoResposta(Requisicao requisicao) {
 		super();
 		this.id = requisicao.getId();
-		this.criacao = requisicao.getCriacao();
-		this.dataDeSubmissao = requisicao.getDataDeSubmissao();
+		this.data = requisicao.getDataDeSubmissao();
 		this.token = requisicao.getToken();
-		this.requisicaoStatus = requisicao.getStatusRequisicao();
-		this.requisicaoArquivo = requisicao.getRequisicaoArquivoAssinada();
-		this.certificados = converterCertificados(requisicao.getCertificados());
+		this.status = requisicao.getStatusRequisicao();
 		this.observacao = requisicao.getObservacao();
+		this.certificados =requisicao.getCertificados().stream().map(Certificado::getId).toList();
+		QuantidadeDeHoras = requisicao.getCertificados().stream().mapToInt(Certificado::getCargaHoraria).sum();
 	}
-	
-	private List<CertificadoResposta> converterCertificados(List<Certificado> certificados) {
-		return certificados.stream()
-				.map(CertificadoResposta::new).collect(Collectors.toList());
-	}
+
 }
