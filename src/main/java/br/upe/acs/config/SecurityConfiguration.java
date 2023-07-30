@@ -27,6 +27,7 @@ public class SecurityConfiguration {
 			.authorizeHttpRequests(authorizeRequests ->
 				authorizeRequests
 					.requestMatchers("/api/acesso/auth/**", "/v3/**", "/swagger-ui/**", "/api/endereco/**").permitAll()
+						.requestMatchers("api/usuario/requisicao/paginacao/**").hasAnyAuthority("COORDENADOR", "ADMINISTRADOR")
 					.anyRequest().authenticated()
 			)
 			.sessionManagement(sessionManagement ->

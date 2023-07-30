@@ -60,7 +60,7 @@ public class RequisicaoServico {
 	}
 
 	public List<Requisicao> listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
-		Usuario aluno = usuarioServico.buscarUsuarioPorId(alunoId).orElseThrow();
+		Usuario aluno = usuarioServico.buscarUsuarioPorId(alunoId);
 		return aluno.getRequisicoes();
 	}
 

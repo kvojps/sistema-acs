@@ -26,7 +26,7 @@ public class UsuarioControlador {
     public ResponseEntity<?> buscarUsuarioPorId(@PathVariable("id") Long id){
     	ResponseEntity<?> resposta;
     	try {
-    		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).orElseThrow());
+    		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id));
     		resposta = ResponseEntity.ok(usuarioResposta);
     	} catch(AcsExcecao e){
     		resposta = ResponseEntity.badRequest().body(e.getMessage());  		
@@ -35,32 +35,20 @@ public class UsuarioControlador {
     	return resposta;
     }
     
-    @Operation(summary = "Listar todas as requisições do aluno")
+    @Operation(
+            summary = "Listar requisicões do aluno páginada",
+            description = "Atualmente somente para Coordenadores e Administradores"
+    )
     @GetMapping("/requisicao/paginacao")
     public  ResponseEntity<?> listarRequisicaoAlunoPaginacao(
-            HttpServletRequest request,
+            @RequestParam Long alunoId,
             @RequestParam(defaultValue = "0") int pagina,
             @RequestParam(defaultValue = "10") int quantidade
     ) {
         ResponseEntity<?> resposta;
         try {
-            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.requisicoesAlunoPaginada(email, pagina, quantidade));
+            resposta = ResponseEntity.ok(servico.requisicoesAlunoPaginada(alunoId, pagina, quantidade));
 
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        return resposta;
-    }
-    
-    @Operation(summary = "Carga horaria dos alunos")
-    @GetMapping("/horas")
-    public ResponseEntity<?> atividadesComplementaresAluno(HttpServletRequest request) {
-        ResponseEntity<?> resposta;
-        try {
-            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.atividadesComplementaresAluno(email));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
