@@ -28,7 +28,7 @@ public class Certificado{
 	@Temporal(TemporalType.DATE)
 	private Date dataFinal;
 	
-	private int cargaHoraria;
+	private float cargaHoraria;
 	
 	private byte[] certificado;
 	

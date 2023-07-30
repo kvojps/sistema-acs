@@ -36,7 +36,7 @@ public class RequisicaoResposta {
 		this.status = requisicao.getStatusRequisicao();
 		this.observacao = requisicao.getObservacao();
 		this.certificados =requisicao.getCertificados().stream().map(Certificado::getId).toList();
-		QuantidadeDeHoras = requisicao.getCertificados().stream().mapToInt(Certificado::getCargaHoraria).sum();
+		QuantidadeDeHoras = (float) requisicao.getCertificados().stream().mapToDouble(Certificado::getCargaHoraria).sum();
 	}
 
 }

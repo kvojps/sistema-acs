@@ -106,6 +106,10 @@ public class RequisicaoServico {
 	public byte[] gerarRequisicaoPDF(Long id) throws AcsExcecao {
 		Requisicao requisicao = buscarRequisicaoPorId(id);
 
+		if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
+			throw new AcsExcecao("Não possivel gerar um pdf de uma requisição que não esteja trânsito!");
+		}
+
 		Context contexto = definirValoresTemplateHTML(requisicao);
 
 		String htmlDoDocumento = templateEngine.process("requisicao.html", contexto);

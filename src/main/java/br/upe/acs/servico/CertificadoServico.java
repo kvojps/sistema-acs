@@ -9,6 +9,7 @@ import java.util.Optional;
 import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.dominio.enums.CertificadoStatusEnum;
+import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,8 +40,13 @@ public class CertificadoServico {
 
 	public Long adicionarCertificado(MultipartFile file, Long requisicaoId, String email) throws AcsExcecao, IOException {
 		Requisicao requisicao = requisicaoServico.buscarRequisicaoPorId(requisicaoId);
+
 		if (!requisicao.getUsuario().getEmail().equals(email)) {
 			throw new AcsExcecao("Esse id não pertence a nenhuma requisição do aluno!");
+		}
+
+		if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
+			throw new AcsExcecao("Essa requisição já foi submetida e não pode anexar novos certificados!");
 		}
 
 		if (requisicao.getCertificados().size() >= 10) {
@@ -76,7 +82,7 @@ public class CertificadoServico {
 			certificado.setDataFinal(converterParaData(certificadoDTO.getDataFinal()));
 		}
 
-		certificado.setCargaHoraria((int) (certificadoDTO.getQuantidadeDeHoras() * 60));
+		certificado.setCargaHoraria((certificadoDTO.getQuantidadeDeHoras()));
 		repositorio.save(certificado);
 	}
 
@@ -93,7 +99,7 @@ public class CertificadoServico {
 	}
 
 	private static Date converterParaData(String dataString) throws ParseException {
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 		return formato.parse(dataString);
 	}
 }
