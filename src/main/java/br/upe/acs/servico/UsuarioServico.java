@@ -1,7 +1,7 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.controlador.respostas.RequisicaoResposta;
+import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
@@ -69,10 +69,10 @@ public class UsuarioServico {
     
     public Map<String, Object> listarRequisicoesPorAlunoPaginadas(Long alunoId, int pagina, int quantidade) throws AcsExcecao {
 		Usuario usuario = buscarUsuarioPorId(alunoId);
-		List<RequisicaoResposta> requisicoesAluno = new ArrayList<>(usuario.getRequisicoes().stream()
+		List<RequisicaoSimplesResposta> requisicoesAluno = new ArrayList<>(usuario.getRequisicoes().stream()
 				.filter(requisicao -> requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO)
 				.sorted(Comparator.comparing(Requisicao::getDataDeSubmissao).reversed())
-				.map(RequisicaoResposta::new).toList());
+				.map(RequisicaoSimplesResposta::new).toList());
 
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
 	}
@@ -88,7 +88,7 @@ public class UsuarioServico {
 		}
 	}
 
-	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoResposta> lista, int pagina, int quantidade) {
+	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoSimplesResposta> lista, int pagina, int quantidade) {
 		Map<String, Object> resposta = new HashMap<>();
 		resposta.put("requisicoes", gerarPaginacao(lista, pagina, quantidade));
 		resposta.put("paginaAtual", pagina);

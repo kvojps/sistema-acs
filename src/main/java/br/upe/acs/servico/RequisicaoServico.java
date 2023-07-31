@@ -1,6 +1,6 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.controlador.respostas.RequisicaoResposta;
+import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
@@ -156,8 +156,8 @@ public class RequisicaoServico {
 	}
 
 	private Map<String, Object> gerarPaginacao (Page<Requisicao> pagina) {
-		List<RequisicaoResposta> requisicoesConteudo = pagina.getContent().stream()
-				.map(RequisicaoResposta::new).toList();
+		List<RequisicaoSimplesResposta> requisicoesConteudo = pagina.getContent().stream()
+				.map(RequisicaoSimplesResposta::new).toList();
 
 		Map<String, Object> resposta = new HashMap<>();
 		resposta.put("requisicoes", requisicoesConteudo);
