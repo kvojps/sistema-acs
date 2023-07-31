@@ -39,7 +39,7 @@ public class CertificadoResposta {
 			this.atividade = certificado.getAtividade().getDescricao();
 			this.eixoAtividade = certificado.getAtividade().getEixo();
 		}
-		this.cargaHoraria = certificado.getCargaHoraria() / 60.0f;
+		this.cargaHoraria = certificado.getCargaHoraria();
 		this.statusCertificado = certificado.getStatusCertificado();
 	}
 }
