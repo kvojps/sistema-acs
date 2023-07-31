@@ -151,7 +151,17 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Requisição ser realocada para a aba de Arquivados.                                              |
 | **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                 |
 
-| RF 028 - Visualizar Modal de anexar arquivos                                    |
+| RF 028 - Deletar Solicitação                                                                              |
+| ---------------------------------------------------------------------------------------------------------- |
+| **Descrição:** O usuário deve ter a habilidade de deletar requisições caso seja viável -- como no caso de requisições negadas ou com erros visíveis -- para limpar a tela inicial.                                                                       |
+| **Atores:** Discente.                                                                                      |
+| **Prioridade:** Médio.                                                                                     |
+| **Entrada:** Abrir modal de detalhes da requisição.                                                        |
+| **Pré-condições:** Ter requisição fora do modo de rascunho.                                                |
+| **Saída:** Requisição ser realocada para a aba de Lixeira.                                              |
+| **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                 |
+
+| RF 029 - Visualizar Modal de anexar arquivos                                    |
 | --------------------------------------------------------------                  |
 | **Descrição:** O usuário deve, na aba de preenchimento da requisição, ter acesso ao modal que comanda o ato de anexar arquivos como certificados.                              |
 | **Atores:** Discente.                                                           |
@@ -161,7 +171,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Arquivos anexados no requerimento.                                   |
 | **Pós-condições:** Não possui.                                                  |
 
-| RF 029 - Modal de Lixeira                                                                |
+| RF 030 - Modal de Lixeira                                                                |
 | --------------------------------------------------------------                           |
 | **Descrição:** O usuário deve possuir um modal de Lixeira anexado para visualização no modal de barra lateral, onde tem acesso às requisições deletadas                                    |
 | **Atores:** Discente.                                                                    |
