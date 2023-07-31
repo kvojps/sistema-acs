@@ -1,6 +1,7 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.config.JwtService;
+import br.upe.acs.controlador.respostas.ArquivoResposta;
 import br.upe.acs.dominio.dto.CertificadoDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,21 @@ public class CertificadoControlador {
         
         return resposta;
     }
+
+    @Operation(summary = "Buscar o arquivo do certificado por id")
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<?> buscarPdfDoCertificadoPorId(@PathVariable("id") Long certificadoId) {
+        ResponseEntity<?> resposta;
+        try {
+            ArquivoResposta arquivo = new ArquivoResposta(servico.buscarPdfDoCertificadoPorId(certificadoId));
+            resposta = ResponseEntity.ok(arquivo);
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
 
     @Operation(summary = "adicionar certificado")
     @PostMapping(consumes = {"multipart/form-data"})

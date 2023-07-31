@@ -38,6 +38,11 @@ public class CertificadoServico {
 		return certificado.get();
 	}
 
+	public byte[] buscarPdfDoCertificadoPorId(Long certificadoId) throws AcsExcecao {
+		Certificado certificado = buscarCertificadoPorId(certificadoId);
+		return certificado.getCertificado();
+	}
+
 	public Long adicionarCertificado(MultipartFile file, Long requisicaoId, String email) throws AcsExcecao, IOException {
 		Requisicao requisicao = requisicaoServico.buscarRequisicaoPorId(requisicaoId);
 
