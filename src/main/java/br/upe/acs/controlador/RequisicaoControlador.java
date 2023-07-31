@@ -1,8 +1,6 @@
 package br.upe.acs.controlador;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import br.upe.acs.config.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,30 +24,12 @@ public class RequisicaoControlador {
     private final JwtService jwtService;
 
     private final RequisicaoServico requisicaoServico;
-    
-    @Operation(summary = "Listar todas as requisições")
-    @GetMapping
-    public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
-        return ResponseEntity.ok(servico.listarRequisicoes().stream()
-                .map(RequisicaoResposta::new).collect(Collectors.toList()));
-    }
 
     @Operation(summary = "Listar as requisições com paginação")
     @GetMapping("/paginacao")
     public ResponseEntity<Map<String, Object>> listarRequisicoesPaginas(@RequestParam(defaultValue = "0") int pagina,
                                                                         @RequestParam(defaultValue = "10") int quantidade) {
         return ResponseEntity.ok(servico.listarRequisicoesPaginadas(pagina, quantidade));
-    }
-
-    @Operation(summary = "Listar as requisições de um usuário específico")
-    @GetMapping("/usuario/{id}")
-    public ResponseEntity<?> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId) {
-        try {
-            return ResponseEntity.ok(servico.listarRequisicoesPorAluno(alunoId).stream()
-                    .map(RequisicaoResposta::new).toList());
-        } catch (AcsExcecao e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     @Operation(summary = "Buscar requisição por id")
@@ -78,7 +58,7 @@ public class RequisicaoControlador {
     }
    
     @Operation(summary = "Baixar pdf de uma requisição")
-    @GetMapping("{id}/pdf")
+    @PostMapping("{id}/pdf")
     public ResponseEntity<?> gerarRequisicaoPDF(@PathVariable("id") Long requisicaoId) {
         ResponseEntity<?> resposta;
 

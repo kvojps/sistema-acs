@@ -47,21 +47,12 @@ public class RequisicaoServico {
 		this.certificadoRepositorio = certificadoRepositorio;
 	}
 
-	public List<Requisicao> listarRequisicoes() {
-		return repositorio.findAll();
-	}
-
 	public Map<String, Object> listarRequisicoesPaginadas(int pagina, int quantidade) {
 		Pageable paginaFormato = PageRequest.of(pagina, quantidade);
 
 		Page<Requisicao> requisicoesPagina = repositorio.findAll(paginaFormato);
 
 		return gerarPaginacao(requisicoesPagina);
-	}
-
-	public List<Requisicao> listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
-		Usuario aluno = usuarioServico.buscarUsuarioPorId(alunoId);
-		return aluno.getRequisicoes();
 	}
 
 	public Requisicao buscarRequisicaoPorId(Long id) throws AcsExcecao {
@@ -88,19 +79,6 @@ public class RequisicaoServico {
 		requisicao.setCurso(aluno.getCurso());
 		Requisicao requisicaoSalva = repositorio.save(requisicao);
 		return requisicaoSalva.getId();
-	}
-
-	private Map<String, Object> gerarPaginacao (Page<Requisicao> pagina) {
-		List<RequisicaoResposta> requisicoesConteudo = pagina.getContent().stream()
-				.map(RequisicaoResposta::new).toList();
-
-		Map<String, Object> resposta = new HashMap<>();
-		resposta.put("requisicoes", requisicoesConteudo);
-		resposta.put("paginaAtual", pagina.getNumber());
-		resposta.put("totalItens", requisicoesConteudo.size());
-		resposta.put("totalPaginas", pagina.getTotalPages());
-
-		return resposta;
 	}
 
 	public byte[] gerarRequisicaoPDF(Long id) throws AcsExcecao {
@@ -177,6 +155,19 @@ public class RequisicaoServico {
 		repositorio.deleteById(requisicaoId);
 	}
 
+	private Map<String, Object> gerarPaginacao (Page<Requisicao> pagina) {
+		List<RequisicaoResposta> requisicoesConteudo = pagina.getContent().stream()
+				.map(RequisicaoResposta::new).toList();
+
+		Map<String, Object> resposta = new HashMap<>();
+		resposta.put("requisicoes", requisicoesConteudo);
+		resposta.put("paginaAtual", pagina.getNumber());
+		resposta.put("totalItens", requisicoesConteudo.size());
+		resposta.put("totalPaginas", pagina.getTotalPages());
+
+		return resposta;
+	}
+
 	private Context definirValoresTemplateHTML(Requisicao requisicao) {
 		Context contexto = new Context();
 
@@ -240,5 +231,5 @@ public class RequisicaoServico {
 			certificadoRepositorio.save(certificado);
 		}
 	}
-}
 
+}
