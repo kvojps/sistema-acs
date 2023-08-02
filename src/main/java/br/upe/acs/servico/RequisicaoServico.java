@@ -9,9 +9,6 @@ import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.CertificadoRepositorio;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.utils.AcsExcecao;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -48,11 +45,13 @@ public class RequisicaoServico {
 	}
 
 	public Map<String, Object> listarRequisicoesPaginadas(int pagina, int quantidade) {
-		Pageable paginaFormato = PageRequest.of(pagina, quantidade);
 
-		Page<Requisicao> requisicoesPagina = repositorio.findAll(paginaFormato);
+		List<RequisicaoSimplesResposta> requisicoes = repositorio.findAll().stream()
+				.filter(requisicao -> requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO)
+				.sorted(Comparator.comparing(Requisicao::getDataDeSubmissao).reversed())
+				.map(RequisicaoSimplesResposta::new).toList();
 
-		return gerarPaginacao(requisicoesPagina);
+		return gerarPaginacaoRequisicoes(requisicoes, pagina, quantidade);
 	}
 
 	public Requisicao buscarRequisicaoPorId(Long id) throws AcsExcecao {
@@ -120,7 +119,7 @@ public class RequisicaoServico {
 			throw new AcsExcecao("Essa requisição já foi submetido!");
 		}
 
-		if (requisicao.getCertificados().size()  < 1) {
+		if (requisicao.getCertificados().isEmpty()) {
 			throw new AcsExcecao("Uma requisição precisa de pelo menos um certificado!");
 		}
 		List<Certificado> certificadosInvalidas = requisicao.getCertificados().stream()
@@ -155,17 +154,25 @@ public class RequisicaoServico {
 		repositorio.deleteById(requisicaoId);
 	}
 
-	private Map<String, Object> gerarPaginacao (Page<Requisicao> pagina) {
-		List<RequisicaoSimplesResposta> requisicoesConteudo = pagina.getContent().stream()
-				.map(RequisicaoSimplesResposta::new).toList();
-
+	protected static Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoSimplesResposta> lista, int pagina, int quantidade) {
 		Map<String, Object> resposta = new HashMap<>();
-		resposta.put("requisicoes", requisicoesConteudo);
-		resposta.put("paginaAtual", pagina.getNumber());
-		resposta.put("totalItens", requisicoesConteudo.size());
-		resposta.put("totalPaginas", pagina.getTotalPages());
+		resposta.put("requisicoes", gerarPaginacao(lista, pagina, quantidade));
+		resposta.put("paginaAtual", pagina);
+		resposta.put("totalItens", lista.size());
+		resposta.put("totalPaginas", Math.floorDiv(lista.size(), quantidade) + (lista.size() % quantidade == 0? 0: 1));
 
 		return resposta;
+	}
+
+	private static  <T> List<T> gerarPaginacao(List<T> lista, int pagina, int quantidade) {
+		int inicio = pagina * quantidade;
+		int fim = Math.min(inicio + quantidade, lista.size());
+
+		if (inicio >= fim) {
+			return Collections.emptyList();
+		}
+
+		return lista.subList(inicio, fim);
 	}
 
 	private Context definirValoresTemplateHTML(Requisicao requisicao) {

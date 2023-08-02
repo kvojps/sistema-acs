@@ -15,14 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Comparator;
 
 import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
+import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +65,7 @@ public class UsuarioServico {
         
         return resposta;
     }
-    
+
     public Map<String, Object> listarRequisicoesPorAlunoPaginadas(Long alunoId, int pagina, int quantidade) throws AcsExcecao {
 		Usuario usuario = buscarUsuarioPorId(alunoId);
 		List<RequisicaoSimplesResposta> requisicoesAluno = new ArrayList<>(usuario.getRequisicoes().stream()
@@ -86,27 +85,6 @@ public class UsuarioServico {
 			usuario.setSenha(passwordEncoder.encode(novaSenha));
 			repositorio.save(usuario);
 		}
-	}
-
-	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoSimplesResposta> lista, int pagina, int quantidade) {
-		Map<String, Object> resposta = new HashMap<>();
-		resposta.put("requisicoes", gerarPaginacao(lista, pagina, quantidade));
-		resposta.put("paginaAtual", pagina);
-		resposta.put("totalItens", lista.size());
-		resposta.put("totalPaginas", Math.floorDiv(lista.size(), quantidade) + (lista.size() % quantidade == 0? 0: 1));
-
-		return resposta;
-	}
-    
-    private <T> List<T> gerarPaginacao(List<T> lista, int pagina, int quantidade) {
-		int inicio = pagina * quantidade;
-		int fim = Math.min(inicio + quantidade, lista.size());
-
-		if (inicio >= fim) {
-			return Collections.emptyList();
-		}
-
-		return lista.subList(inicio, fim);
 	}
 
 }

@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
+import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
+
 @Service
 @RequiredArgsConstructor
 public class AlunoServico {
@@ -50,24 +52,4 @@ public class AlunoServico {
 		return new AtividadeComplementarVO(aluno);
 	}
 
-	private Map<String, Object> gerarPaginacaoRequisicoes(List<RequisicaoSimplesResposta> lista, int pagina, int quantidade) {
-		Map<String, Object> resposta = new HashMap<>();
-		resposta.put("requisicoes", gerarPaginacao(lista, pagina, quantidade));
-		resposta.put("paginaAtual", pagina);
-		resposta.put("totalItens", lista.size());
-		resposta.put("totalPaginas", Math.floorDiv(lista.size(), quantidade) + (lista.size() % quantidade == 0? 0: 1));
-
-		return resposta;
-	}
-
-	private <T> List<T> gerarPaginacao(List<T> lista, int pagina, int quantidade) {
-		int inicio = pagina * quantidade;
-		int fim = Math.min(inicio + quantidade, lista.size());
-
-		if (inicio >= fim) {
-			return Collections.emptyList();
-		}
-
-		return lista.subList(inicio, fim);
-	}
 }
