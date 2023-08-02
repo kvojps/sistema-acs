@@ -24,12 +24,30 @@ public class RequisicaoControlador {
     private final JwtService jwtService;
 
     private final RequisicaoServico requisicaoServico;
+    
+    @Operation(summary = "Listar todas as requisições")
+    @GetMapping
+    public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
+        return ResponseEntity.ok(servico.listarRequisicoes().stream().filter(requisicao -> !requisicao.isArquivada())
+                .map(RequisicaoResposta::new).collect(Collectors.toList()));
+    }
 
     @Operation(summary = "Listar as requisições com paginação")
     @GetMapping("/paginacao")
     public ResponseEntity<Map<String, Object>> listarRequisicoesPaginas(@RequestParam(defaultValue = "0") int pagina,
                                                                         @RequestParam(defaultValue = "10") int quantidade) {
         return ResponseEntity.ok(servico.listarRequisicoesPaginadas(pagina, quantidade));
+    }
+
+    @Operation(summary = "Listar as requisições de um usuário específico")
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<?> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId) {
+        try {
+            return ResponseEntity.ok(servico.listarRequisicoesPorAluno(alunoId).stream()
+                    .filter(requisicao -> !requisicao.isArquivada()).map(RequisicaoResposta::new).toList());
+        } catch (AcsExcecao e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @Operation(summary = "Buscar requisição por id")
@@ -56,6 +74,49 @@ public class RequisicaoControlador {
 
         return resposta;
     }
+    
+    @Operation(summary = "Arquivar requisição")
+    @PostMapping("/arquivar/{id}")
+    public ResponseEntity<?> arquivarRequisicao(@PathVariable Long id, HttpServletRequest request){
+    	ResponseEntity<?> resposta;
+    	String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+    	try {
+    		resposta = ResponseEntity.ok(requisicaoServico.arquivarRequisicao(id, email));
+    	} catch(AcsExcecao e) {
+    		resposta = ResponseEntity.badRequest().body(e.getMessage());
+    	}
+    	return resposta;
+    }
+    
+    @Operation(summary = "Desarquivar requisicao")
+    @PostMapping("/desarquivar/{id}")
+    public ResponseEntity<?> desarquivarRequisicao(@PathVariable Long id, HttpServletRequest request){
+    	ResponseEntity<?> resposta;
+    	String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+    	try {
+    		resposta = ResponseEntity.ok(requisicaoServico.desarquivarRequisicao(id, email));
+    	} catch (AcsExcecao e) {
+    		resposta = ResponseEntity.badRequest().body(e.getMessage());
+    	}
+    	
+    	return resposta;
+    }
+    
+    @Operation(summary = "Listar requisições arquivadas")
+    @GetMapping("/arquivar")
+    public ResponseEntity<?> listarRequisicoesArquivadas(HttpServletRequest request){
+    	ResponseEntity<?> resposta;
+    	String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+    	try {
+    		resposta = ResponseEntity.ok(requisicaoServico.listarRequisicoesArquivadas(email)
+    				.stream().map(RequisicaoResposta::new).collect(Collectors.toList()));
+    	} catch(AcsExcecao e) {
+    		resposta = ResponseEntity.badRequest().body(e.getMessage());    		
+    	}
+    	
+    	return resposta;
+    }
+
    
     @Operation(summary = "Baixar pdf de uma requisição")
     @PostMapping("{id}/pdf")
@@ -88,7 +149,7 @@ public class RequisicaoControlador {
         return resposta;
     }
 
-    @Operation(summary = "excluir requisição")
+    @Operation(summary = "Excluir requisição")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirCertificado(HttpServletRequest request, @PathVariable("id") Long requisicaoId) {
         ResponseEntity<?> resposta;
