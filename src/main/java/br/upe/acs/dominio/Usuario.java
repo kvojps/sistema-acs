@@ -48,7 +48,8 @@ public class Usuario implements UserDetails {
     private float horasGestao;
 
     private float horasPesquisa;
-    
+
+	@Enumerated(EnumType.STRING)
     private PerfilEnum perfil;
     
     @OneToMany(mappedBy = "usuario")

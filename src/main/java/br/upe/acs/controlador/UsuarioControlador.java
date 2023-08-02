@@ -3,7 +3,6 @@ package br.upe.acs.controlador;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.UsuarioResposta;
 import br.upe.acs.dominio.dto.AlterarSenhaDTO;
-import br.upe.acs.servico.ControleAcessoServico;
 import br.upe.acs.servico.UsuarioServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,15 +20,13 @@ public class UsuarioControlador {
     private final UsuarioServico servico;
     
     private final JwtService jwtService;
-
-    private final ControleAcessoServico controleAcessoServico;
     
     @Operation(summary = "Buscar usuário por id")
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarUsuarioPorId(@PathVariable("id") Long id){
     	ResponseEntity<?> resposta;
     	try {
-    		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).orElseThrow());
+    		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id));
     		resposta = ResponseEntity.ok(usuarioResposta);
     	} catch(AcsExcecao e){
     		resposta = ResponseEntity.badRequest().body(e.getMessage());  		
@@ -38,32 +35,20 @@ public class UsuarioControlador {
     	return resposta;
     }
     
-    @Operation(summary = "Listar todas as requisições do aluno")
+    @Operation(
+            summary = "Listar requisicões do aluno páginada",
+            description = "Atualmente somente para Coordenadores e Administradores"
+    )
     @GetMapping("/requisicao/paginacao")
-    public  ResponseEntity<?> listarRequisicaoAlunoPaginacao(
-            HttpServletRequest request,
+    public  ResponseEntity<?> listarRequisicaoPorAlunoPaginacao(
+            @RequestParam Long alunoId,
             @RequestParam(defaultValue = "0") int pagina,
             @RequestParam(defaultValue = "10") int quantidade
     ) {
         ResponseEntity<?> resposta;
         try {
-            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.requisicoesAlunoPaginada(email, pagina, quantidade));
+            resposta = ResponseEntity.ok(servico.listarRequisicoesPorAlunoPaginadas(alunoId, pagina, quantidade));
 
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        return resposta;
-    }
-    
-    @Operation(summary = "Carga horaria dos alunos")
-    @GetMapping("/horas")
-    public ResponseEntity<?> atividadesComplementaresAluno(HttpServletRequest request) {
-        ResponseEntity<?> resposta;
-        try {
-            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.atividadesComplementaresAluno(email));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -73,14 +58,12 @@ public class UsuarioControlador {
 
     @Operation(summary = "Retornar dados de perfil do usuário")
     @GetMapping("/me")
-    public ResponseEntity<?> retornarPerfilDoUsuario(HttpServletRequest request,
-                                                     @RequestParam(value = "usuarioId") Long id,
-                                                     @RequestParam(value = "codigoDeVerificacao") String codigo) {
+    public ResponseEntity<?> retornarPerfilDoUsuario(HttpServletRequest request) {
 
         ResponseEntity<?> resposta;
-        String token = request.getHeader("Authorization").substring(7);
         try {
-            var usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id).orElseThrow());
+            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+            var usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorEmail(email));
             resposta = ResponseEntity.ok(usuarioResposta);
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
@@ -91,11 +74,12 @@ public class UsuarioControlador {
 
     @Operation(summary = "Verificar usuário")
     @PostMapping("/verificacao")
-    public ResponseEntity<?> verificarUsuario(@RequestParam(value = "usuarioId") Long id,
+    public ResponseEntity<?> verificarUsuario(HttpServletRequest request,
                                               @RequestParam(value = "codigoDeVerificacao") String codigo) {
         ResponseEntity<?> resposta;
         try {
-            resposta = ResponseEntity.ok(servico.verificarUsuario(id, codigo));
+            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+            resposta = ResponseEntity.ok(servico.verificarUsuario(email, codigo));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -104,7 +88,7 @@ public class UsuarioControlador {
     }
 
     @Operation(summary = "Alterar senha do usuário")
-    @PatchMapping
+    @PatchMapping("/senha")
     public ResponseEntity<?> alterarSenha(
             HttpServletRequest request,
             @RequestBody AlterarSenhaDTO alterarSenhaDTO
@@ -112,7 +96,7 @@ public class UsuarioControlador {
         String token = request.getHeader("Authorization").substring(7);
         ResponseEntity<?> resposta;
         try {
-            controleAcessoServico.alterarSenha(token, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
+            servico.alterarSenha(token, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());

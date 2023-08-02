@@ -16,19 +16,13 @@ public class RequisicaoSimplesResposta {
 
     private final Date data;
 
-    private final float QuantidadeDeHoras;
+    private final float quantidadeDeHoras;
 
     public RequisicaoSimplesResposta(Requisicao requisicao) {
         this.id = requisicao.getId();
         this.status = requisicao.getStatusRequisicao();
-        this.data = requisicao.getStatusRequisicao() == RequisicaoStatusEnum.RASCUNHO?
-                requisicao.getCriacao():
-                requisicao.getDataDeSubmissao();
-        QuantidadeDeHoras = quantidadeDeHorasDaRequisicao(requisicao.getCertificados().stream()
-                .mapToInt(Certificado::getCargaHoraria).sum());
-    }
-
-    private float quantidadeDeHorasDaRequisicao(int minutos) {
-        return minutos / 60.0f;
+        this.data = requisicao.getDataDeSubmissao();
+        this.quantidadeDeHoras = (float) requisicao.getCertificados().stream()
+                .mapToDouble(Certificado::getCargaHoraria).sum();
     }
 }

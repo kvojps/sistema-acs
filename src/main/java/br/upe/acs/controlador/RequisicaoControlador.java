@@ -1,8 +1,6 @@
 package br.upe.acs.controlador;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import br.upe.acs.config.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -121,7 +119,7 @@ public class RequisicaoControlador {
 
    
     @Operation(summary = "Baixar pdf de uma requisição")
-    @GetMapping("{id}/pdf")
+    @PostMapping("{id}/pdf")
     public ResponseEntity<?> gerarRequisicaoPDF(@PathVariable("id") Long requisicaoId) {
         ResponseEntity<?> resposta;
 

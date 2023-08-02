@@ -22,12 +22,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class ApplicationConfig implements WebMvcConfigurer {
 
-	private final UsuarioRepositorio usuarioRepositorio;
+	private final UsuarioRepositorio repositorio;
 	private final JwtService jwtService;
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return this::findByEmail;
+		return usermail -> repositorio.findByEmail(usermail)
+				.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 	}
 
 	@Bean
@@ -52,19 +53,8 @@ public class ApplicationConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new InterceptadorVerficacao(usuarioRepositorio, jwtService))
+		registry.addInterceptor(new InterceptadorVerficacao(repositorio, jwtService))
 				.addPathPatterns("/api/requisicao/**", "/api/atividade/**", "/api/certificado/**");
 	}
-	private Usuario findByEmail(String email) {
-		Usuario usuario = null;
-		if(usuarioRepositorio.findByEmail(email).isPresent()) {
-			usuario = usuarioRepositorio.findByEmail(email).orElseThrow();
-		}
 
-		if (usuario == null) {
-			throw new UsernameNotFoundException("Usuário não encontrado");
-		}
-
-		return usuario;
-	}
 }

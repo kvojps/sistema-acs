@@ -1,4 +1,4 @@
-package br.upe.acs.Certificado;
+package br.upe.acs.certificado;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -40,7 +40,10 @@ public class CertificadoControladorTest {
         Long requisicaoId = 1L;
 
         // Simulando um token JWT válido com o email do usuário que não pertence à requisição
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtYWlsX2RvX3VzdWFyaW9AZXhhbXBsZS5jb20ifQ.L3Zf85Hz4MF_yS5nByo2lY9GSCeZpmfrCbO_TnJQ-I0";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtYWlsX2RvX3VzdWFyaW9AZXhh"
+        		+ "bXBsZS5jb20ifQ.L3Zf85Hz4MF_yS5nByo2lY9GSCeZpmfrCbO_TnJQ-I0";
+  
+        
 
         // Definindo o comportamento do mock do jwtService para extrair o email do token
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token); // Adicionando o prefixo "Bearer"
@@ -66,11 +69,13 @@ public class CertificadoControladorTest {
         Long requisicaoId = 1L;
 
         // Simulando um token JWT válido com o email do usuário que pertence à requisição
-        String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtYWlsX2RvX3VzdWFyaW9AZXhhbXBsZS5jb20ifQ.L3Zf85Hz4MF_yS5nByo2lY9GSCeZpmfrCbO_TnJQ-I0";
+        String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtYWlsX2RvX3VzdWFyaW9AZXhhbXBsZS5"
+        		+ "jb20ifQ.L3Zf85Hz4MF_yS5nByo2lY9GSCeZpmfrCbO_TnJQ-I0";
 
         // Definindo o comportamento do mock do jwtService para extrair o email do token
         when(request.getHeader("Authorization")).thenReturn(token);
-        when(jwtService.extractUsername(eq("eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtYWlsX2RvX3VzdWFyaW9AZXhhbXBsZS5jb20ifQ.L3Zf85Hz4MF_yS5nByo2lY9GSCeZpmfrCbO_TnJQ-I0"))).thenReturn("email_do_usuario_logado");
+        when(jwtService.extractUsername(eq("eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtYWlsX2RvX3VzdWFyaW9AZXhhbXBsZS5j"
+        		+ "b20ifQ.L3Zf85Hz4MF_yS5nByo2lY9GSCeZpmfrCbO_TnJQ-I0"))).thenReturn("email_do_usuario_logado");
 
         // Definindo o comportamento do mock do servico para retornar o id do Certificado quando a Requisição pertencer ao usuário
         when(servico.adicionarCertificado(eq(certificado), eq(requisicaoId), eq("email_do_usuario_logado"))).thenReturn(1234L);
