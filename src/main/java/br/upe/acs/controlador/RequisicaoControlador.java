@@ -1,5 +1,6 @@
 package br.upe.acs.controlador;
 
+import java.util.List;
 import java.util.Map;
 
 import br.upe.acs.config.JwtService;
@@ -29,7 +30,7 @@ public class RequisicaoControlador {
     @GetMapping
     public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
         return ResponseEntity.ok(servico.listarRequisicoes().stream().filter(requisicao -> !requisicao.isArquivada())
-                .map(RequisicaoResposta::new).collect(Collectors.toList()));
+                .map(RequisicaoResposta::new).toList());
     }
 
     @Operation(summary = "Listar as requisições com paginação")
@@ -109,7 +110,7 @@ public class RequisicaoControlador {
     	String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
     	try {
     		resposta = ResponseEntity.ok(requisicaoServico.listarRequisicoesArquivadas(email)
-    				.stream().map(RequisicaoResposta::new).collect(Collectors.toList()));
+    				.stream().map(RequisicaoResposta::new).toList());
     	} catch(AcsExcecao e) {
     		resposta = ResponseEntity.badRequest().body(e.getMessage());    		
     	}

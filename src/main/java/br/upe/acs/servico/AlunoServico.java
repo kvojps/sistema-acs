@@ -41,6 +41,7 @@ public class AlunoServico {
 	public Map<String, Object> listarRequisicoesPaginadas(String email, int pagina, int quantidade) throws AcsExcecao {
 		Usuario aluno = buscarAlunoPorEmail(email);
 		List<RequisicaoSimplesResposta> requisicoesAluno = new ArrayList<>(aluno.getRequisicoes().stream()
+				.filter(requisicao -> !requisicao.isArquivada())
 				.sorted(Comparator.comparing(Requisicao::getStatusRequisicao))
 				.map(RequisicaoSimplesResposta::new).toList());
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);

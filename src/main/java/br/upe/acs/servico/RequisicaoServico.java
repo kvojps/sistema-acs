@@ -1,7 +1,6 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.config.JwtService;
-import br.upe.acs.controlador.respostas.RequisicaoResposta;
+import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
@@ -43,6 +42,15 @@ public class RequisicaoServico {
 		templateEngine.setTemplateResolver(templateResolver);
 		this.templateEngine = templateEngine;
 		this.certificadoRepositorio = certificadoRepositorio;
+	}
+
+	public List<Requisicao> listarRequisicoes() {
+		return repositorio.findAll();
+	}
+
+	public List<Requisicao> listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
+		Usuario aluno = usuarioServico.buscarUsuarioPorId(alunoId);
+		return aluno.getRequisicoes();
 	}
 
 	public Map<String, Object> listarRequisicoesPaginadas(int pagina, int quantidade) {
@@ -105,10 +113,10 @@ public class RequisicaoServico {
 	
 	public List<Requisicao> listarRequisicoesArquivadas(String email) throws AcsExcecao{
 		Usuario aluno = usuarioServico.buscarUsuarioPorEmail(email);
-		
+
 		List<Requisicao> requisicoesArquivadas = aluno.getRequisicoes().stream()
-				.filter(requisicao -> requisicao.isArquivada()).toList();
-		
+				.filter(Requisicao::isArquivada).toList();
+
 		return requisicoesArquivadas;
 	}
 
