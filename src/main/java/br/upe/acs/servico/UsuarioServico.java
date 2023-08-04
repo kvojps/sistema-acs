@@ -52,18 +52,15 @@ public class UsuarioServico {
 
     public String verificarUsuario(String email, String codigoVerificacao) throws AcsExcecao {
         Usuario usuario = buscarUsuarioPorEmail(email);
-        String resposta;
-        if (usuario.isVerificado()) {
-            resposta = "Este usuário já é verificado!";
-        } else if (codigoVerificacao.equals(usuario.getCodigoVerificacao())) {
-            usuario.setVerificado(true);
-            repositorio.save(usuario);
-            resposta = "Aluno verificado com sucesso!";
-        } else {
-            resposta = "O código de verificação está incorreto!";
-        }
-        
-        return resposta;
+
+		if (usuario.isVerificado()) {
+			throw new AcsExcecao("Este usuário já é verificado!");
+		} else if (!codigoVerificacao.equals(usuario.getCodigoVerificacao())) {
+			throw new AcsExcecao("O código de verificação está incorreto!");
+		}
+		usuario.setVerificado(true);
+		repositorio.save(usuario);
+		return "Aluno verificado com sucesso!";
     }
 
     public Map<String, Object> listarRequisicoesPorAlunoPaginadas(Long alunoId, int pagina, int quantidade) throws AcsExcecao {

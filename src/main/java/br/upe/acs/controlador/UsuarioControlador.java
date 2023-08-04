@@ -81,7 +81,7 @@ public class UsuarioControlador {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
             resposta = ResponseEntity.ok(servico.verificarUsuario(email, codigo));
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.status(406).body(e.getMessage());
         }
 
         return resposta;
