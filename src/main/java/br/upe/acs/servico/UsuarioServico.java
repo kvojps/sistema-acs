@@ -1,6 +1,5 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.controlador.respostas.RequisicaoBaseResposta;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Requisicao;
@@ -29,7 +28,6 @@ import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
 public class UsuarioServico {
 	
     private final UsuarioRepositorio repositorio;
-	private final RequisicaoRascunhoRepositorio requisicaoRascunhoRepositorio;
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;

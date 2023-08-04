@@ -1,13 +1,10 @@
 package br.upe.acs.controlador.respostas;
 
 import br.upe.acs.dominio.Usuario;
-import br.upe.acs.dominio.Endereco;
-import br.upe.acs.dominio.Requisicao;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class UsuarioResposta {
