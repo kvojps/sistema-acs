@@ -40,6 +40,17 @@ public class RequisicaoControlador {
         return ResponseEntity.ok(servico.listarRequisicoesPaginadas(pagina, quantidade));
     }
 
+    @Operation(summary = "Listar as requisições de um usuário específico")
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<?> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId) {
+        try {
+            return ResponseEntity.ok(servico.listarRequisicoesPorAluno(alunoId).stream()
+                    .filter(requisicao -> !requisicao.isArquivada()).map(RequisicaoResposta::new).toList());
+        } catch (AcsExcecao e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @Operation(summary = "Buscar requisição por id")
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarRequisicaoPorId(@PathVariable("id") Long id) {

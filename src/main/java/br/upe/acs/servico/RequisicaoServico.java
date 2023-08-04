@@ -32,12 +32,7 @@ public class RequisicaoServico {
 	private final TemplateEngine templateEngine;
 	private final CertificadoRepositorio certificadoRepositorio;
 
-	public RequisicaoServico(
-		RequisicaoRepositorio repositorio, 
-		UsuarioServico usuarioServico, 
-		TemplateEngine templateEngine,
-		CertificadoRepositorio certificadoRepositorio
-	) {
+	public RequisicaoServico(RequisicaoRepositorio repositorio, UsuarioServico usuarioServico, TemplateEngine templateEngine, CertificadoRepositorio certificadoRepositorio) {
 		this.repositorio = repositorio;
 		this.usuarioServico = usuarioServico;
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
@@ -126,8 +121,8 @@ public class RequisicaoServico {
 	}
 
 	public Long adicionarRequisicao(String email) throws AcsExcecao {
-		Usuario usuario = usuarioServico.buscarUsuarioPorEmail(email);
-		List <Requisicao> requisicoesRacunhos = usuario.getRequisicoes().stream()
+		Usuario aluno = usuarioServico.buscarUsuarioPorEmail(email);
+		List <Requisicao> requisicoesRacunhos = aluno.getRequisicoes().stream()
 				.filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
 		if (requisicoesRacunhos.size() >= 2) {
 			throw new AcsExcecao("aluno só pode possuir 2 requisições em rascunho!");
@@ -136,8 +131,8 @@ public class RequisicaoServico {
 		Requisicao requisicao = new Requisicao();
 		requisicao.setStatusRequisicao(RequisicaoStatusEnum.RASCUNHO);
 		requisicao.setCriacao(new Date());
-		requisicao.setUsuario(usuario);
-		requisicao.setCurso(usuario.getCurso());
+		requisicao.setUsuario(aluno);
+		requisicao.setCurso(aluno.getCurso());
 		Requisicao requisicaoSalva = repositorio.save(requisicao);
 		return requisicaoSalva.getId();
 	}

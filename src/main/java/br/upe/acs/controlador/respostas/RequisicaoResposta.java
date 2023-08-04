@@ -19,6 +19,8 @@ public class RequisicaoResposta {
 	private final String token;
 
 	private final boolean arquivada;
+	
+	private final RequisicaoStatusEnum requisicaoStatus;
 
 	private final String observacao;
 
@@ -26,17 +28,12 @@ public class RequisicaoResposta {
 
 	private final List<CertificadoResposta> certificados;
 
-	private RequisicaoStatusEnum requisicaoStatus;
-
-	private byte[] requisicaoArquivo;
-
 	public RequisicaoResposta(Requisicao requisicao) {
 		super();
 		this.id = requisicao.getId();
 		this.dataDeSubmissao = requisicao.getDataDeSubmissao();
 		this.token = requisicao.getToken();
 		this.arquivada = requisicao.isArquivada();
-		this.requisicaoArquivo = requisicao.getRequisicaoArquivoAssinada();
 		this.requisicaoStatus = requisicao.getStatusRequisicao();
 		this.observacao = requisicao.getObservacao();
 		this.quantidadeDeHoras = (float) requisicao.getCertificados().stream()
