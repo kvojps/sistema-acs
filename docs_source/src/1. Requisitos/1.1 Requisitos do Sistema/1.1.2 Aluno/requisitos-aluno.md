@@ -180,3 +180,14 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Pré-condições:** Ter requisição no momento arquivadas ou enviadas.                     |
 | **Saída:** Requisição deletada.                                                          |
 | **Pós-condições:** Não possui.                                                           |
+
+| RF 031 - Solicitar Recontagem de Solicitação                                                                |
+| --------------------------------------------------------------                           |
+| **Descrição:** O usuário deve ter a oportunidade de pedir recontagem de solicitação quando negada ou aceita em partes, caso queira conferir se nenhuma informação foi ignorada ou vista de forma superficial.              |
+| **Atores:** Discente.                                                                    |
+| **Prioridade:** Médio.                                                                   |
+| **Entrada:** Abrir modal de especificação da requisição negada/aceita, para assim clicar no botão de solicitar recontagem.                                                               |
+| **Pré-condições:** Ter requisição negada ou com horas aceitas.                   |
+| **Saída:** Pedido de recontagem solictado.                                                          |
+| **Pós-condições:** Não possui.                                                           |
+
