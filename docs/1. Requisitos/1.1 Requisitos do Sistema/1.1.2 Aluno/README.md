@@ -139,7 +139,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | ------------------------------------------------------------- |
 | **Descrição:** O usuário deve ter acesso em parte especificada no sistema a um quantitativo de horas cumpridas, junto de poder conferir um extrato de horas, apenas visualização.        |
 | **Atores:** Discente.                                         |
-| **Prioridade:** Importante.                                   |
+| **Prioridade:** Médio.                                   |
 | **Entrada:** Não possui.                                      |
 | **Pré-condições:** Não possui.                                |
 | **Saída:** Não possui.                                        |
@@ -159,7 +159,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | -------------------------------------------------------------- |
 | **Descrição:** O usuário deve possuir um modal lateral (barra lateral) que faz parte do sistema fora em conjunto com o dashboard, mas como uma funcionalidade a mais, a qual vai ter funções integradas de notificação, lixeira, logout e visualização de perfil. (Estas serão melhor detalhadas em outros requisitos). |
 | **Atores:** Discente.                                          |
-| **Prioridade:** Importante                                     |
+| **Prioridade:** Médio.                                     |
 | **Entrada:** Não possui.                                       |
 | **Pré-condições:** Estar logado no sistema.                    |
 | **Saída:** Não possui.                                         |
@@ -167,27 +167,37 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 
 | RF 026 - Visualização de Perfil                                |
 | -------------------------------------------------------------- |
-| **Descrição:** O usuário deve possuir um modal para a visualização de ser perfil; visualizando foto, nome de usuário e e-mail institucional.                          |
+| **Descrição:** O usuário deve possuir um modal para a visualização de seu perfil; visualizando foto, nome de usuário e e-mail institucional.                          |
 | **Atores:** Discente.                                          |
-| **Prioridade:** Importante.                                    |
+| **Prioridade:** Médio.                                    |
 | **Entrada:** Não possui.                                       |
 | **Pré-condições:** Estar logado no sistema e ter pressionado o modal na parte de perfil                                                           |
 | **Saída:** Foto de perfil, nome e e-mail institucional.        |
 | **Pós-condições:** Será mostrado foto, nome e e-mail em um modal de perfil.                                                          |
 
-| RF 027 - Arquivar Requisição                                                    |
-| --------------------------------------------------------------                  |
-| **Descrição:** O usuário deve ter a habilidade de arquivar requisições caso seja viável -- como no caso de requisições negadas ou com erros visíveis -- para limpar a tela inicial.  |
-| **Atores:** Discente.                                                           |
-| **Prioridade:** Baixo.                                                          |
-| **Entrada:** Abrir modal de detalhes da requisição.                             |
-| **Pré-condições:** Ter requisição enviada.                                      |
-| **Saída:** Requisição ser realocada para a aba de Arquivados.                                                                       |
-| **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                                                       |
+| RF 027 - Arquivar Solicitação                                                                              |
+| ---------------------------------------------------------------------------------------------------------- |
+| **Descrição:** O usuário deve ter a habilidade de arquivar requisições caso seja viável -- como no caso de requisições negadas -- para limpar a tela inicial.                                                                       |
+| **Atores:** Discente.                                                                                      |
+| **Prioridade:** Médio.                                                                                     |
+| **Entrada:** Abrir modal de detalhes da requisição.                                                        |
+| **Pré-condições:** Ter requisição fora do modo de rascunho.                                                |
+| **Saída:** Requisição ser realocada para a aba de Arquivados.                                              |
+| **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                 |
 
-| RF 028 - Visualizar Modal de anexar arquivos                                    |
+| RF 028 - Deletar Solicitação                                                                              |
+| ---------------------------------------------------------------------------------------------------------- |
+| **Descrição:** O usuário deve ter a habilidade de deletar requisições caso seja viável -- como no caso de requisições negadas ou com erros visíveis -- para limpar a tela inicial.                                                                       |
+| **Atores:** Discente.                                                                                      |
+| **Prioridade:** Médio.                                                                                     |
+| **Entrada:** Abrir modal de detalhes da requisição.                                                        |
+| **Pré-condições:** Ter requisição fora do modo de rascunho.                                                |
+| **Saída:** Requisição ser realocada para a aba de Lixeira.                                              |
+| **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                 |
+
+| RF 029 - Visualizar Modal de anexar arquivos                                    |
 | --------------------------------------------------------------                  |
-| **Descrição:** O usuário deve, na aba de preenchimento da requisição, ter acesso ao modal que comanda o ato de anexar arquivos, como certificados.                              |
+| **Descrição:** O usuário deve, na aba de preenchimento da requisição, ter acesso ao modal que comanda o ato de anexar arquivos como certificados.                              |
 | **Atores:** Discente.                                                           |
 | **Prioridade:** Alto.                                                           |
 | **Entrada:** Não possui.                                                        |
@@ -195,7 +205,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Arquivos anexados no requerimento.                                   |
 | **Pós-condições:** Não possui.                                                  |
 
-| RF 029 - Modal de Lixeira                                                                |
+| RF 030 - Modal de Lixeira                                                                |
 | --------------------------------------------------------------                           |
 | **Descrição:** O usuário deve possuir um modal de Lixeira anexado para visualização no modal de barra lateral, onde tem acesso às requisições deletadas                                    |
 | **Atores:** Discente.                                                                    |
