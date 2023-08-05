@@ -191,3 +191,12 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Pedido de recontagem solictado.                                                          |
 | **Pós-condições:** Não possui.                                                           |
 
+| RF 032 - Cancelar Recontagem de Solicitação                                                                |
+| --------------------------------------------------------------                           |
+| **Descrição:** O usuário deve ter a oportunidade de cancelar recontagem de solicitação caso não ache mais necessário análise.             |
+| **Atores:** Discente.                                                                    |
+| **Prioridade:** Médio.                                                                   |
+| **Entrada:** Abrir modal de especificação da requisição negada/aceita, para assim clicar no botão de cancelar recontagem.                                                               |
+| **Pré-condições:** Ter pedido de recontagem solicitado.                   |
+| **Saída:** Pedido de recontagem cancelado.                                                          |
+| **Pós-condições:** Não possui.                                                           |
