@@ -1,0 +1,29 @@
+@startuml RF_028
+!theme spacelab
+skinparam actorStyle awesome
+:Perfil Discente: as PD
+rectangle requisito_funcional as "RF 028"
+
+(Dashboard do Discente) as RF17
+(Modal Lateral) as RF25
+(Modal da Lixeira) as RF30
+(Deletar Requisição) as RF28
+
+PD --> RF17
+RF17 --> RF25
+RF25 --> RF30
+RF30 --> RF28
+
+note right of RF30
+    O usuário é redirecionado para
+    uma tela que possui as solicitações
+    excluídas, mas não deletadas
+end note
+
+note right of RF28
+    O usuário vai ser capaz de
+    deletar permanentemente
+    requisições que ele deseje
+end note
+
+@enduml
