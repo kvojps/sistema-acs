@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class UsuarioControlador {
-
     private final UsuarioServico servico;
     
     private final JwtService jwtService;

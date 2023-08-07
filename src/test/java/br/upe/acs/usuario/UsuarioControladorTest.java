@@ -31,6 +31,10 @@ class UsuarioControladorTest {
 
     @Mock
     private ControleAcessoServico controleAcessoServico;
+
+    @Mock
+    private UsuarioServico usuarioServico;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -39,7 +43,6 @@ class UsuarioControladorTest {
     void retornarPerfilDoUsuario_UsuarioVerificado_RetornaUsuarioResposta() throws AcsExcecao {
 // Arrange
         Long usuarioId = 1L;
-        String codigoDeVerificacao = "123456";
         String token = "valid_token";
         Usuario aluno = new Usuario();
         UsuarioResposta usuarioResposta = new UsuarioResposta(aluno);
@@ -51,7 +54,7 @@ class UsuarioControladorTest {
             return Optional.empty();
         });
 // Act
-        ResponseEntity<?> resposta = controlador.retornarPerfilDoUsuario(request, usuarioId, codigoDeVerificacao);
+        ResponseEntity<?> resposta = controlador.retornarPerfilDoUsuario(request);
 // Assert
         assertEquals(HttpStatus.OK, resposta.getStatusCode());
         assertEquals(usuarioResposta, resposta.getBody());
@@ -61,10 +64,7 @@ class UsuarioControladorTest {
     void retornarPerfilDoUsuario_UsuarioNaoVerificado_RetornaForbidden() throws AcsExcecao {
 // Arrange
         Long usuarioId = 1L;
-        String codigoDeVerificacao = "123456";
         String token = "valid_token";
-        Usuario aluno = new Usuario();
-        UsuarioResposta usuarioResposta = new UsuarioResposta(aluno);
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
         when(servico.buscarUsuarioPorId(usuarioId)).thenAnswer(invocation -> {
             if (invocation.getArgument(0).equals(usuarioId)) {
@@ -73,7 +73,7 @@ class UsuarioControladorTest {
             return Optional.empty();
         });
 // Act
-        ResponseEntity<?> resposta = controlador.retornarPerfilDoUsuario(request, usuarioId, codigoDeVerificacao);
+        ResponseEntity<?> resposta = controlador.retornarPerfilDoUsuario(request);
 // Assert
         assertEquals(HttpStatus.FORBIDDEN, resposta.getStatusCode());
         assertEquals("Usuário não verificado.", resposta.getBody().toString());
@@ -83,7 +83,6 @@ class UsuarioControladorTest {
     void retornarPerfilDoUsuario_AcsExcecao_RetornaBadRequest() throws AcsExcecao {
 // Arrange
         Long usuarioId = 1L;
-        String codigoDeVerificacao = "123456";
         String token = "valid_token";
         String mensagemErro = "Erro ao buscar usuário.";
         AcsExcecao excecao = new AcsExcecao(mensagemErro);
@@ -95,7 +94,7 @@ class UsuarioControladorTest {
             return Optional.empty();
         });
 // Act
-        ResponseEntity<?> resposta = controlador.retornarPerfilDoUsuario(request, usuarioId, codigoDeVerificacao);
+        ResponseEntity<?> resposta = controlador.retornarPerfilDoUsuario(request);
 // Assert
         assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
         assertEquals(mensagemErro, resposta.getBody().toString());
@@ -104,30 +103,30 @@ class UsuarioControladorTest {
     @Test
     void verificarUsuario_Sucesso_RetornaUsuarioVerificado() throws AcsExcecao {
 // Arrange
-        Long usuarioId = 1L;
+        String email = "teste@gmail.com";
         String codigoDeVerificacao = "123456";
-        when(servico.verificarUsuario(usuarioId, codigoDeVerificacao)).thenReturn("Usuário verificado com sucesso.");
+        when(servico.verificarUsuario(email, codigoDeVerificacao)).thenReturn("Usuário verificado com sucesso.");
 // Act
-        ResponseEntity<?> resposta = controlador.verificarUsuario(usuarioId, codigoDeVerificacao);
+        ResponseEntity<?> resposta = controlador.verificarUsuario(request, codigoDeVerificacao);
 // Assert
         assertEquals(HttpStatus.OK, resposta.getStatusCode());
         assertEquals("Usuário verificado com sucesso.", resposta.getBody().toString());
-        verify(servico, times(1)).verificarUsuario(usuarioId, codigoDeVerificacao);
+        verify(servico, times(1)).verificarUsuario(email, codigoDeVerificacao);
     }
     @Test
     void verificarUsuario_AcsExcecao_RetornaBadRequest() throws AcsExcecao {
 // Arrange
-        Long usuarioId = 1L;
+        String email = "teste@gmail.com";
         String codigoDeVerificacao = "123456";
         String mensagemErro = "Erro ao verificar usuário.";
         AcsExcecao excecao = new AcsExcecao(mensagemErro);
-        when(servico.verificarUsuario(usuarioId, codigoDeVerificacao)).thenThrow(excecao);
+        when(servico.verificarUsuario(email, codigoDeVerificacao)).thenThrow(excecao);
 // Act
-        ResponseEntity<?> resposta = controlador.verificarUsuario(usuarioId, codigoDeVerificacao);
+        ResponseEntity<?> resposta = controlador.verificarUsuario(request, codigoDeVerificacao);
 // Assert
         assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
         assertEquals(mensagemErro, resposta.getBody().toString());
-        verify(servico, times(1)).verificarUsuario(usuarioId, codigoDeVerificacao);
+        verify(servico, times(1)).verificarUsuario(email, codigoDeVerificacao);
     }
 
     //Antigo UsuárioControlladorTest
@@ -142,7 +141,7 @@ class UsuarioControladorTest {
         Mockito.when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
 
         try {
-            Mockito.doNothing().when(controleAcessoServico).alterarSenha(token, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
+            Mockito.doNothing().when(usuarioServico).alterarSenha(token, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
         } catch (AcsExcecao e) {
             e.printStackTrace();
         }
@@ -163,7 +162,7 @@ class UsuarioControladorTest {
         Mockito.when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
 
         String mensagemErro = "Erro ao alterar a senha";
-        Mockito.doThrow(new AcsExcecao(mensagemErro)).when(controleAcessoServico).alterarSenha(token, alterarSenhaDTO.getSenha(),
+        Mockito.doThrow(new AcsExcecao(mensagemErro)).when(usuarioServico).alterarSenha(token, alterarSenhaDTO.getSenha(),
                 alterarSenhaDTO.getNovaSenha());
 
         ResponseEntity<?> resposta = controlador.alterarSenha(request, alterarSenhaDTO);
