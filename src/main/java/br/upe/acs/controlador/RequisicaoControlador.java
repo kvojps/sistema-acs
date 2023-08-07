@@ -119,7 +119,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Desarquivar requisição",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode desarquivar uma requisição.\n" +
+                    "Pré-condições: O usuário deve estar logado.\n" +
+                    "Pós-condições: O usuário recebe uma mensagem de confirmação de requisição desarquivada."
     )
     @PostMapping("/desarquivar/{id}")
     public ResponseEntity<?> desarquivarRequisicao(@PathVariable Long id, HttpServletRequest request) {
