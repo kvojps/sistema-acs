@@ -38,7 +38,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Listar as requisições com paginação",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode visualizar sua lista de requisições com paginação.\n" +
+                    "Pré-condições: O usuário deve estar logado para utilizar o endpoint.\n" +
+                    "Pós-condições: Caso selecione alguma requisição, o usuário é redirecionado para a tela da requisição selecionada."
     )
     @GetMapping("/paginacao")
     public ResponseEntity<Map<String, Object>> listarRequisicoesPaginas(@RequestParam(defaultValue = "0") int pagina,
