@@ -1,0 +1,24 @@
+@startuml recontagem
+
+    start
+    :Dashboard do Discente;
+    :Visualizar Lista de Solicitações;
+    :Visualizar Solicitações Negadas;
+    if (Existe já Pedidos de Recontagem?) then (sim)
+        if (Deseja cancelar pedido de recontagem?) then (sim)
+            :Cancelar Pedido de Recontagem;
+        else (não)
+            if (Deseja pedir recontagem?) then (sim)
+                :Analisar Contagem de Horas da Solicitação;
+                :Pedir Recontagem de Horas da Solicitação;
+                :Enviar Pedido de Recontagem;
+            else (não)
+                stop
+            endif
+        endif
+    else (não)
+        stop
+    endif
+    stop
+            
+@enduml
