@@ -192,7 +192,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Excluir requisição",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode excluir um certificado.\n" +
+                    "Pré-condições: O usuário deve estar logado.\n" +
+                    "Pós-condições: O usuário recebe uma mensagem de confirmação de certificado excluído."
     )
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirCertificado(HttpServletRequest request, @PathVariable("id") Long requisicaoId) {
