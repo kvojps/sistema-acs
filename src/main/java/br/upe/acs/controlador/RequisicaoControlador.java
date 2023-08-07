@@ -153,7 +153,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Baixar pdf de uma requisição",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode fazer o download da requisição em formato PDF.\n" +
+                    "Pré-condições: O usuário deve estar logado e selecionar a opção de fazer download do arquivo em PDF.\n" +
+                    "Pós-condições: O usuário vê o arquivo baixado na pasta selecionada."
     )
     @PostMapping("{id}/pdf")
     public ResponseEntity<?> gerarRequisicaoPDF(@PathVariable("id") Long requisicaoId) {
