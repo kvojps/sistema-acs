@@ -64,7 +64,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Buscar requisição por id",
-            description = ""
+            description = "Descrição: Através dest endpoint, o usuário pode visualizar uma requisição específica.\n" +
+                    "Pré-condições: O usuário deve estar logado.\n" +
+                    "Pós-condições: O usuário é redirecionado para a tela da requisição selecionada."
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarRequisicaoPorId(@PathVariable("id") Long id) {
