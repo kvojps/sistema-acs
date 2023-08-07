@@ -138,7 +138,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Listar requisições arquivadas",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode visualizar sua lista de requisições arquivadas.\n" +
+                    "Pré-condições: O usuário deve estar logado para utilizar o endpoint.\n" +
+                    "Pós-condições: Caso selecione alguma requisição, o usuário é redirecionado para a tela da requisição selecionada."
     )
     @GetMapping("/arquivar")
     public ResponseEntity<?> listarRequisicoesArquivadas(HttpServletRequest request) {
