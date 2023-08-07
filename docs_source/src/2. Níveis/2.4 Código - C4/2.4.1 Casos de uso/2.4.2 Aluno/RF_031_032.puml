@@ -1,0 +1,29 @@
+@startuml RF_031_032
+!theme spacelab
+skinparam actorStyle awesome
+:Perfil Discente: as PD
+rectangle requisito_funcional as "RF 31/32"
+
+(Dashboard do Discente) as RF17
+(Consultar Listas de Requisição) as RF14
+(Visualizar Requisições Negadas) as NoReqs
+(Visulizar Pedidos de Recontagem) as ReconPed
+(Solicitar Recontagem da Solicitação) as RF31
+(Cancelar Recontagem de Solicitação) as RF32
+
+PD --> RF17
+RF17 --> RF14
+RF14 --> NoReqs
+NoReqs --> RF31
+
+RF14 --> ReconPed
+ReconPed --> RF32
+
+note right of RF32
+    Se o usuario achar que
+    aquele pedido de recontagem 
+    não é necessário, ele pode
+    cancelar o pedido.
+end note
+
+@enduml
