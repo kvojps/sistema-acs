@@ -101,7 +101,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Arquivar requisição",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode arquivar uma requisição.\n" +
+                    "Pré-condições: O usuário deve estar logado.\n" +
+                    "Pós-condições: O usuário recebe uma mensagem de confirmação de requisição arquivada."
     )
     @PostMapping("/arquivar/{id}")
     public ResponseEntity<?> arquivarRequisicao(@PathVariable Long id, HttpServletRequest request) {
