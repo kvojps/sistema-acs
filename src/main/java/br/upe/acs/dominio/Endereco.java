@@ -2,11 +2,7 @@ package br.upe.acs.dominio;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -30,6 +26,9 @@ public class Endereco {
 	private String UF;
 	
 	private int numero;
+
+	@Column(nullable = true)
+	private String complemento;
 	
 	@OneToMany(mappedBy = "endereco")
 	private List<Usuario> usuarios;
@@ -80,6 +79,14 @@ public class Endereco {
 
 	public void setNumero(int numero) {
 		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
 	}
 
 	public Long getId() {
