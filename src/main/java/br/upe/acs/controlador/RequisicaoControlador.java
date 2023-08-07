@@ -184,7 +184,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Submissão de requisição",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode submeter uma requisição.\n" +
+                    "Pré-condições: O usuário deve estar logado.\n" +
+                    "Pós-condições: O usuário recebe uma mensagem de confirmação de requisição submetida."
     )
     @PutMapping("/submissão/{id}")
     public ResponseEntity<?> submeterRequisicao(@PathVariable("id") Long requisicaoId) {
