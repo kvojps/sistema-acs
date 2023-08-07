@@ -80,7 +80,11 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Adicionar requisição",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode cadastrar uma requisição com o intuito" +
+                    " de ratificar uma determinada quantidade de horas das suas atividades complementares.\n" +
+                    "Pré-condições: O usuário deve estar logado.\n" +
+                    "Pós-condições: O usuário é redirecionado para a tela específica da requisição enviada, " +
+                    "e a coordenação recebe a notificação por e-mail."
     )
     @PostMapping
     public ResponseEntity<?> adicionarRequisicao(HttpServletRequest request) {
