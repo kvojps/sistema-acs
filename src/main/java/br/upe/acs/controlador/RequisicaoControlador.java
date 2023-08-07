@@ -50,7 +50,9 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Listar as requisições de um usuário específico",
-            description = ""
+            description = "Descrição: Através deste endpoint, o usuário pode visualizar sua lista de requisições.\n" +
+                    "Pré-condições: O usuário deve estar logado para utilizar o endpoint.\n" +
+                    "Pós-condições: Caso selecione alguma requisição, o usuário é redirecionado para a tela da requisição selecionada."
     )
     @GetMapping("/usuario/{id}")
     public ResponseEntity<?> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId) {
