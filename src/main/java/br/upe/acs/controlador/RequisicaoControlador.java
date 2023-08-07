@@ -28,9 +28,7 @@ public class RequisicaoControlador {
 
     @Operation(
             summary = "Listar todas as requisições",
-            description = "Descrição: Através deste endpoint, o usuário pode visualizar sua lista de requisições.\n" +
-                    "Pré-condições: O usuário deve estar logado para utilizar o endpoint.\n" +
-                    "Pós-condições: Caso selecione alguma requisição, o usuário é redirecionado para a tela da requisição selecionada."
+            description = "Descrição: Através deste endpoint, pode-se visualizar todas as requisições do sistema."
     )
     @GetMapping
     public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
