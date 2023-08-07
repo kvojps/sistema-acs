@@ -183,10 +183,10 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 
 | RF 031 - Solicitar Recontagem de Solicitação                                                                |
 | --------------------------------------------------------------                           |
-| **Descrição:** O usuário deve ter a oportunidade de pedir recontagem de solicitação quando negada ou aceita em partes, caso queira conferir se nenhuma informação foi ignorada ou vista de forma superficial.              |
+| **Descrição:** O usuário deve ter a oportunidade de pedir recontagem de solicitação quando negada caso queira conferir se nenhuma informação foi ignorada ou vista de forma superficial.              |
 | **Atores:** Discente.                                                                    |
 | **Prioridade:** Médio.                                                                   |
-| **Entrada:** Abrir modal de especificação da requisição negada/aceita, para assim clicar no botão de solicitar recontagem.                                                               |
+| **Entrada:** Não possui.                                                               |
 | **Pré-condições:** Ter requisição negada ou com horas aceitas.                   |
 | **Saída:** Pedido de recontagem solictado.                                                          |
 | **Pós-condições:** Não possui.                                                           |
@@ -196,7 +196,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Descrição:** O usuário deve ter a oportunidade de cancelar recontagem de solicitação caso não ache mais necessário análise.             |
 | **Atores:** Discente.                                                                    |
 | **Prioridade:** Médio.                                                                   |
-| **Entrada:** Abrir modal de especificação da requisição negada/aceita, para assim clicar no botão de cancelar recontagem.                                                               |
+| **Entrada:** Não possui.                                                            |
 | **Pré-condições:** Ter pedido de recontagem solicitado.                   |
 | **Saída:** Pedido de recontagem cancelado.                                                          |
 | **Pós-condições:** Não possui.                                                           |
