@@ -6,6 +6,8 @@ import br.upe.acs.dominio.dto.AlterarSenhaDTO;
 import br.upe.acs.servico.UsuarioServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,12 @@ public class UsuarioControlador {
     
     private final JwtService jwtService;
     
-    @Operation(summary = "Buscar usuário por id")
+    @Operation(
+            summary = "Buscar usuário por id",
+            description = "Esta rota permite buscar um usuário via seu id. As informações retornadas incluem " +
+                    "informações como id, nome completo, número de matricula, telefone, email, perfis, curso, " +
+                    "periodo e se é verificado. Essa rota séra util para gerenciamento de usuarios."
+    )
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarUsuarioPorId(@PathVariable("id") Long id){
     	ResponseEntity<?> resposta;
@@ -36,7 +43,9 @@ public class UsuarioControlador {
     
     @Operation(
             summary = "Listar requisicões do aluno páginada",
-            description = "Atualmente somente para Coordenadores e Administradores"
+            description = "Essa rota permite buscar requisições já submetidas por um aluno de forma páginada. " +
+                    "Possui com retorno uma Map 'requisicoes' com uma lista de de requisições, paginaAtual, totalItens e totalPaginas. " +
+                    "Essa rota séra util para análise de requisições por parte dos coordenação e comissão."
     )
     @GetMapping("/requisicao/paginacao")
     public  ResponseEntity<?> listarRequisicaoPorAlunoPaginacao(
@@ -55,7 +64,12 @@ public class UsuarioControlador {
         return resposta;
     }
 
-    @Operation(summary = "Retornar dados de perfil do usuário")
+    @Operation(
+            summary = "Retornar dados de perfil do usuário",
+            description = "Essa Rota permite o usuário ter acesso a suas informações no registrados. Possui com retorno " +
+                    "informações como id, nome completo, número de matricula, telefone, email, perfis, curso, " +
+                    "periodo e se é verificado. Essa rota séra util para acesso de suas informações pelo usuário."
+    )
     @GetMapping("/me")
     public ResponseEntity<?> retornarPerfilDoUsuario(HttpServletRequest request) {
 
