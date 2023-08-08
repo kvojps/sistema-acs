@@ -1,0 +1,40 @@
+@startuml RF 1.1/1.2/1.3
+skinparam actorStyle awesome
+:Coordenador: as coordenador #text:blue
+!theme spacelab
+rectangle " RF 017/018/019"
+(Filtrar requisições) as filtrar_requisicoes
+(Status) as status
+(Nome do aluno) as nome_aluno
+(Matrícula) as matricula
+(CPF) as cpf
+(I D) as id
+(Token) as token
+
+(Visualizar requisições) as visualizar_requisicoes
+
+(Ordenar requisições) as ordenar_requisicoes
+(Data de submissão) as data_submissao
+(Ordem alfabética) as ordem_alfabetica
+(Período) as periodo
+
+(Detalhar requisição) as acessar_requisicoes
+
+
+coordenador -left--> visualizar_requisicoes
+coordenador -down--> filtrar_requisicoes
+coordenador -right--> ordenar_requisicoes
+coordenador --> acessar_requisicoes
+filtrar_requisicoes <.. status  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. cpf  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. nome_aluno  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. matricula  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. id  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. token  #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. data_submissao #line:gray;text:blue : <<extend>>
+filtrar_requisicoes <.. periodo  #line:gray;text:blue : <<extend>>
+ordenar_requisicoes <.. periodo  #line:gray;text:blue : <<extend>>
+ordenar_requisicoes <...data_submissao #line:gray;text:blue : <<extend>>
+ordenar_requisicoes <.. ordem_alfabetica #line:gray;text:blue : <<extend>>
+
+@enduml

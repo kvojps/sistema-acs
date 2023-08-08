@@ -5,15 +5,15 @@ import lombok.Getter;
 
 @Getter
 public class ViaCepResposta {
-    private String cep;
+    private final String cep;
 
-    private String rua;
+    private final String rua;
 
-    private String bairro;
+    private final String bairro;
 
-    private String cidade;
+    private final String cidade;
 
-    private String UF;
+    private final String UF;
 
     public ViaCepResposta(ViaCepDTO viaCepDTO) {
         super();
