@@ -37,6 +37,7 @@ public class ControleAcessoServico {
 		validarSenha(registro.getSenha());
 		validarEmailInstitucional(registro.getEmail());
 		validarMatricula(registro.getMatricula());
+		validarPeriodo(registro.getPeriodo());
 
 		Usuario usuarioSalvar = new Usuario();
 		Endereco enderecoSalvo = adicionarEnderecoUsuario(registro);
@@ -151,9 +152,14 @@ public class ControleAcessoServico {
 
 		if(Integer.valueOf(matricula) < 1) {
 			throw new AcsExcecao("Por favor, insira uma matrícula válida");	
-		}
-		
+		}		
 			
+	}
+	
+	private void validarPeriodo(int periodo) throws AcsExcecao{
+		if(periodo < 1 || periodo > 12) {
+			throw new AcsExcecao("Por favor, insira um período válido");
+		}
 	}
 
 	private Endereco adicionarEnderecoUsuario(RegistroDTO registro) {
