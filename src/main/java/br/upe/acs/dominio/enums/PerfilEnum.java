@@ -1,5 +1,5 @@
 package br.upe.acs.dominio.enums;
 
 public enum PerfilEnum {
-	USUARIO, COORDENADOR, COMISSAO, ADMINISTRADOR
+	COMISSAO, COORDENADOR, ALUNO, ADMINISTRADOR
 }
