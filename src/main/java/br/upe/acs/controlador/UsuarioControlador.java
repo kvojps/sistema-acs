@@ -43,7 +43,7 @@ public class UsuarioControlador {
     
     @Operation(
             summary = "Listar requisicões do aluno páginada",
-            description = "Essa rota permite buscar requisições já submetidas por um aluno de forma páginada. " +
+            description = "Esta rota permite buscar requisições já submetidas por um aluno de forma páginada. " +
                     "Possui com retorno uma Map 'requisicoes' com uma lista de de requisições, paginaAtual, totalItens e totalPaginas. " +
                     "Essa rota séra util para análise de requisições por parte dos coordenação e comissão."
     )
@@ -66,7 +66,7 @@ public class UsuarioControlador {
 
     @Operation(
             summary = "Retornar dados de perfil do usuário",
-            description = "Essa Rota permite o usuário ter acesso a suas informações no registrados. Possui com retorno " +
+            description = "Esta Rota permite o usuário ter acesso a suas informações no registrados. Possui com retorno " +
                     "informações como id, nome completo, número de matricula, telefone, email, perfis, curso, " +
                     "periodo e se é verificado. Essa rota séra util para acesso de suas informações pelo usuário."
     )
@@ -85,7 +85,12 @@ public class UsuarioControlador {
         return resposta;
     }
 
-    @Operation(summary = "Verificar usuário")
+    @Operation(
+            summary = "Verificar usuário",
+            description = "Esta rota permite o usuário se verificar via código enviando para o email." +
+                    "Essa rota é util para o sistema se certificar que o usuário se cadastro com um email que " +
+                    "ele possui acesso."
+    )
     @PostMapping("/verificacao")
     public ResponseEntity<?> verificarUsuario(HttpServletRequest request,
                                               @RequestParam(value = "codigoDeVerificacao") String codigo) {
@@ -100,7 +105,11 @@ public class UsuarioControlador {
         return resposta;
     }
 
-    @Operation(summary = "Alterar senha do usuário")
+    @Operation(
+            summary = "Alterar senha do usuário",
+            description = "Esta rota permite ao usuário modificar sua senha por uma nova e está disponíveis " +
+                    "para todos os usuários."
+    )
     @PatchMapping("/senha")
     public ResponseEntity<?> alterarSenha(
             HttpServletRequest request,
