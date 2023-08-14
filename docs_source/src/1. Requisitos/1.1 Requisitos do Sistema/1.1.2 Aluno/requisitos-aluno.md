@@ -21,15 +21,15 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Não possui saídas.                                                                                         |
 | **Pós-condições:** Caso selecione alguma requisição, o usuário é redirecionado para a tela da requisição selecionada. |
 
-| RF 015 - Buscar requisição específica                                               |
+| RF 015 - Filtrar Requisições                                              |
 | ----------------------------------------------------------------------------------- |
-| **Descrição:** O usuário deve ser capaz de visualizar uma requisição específica.    |
+| **Descrição:** O usuário deve ser capaz de visualizar requisições específicas ao utilizar a aba de filtro da tela, que delimita as requisições de acordo com os quatro pilares (Ensino, Pesquisa, Extensão e Gestão).  |
 | **Atores:** Discente.                                                               |
 | **Prioridade:** Média.                                                              |
-| **Entrada:** Não possui entradas.                                                   |
+| **Entrada:** Clicar no botão de filtrar e escolher entre os eixos Ensino, Pesquisa, Extensão e Gestão.                                                   |
 | **Pré-condições:** O usuário deve estar logado.                                     |
 | **Saída:** Não possui saídas.                                                       |
-| **Pós-condições:** O usuário é redirecionado para a tela da requisição selecionada. |
+| **Pós-condições:** O usuário é redirecionado para a tela principal atualizada com as requisições do eixo buscado. |
 
 | RF 016 - Baixar arquivo PDF referente à requisição                                                       |
 | -------------------------------------------------------------------------------------------------------- |
