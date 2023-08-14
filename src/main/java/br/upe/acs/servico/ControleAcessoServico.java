@@ -146,7 +146,7 @@ public class ControleAcessoServico {
 			throw new AcsExcecao("Por favor, insira uma matrícula válida");
 		}
 
-		if(matricula.length() < 4 || matricula.length() > 5) {
+		if(matricula.length() < 4 || matricula.length() > 9) {
 			throw new AcsExcecao("Por favor, insira uma matrícula válida");			
 		}
 
