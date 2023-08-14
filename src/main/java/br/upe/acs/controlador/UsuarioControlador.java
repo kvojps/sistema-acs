@@ -2,6 +2,7 @@ package br.upe.acs.controlador;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.UsuarioResposta;
+import br.upe.acs.dominio.Endereco;
 import br.upe.acs.dominio.dto.AlterarSenhaDTO;
 import br.upe.acs.servico.UsuarioServico;
 import br.upe.acs.utils.AcsExcecao;
@@ -101,6 +102,26 @@ public class UsuarioControlador {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
 
+        return resposta;
+    }
+
+    @Operation(summary = "Alterar informações de cadastro")
+    @PatchMapping("/informacoes")
+    public ResponseEntity<?> alterarInformacoes(
+            HttpServletRequest request,
+            @RequestParam String nomeCompleto,
+            @RequestParam String telefone,
+            @RequestParam Endereco endereco,
+            @RequestParam Long cursoId
+    ) throws AcsExcecao {
+        String token = request.getHeader("Authorization").substring(7);
+        ResponseEntity<?> resposta;
+        try {
+            servico.alterarDados(token, nomeCompleto, telefone, endereco, cursoId);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
         return resposta;
     }
 
