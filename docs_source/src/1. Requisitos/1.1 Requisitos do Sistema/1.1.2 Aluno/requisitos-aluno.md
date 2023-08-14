@@ -43,7 +43,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 
 | RF 017 - Visualizar indicadores sobre as requisições enviadas                                          |
 | ------------------------------------------------------------------------------------------------------ |
-| **Descrição:** O usuário deve ser capaz de visualizar informações com: o status da solicitação (que pode estar em trânsito, aceito ou negado), a quantidade de rascunhos e o quantitativo de horas já obtidos com divisão entre os quatro pilares -- Ensino, Pesquisa, Extensão e Gestão -- de ACs.     |
+| **Descrição:** O usuário deve ser capaz de visualizar informações como: o status da solicitação (que pode estar em trânsito, aceito ou negado), a quantidade de rascunhos e o quantitativo de horas já obtidos com divisão entre os quatro pilares -- Ensino, Pesquisa, Extensão e Gestão -- de ACs.     |
 | **Atores:** Discente.                                                                                  |
 | **Prioridade:** Média.                                                                                 |
 | **Entrada:** Não possui.                                                                               |
