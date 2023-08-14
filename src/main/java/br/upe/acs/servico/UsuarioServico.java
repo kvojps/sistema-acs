@@ -2,6 +2,8 @@ package br.upe.acs.servico;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
+import br.upe.acs.dominio.Curso;
+import br.upe.acs.dominio.Endereco;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
@@ -31,6 +33,7 @@ public class UsuarioServico {
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
+	private final CursoServico cursoServico;
 
     public Usuario buscarUsuarioPorId(Long id) throws AcsExcecao {
 		Optional<Usuario> usuario = repositorio.findById(id);
@@ -81,6 +84,26 @@ public class UsuarioServico {
 			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
 			usuario.setSenha(passwordEncoder.encode(novaSenha));
 			repositorio.save(usuario);
+		}
+	}
+
+	public void alterarDados(String token, String nomeCompleto, String telefone, Endereco endereco, Long cursoId) throws AcsExcecao {
+		String email = jwtService.extractUsername(token);
+
+		if (repositorio.findByEmail(email).isPresent()) {
+			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
+			usuario.setNomeCompleto(nomeCompleto);
+			usuario.setTelefone(telefone);
+			usuario.setEndereco(endereco);
+            usuario.setCurso(
+                    new Curso(
+                            cursoId,
+                            cursoServico.buscarCursoPorId(cursoId).get().getNome(),
+                            cursoServico.buscarCursoPorId(cursoId).get().getHorasComplementares(),
+                            cursoServico.buscarCursoPorId(cursoId).get().getRequisicoes(),
+                            cursoServico.buscarCursoPorId(cursoId).get().getUsuarios())
+            );
+            repositorio.save(usuario);
 		}
 	}
 
