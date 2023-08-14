@@ -45,7 +45,9 @@ public class AtividadeControlador {
 
         return resposta;
     }
-    @Operation(summary = "Buscar atividades por eixo")
+    @Operation(summary = "Buscar atividades por eixo", description = "Esse endpoint deve retornar a atividade correspondente ao eixo informado.\n"
+			+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+			+ "\nPós-condição: Nenhuma")
     @GetMapping("/eixo")
     public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam String eixo){
     	ResponseEntity<?> resposta;
