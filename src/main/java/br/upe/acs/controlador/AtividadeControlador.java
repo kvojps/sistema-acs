@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.upe.acs.controlador.respostas.AtividadeResposta;
@@ -43,5 +44,18 @@ public class AtividadeControlador {
         }
 
         return resposta;
+    }
+    @Operation(summary = "Buscar atividades por eixo", description = "Esse endpoint deve retornar a atividade correspondente ao eixo informado.\n"
+			+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+			+ "\nPós-condição: Nenhuma")
+    @GetMapping("/eixo")
+    public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam String eixo){
+    	ResponseEntity<?> resposta;
+    	try {
+    		resposta = ResponseEntity.ok(servico.buscarAtividadePorEixo(eixo));
+    	} catch(AcsExcecao e) {
+    		resposta = ResponseEntity.badRequest().body(e.getMessage());
+    	}
+    	return resposta;
     }
 }
