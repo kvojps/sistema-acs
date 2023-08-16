@@ -4,6 +4,7 @@ import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.dto.EmailDTO;
 import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.CertificadoRepositorio;
@@ -32,9 +33,12 @@ public class RequisicaoServico {
 	private final TemplateEngine templateEngine;
 	private final CertificadoRepositorio certificadoRepositorio;
 
-	public RequisicaoServico(RequisicaoRepositorio repositorio, UsuarioServico usuarioServico, TemplateEngine templateEngine, CertificadoRepositorio certificadoRepositorio) {
+	private final EmailServico emailServico;
+
+	public RequisicaoServico(RequisicaoRepositorio repositorio, UsuarioServico usuarioServico, TemplateEngine templateEngine, CertificadoRepositorio certificadoRepositorio, EmailServico emailServico) {
 		this.repositorio = repositorio;
 		this.usuarioServico = usuarioServico;
+		this.emailServico = emailServico;
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
 		templateResolver.setSuffix(".html");
@@ -195,6 +199,8 @@ public class RequisicaoServico {
 		modificarCertificados(requisicao.getCertificados());
 		repositorio.save(requisicao);
 
+		enviarEmailAlteracaoStatus(requisicao);
+
 		return token;
 	}
 
@@ -294,6 +300,17 @@ public class RequisicaoServico {
 			certificado.setStatusCertificado(CertificadoStatusEnum.ENCAMINHADO_COORDENACAO);
 			certificadoRepositorio.save(certificado);
 		}
+	}
+
+	private void enviarEmailAlteracaoStatus(Requisicao requisicao) {
+		EmailDTO email = new EmailDTO();
+		email.setDestinatario(requisicao.getUsuario().getEmail());
+		email.setAssunto("Modificação na requisição " + requisicao.getId() +" - Sistema ACs UPE");
+		email.setMensagem("A requisição " + requisicao.getId() +
+				" alterou seu status para " + requisicao.getStatusRequisicao().name() +
+				". Para mais informações acesse o Sistema de ACs. " +
+				"Em casos de error entre em cantato com o turmaestest@gmail.com.");
+		emailServico.enviarEmail(email);
 	}
 
 }
