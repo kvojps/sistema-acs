@@ -36,12 +36,13 @@ public class ControleAcessoServico {
         verificarDadosUnicos(registro.getEmail(), registro.getCpf());
 		validarSenha(registro.getSenha());
 		validarEmailInstitucional(registro.getEmail());
+		validarMatricula(registro.getMatricula());
+		validarPeriodo(registro.getPeriodo());
 
 		Usuario usuarioSalvar = new Usuario();
 		Endereco enderecoSalvo = adicionarEnderecoUsuario(registro);
 		String codigoVerificacao = gerarCodigoVerificacao();
 		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId()).orElseThrow();
-
 
 		usuarioSalvar.setNomeCompleto(registro.getNomeCompleto());
 		usuarioSalvar.setCpf(registro.getCpf());
@@ -136,6 +137,28 @@ public class ControleAcessoServico {
 	private void validarEmailInstitucional(String email) throws AcsExcecao {
 		if (!email.split("@")[1].equals("upe.br")) {
 			throw new AcsExcecao("Email inválido! Por favor insira o email institucional.");
+		}
+	}
+	
+	private void validarMatricula(String matricula) throws AcsExcecao{
+		
+		if(!matricula.matches("[0-9]+")) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");
+		}
+
+		if(matricula.length() < 4 || matricula.length() > 9) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");			
+		}
+
+		if(Integer.valueOf(matricula) < 1) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");	
+		}		
+			
+	}
+	
+	private void validarPeriodo(int periodo) throws AcsExcecao{
+		if(periodo < 1 || periodo > 12) {
+			throw new AcsExcecao("Por favor, insira um período válido");
 		}
 	}
 
