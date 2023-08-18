@@ -124,6 +124,11 @@ public class RequisicaoServico {
 		Usuario aluno = usuarioServico.buscarUsuarioPorEmail(email);
 		List <Requisicao> requisicoesRacunhos = aluno.getRequisicoes().stream()
 				.filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
+
+		if (aluno.getHorasEnsino() + aluno.getHorasExtensao() + aluno.getHorasGestao() + aluno.getHorasPesquisa() >= aluno.getCurso().getHorasComplementares()) {
+			throw new AcsExcecao("O aluno já cumpriu suas horas complementares!");
+		}
+
 		if (requisicoesRacunhos.size() >= 2) {
 			throw new AcsExcecao("aluno só pode possuir 2 requisições em rascunho!");
 		}
