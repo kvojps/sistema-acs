@@ -1,104 +1,104 @@
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (1, 180, 'Ciências Biológicas');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (1, 180, 'Ciências Biológicas', 'BIO');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (2, 180, 'Ciências Sociais');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (2, 180, 'Ciências Sociais', 'CS');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (3, 180, 'Computação');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (3, 180, 'Computação', 'LC');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (4, 180, 'Educação Física');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (4, 180, 'Educação Física', 'EF');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (5, 180, 'Geografia');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (5, 180, 'Geografia', 'GEO');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (6, 180, 'História');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (6, 180, 'História', 'HIS');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (7, 180, 'Letras com habilitação em língua portuguesa e espanhola');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (7, 180, 'Letras com habilitação em língua portuguesa e espanhola', 'LLE');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (8, 180, 'Letras com habilitação em língua portuguesa e inglesa');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (8, 180, 'Letras com habilitação em língua portuguesa e inglesa', 'LLI');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (9, 180, 'Letras com habilitação em língua portuguesa e suas literaturas');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (9, 180, 'Letras com habilitação em língua portuguesa e suas literaturas', 'LLL');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (10, 180, 'Matemática');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (10, 180, 'Matemática', 'MAT');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (11, 180, 'Pedagogia');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (11, 180, 'Pedagogia', 'PED');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (12, 180, 'Administração');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (12, 180, 'Administração', 'ADM');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (13, 180, 'Ciências biológicas');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (13, 180, 'Ciências Biológicas', 'BBIO');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (14, 180, 'Direito');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (14, 225, 'Direito', 'DIR');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (15, 180, 'Educação Física');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (15, 180, 'Educação Física', 'BEF');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (16, 180, 'Enfermagem');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (16, 180, 'Enfermagem', 'ENF');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (17, 180, 'Engenharia civil');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (17, 225, 'Engenharia Civil', 'ECIV');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (18, 180, 'Engenharia da computação');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (18, 225, 'Engenharia da Computação', 'ECOM');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (19, 180, 'Engenharia de controle e automação');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (19, 225, 'Engenharia de Controle e Automação', 'ECA');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (20, 180, 'Engenharia de software');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (20, 180, 'Engenharia de Software', 'ES');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (21, 180, 'Engenharia elétrica de telecomunicações');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (21, 225, 'Engenharia Elétrica de Telecomunicações', 'TEL');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (22, 180, 'Engenharia elétrica eletrônica');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (22, 225, 'Engenharia Elétrica Eletrônica', 'ETN');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (23, 180, 'Engenharia elétrica eletrotécnica');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (23, 225, 'Engenharia Elétrica Eletrotécnica', 'ETT');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (24, 180, 'Engenharia mecânica');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (24, 225, 'Engenharia Mecânica', 'EMEC');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (25, 180, 'Física de materiais');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (25, 180, 'Física de Materiais', 'FM');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (26, 180, 'Fisioterapia');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (26, 225, 'Fisioterapia', 'FISIO');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (27, 180, 'Medicina');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (27, 225, 'Medicina', 'MED');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (28, 180, 'Nutrição');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (28, 225, 'Nutrição', 'NUT');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (29, 180, 'Odontologia');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (29, 225, 'Odontologia', 'ODONT');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (30, 180, 'Psicologia');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (30, 180, 'Psicologia', 'PSI');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (31, 180, 'Saúde coletiva');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (31, 180, 'Saúde Coletiva', 'SC');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (32, 180, 'Serviço social');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (32, 180, 'Serviço Social', 'SS');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (33, 180, 'Sistemas de informação');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (33, 180, 'Sistemas de Informação', 'SI');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (34, 180, 'Terapia ocupacional');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (34, 180, 'Terapia Ocupacional', 'TO');
 
-INSERT INTO public.curso(id, horas_complementares, nome)
-	VALUES (35, 180, 'Tecnologia em logística');
+INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+	VALUES (35, 90, 'Tecnologia em Logística', 'TL');

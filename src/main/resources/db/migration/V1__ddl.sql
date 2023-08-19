@@ -11,5 +11,6 @@ CREATE TABLE IF NOT EXISTS curso(
 	id bigint NOT NULL,
 	horas_complementares integer NOT NULL,
 	nome varchar(255),
+    sigla varchar(10),
 	PRIMARY KEY (id)	
 );
