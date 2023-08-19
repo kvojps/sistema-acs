@@ -33,10 +33,10 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 
 | RF 016 - Baixar arquivo PDF referente à requisição                                                       |
 | -------------------------------------------------------------------------------------------------------- |
-| **Descrição:** O usuário deve ter a opção de fazer o download da requisição em formato PDF.              |
+| **Descrição:** O usuário deve ter a opção de fazer o download da requisição em formato PDF no modal de detalhamento da requisição e no dashboard, com o arquivo sendo baixado automaticamente no computador do usuário.              |
 | **Atores:** Discente.                                                                                    |
 | **Prioridade:** Baixa.                                                                                   |
-| **Entrada:** Não possui entradas.                                                                        |
+| **Entrada:** Clicar no botão de Baixar PDF dentro da requisição (modal de detalhamento de requisição) ou no ícone ao lado dela na dashboard.                                                                        |
 | **Pré-condições:** O usuário deve estar logado e selecionar a opção de fazer download do arquivo em PDF. |
 | **Saída:** Confirmação do download do arquivo.                                                           |
 | **Pós-condições:** O usuário vê o arquivo baixado na pasta selecionada.                                  |
