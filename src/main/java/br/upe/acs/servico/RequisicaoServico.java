@@ -139,6 +139,8 @@ public class RequisicaoServico {
 		requisicao.setUsuario(aluno);
 		requisicao.setCurso(aluno.getCurso());
 		Requisicao requisicaoSalva = repositorio.save(requisicao);
+		requisicaoSalva.setIdRequisicao(String.format("%s-%05d",aluno.getCurso().getSigla(), requisicaoSalva.getId()));
+		repositorio.save(requisicaoSalva);
 		return requisicaoSalva.getId();
 	}
 
