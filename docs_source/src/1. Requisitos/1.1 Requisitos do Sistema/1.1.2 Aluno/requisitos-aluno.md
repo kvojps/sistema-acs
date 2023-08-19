@@ -3,10 +3,10 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 
 | RF 013 - Cadastrar Requisição                                                                                          |
 | -----------------------------------------------------------------------------------------------------------------------|
-| **Descrição:** O usuário deve ser capaz de cadastrar uma requisição com o intuito de ratificar uma determinada quantidade de horas das suas atividades complementares. Para cadastrar a requisição é preciso que o discente acesse o barema   disponibilizado no dashboard principal para responder todas as informações necessárias.                                  |
+| **Descrição:** O usuário deve ser capaz de cadastrar uma requisição com o intuito de ratificar uma determinada quantidade de horas das suas atividades complementares. Para cadastrar a requisição é preciso que o discente preencha todo o conteúdo  necessário como certificados (lembrando que certificados semelhantes não são aceitos pelo sistema) e dados sobre ele (título, descrição, data, horas, eixo em que se enquadra e o arquivo certificado no formato PDF)  e, para responder todas as informações importantes, acesse o barema disponibilizado tanto no dashboard principal como no modal de cadastro da requisição.                       |
 | **Atores:** Discente.                                                                                                  |
 | **Prioridade:** Alta.                                                                                                  |
-| **Entrada:** Inserir informações da requisição, como semestre e quantidade de certificados. Para cada certificado, fornecer título, descrição, data, horas, atividade em que se enquadra de acordo com o barema e o arquivo no formato PDF. |
+| **Entrada:** Inserir informações da requisição, como semestre e quantidade de certificados. Para cada certificado, fornecer título, descrição, data no formato dd/mm/aaaa, horas, eixo em que se enquadra de acordo com o barema e o arquivo no formato PDF. |
 | **Pré-condições:** O usuário deve estar logado.                                                                        |
 | **Saída:** Confirmação do envio da requisição.                                                                         |
 | **Pós-condições:** O usuário é redirecionado para a tela específica da requisição enviada, e a coordenação recebe a notificação por e-mail.                                                                                                  |
