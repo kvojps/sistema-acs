@@ -63,10 +63,10 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 
 | RF 019 - Deletar rascunhos de requisições                                                    |
 | -------------------------------------------------------------------------------------------- |
-| **Descrição:** O usuário deve poder apagar um rascunho de requisição caso ache necessário.   |
+| **Descrição:** O usuário deve poder apagar uma requisição que esteja na lista de rascunhos, por motivos variados como falta de necessidade da requisição no momento e caso ocorra algum erro na inscrição que seja necessário deletá-la como inserção de anexo incorreto.                                                                   |
 | **Atores:** Discente.                                                                        |
 | **Prioridade:** Alta.                                                                        |
-| **Entrada:** Não possui.                                                                     |
+| **Entrada:** Clicar no botão de deletar rascunho.                                            |
 | **Pré-condições:** Ter um rascunho salvo.                                                    |
 | **Saída:** Rascunho apagado.                                                                 |
 | **Pós-condições:** A fila de requisição atualizada com o rascunho apagado.                   |
