@@ -1,18 +1,18 @@
 package br.upe.acs.controlador;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import br.upe.acs.dominio.dto.AtividadeDTO;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import br.upe.acs.controlador.respostas.AtividadeResposta;
+import br.upe.acs.dominio.dto.AtividadeDTO;
+import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.servico.AtividadeServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/atividade")
@@ -23,9 +23,9 @@ public class AtividadeControlador {
     private final AtividadeServico servico;
 
     @Operation(summary = "Listar todas as atividades",
-    		description = "Esse endpoint deve retornar todas as atividades existentes no banco de dados do sistema de Acs\n"
-    				+ "\nPré-condições: É necessário que o usuário esteja logado e verificado no sistema.\n"
-    				+ "\nPós-condições: Nenhuma")
+            description = "Esse endpoint deve retornar todas as atividades existentes no banco de dados do sistema de Acs\n"
+                    + "\nPré-condições: É necessário que o usuário esteja logado e verificado no sistema.\n"
+                    + "\nPós-condições: Nenhuma")
     @GetMapping
     public ResponseEntity<List<AtividadeResposta>> listarAtividades() {
         return ResponseEntity.ok(servico.listarAtividades().stream().map(AtividadeResposta::new)
@@ -33,9 +33,9 @@ public class AtividadeControlador {
     }
 
     @Operation(summary = "Buscar atividade por id",
-    		description = "Esse endpoint deve retornar a atividade correspondente ao id informado.\n"
-    				+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
-    				+ "\nPós-condição: Nenhuma")
+            description = "Esse endpoint deve retornar a atividade correspondente ao id informado.\n"
+                    + "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+                    + "\nPós-condição: Nenhuma")
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarAtividadePorId(@PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
@@ -48,18 +48,19 @@ public class AtividadeControlador {
 
         return resposta;
     }
+
     @Operation(summary = "Buscar atividades por eixo", description = "Esse endpoint deve retornar a atividade correspondente ao eixo informado.\n"
-			+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
-			+ "\nPós-condição: Nenhuma")
+            + "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+            + "\nPós-condição: Nenhuma")
     @GetMapping("/eixo")
-    public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam String eixo){
-    	ResponseEntity<?> resposta;
-    	try {
-    		resposta = ResponseEntity.ok(servico.buscarAtividadePorEixo(eixo));
-    	} catch(AcsExcecao e) {
-    		resposta = ResponseEntity.badRequest().body(e.getMessage());
-    	}
-    	return resposta;
+    public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam String eixo) {
+        ResponseEntity<?> resposta;
+        try {
+            resposta = ResponseEntity.ok(servico.buscarAtividadePorEixo(eixo));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return resposta;
     }
 
     @Operation(
@@ -86,6 +87,24 @@ public class AtividadeControlador {
             servico.excluirAtividade(id);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
+    @Operation(summary = "Alterar atividade")
+    @PutMapping("/{id}")
+    public ResponseEntity<?> alterarAtividade(
+            HttpServletRequest request,
+            @PathVariable("id") Long id,
+            @RequestBody AtividadeDTO atividadeDTO
+    ) {
+        ResponseEntity<?> resposta;
+        try {
+            servico.alterarAtividade(id, atividadeDTO);
+            resposta = ResponseEntity.noContent().build();
+        } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
 
