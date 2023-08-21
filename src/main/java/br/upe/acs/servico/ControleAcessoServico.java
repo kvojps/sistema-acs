@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.AutenticacaoResposta;
-import br.upe.acs.dominio.dto.EmailDTO;
 import br.upe.acs.dominio.dto.EnderecoDTO;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
@@ -59,7 +58,7 @@ public class ControleAcessoServico {
 
        	usuarioRepositorio.save(usuarioSalvar);
 
-        CompletableFuture.runAsync(() -> enviarEmail(registro, codigoVerificacao));
+        CompletableFuture.runAsync(() -> emailServico.enviarEmailCodigoVerificacao(registro, codigoVerificacao));
 
         return gerarAutenticacaoResposta(usuarioSalvar);
     }
@@ -150,7 +149,7 @@ public class ControleAcessoServico {
 			throw new AcsExcecao("Por favor, insira uma matrícula válida");			
 		}
 
-		if(Integer.valueOf(matricula) < 1) {
+		if(Integer.parseInt(matricula) < 1) {
 			throw new AcsExcecao("Por favor, insira uma matrícula válida");	
 		}		
 			
@@ -187,16 +186,6 @@ public class ControleAcessoServico {
 
 		return codigo.toString();
 	}
-
-	private void enviarEmail(RegistroDTO registro, String codigoVerificacao) {
-        EmailDTO email = new EmailDTO();
-
-        email.setAssunto("Código de verificação - Sistema ACs UPE");
-        email.setDestinatario(registro.getEmail());
-        email.setMensagem(
-                "Confirme seu email, envie esse código na página de verificação do sistema: " + codigoVerificacao);
-        emailServico.enviarEmail(email);
-    }
 
 	private AutenticacaoResposta gerarAutenticacaoResposta(Usuario usuario) {
 		String jwtToken = jwtService.generateToken(usuario);

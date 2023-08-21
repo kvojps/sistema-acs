@@ -24,7 +24,13 @@ public class CertificadoControlador {
 
     private final JwtService jwtService;
 
-    @Operation(summary = "Buscar certificado por id")
+    @Operation(
+            summary = "Buscar certificado por id",
+             description = "Esta rota permite busca informações mais detalhadas sobre um certificado de forma, " +
+                     "retornando informações de id, titulo, eixo, atividade, status, data de inicio, data de fim e carga" +
+                     " horária. Essa rota será util para aluno, coordenação e comissão tenha acesso aos certificados."
+
+    )
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarCertificadoPorId(@PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
@@ -38,7 +44,11 @@ public class CertificadoControlador {
         return resposta;
     }
 
-    @Operation(summary = "Buscar o arquivo do certificado por id")
+    @Operation(
+            summary = "Buscar o arquivo do certificado por id",
+            description = "Esta rota permite busca e acessar o base64 do arquivo de um certificado no sistema. " +
+                    "Essa rota será util para aluno, coordenação e comissão tenha acesso ao arquivo dos certificados."
+    )
     @GetMapping("/{id}/pdf")
     public ResponseEntity<?> buscarPdfDoCertificadoPorId(@PathVariable("id") Long certificadoId) {
         ResponseEntity<?> resposta;
@@ -53,7 +63,12 @@ public class CertificadoControlador {
     }
 
 
-    @Operation(summary = "adicionar certificado")
+    @Operation(
+            summary = "adicionar certificado",
+            description = "Esta rota cria um novo certificado no sistema com o envio de id de uma requisição rascunho e" +
+                    " o arquivo do certificado e retorna o id do certificado. Essa rota permitirá o aluno " +
+                    "adicionar certificados a requisição, antes da submissão, para análise da coordenação."
+    )
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<?> adicionarCertificado(
             HttpServletRequest request,
@@ -70,7 +85,12 @@ public class CertificadoControlador {
         return resposta;
     }
 
-    @Operation(summary = "alterar certificado")
+    @Operation(
+            summary = "alterar certificado",
+            description = "Esta rota permite o aluno alterar o certificado enquanto ainda é um rascunho é preenche os " +
+                    "os campos para poder submeter para análise. Util para o aluno modificar e salvar suas alterações " +
+                    "incompletas em certificado."
+    )
     @PutMapping("/{id}")
     public ResponseEntity<?> alterarCertificado(
             HttpServletRequest request,
@@ -89,7 +109,10 @@ public class CertificadoControlador {
         return resposta;
     }
 
-    @Operation(summary = "excluir certificados")
+    @Operation(
+            summary = "excluir certificados",
+            description = "Esta rota permite o aluno excluir certificados com status rascunho em casos de nescessidades."
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirCertificado(HttpServletRequest request, @PathVariable("id") Long certificadoId) {
         ResponseEntity<?> resposta;

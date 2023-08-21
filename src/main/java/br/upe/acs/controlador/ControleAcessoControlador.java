@@ -20,7 +20,10 @@ public class ControleAcessoControlador {
 
     private final ControleAcessoServico servico;
 
-    @Operation(summary = "Cadastro de usuário")
+    @Operation(summary = "Cadastro de usuário",
+    		description = "Esse endpoint deve ser capaz de cadastrar um usuário no sistema.\n"
+    				+ "\nPré-condição: Cadastar-se com email institucional, senha com 8 ou mais caracteres incluindo caracteres especiais, letras maiúsculas e minúsculas. \n"
+    				+ "\nPós-condição: O usuário será direcionado para a tela de perfil para certificar que é membro da instituição, passando por um processo de verificação.")
     @PostMapping("/cadastro")
     public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody RegistroDTO registro, BindingResult bindingResult) {
         ResponseEntity<?> resposta;
@@ -37,7 +40,10 @@ public class ControleAcessoControlador {
         return resposta;
     }
 
-    @Operation(summary = "Login de usuário")
+    @Operation(summary = "Login de usuário",
+    		description = "Esse endpoint deve ser capaz de realizar o login do usuário.\n"
+    				+ "\nPré-condição: O usuário deve estar cadastrado. \n"
+    				+ "\nPós-condição: O usuário será direcionado para a tela inicial do sistema, caso informe as credenciais corretamente (e-mail e senha).")
     @PostMapping("/login")
     public ResponseEntity<?> loginUsuario(@RequestBody LoginDTO login) {
         ResponseEntity<?> resposta;
