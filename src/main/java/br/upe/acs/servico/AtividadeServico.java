@@ -1,16 +1,16 @@
 package br.upe.acs.servico;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import br.upe.acs.dominio.Atividade;
+import br.upe.acs.dominio.Endereco;
+import br.upe.acs.dominio.dto.AtividadeDTO;
 import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.repositorio.AtividadeRepositorio;
 import br.upe.acs.utils.AcsExcecao;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,5 +52,14 @@ public class AtividadeServico {
 		
 		return atividade;
 	}
-		
+
+	public Atividade criarAtividade(AtividadeDTO atividade) throws AcsExcecao {
+
+		Atividade atividadeNova = new Atividade();
+		atividadeNova.setEixo(atividade.getEixo());
+		atividadeNova.setDescricao(atividade.getDescricao());
+		atividadeNova.setCriteriosParaAvaliacao(atividade.getCriteriosParaAvaliacao());
+		atividadeNova.setChPorCertificado(atividade.getChPorCertificado());
+		return atividadeNova;
+	}
 }
