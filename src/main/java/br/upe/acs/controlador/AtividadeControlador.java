@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.upe.acs.dominio.dto.AtividadeDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,4 +77,19 @@ public class AtividadeControlador {
         }
         return resposta;
     }
+
+    @Operation(summary = "Excluir atividade")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirAtividade(HttpServletRequest request, @PathVariable("id") Long id) {
+        ResponseEntity<?> resposta;
+        try {
+            servico.excluirAtividade(id);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
 }
