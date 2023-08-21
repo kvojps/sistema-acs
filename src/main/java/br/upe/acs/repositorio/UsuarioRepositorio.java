@@ -1,14 +1,12 @@
 package br.upe.acs.repositorio;
 
-import java.util.Optional;
-
+import br.upe.acs.dominio.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.upe.acs.dominio.Usuario;
+import java.util.Optional;
 
-public interface UsuarioRepositorio extends JpaRepository<Usuario, Long>{
-	
-	Optional<Usuario> findByEmail(String email);
-	
-	Optional<Usuario> findByCpf(String cpf);
+public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
+    Optional<Usuario> findByEmail(String email);
+
+    Optional<Usuario> findByCpf(String cpf);
 }

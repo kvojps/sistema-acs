@@ -19,19 +19,25 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/curso")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class CursoControlador {
 
 	private final CursoServico servico;
 
-	@Operation(summary = "Listar todos os cursos")
+	@Operation(summary = "Listar todos os cursos",
+			description = "Esse endpoint deve retornar todos os cursos existentes no banco de dados do sistema\n"
+					+ "\nPré-condição: O usuário deve estar logado e verificado\n"
+					+ "\nPós-condição: Nenhuma")
 	@GetMapping
 	public ResponseEntity<List<CursoResposta>> listarCursos() {
 		return ResponseEntity.ok(
 				servico.listarCursos().stream().map(CursoResposta::new).collect(Collectors.toList()));
 	}
 
-	@Operation(summary = "Buscar curso por id")
+	@Operation(summary = "Buscar curso por id",
+			description = "Esse endpoint deve retornar o curso correspondente ao id informado.\n"
+    				+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+    				+ "\nPós-condição: Nenhuma")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> buscarCursoPorId(@PathVariable("id") Long id) {
 		ResponseEntity<?> resposta;

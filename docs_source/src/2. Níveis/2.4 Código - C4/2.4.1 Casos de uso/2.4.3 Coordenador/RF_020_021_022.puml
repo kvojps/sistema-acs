@@ -1,0 +1,27 @@
+@startuml RF 1.6/1.7/1.9
+skinparam actorStyle awesome
+!theme spacelab
+rectangle "RF 020/021/023"
+:Coordenador: as coordenador #text:blue
+:Sistema: as sistema #text:blue
+
+(Visualizar extrato de horas\ndas ACS dos discentes) as visualizar_horas_acs
+(Filtrar extrato de horas\ndas ACS por discente) as filtrar_horas_discente
+(CPF) as cpf
+(Nome) as nome
+(Matrícula) as matricula 
+(Alertar discente sobre a\nbaixa quantidade de ACS enviadas) as alertar_discente
+(Enviar email para o discente) as enviar_email_discente
+(Alterar composição de horas das ACS) as alterar_quantidade_acs
+
+coordenador --> visualizar_horas_acs
+coordenador --> filtrar_horas_discente
+sistema -left--> enviar_email_discente
+alertar_discente ..> enviar_email_discente #line:gray;text:blue : <<include>>  
+filtrar_horas_discente <.. cpf #line:gray;text:blue : <<extend>>> 
+filtrar_horas_discente <.. nome #line:gray;text:blue : <<extend>>  
+filtrar_horas_discente <.. matricula #line:gray;text:blue : <<extend>>
+visualizar_horas_acs <.. alterar_quantidade_acs #line:gray;text:blue : <<extend>>
+visualizar_horas_acs <.. alertar_discente #line:gray;text:blue : <<extend>>
+
+@enduml

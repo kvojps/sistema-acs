@@ -1,0 +1,23 @@
+@startuml comissao
+skinparam actorStyle awesome
+!theme spacelab 
+:comissão: as comissao #text:blue
+:sistema: as sistema #text:blue
+
+rectangle "RF024/025/026"
+
+(Consultar lista de requisições) as consultar
+(Avaliar carga horária dos certificados) as avaliar_ac
+(Validar requisição) as validar
+(Buscar requisição especifica) as buscar
+(Enviar email para a coordenação) as enviar_email
+
+
+comissao --> consultar
+comissao --> validar
+validar ..> avaliar_ac #line:gray;text:blue : <<include>>
+sistema --> enviar_email 
+consultar <.. buscar #line:gray;text:blue : <<extend>>
+validar ..>enviar_email #line:gray;text:blue : <<include>>
+
+@enduml
