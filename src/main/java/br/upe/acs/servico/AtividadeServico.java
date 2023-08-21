@@ -58,6 +58,7 @@ public class AtividadeServico {
 		atividadeNova.setDescricao(atividade.getDescricao());
 		atividadeNova.setCriteriosParaAvaliacao(atividade.getCriteriosParaAvaliacao());
 		atividadeNova.setChPorCertificado(atividade.getChPorCertificado());
+        repositorio.save(atividadeNova);
 		return atividadeNova;
 	}
 
