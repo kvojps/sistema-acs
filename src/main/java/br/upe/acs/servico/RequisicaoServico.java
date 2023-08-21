@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class RequisicaoServico {
@@ -32,9 +33,12 @@ public class RequisicaoServico {
 	private final TemplateEngine templateEngine;
 	private final CertificadoRepositorio certificadoRepositorio;
 
-	public RequisicaoServico(RequisicaoRepositorio repositorio, UsuarioServico usuarioServico, TemplateEngine templateEngine, CertificadoRepositorio certificadoRepositorio) {
+	private final EmailServico emailServico;
+
+	public RequisicaoServico(RequisicaoRepositorio repositorio, UsuarioServico usuarioServico, TemplateEngine templateEngine, CertificadoRepositorio certificadoRepositorio, EmailServico emailServico) {
 		this.repositorio = repositorio;
 		this.usuarioServico = usuarioServico;
+		this.emailServico = emailServico;
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
 		templateResolver.setSuffix(".html");
@@ -62,6 +66,7 @@ public class RequisicaoServico {
 
 		return gerarPaginacaoRequisicoes(requisicoes, pagina, quantidade);
 	}
+	
 
 	public Requisicao buscarRequisicaoPorId(Long id) throws AcsExcecao {
 		Optional<Requisicao> requisicao = repositorio.findById(id);
@@ -194,6 +199,8 @@ public class RequisicaoServico {
 		requisicao.setStatusRequisicao(RequisicaoStatusEnum.TRANSITO);
 		modificarCertificados(requisicao.getCertificados());
 		repositorio.save(requisicao);
+
+		CompletableFuture.runAsync(() -> emailServico.enviarEmailAlteracaoStatusRequisicao(requisicao));
 
 		return token;
 	}

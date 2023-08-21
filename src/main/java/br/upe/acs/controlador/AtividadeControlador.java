@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.upe.acs.controlador.respostas.AtividadeResposta;
@@ -24,14 +25,20 @@ public class AtividadeControlador {
 
     private final AtividadeServico servico;
 
-    @Operation(summary = "Listar todas as atividades")
+    @Operation(summary = "Listar todas as atividades", 
+    		description = "Esse endpoint deve retornar todas as atividades existentes no banco de dados do sistema de Acs\n"
+    				+ "\nPré-condições: É necessário que o usuário esteja logado e verificado no sistema.\n"
+    				+ "\nPós-condições: Nenhuma")
     @GetMapping
     public ResponseEntity<List<AtividadeResposta>> listarAtividades() {
         return ResponseEntity.ok(servico.listarAtividades().stream().map(AtividadeResposta::new)
                 .collect(Collectors.toList()));
     }
 
-    @Operation(summary = "Buscar atividade por id")
+    @Operation(summary = "Buscar atividade por id",
+    		description = "Esse endpoint deve retornar a atividade correspondente ao id informado.\n"
+    				+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+    				+ "\nPós-condição: Nenhuma")
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarAtividadePorId(@PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
@@ -43,5 +50,18 @@ public class AtividadeControlador {
         }
 
         return resposta;
+    }
+    @Operation(summary = "Buscar atividades por eixo", description = "Esse endpoint deve retornar a atividade correspondente ao eixo informado.\n"
+			+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+			+ "\nPós-condição: Nenhuma")
+    @GetMapping("/eixo")
+    public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam String eixo){
+    	ResponseEntity<?> resposta;
+    	try {
+    		resposta = ResponseEntity.ok(servico.buscarAtividadePorEixo(eixo));
+    	} catch(AcsExcecao e) {
+    		resposta = ResponseEntity.badRequest().body(e.getMessage());
+    	}
+    	return resposta;
     }
 }

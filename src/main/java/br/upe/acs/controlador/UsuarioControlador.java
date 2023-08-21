@@ -3,6 +3,7 @@ package br.upe.acs.controlador;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.UsuarioResposta;
 import br.upe.acs.dominio.dto.AlterarSenhaDTO;
+import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.servico.UsuarioServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,6 +64,26 @@ public class UsuarioControlador {
 
         return resposta;
     }
+    
+    @GetMapping("/requisicao/eixo")
+    public  ResponseEntity<?> listarRequisicaoPorAlunoPaginacaoEixo(
+            @RequestParam Long alunoId,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int quantidade,
+            @RequestParam EixoEnum eixo
+    ) {
+        ResponseEntity<?> resposta;
+        try {
+            resposta = ResponseEntity.ok(servico.listarRequisicoesPorAlunoPaginadasEixo(alunoId, eixo, pagina, quantidade));
+
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
+
+    
 
     @Operation(
             summary = "Retornar dados de perfil do usuário",
