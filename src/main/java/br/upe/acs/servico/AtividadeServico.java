@@ -1,10 +1,7 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.dominio.Atividade;
-import br.upe.acs.dominio.Certificado;
-import br.upe.acs.dominio.Endereco;
 import br.upe.acs.dominio.dto.AtividadeDTO;
-import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.repositorio.AtividadeRepositorio;
 import br.upe.acs.utils.AcsExcecao;
@@ -67,5 +64,20 @@ public class AtividadeServico {
 	public void excluirAtividade(Long id) throws AcsExcecao {
 		Atividade atividade = buscarAtividadePorId(id);
         repositorio.deleteById(id);
+    }
+
+    public Atividade alterarAtividade(Long id, AtividadeDTO atividade) throws AcsExcecao {
+        Optional<Atividade> atividadeAtualizada = repositorio.findById(id);
+
+        if (atividadeAtualizada.isEmpty()) {
+            throw new AcsExcecao("Não foi encontrada nenhuma atividade com esse id");
+        }
+
+        atividadeAtualizada.get().setEixo(atividade.getEixo());
+        atividadeAtualizada.get().setDescricao(atividade.getDescricao());
+        atividadeAtualizada.get().setCriteriosParaAvaliacao(atividade.getCriteriosParaAvaliacao());
+        atividadeAtualizada.get().setChPorCertificado(atividade.getChPorCertificado());
+        repositorio.save(atividadeAtualizada.get());
+        return atividadeAtualizada.get();
     }
 }
