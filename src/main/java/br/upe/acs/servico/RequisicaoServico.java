@@ -66,6 +66,7 @@ public class RequisicaoServico {
 
 		return gerarPaginacaoRequisicoes(requisicoes, pagina, quantidade);
 	}
+	
 
 	public Requisicao buscarRequisicaoPorId(Long id) throws AcsExcecao {
 		Optional<Requisicao> requisicao = repositorio.findById(id);
