@@ -32,11 +32,9 @@ public class Endereco {
 	@Column(nullable = true)
 	private String complemento;
 	
+
 	@OneToMany(mappedBy = "endereco")
 	private List<Usuario> usuarios;
-
+	
 }
-
-
-
 
