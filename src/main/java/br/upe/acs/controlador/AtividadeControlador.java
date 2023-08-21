@@ -3,13 +3,9 @@ package br.upe.acs.controlador;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.upe.acs.dominio.dto.AtividadeDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.AtividadeResposta;
 import br.upe.acs.servico.AtividadeServico;
@@ -25,7 +21,7 @@ public class AtividadeControlador {
 
     private final AtividadeServico servico;
 
-    @Operation(summary = "Listar todas as atividades", 
+    @Operation(summary = "Listar todas as atividades",
     		description = "Esse endpoint deve retornar todas as atividades existentes no banco de dados do sistema de Acs\n"
     				+ "\nPré-condições: É necessário que o usuário esteja logado e verificado no sistema.\n"
     				+ "\nPós-condições: Nenhuma")
@@ -63,5 +59,21 @@ public class AtividadeControlador {
     		resposta = ResponseEntity.badRequest().body(e.getMessage());
     	}
     	return resposta;
+    }
+
+    @Operation(
+            summary = "Criar uma nova atividade",
+            description = "Descrição massa"
+    )
+    @PostMapping
+    public ResponseEntity<?> criarAtividade(@RequestBody AtividadeDTO atividade) {
+        ResponseEntity<?> resposta;
+
+        try {
+            resposta = ResponseEntity.ok(servico.criarAtividade(atividade));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return resposta;
     }
 }
