@@ -25,14 +25,20 @@ public class AtividadeControlador {
 
     private final AtividadeServico servico;
 
-    @Operation(summary = "Listar todas as atividades")
+    @Operation(summary = "Listar todas as atividades", 
+    		description = "Esse endpoint deve retornar todas as atividades existentes no banco de dados do sistema de Acs\n"
+    				+ "\nPré-condições: É necessário que o usuário esteja logado e verificado no sistema.\n"
+    				+ "\nPós-condições: Nenhuma")
     @GetMapping
     public ResponseEntity<List<AtividadeResposta>> listarAtividades() {
         return ResponseEntity.ok(servico.listarAtividades().stream().map(AtividadeResposta::new)
                 .collect(Collectors.toList()));
     }
 
-    @Operation(summary = "Buscar atividade por id")
+    @Operation(summary = "Buscar atividade por id",
+    		description = "Esse endpoint deve retornar a atividade correspondente ao id informado.\n"
+    				+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+    				+ "\nPós-condição: Nenhuma")
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarAtividadePorId(@PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
