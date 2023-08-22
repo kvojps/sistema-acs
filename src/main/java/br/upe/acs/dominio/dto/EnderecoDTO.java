@@ -23,6 +23,5 @@ public class EnderecoDTO {
 	
 	private int numero;
 
-	@Nullable
-	private String Complemento;
+	private String complemento;
 }

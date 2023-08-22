@@ -169,6 +169,7 @@ public class ControleAcessoServico {
 		enderecoSalvar.setRua(registro.getRua());
 		enderecoSalvar.setNumero(registro.getNumero());
 		enderecoSalvar.setUF(registro.getUF());
+		enderecoSalvar.setComplemento(registro.getComplemento());
 
 		return enderecoServico.adicionarEndereco(enderecoSalvar);
 	}
