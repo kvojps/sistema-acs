@@ -42,7 +42,7 @@ public class CursoControlador {
 	public ResponseEntity<?> buscarCursoPorId(@PathVariable("id") Long id) {
 		ResponseEntity<?> resposta;
 		try {
-			CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id).orElseThrow());
+			CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id));
 			resposta =  ResponseEntity.ok(cursoResposta);
 		} catch (AcsExcecao e) {
 			resposta = ResponseEntity.badRequest().body(e.getMessage());

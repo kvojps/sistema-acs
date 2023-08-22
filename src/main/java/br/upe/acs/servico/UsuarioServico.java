@@ -122,14 +122,8 @@ public class UsuarioServico {
 			usuario.setNomeCompleto(nomeCompleto);
 			usuario.setTelefone(telefone);
 			usuario.setEndereco(endereco);
-            usuario.setCurso(
-                    new Curso(
-                            cursoId,
-                            cursoServico.buscarCursoPorId(cursoId).get().getNome(),
-                            cursoServico.buscarCursoPorId(cursoId).get().getHorasComplementares(),
-                            cursoServico.buscarCursoPorId(cursoId).get().getRequisicoes(),
-                            cursoServico.buscarCursoPorId(cursoId).get().getUsuarios())
-            );
+			Curso curso = cursoServico.buscarCursoPorId(cursoId);
+            usuario.setCurso(curso);
             repositorio.save(usuario);
 		}
 	}

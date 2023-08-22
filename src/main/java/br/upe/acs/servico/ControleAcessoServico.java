@@ -41,7 +41,7 @@ public class ControleAcessoServico {
 		Usuario usuarioSalvar = new Usuario();
 		Endereco enderecoSalvo = adicionarEnderecoUsuario(registro);
 		String codigoVerificacao = gerarCodigoVerificacao();
-		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId()).orElseThrow();
+		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId());
 
 		usuarioSalvar.setNomeCompleto(registro.getNomeCompleto());
 		usuarioSalvar.setCpf(registro.getCpf());
