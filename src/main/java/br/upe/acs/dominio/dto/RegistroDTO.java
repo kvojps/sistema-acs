@@ -36,6 +36,8 @@ public class RegistroDTO {
 	private String cidade;
 	
 	private String UF;
+
+	private String complemento;
 	
 	private int numero;
 	

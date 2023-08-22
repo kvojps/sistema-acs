@@ -21,7 +21,13 @@ public class AlunoControlador {
 
     private final JwtService jwtService;
 
-    @Operation(summary = "Buscar aluno por id")
+    @Operation(
+            summary = "Buscar aluno por id",
+            description = "Esta rota permite buscar um aluno via seu id. As informações retornadas incluem " +
+                    "informações como id, nome completo, número de matricula, telefone, email, perfis, curso, " +
+                    "periodo e se é verificado. Essa rota séra util para gerenciamento de usuarios e para coordenação " +
+                    "e comissão tenha acesso aos dados dos alunos."
+    )
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarAlunoPorId(@PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
@@ -35,7 +41,12 @@ public class AlunoControlador {
         return resposta;
     }
 
-    @Operation(summary = "Listar todas as requisições do aluno")
+    @Operation(
+            summary = "Listar todas as requisições do aluno",
+            description = "Esta rota permite o aluno lista todas suas requisições de forma paginada, " +
+                    "possuindo com retorno um Map com um lista de requisições, a página atual, total de itens " +
+                    "e total de páginas."
+    )
     @GetMapping("/requisicao/paginacao")
     public  ResponseEntity<?> listarRequisicoesPaginadas(
             HttpServletRequest request,
@@ -54,7 +65,11 @@ public class AlunoControlador {
         return resposta;
     }
 
-    @Operation(summary = "Carga horaria dos alunos")
+    @Operation(
+            summary = "Carga horaria dos alunos",
+            description = "Esta rota permite o aluno acessar as informações sobre suas horas complementares, " +
+                    "retornando os horas já contabilizadas de Ensino, Extensão, Gestão e Pesquisa."
+    )
     @GetMapping("/horas")
     public ResponseEntity<?> atividadesComplementaresAluno(HttpServletRequest request) {
         ResponseEntity<?> resposta;

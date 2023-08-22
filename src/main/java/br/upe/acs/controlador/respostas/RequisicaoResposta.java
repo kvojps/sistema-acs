@@ -14,6 +14,8 @@ public class RequisicaoResposta {
 
 	private final Long id;
 
+	private final String idRequisicao;
+
 	private final Date dataDeSubmissao;
 
 	private final String token;
@@ -31,6 +33,7 @@ public class RequisicaoResposta {
 	public RequisicaoResposta(Requisicao requisicao) {
 		super();
 		this.id = requisicao.getId();
+		this.idRequisicao = requisicao.getIdRequisicao();
 		this.dataDeSubmissao = requisicao.getDataDeSubmissao();
 		this.token = requisicao.getToken();
 		this.arquivada = requisicao.isArquivada();

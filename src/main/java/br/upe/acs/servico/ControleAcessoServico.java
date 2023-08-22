@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.AutenticacaoResposta;
-import br.upe.acs.dominio.dto.EmailDTO;
 import br.upe.acs.dominio.dto.EnderecoDTO;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
@@ -36,12 +35,13 @@ public class ControleAcessoServico {
         verificarDadosUnicos(registro.getEmail(), registro.getCpf());
 		validarSenha(registro.getSenha());
 		validarEmailInstitucional(registro.getEmail());
+		validarMatricula(registro.getMatricula());
+		validarPeriodo(registro.getPeriodo());
 
 		Usuario usuarioSalvar = new Usuario();
 		Endereco enderecoSalvo = adicionarEnderecoUsuario(registro);
 		String codigoVerificacao = gerarCodigoVerificacao();
 		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId()).orElseThrow();
-
 
 		usuarioSalvar.setNomeCompleto(registro.getNomeCompleto());
 		usuarioSalvar.setCpf(registro.getCpf());
@@ -58,7 +58,7 @@ public class ControleAcessoServico {
 
        	usuarioRepositorio.save(usuarioSalvar);
 
-        CompletableFuture.runAsync(() -> enviarEmail(registro, codigoVerificacao));
+        CompletableFuture.runAsync(() -> emailServico.enviarEmailCodigoVerificacao(registro, codigoVerificacao));
 
         return gerarAutenticacaoResposta(usuarioSalvar);
     }
@@ -138,6 +138,28 @@ public class ControleAcessoServico {
 			throw new AcsExcecao("Email inválido! Por favor insira o email institucional.");
 		}
 	}
+	
+	private void validarMatricula(String matricula) throws AcsExcecao{
+		
+		if(!matricula.matches("[0-9]+")) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");
+		}
+
+		if(matricula.length() < 4 || matricula.length() > 9) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");			
+		}
+
+		if(Integer.parseInt(matricula) < 1) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");	
+		}		
+			
+	}
+	
+	private void validarPeriodo(int periodo) throws AcsExcecao{
+		if(periodo < 1 || periodo > 12) {
+			throw new AcsExcecao("Por favor, insira um período válido");
+		}
+	}
 
 	private Endereco adicionarEnderecoUsuario(RegistroDTO registro) {
 		EnderecoDTO enderecoSalvar = new EnderecoDTO();
@@ -147,6 +169,7 @@ public class ControleAcessoServico {
 		enderecoSalvar.setRua(registro.getRua());
 		enderecoSalvar.setNumero(registro.getNumero());
 		enderecoSalvar.setUF(registro.getUF());
+		enderecoSalvar.setComplemento(registro.getComplemento());
 
 		return enderecoServico.adicionarEndereco(enderecoSalvar);
 	}
@@ -164,16 +187,6 @@ public class ControleAcessoServico {
 
 		return codigo.toString();
 	}
-
-	private void enviarEmail(RegistroDTO registro, String codigoVerificacao) {
-        EmailDTO email = new EmailDTO();
-
-        email.setAssunto("Código de verificação - Sistema ACs UPE");
-        email.setDestinatario(registro.getEmail());
-        email.setMensagem(
-                "Confirme seu email, envie esse código na página de verificação do sistema: " + codigoVerificacao);
-        emailServico.enviarEmail(email);
-    }
 
 	private AutenticacaoResposta gerarAutenticacaoResposta(Usuario usuario) {
 		String jwtToken = jwtService.generateToken(usuario);

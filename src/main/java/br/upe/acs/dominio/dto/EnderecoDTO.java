@@ -1,5 +1,6 @@
 package br.upe.acs.dominio.dto;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,6 @@ public class EnderecoDTO {
 	private String UF;
 	
 	private int numero;
+
+	private String complemento;
 }
