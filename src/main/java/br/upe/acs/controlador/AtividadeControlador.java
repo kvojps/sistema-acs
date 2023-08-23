@@ -14,17 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.upe.acs.controlador.respostas.AtividadeResposta;
 import br.upe.acs.dominio.dto.AtividadeDTO;
-import br.upe.acs.dominio.dto.CertificadoDTO;
 import br.upe.acs.servico.AtividadeServico;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/atividade")
@@ -86,7 +81,7 @@ public class AtividadeControlador {
         try {
             resposta = ResponseEntity.ok(servico.criarAtividade(atividade));
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
         return resposta;
     }
@@ -99,7 +94,7 @@ public class AtividadeControlador {
             servico.excluirAtividade(id);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -117,7 +112,7 @@ public class AtividadeControlador {
             servico.alterarAtividade(id, atividadeDTO);
             resposta = ResponseEntity.noContent().build();
         } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
