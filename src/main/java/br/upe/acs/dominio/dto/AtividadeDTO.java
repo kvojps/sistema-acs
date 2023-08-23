@@ -11,9 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class AtividadeDTO {
-	
+
 	@Enumerated(EnumType.STRING)
 	private EixoEnum eixo;
-	
+
 	private String descricao;
+
+	private String criteriosParaAvaliacao;
+
+	private String chPorCertificado;
+
 }

@@ -2,6 +2,7 @@ package br.upe.acs.controlador;
 
 import br.upe.acs.controlador.respostas.ViaCepResposta;
 import br.upe.acs.servico.EnderecoServico;
+import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class EnderecoControlador {
             ViaCepResposta viaCepResposta = new ViaCepResposta(servico.buscarEnderecoPorCep(cep));
             resposta = ResponseEntity.ok(viaCepResposta);
         } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;

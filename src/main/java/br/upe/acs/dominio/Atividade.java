@@ -19,18 +19,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Atividade {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Enumerated(EnumType.STRING)
 	private EixoEnum eixo;
-	
+
 	private String descricao;
-	
+
 	private int chMaxima;
-	
+
 	@OneToMany(mappedBy = "atividade")
 	private List<Certificado> certificados;
+
+    private String criteriosParaAvaliacao;
+
+    private String chPorCertificado;
 }

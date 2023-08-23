@@ -3,6 +3,7 @@ package br.upe.acs.controlador;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.ArquivoResposta;
 import br.upe.acs.dominio.dto.CertificadoDTO;
+import br.upe.acs.utils.MensagemUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class CertificadoControlador {
             CertificadoResposta certificadoResposta = new CertificadoResposta(servico.buscarCertificadoPorId(id));
             resposta = ResponseEntity.ok(certificadoResposta);
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
         
         return resposta;
@@ -56,7 +57,7 @@ public class CertificadoControlador {
             ArquivoResposta arquivo = new ArquivoResposta(servico.buscarPdfDoCertificadoPorId(certificadoId));
             resposta = ResponseEntity.ok(arquivo);
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -79,7 +80,7 @@ public class CertificadoControlador {
         try {
             resposta = ResponseEntity.status(201).body(servico.adicionarCertificado(certificado, requisicaoId, email));
         } catch (Exception e) {
-            resposta = ResponseEntity.status(404).body(e.getMessage());
+            resposta = ResponseEntity.status(404).body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -103,7 +104,7 @@ public class CertificadoControlador {
             servico.alterarCertificado(id, certificadoDTO, email);
             resposta = ResponseEntity.noContent().build();
         } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -121,7 +122,7 @@ public class CertificadoControlador {
             servico.excluirCertificado(certificadoId, email);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
