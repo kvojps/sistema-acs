@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class RequisicaoServico {
@@ -32,9 +33,12 @@ public class RequisicaoServico {
 	private final TemplateEngine templateEngine;
 	private final CertificadoRepositorio certificadoRepositorio;
 
-	public RequisicaoServico(RequisicaoRepositorio repositorio, UsuarioServico usuarioServico, TemplateEngine templateEngine, CertificadoRepositorio certificadoRepositorio) {
+	private final EmailServico emailServico;
+
+	public RequisicaoServico(RequisicaoRepositorio repositorio, UsuarioServico usuarioServico, TemplateEngine templateEngine, CertificadoRepositorio certificadoRepositorio, EmailServico emailServico) {
 		this.repositorio = repositorio;
 		this.usuarioServico = usuarioServico;
+		this.emailServico = emailServico;
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
 		templateResolver.setSuffix(".html");
@@ -62,6 +66,7 @@ public class RequisicaoServico {
 
 		return gerarPaginacaoRequisicoes(requisicoes, pagina, quantidade);
 	}
+	
 
 	public Requisicao buscarRequisicaoPorId(Long id) throws AcsExcecao {
 		Optional<Requisicao> requisicao = repositorio.findById(id);
@@ -124,6 +129,11 @@ public class RequisicaoServico {
 		Usuario aluno = usuarioServico.buscarUsuarioPorEmail(email);
 		List <Requisicao> requisicoesRacunhos = aluno.getRequisicoes().stream()
 				.filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
+
+		if (aluno.getHorasEnsino() + aluno.getHorasExtensao() + aluno.getHorasGestao() + aluno.getHorasPesquisa() >= aluno.getCurso().getHorasComplementares()) {
+			throw new AcsExcecao("O aluno já cumpriu suas horas complementares!");
+		}
+
 		if (requisicoesRacunhos.size() >= 2) {
 			throw new AcsExcecao("aluno só pode possuir 2 requisições em rascunho!");
 		}
@@ -134,6 +144,8 @@ public class RequisicaoServico {
 		requisicao.setUsuario(aluno);
 		requisicao.setCurso(aluno.getCurso());
 		Requisicao requisicaoSalva = repositorio.save(requisicao);
+		requisicaoSalva.setIdRequisicao(String.format("%s-%05d",aluno.getCurso().getSigla(), requisicaoSalva.getId()));
+		repositorio.save(requisicaoSalva);
 		return requisicaoSalva.getId();
 	}
 
@@ -194,6 +206,8 @@ public class RequisicaoServico {
 		requisicao.setStatusRequisicao(RequisicaoStatusEnum.TRANSITO);
 		modificarCertificados(requisicao.getCertificados());
 		repositorio.save(requisicao);
+
+		CompletableFuture.runAsync(() -> emailServico.enviarEmailAlteracaoStatusRequisicao(requisicao));
 
 		return token;
 	}

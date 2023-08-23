@@ -3,6 +3,7 @@ package br.upe.acs.controlador;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.upe.acs.utils.MensagemUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,22 +25,28 @@ public class CursoControlador {
 
 	private final CursoServico servico;
 
-	@Operation(summary = "Listar todos os cursos")
+	@Operation(summary = "Listar todos os cursos",
+			description = "Esse endpoint deve retornar todos os cursos existentes no banco de dados do sistema\n"
+					+ "\nPré-condição: O usuário deve estar logado e verificado\n"
+					+ "\nPós-condição: Nenhuma")
 	@GetMapping
 	public ResponseEntity<List<CursoResposta>> listarCursos() {
 		return ResponseEntity.ok(
 				servico.listarCursos().stream().map(CursoResposta::new).collect(Collectors.toList()));
 	}
 
-	@Operation(summary = "Buscar curso por id")
+	@Operation(summary = "Buscar curso por id",
+			description = "Esse endpoint deve retornar o curso correspondente ao id informado.\n"
+    				+ "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
+    				+ "\nPós-condição: Nenhuma")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> buscarCursoPorId(@PathVariable("id") Long id) {
 		ResponseEntity<?> resposta;
 		try {
-			CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id).orElseThrow());
+			CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id));
 			resposta =  ResponseEntity.ok(cursoResposta);
 		} catch (AcsExcecao e) {
-			resposta = ResponseEntity.badRequest().body(e.getMessage());
+			resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
 		}
 
 		return resposta;

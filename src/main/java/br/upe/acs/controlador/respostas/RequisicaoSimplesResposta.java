@@ -12,6 +12,8 @@ public class RequisicaoSimplesResposta {
 
     private final Long id;
 
+    private final String idRequisicao;
+
     private final RequisicaoStatusEnum status;
 
     private final Date data;
@@ -20,6 +22,7 @@ public class RequisicaoSimplesResposta {
 
     public RequisicaoSimplesResposta(Requisicao requisicao) {
         this.id = requisicao.getId();
+        this.idRequisicao = getIdRequisicao();
         this.status = requisicao.getStatusRequisicao();
         this.data = requisicao.getDataDeSubmissao();
         this.quantidadeDeHoras = (float) requisicao.getCertificados().stream()

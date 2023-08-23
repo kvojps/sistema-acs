@@ -1,9 +1,13 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.config.JwtService;
+import br.upe.acs.controlador.respostas.CertificadoResposta;
 import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
+import br.upe.acs.dominio.Curso;
+import br.upe.acs.dominio.Endereco;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
+import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.UsuarioRepositorio;
 import br.upe.acs.utils.AcsExcecao;
@@ -18,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.Comparator;
 
 import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
@@ -31,6 +36,7 @@ public class UsuarioServico {
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
+	private final CursoServico cursoServico;
 
     public Usuario buscarUsuarioPorId(Long id) throws AcsExcecao {
 		Optional<Usuario> usuario = repositorio.findById(id);
@@ -72,6 +78,30 @@ public class UsuarioServico {
 
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
 	}
+    public Map<String, Object> listarRequisicoesPorAlunoPaginadasEixo(Long alunoId, EixoEnum eixo, int pagina, int quantidade) throws AcsExcecao {
+		
+    	Usuario usuario = buscarUsuarioPorId(alunoId);
+		List<Requisicao> requisicoes = usuario.getRequisicoes().stream()
+				.filter(requisicao -> requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO).toList();
+		
+		List<Requisicao> requisicoesFiltro = new ArrayList<>();
+		List<CertificadoResposta> certificados = new ArrayList<>();
+		
+		for (Requisicao req : requisicoes) {	
+			certificados = req.getCertificados().stream()
+					.filter(certificado -> certificado.getAtividade().getEixo().equals(eixo))
+					.map(CertificadoResposta::new).toList();
+			if(!certificados.isEmpty()) {
+				requisicoesFiltro.add(req);
+			}
+		}
+		
+		List<RequisicaoSimplesResposta> requisicoesAluno = new ArrayList<>(requisicoesFiltro.stream()
+				.map(RequisicaoSimplesResposta::new).toList());
+
+
+		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
+	}
 
 	public void alterarSenha(String token, String senha, String novaSenha) throws AcsExcecao {
 		validarSenha(novaSenha);
@@ -81,6 +111,20 @@ public class UsuarioServico {
 			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
 			usuario.setSenha(passwordEncoder.encode(novaSenha));
 			repositorio.save(usuario);
+		}
+	}
+
+	public void alterarDados(String token, String nomeCompleto, String telefone, Endereco endereco, Long cursoId) throws AcsExcecao {
+		String email = jwtService.extractUsername(token);
+
+		if (repositorio.findByEmail(email).isPresent()) {
+			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
+			usuario.setNomeCompleto(nomeCompleto);
+			usuario.setTelefone(telefone);
+			usuario.setEndereco(endereco);
+			Curso curso = cursoServico.buscarCursoPorId(cursoId);
+            usuario.setCurso(curso);
+            repositorio.save(usuario);
 		}
 	}
 

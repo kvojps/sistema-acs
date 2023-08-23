@@ -24,7 +24,7 @@ public class EnderecoServico {
 		enderecoSalvar.setBairro(enderecoDTO.getBairro());
 		enderecoSalvar.setRua(enderecoDTO.getRua());
 		enderecoSalvar.setNumero(enderecoDTO.getNumero());
-
+		enderecoSalvar.setComplemento(enderecoDTO.getComplemento());
 		return repositorio.save(enderecoSalvar);
 	}
 
