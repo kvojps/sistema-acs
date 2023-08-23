@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.upe.acs.config.JwtService;
+import br.upe.acs.utils.MensagemUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,7 @@ public class RequisicaoControlador {
             return ResponseEntity.ok(servico.listarRequisicoesPorAluno(alunoId).stream()
                     .filter(requisicao -> !requisicao.isArquivada()).map(RequisicaoResposta::new).toList());
         } catch (AcsExcecao e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
     }
 
@@ -58,7 +59,7 @@ public class RequisicaoControlador {
             RequisicaoResposta requisicaoResposta = new RequisicaoResposta(servico.buscarRequisicaoPorId(id));
             return ResponseEntity.ok(requisicaoResposta);
         } catch (AcsExcecao e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
     }
 
@@ -70,7 +71,7 @@ public class RequisicaoControlador {
         try {
             resposta = ResponseEntity.status(201).body(requisicaoServico.adicionarRequisicao(email));
         } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -84,7 +85,7 @@ public class RequisicaoControlador {
     	try {
     		resposta = ResponseEntity.ok(requisicaoServico.arquivarRequisicao(id, email));
     	} catch(AcsExcecao e) {
-    		resposta = ResponseEntity.badRequest().body(e.getMessage());
+    		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
     	return resposta;
     }
@@ -97,7 +98,7 @@ public class RequisicaoControlador {
     	try {
     		resposta = ResponseEntity.ok(requisicaoServico.desarquivarRequisicao(id, email));
     	} catch (AcsExcecao e) {
-    		resposta = ResponseEntity.badRequest().body(e.getMessage());
+    		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
     	
     	return resposta;
@@ -112,7 +113,7 @@ public class RequisicaoControlador {
     		resposta = ResponseEntity.ok(requisicaoServico.listarRequisicoesArquivadas(email)
     				.stream().map(RequisicaoResposta::new).toList());
     	} catch(AcsExcecao e) {
-    		resposta = ResponseEntity.badRequest().body(e.getMessage());    		
+    		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
     	
     	return resposta;
@@ -131,7 +132,7 @@ public class RequisicaoControlador {
                     .filename("requisição" + requisicaoId + ".pdf").build());
             resposta = ResponseEntity.ok().headers(headers).body(servico.gerarRequisicaoPDF(requisicaoId));
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -144,7 +145,7 @@ public class RequisicaoControlador {
         try {
             resposta = ResponseEntity.ok(servico.submeterRequisicao(requisicaoId));
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -159,7 +160,7 @@ public class RequisicaoControlador {
             servico.excluirRequisicao(requisicaoId, email);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;

@@ -3,6 +3,7 @@ package br.upe.acs.controlador;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.upe.acs.utils.MensagemUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,7 @@ public class AtividadeControlador {
             AtividadeResposta atividadeResposta = new AtividadeResposta(servico.buscarAtividadePorId(id));
             resposta = ResponseEntity.ok(atividadeResposta);
         } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -60,7 +61,7 @@ public class AtividadeControlador {
     	try {
     		resposta = ResponseEntity.ok(servico.buscarAtividadePorEixo(eixo));
     	} catch(AcsExcecao e) {
-    		resposta = ResponseEntity.badRequest().body(e.getMessage());
+    		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
     	return resposta;
     }
