@@ -289,7 +289,7 @@ public class RequisicaoServico {
 				isValid = false;
 			} else if (certificado.getDataFinal().after(new Date())) {
 				isValid = false;
-			} else if (certificado.getCargaHoraria() <= 1) {
+			} else if (certificado.getCargaHoraria() < 1) {
 				isValid = false;
 			} else if (certificado.getAtividade() == null) {
 				isValid = false;
