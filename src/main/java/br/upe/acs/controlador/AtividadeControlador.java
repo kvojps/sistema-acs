@@ -63,7 +63,7 @@ public class AtividadeControlador {
     public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam String eixo){
     	ResponseEntity<?> resposta;
     	try {
-    		resposta = ResponseEntity.ok(servico.buscarAtividadePorEixo(eixo));
+    		resposta = ResponseEntity.ok(servico.buscarAtividadePorEixo(eixo).stream().map(AtividadeResposta::new).toList());
     	} catch(AcsExcecao e) {
     		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
@@ -79,7 +79,7 @@ public class AtividadeControlador {
         ResponseEntity<?> resposta;
 
         try {
-            resposta = ResponseEntity.ok(servico.criarAtividade(atividade));
+            resposta = ResponseEntity.ok(new AtividadeResposta(servico.criarAtividade(atividade)));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -109,8 +109,7 @@ public class AtividadeControlador {
     ) {
         ResponseEntity<?> resposta;
         try {
-            servico.alterarAtividade(id, atividadeDTO);
-            resposta = ResponseEntity.noContent().build();
+            resposta = ResponseEntity.ok(new AtividadeResposta(servico.alterarAtividade(id, atividadeDTO)));
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }

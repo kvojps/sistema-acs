@@ -57,6 +57,7 @@ public class AtividadeServico {
 		atividadeNova.setEixo(atividade.getEixo());
 		atividadeNova.setDescricao(atividade.getDescricao());
 		atividadeNova.setCriteriosParaAvaliacao(atividade.getCriteriosParaAvaliacao());
+		atividadeNova.setChMaxima(atividade.getChMaxima());
 		atividadeNova.setChPorCertificado(atividade.getChPorCertificado());
         repositorio.save(atividadeNova);
 		return atividadeNova;
@@ -77,6 +78,7 @@ public class AtividadeServico {
         atividadeAtualizada.get().setEixo(atividade.getEixo());
         atividadeAtualizada.get().setDescricao(atividade.getDescricao());
         atividadeAtualizada.get().setCriteriosParaAvaliacao(atividade.getCriteriosParaAvaliacao());
+		atividadeAtualizada.get().setChMaxima(atividade.getChMaxima());
         atividadeAtualizada.get().setChPorCertificado(atividade.getChPorCertificado());
         repositorio.save(atividadeAtualizada.get());
         return atividadeAtualizada.get();

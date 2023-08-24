@@ -29,12 +29,13 @@ public class Atividade {
 
 	private String descricao;
 
+	private String criteriosParaAvaliacao;
+
 	private int chMaxima;
+
+    private Integer chPorCertificado;
 
 	@OneToMany(mappedBy = "atividade")
 	private List<Certificado> certificados;
 
-    private String criteriosParaAvaliacao;
-
-    private String chPorCertificado;
 }
