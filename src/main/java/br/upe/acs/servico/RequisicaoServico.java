@@ -81,9 +81,20 @@ public class RequisicaoServico {
 		Requisicao requisicao = repositorio.findById(id).orElseThrow();
 		String resposta;
 		Usuario usuario = usuarioServico.buscarUsuarioPorEmail(email);
+		RequisicaoStatusEnum status = requisicao.getStatusRequisicao();
+		boolean finalizada = false;
+		System.out.println(status);
 		
 		if(!usuario.equals(requisicao.getUsuario())) {
 			throw new AcsExcecao("Usuário não tem permissão para arquivar essa requisição");
+		}
+		
+		if(status == RequisicaoStatusEnum.ACEITO || status == RequisicaoStatusEnum.NEGADO) {
+			finalizada = true;
+		}	
+		
+		if(!finalizada) {
+			throw new AcsExcecao("Não é possível arquivar uma requisição não finalizada");
 		}
 		
 		if(!requisicao.isArquivada()) {
