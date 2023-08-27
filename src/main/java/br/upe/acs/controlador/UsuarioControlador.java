@@ -84,8 +84,6 @@ public class UsuarioControlador {
         return resposta;
     }
 
-    
-
     @Operation(
             summary = "Retornar dados de perfil do usuário",
             description = "Esta Rota permite o usuário ter acesso a suas informações no registrados. Possui com retorno " +
@@ -119,7 +117,7 @@ public class UsuarioControlador {
         ResponseEntity<?> resposta;
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.verificarUsuario(email, codigo));
+            resposta = ResponseEntity.ok(new MensagemUtil(servico.verificarUsuario(email, codigo)));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.status(406).body(new MensagemUtil(e.getMessage()));
         }

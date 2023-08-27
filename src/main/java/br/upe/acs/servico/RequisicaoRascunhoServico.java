@@ -23,9 +23,13 @@ import java.util.concurrent.CompletableFuture;
 public class RequisicaoRascunhoServico {
 
     private final RequisicaoServico requisicaoServico;
+
     private final RequisicaoRepositorio repositorio;
+
     private final UsuarioServico usuarioServico;
+
     private final CertificadoRepositorio certificadoRepositorio;
+
     private final EmailServico emailServico;
 
     public Long adicionarRequisicao(String email) throws AcsExcecao {

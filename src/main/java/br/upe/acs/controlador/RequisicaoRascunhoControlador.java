@@ -20,7 +20,6 @@ public class RequisicaoRascunhoControlador {
 
     private final JwtService jwtService;
 
-
     @Operation(
             summary = "Adicionar requisição",
             description = "Descrição: Através deste endpoint, o usuário pode cadastrar uma requisição com o intuito" +

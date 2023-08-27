@@ -86,20 +86,6 @@ public class AtividadeControlador {
         return resposta;
     }
 
-    @Operation(summary = "Excluir atividade")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluirAtividade(HttpServletRequest request, @PathVariable("id") Long id) {
-        ResponseEntity<?> resposta;
-        try {
-            servico.excluirAtividade(id);
-            resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
-        }
-
-        return resposta;
-    }
-
     @Operation(summary = "Alterar atividade")
     @PutMapping("/{id}")
     public ResponseEntity<?> alterarAtividade(
@@ -111,6 +97,21 @@ public class AtividadeControlador {
         try {
             resposta = ResponseEntity.ok(new AtividadeResposta(servico.alterarAtividade(id, atividadeDTO)));
         } catch (Exception e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+        }
+
+        return resposta;
+    }
+
+
+    @Operation(summary = "Excluir atividade")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirAtividade(HttpServletRequest request, @PathVariable("id") Long id) {
+        ResponseEntity<?> resposta;
+        try {
+            servico.excluirAtividade(id);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 

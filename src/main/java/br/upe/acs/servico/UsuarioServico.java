@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.Comparator;
 
 import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
@@ -33,9 +32,13 @@ import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
 public class UsuarioServico {
 	
     private final UsuarioRepositorio repositorio;
+
 	private final JwtService jwtService;
+
 	private final PasswordEncoder passwordEncoder;
+
 	private final AuthenticationManager authenticationManager;
+
 	private final CursoServico cursoServico;
 
     public Usuario buscarUsuarioPorId(Long id) throws AcsExcecao {

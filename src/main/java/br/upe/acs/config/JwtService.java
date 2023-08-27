@@ -18,6 +18,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
+	private static final int TEMPO_EXPIRACAO = 1000 * 60 * 48;
+
 	private static final String SECRET_KEY = System.getenv("SECRET_KEY");
 
 	public String extractUsername(String token) {
@@ -37,7 +39,7 @@ public class JwtService {
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 48))
+				.setExpiration(new Date(System.currentTimeMillis() + TEMPO_EXPIRACAO))
 				.signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
 	}
 	

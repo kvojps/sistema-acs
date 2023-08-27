@@ -24,11 +24,17 @@ import lombok.RequiredArgsConstructor;
 public class ControleAcessoServico {
 
 	private final UsuarioRepositorio usuarioRepositorio;
+
     private final JwtService jwtService;
+
     private final EnderecoServico enderecoServico;
+
     private final CursoServico cursoServico;
+
     private final EmailServico emailServico;
+
     private final PasswordEncoder passwordEncoder;
+
     private final AuthenticationManager authenticationManager;
 
     public AutenticacaoResposta cadastrarUsuario(RegistroDTO registro) throws AcsExcecao {

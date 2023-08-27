@@ -23,26 +23,6 @@ public class AlunoControlador {
     private final JwtService jwtService;
 
     @Operation(
-            summary = "Buscar aluno por id",
-            description = "Esta rota permite buscar um aluno via seu id. As informações retornadas incluem " +
-                    "informações como id, nome completo, número de matricula, telefone, email, perfis, curso, " +
-                    "periodo e se é verificado. Essa rota séra util para gerenciamento de usuarios e para coordenação " +
-                    "e comissão tenha acesso aos dados dos alunos."
-    )
-    @GetMapping("/{id}")
-    public ResponseEntity<?> buscarAlunoPorId(@PathVariable("id") Long id) {
-        ResponseEntity<?> resposta;
-        try {
-			UsuarioResposta alunoResposta = new UsuarioResposta(servico.buscarAlunoPorId(id));
-			resposta = ResponseEntity.ok(alunoResposta);
-		} catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
-		}
-
-        return resposta;
-    }
-
-    @Operation(
             summary = "Listar todas as requisições do aluno",
             description = "Esta rota permite o aluno lista todas suas requisições de forma paginada, " +
                     "possuindo com retorno um Map com um lista de requisições, a página atual, total de itens " +
@@ -84,5 +64,24 @@ public class AlunoControlador {
         return resposta;
     }
 
+    @Operation(
+            summary = "Buscar aluno por id",
+            description = "Esta rota permite buscar um aluno via seu id. As informações retornadas incluem " +
+                    "informações como id, nome completo, número de matricula, telefone, email, perfis, curso, " +
+                    "periodo e se é verificado. Essa rota séra util para gerenciamento de usuarios e para coordenação " +
+                    "e comissão tenha acesso aos dados dos alunos."
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarAlunoPorId(@PathVariable("id") Long id) {
+        ResponseEntity<?> resposta;
+        try {
+			UsuarioResposta alunoResposta = new UsuarioResposta(servico.buscarAlunoPorId(id));
+			resposta = ResponseEntity.ok(alunoResposta);
+		} catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+		}
+
+        return resposta;
+    }
 
 }
