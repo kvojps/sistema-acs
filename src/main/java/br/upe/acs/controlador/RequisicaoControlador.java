@@ -110,7 +110,7 @@ public class RequisicaoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.ok(requisicaoServico.arquivarRequisicao(id, email));
+            resposta = ResponseEntity.ok(new MensagemUtil(servico.arquivarRequisicao(id, email)));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -128,56 +128,12 @@ public class RequisicaoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.ok(requisicaoServico.desarquivarRequisicao(id, email));
+            resposta = ResponseEntity.ok(new MensagemUtil(servico.desarquivarRequisicao(id, email)));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
 
         return resposta;
     }
-
-    @Operation(
-            summary = "Listar requisições arquivadas",
-            description = "Descrição: Através deste endpoint, o usuário pode visualizar sua lista de requisições arquivadas.\n" +
-                    "Pré-condições: O usuário deve estar logado para utilizar o endpoint.\n" +
-                    "Pós-condições: Caso selecione alguma requisição, o usuário é redirecionado para a tela da requisição selecionada."
-    )
-    @GetMapping("/arquivar")
-    public ResponseEntity<?> listarRequisicoesArquivadas(HttpServletRequest request) {
-        ResponseEntity<?> resposta;
-        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        try {
-            resposta = ResponseEntity.ok(requisicaoServico.listarRequisicoesArquivadas(email)
-                    .stream().map(RequisicaoResposta::new).toList());
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        return resposta;
-    }
-
-
-    @Operation(
-            summary = "Baixar pdf de uma requisição",
-            description = "Descrição: Através deste endpoint, o usuário pode fazer o download da requisição em formato PDF.\n" +
-                    "Pré-condições: O usuário deve estar logado e selecionar a opção de fazer download do arquivo em PDF.\n" +
-                    "Pós-condições: O usuário vê o arquivo baixado na pasta selecionada."
-    )
-    @PostMapping("{id}/pdf")
-    public ResponseEntity<?> gerarRequisicaoPDF(@PathVariable("id") Long requisicaoId) {
-        ResponseEntity<?> resposta;
-
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDisposition(ContentDisposition.attachment()
-                    .filename("requisição" + requisicaoId + ".pdf").build());
-            resposta = ResponseEntity.ok().headers(headers).body(servico.gerarRequisicaoPDF(requisicaoId));
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
-        }
-
-        return resposta;
-    }
-
+    
 }
