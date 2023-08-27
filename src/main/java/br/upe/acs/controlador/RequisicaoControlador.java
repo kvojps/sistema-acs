@@ -25,8 +25,6 @@ public class RequisicaoControlador {
 
     private final JwtService jwtService;
 
-    private final RequisicaoServico requisicaoServico;
-
     @Operation(
             summary = "Listar todas as requisições",
             description = "Descrição: Através deste endpoint, pode-se visualizar todas as requisições do sistema."
@@ -82,21 +80,20 @@ public class RequisicaoControlador {
     }
 
     @Operation(
-            summary = "Adicionar requisição",
-            description = "Descrição: Através deste endpoint, o usuário pode cadastrar uma requisição com o intuito" +
-                    " de ratificar uma determinada quantidade de horas das suas atividades complementares.\n" +
-                    "Pré-condições: O usuário deve estar logado.\n" +
-                    "Pós-condições: O usuário é redirecionado para a tela específica da requisição enviada, " +
-                    "e a coordenação recebe a notificação por e-mail."
+            summary = "Listar requisições arquivadas",
+            description = "Descrição: Através deste endpoint, o usuário pode visualizar sua lista de requisições arquivadas.\n" +
+                    "Pré-condições: O usuário deve estar logado para utilizar o endpoint.\n" +
+                    "Pós-condições: Caso selecione alguma requisição, o usuário é redirecionado para a tela da requisição selecionada."
     )
-    @PostMapping
-    public ResponseEntity<?> adicionarRequisicao(HttpServletRequest request) {
+    @GetMapping("/arquivar")
+    public ResponseEntity<?> listarRequisicoesArquivadas(HttpServletRequest request) {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.status(201).body(requisicaoServico.adicionarRequisicao(email));
-        } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+            resposta = ResponseEntity.ok(servico.listarRequisicoesArquivadas(email)
+                    .stream().map(RequisicaoResposta::new).toList());
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
 
         return resposta;
@@ -183,41 +180,4 @@ public class RequisicaoControlador {
         return resposta;
     }
 
-    @Operation(
-            summary = "Submissão de requisição",
-            description = "Descrição: Através deste endpoint, o usuário pode submeter uma requisição.\n" +
-                    "Pré-condições: O usuário deve estar logado.\n" +
-                    "Pós-condições: O usuário recebe uma mensagem de confirmação de requisição submetida."
-    )
-    @PutMapping("/submissão/{id}")
-    public ResponseEntity<?> submeterRequisicao(@PathVariable("id") Long requisicaoId) {
-        ResponseEntity<?> resposta;
-        try {
-            resposta = ResponseEntity.ok(servico.submeterRequisicao(requisicaoId));
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
-        }
-
-        return resposta;
-    }
-
-    @Operation(
-            summary = "Excluir requisição",
-            description = "Descrição: Através deste endpoint, o usuário pode excluir um certificado.\n" +
-                    "Pré-condições: O usuário deve estar logado.\n" +
-                    "Pós-condições: O usuário recebe uma mensagem de confirmação de certificado excluído."
-    )
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluirCertificado(HttpServletRequest request, @PathVariable("id") Long requisicaoId) {
-        ResponseEntity<?> resposta;
-        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        try {
-            servico.excluirRequisicao(requisicaoId, email);
-            resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
-        }
-
-        return resposta;
-    }
 }
