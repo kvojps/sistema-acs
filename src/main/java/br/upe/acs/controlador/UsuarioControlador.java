@@ -147,8 +147,29 @@ public class UsuarioControlador {
         return resposta;
     }
 
+    @Operation(
+            summary = "Solicitar novo código de veríficação",
+            description = """
+                    Esta rota permite ao usuário solicitar o envio de um novo código de veríficação para seu email.
+                    \nPré-condição: É necessário que o usuário esteja logado
+                    \nPós-condição: Usuario deve receber um email"""
+    )
+    @PatchMapping("/verificacao/novo")
+    public ResponseEntity<?> alterarCodigoVerificacao(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        ResponseEntity<?> resposta;
+        try {
+
+            resposta = ResponseEntity.ok(new MensagemUtil(servico.alterarCodigoVerificacao(token)));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+        }
+
+        return resposta;
+    }
+
     @Operation(summary = "Alterar informações de cadastro")
-    @PatchMapping("/informacoes")
+    @PutMapping("/informacoes")
     public ResponseEntity<?> alterarInformacoes(
             HttpServletRequest request,
             @RequestParam String nomeCompleto,

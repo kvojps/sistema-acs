@@ -25,16 +25,16 @@ public class EmailServico {
 		emailRemetente.send(email);
 	}
 
-	public void enviarEmailCodigoVerificacao(RegistroDTO registro, String codigoVerificacao) {
-		EmailDTO email = new EmailDTO();
+	public void enviarEmailCodigoVerificacao(String email, String codigoVerificacao) {
+		EmailDTO emailDTO = new EmailDTO();
 
-		email.setAssunto("Código de verificação - Sistema ACs UPE");
-		email.setDestinatario(registro.getEmail());
-		email.setMensagem(
+		emailDTO.setAssunto("Código de verificação - Sistema ACs UPE");
+		emailDTO.setDestinatario(email);
+		emailDTO.setMensagem(
 				"Para confirmar seu email no Sistema ACs UPE:\n" +
 						"1 - Realize o login no sistema\n" +
 						"2 - Insira e envie este código na página de verificação do sistema: " + codigoVerificacao);
-		enviarEmail(email);
+		enviarEmail(emailDTO);
 	}
 
 	public void enviarEmailAlteracaoStatusRequisicao(Requisicao requisicao) {

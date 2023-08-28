@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
 
+import static br.upe.acs.servico.ControleAcessoServico.gerarCodigoVerificacao;
 import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
 import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
 
@@ -40,6 +42,8 @@ public class UsuarioServico {
 	private final AuthenticationManager authenticationManager;
 
 	private final CursoServico cursoServico;
+
+	private final EmailServico emailServico;
 
     public Usuario buscarUsuarioPorId(Long id) throws AcsExcecao {
 		Optional<Usuario> usuario = repositorio.findById(id);
@@ -104,6 +108,25 @@ public class UsuarioServico {
 
 
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
+	}
+
+	public String alterarCodigoVerificacao(String token) throws AcsExcecao {
+		String email = jwtService.extractUsername(token);
+		Usuario usuario = buscarUsuarioPorEmail(email);
+
+		if (usuario.isVerificado()) {
+			throw new AcsExcecao("Usuário já é verificado!");
+		}
+
+		String novoCodigoVerificacao = gerarCodigoVerificacao();
+
+		usuario.setCodigoVerificacao(novoCodigoVerificacao);
+
+		repositorio.save(usuario);
+
+		CompletableFuture.runAsync(() -> emailServico.enviarEmailCodigoVerificacao(email, novoCodigoVerificacao));
+
+		return "O código de verificação reenviado.";
 	}
 
 	public void alterarSenha(String token, String senha, String novaSenha) throws AcsExcecao {

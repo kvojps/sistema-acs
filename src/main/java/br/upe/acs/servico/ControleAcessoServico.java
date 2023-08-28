@@ -64,7 +64,7 @@ public class ControleAcessoServico {
 
        	usuarioRepositorio.save(usuarioSalvar);
 
-        CompletableFuture.runAsync(() -> emailServico.enviarEmailCodigoVerificacao(registro, codigoVerificacao));
+        CompletableFuture.runAsync(() -> emailServico.enviarEmailCodigoVerificacao(registro.getEmail(), codigoVerificacao));
 
         return gerarAutenticacaoResposta(usuarioSalvar);
     }
@@ -180,7 +180,7 @@ public class ControleAcessoServico {
 		return enderecoServico.adicionarEndereco(enderecoSalvar);
 	}
 
-	private static String gerarCodigoVerificacao() {
+	protected static String gerarCodigoVerificacao() {
 		String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder codigo = new StringBuilder();
 		Random random = new Random();
