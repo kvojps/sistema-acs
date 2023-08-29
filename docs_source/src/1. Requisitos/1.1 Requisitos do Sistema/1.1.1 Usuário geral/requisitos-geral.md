@@ -100,9 +100,9 @@
 | **Saída:** Confirmação da alteração dos dados.                                                          |
 | **Pós-condições:** O usuário recebe uma mensagem informando que seus dados foram alterados com sucesso. |
 
-| RF 011 - Apagar dados do usuário                                                                        |
+| RF 011 - Deletar Usuário                                                                       |
 | ------------------------------------------------------------------------------------------------------- |
-| **Descrição:** O usuário deve ser capaz de solicitar que todos os seus dados sejam apagados do sistema. |
+| **Descrição:** O usuário deve ser capaz de deletar aquela sua conta do sistema, assim retirando seus dados e informações, como e-mail, solicitações cadastradas, rascunhos de solicitações e horas já contadas.  |
 | **Atores:** Usuário geral.                                                                              |
 | **Prioridade:** Média.                                                                                  |
 | **Entrada:** Inserir senha do usuário para confirmação da exclusão.                                     |
