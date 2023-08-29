@@ -170,16 +170,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Pré-condições:** Estar na aba de preenchimento de informações.                |
 | **Saída:** Arquivos anexados no requerimento.                                   |
 | **Pós-condições:** Não possui.                                                  |
-
-| RF 030 - Modal de Lixeira                                                                |
-| --------------------------------------------------------------                           |
-| **Descrição:** O usuário deve possuir um modal de Lixeira anexado para visualização no modal de barra lateral, onde tem acesso às requisições deletadas                                    |
-| **Atores:** Discente.                                                                    |
-| **Prioridade:** Médio.                                                                   |
-| **Entrada:** Não possui.                                                                 |
-| **Pré-condições:** Ter requisição no momento arquivadas ou enviadas.                     |
-| **Saída:** Requisição deletada.                                                          |
-| **Pós-condições:** Não possui.                                                           |
+                                                       |
 
 | RF 031 - Solicitar Recontagem de Solicitação                                                                |
 | --------------------------------------------------------------                           |
