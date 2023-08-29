@@ -58,6 +58,7 @@ public class ControleAcessoServico {
 		usuarioSalvar.setSenha(passwordEncoder.encode(registro.getSenha()));
 		usuarioSalvar.setCodigoVerificacao(codigoVerificacao);
 		usuarioSalvar.setVerificado(false);
+		usuarioSalvar.setEnabled(true);
 		usuarioSalvar.setEndereco(enderecoSalvo);
         usuarioSalvar.setCurso(cursoSalvar);
         usuarioSalvar.setPerfil(PerfilEnum.ALUNO);

@@ -131,4 +131,15 @@ public class UsuarioServico {
 		}
 	}
 
+	public void desativarPerfilDoUsuario(String token) throws AcsExcecao {
+		String email = jwtService.extractUsername(token);
+		Usuario usuario = buscarUsuarioPorEmail(email);
+
+		if (usuario.getRequisicoes().isEmpty()) {
+			repositorio.deleteById(usuario.getId());
+		} else {
+			usuario.setEnabled(false);
+		}
+	}
+
 }

@@ -167,4 +167,19 @@ public class UsuarioControlador {
         return resposta;
     }
 
+    @Operation( summary = "Desativar meu Perfil")
+    @DeleteMapping("/me")
+    public ResponseEntity<?> desativarPerfilDoUsuário(HttpServletRequest request) {
+        ResponseEntity<?> resposta;
+        try {
+            String token = request.getHeader("Authorization").substring(7);
+            servico.desativarPerfilDoUsuario(token);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+        }
+
+        return resposta;
+    }
+
 }
