@@ -39,7 +39,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Entrada:** Clicar no botão de Baixar PDF dentro da requisição (modal de detalhamento de requisição) ou no ícone ao lado dela na dashboard.                                                                        |
 | **Pré-condições:** O usuário deve estar logado e selecionar a opção de fazer download do arquivo em PDF. |
 | **Saída:** Confirmação do download do arquivo.                                                           |
-| **Pós-condições:** O usuário vê o arquivo baixado na pasta selecionada.                                  |
+| **Pós-condições:** O usuário vê o indicativo de arquivo baixado na pasta selecionada.                                  |
 
 | RF 017 - Visualizar indicadores sobre as requisições enviadas                                          |
 | ------------------------------------------------------------------------------------------------------ |
@@ -61,17 +61,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Confirmação de requisição em rascunho.                                                  |
 | **Pós-condições:** O usuário é redirecionado para a dashboard atualizada com a fila de rascunhos.  |
 
-| RF 019 - Deletar rascunhos de requisições                                                    |
-| -------------------------------------------------------------------------------------------- |
-| **Descrição:** O usuário deve poder apagar uma requisição que esteja na lista de rascunhos, por motivos variados como falta de necessidade da requisição no momento e caso ocorra algum erro na inscrição que seja necessário deletá-la como inserção de anexo incorreto.                                                                   |
-| **Atores:** Discente.                                                                        |
-| **Prioridade:** Alta.                                                                        |
-| **Entrada:** Clicar no botão de deletar rascunho.                                            |
-| **Pré-condições:** Ter um rascunho salvo.                                                    |
-| **Saída:** Rascunho apagado.                                                                 |
-| **Pós-condições:** A fila de requisição atualizada com o rascunho apagado.                   |
-
-| RF 020 - Alterar rascunhos de requisições                                                                           |
+| RF 019 - Alterar rascunhos de requisições                                                                           |
 | ------------------------------------------------------------------------------------------------------------------- |
 | **Descrição:** O usuário deve poder alterar dados de uma requisição em situação de rascunho quando achar necessário.|
 | **Atores:** Discente.                                                                                               |
@@ -81,17 +71,17 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Rascunho atualizado.                                                                                     |
 | **Pós-condições:** A fila de requisição atualizada com o rascunho também atualizado.                                |
 
-| RF 021 - Enviar solicitação à coordenação                     |
+| RF 020 - Enviar solicitação à coordenação                     |
 | ------------------------------------------------------------- |
 | **Descrição:** O usuário deve poder fazer o envio da solicitação completa criada anteriormente para o próximo ator do fluxo dentro do sistema.                                        |
 | **Atores:** Discente.                                         |
 | **Prioridade:** Alta.                                         |
 | **Entrada:** Não possui.                                      |
 | **Pré-condições:** Ter solicitação de contagem já  criada.    |
-| **Saída:** Enviado para o coordenador.                        |
+| **Saída:** Solicitação enviada para o coordenador.                        |
 | **Pós-condições:** Usuário é redirecionado pra o dashboard.   |
 
-| RF 022 - Alterar solicitação                                                           |
+| RF 021 - Alterar solicitação                                                           |
 | -------------------------------------------------------------------------------------- |
 | **Descrição:** O usuário deve poder alterar dados de uma solicitação já enviada caso esta não tenha alcançado uma fase muito avançada da requisição.                                                            |
 | **Atores:** Discente.                                                                  |
@@ -101,9 +91,9 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Solicitação enviada atualizada.                                             |
 | **Pós-condições:** Redirecionamento para o dashboard do usuário.                       |
 
-| RF 023 - Visualizar dados do discente                         |
+| RF 022 - Visualizar dados do discente                         |
 | ------------------------------------------------------------- |
-| **Descrição:** O usuário deve ter acesso em parte especificada no sistema a um quantitativo de horas cumpridas, junto de poder conferir um extrato de horas, apenas visualização.        |
+| **Descrição:** O usuário deve ter acesso em parte especificada no sistema a um quantitativo de horas cumpridas, junto de poder conferir um extrato de horas (apenas visualização).        |
 | **Atores:** Discente.                                         |
 | **Prioridade:** Médio.                                   |
 | **Entrada:** Não possui.                                      |
@@ -111,7 +101,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Não possui.                                        |
 | **Pós-condições:** Não possui.                                |
 
-| RF 024 - Visualizar fluxo de requisição                        |
+| RF 023 - Visualizar fluxo de requisição                        |
 | -------------------------------------------------------------- |
 | **Descrição:** O usuário deve, caso tenha requisições enviadas, poder conferir o andamento de seu requerimento, com uma análise de trânsito visível e atualizada. (Apenas visualização)  |
 | **Atores:** Discente.                                          |
@@ -121,9 +111,9 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Não possui.                                         |
 | **Pós-condições:** Não possui.                                 |
 
-| RF 025 - Visualizar Modal Lateral                              |
+| RF 024 - Visualizar Modal Lateral                              |
 | -------------------------------------------------------------- |
-| **Descrição:** O usuário deve possuir um modal lateral (barra lateral) que faz parte do sistema fora em conjunto com o dashboard, mas como uma funcionalidade a mais, a qual vai ter funções integradas de notificação, lixeira, logout e visualização de perfil. (Estas serão melhor detalhadas em outros requisitos). |
+| **Descrição:** O usuário deve possuir um modal lateral (barra lateral) que faz parte do sistema em conjunto com o dashboard, mas como uma tela extra e com funcionalidades a mais, a qual vai ter funções integradas de notificação, arquivados, logout e visualização de perfil. (Estas serão melhor detalhadas em outros requisitos). |
 | **Atores:** Discente.                                          |
 | **Prioridade:** Médio.                                     |
 | **Entrada:** Não possui.                                       |
@@ -131,17 +121,17 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Não possui.                                         |
 | **Pós-condições:** Não possui.                                 |
 
-| RF 026 - Visualização de Perfil                                |
+| RF 025 - Visualização de Perfil                                |
 | -------------------------------------------------------------- |
-| **Descrição:** O usuário deve possuir um modal para a visualização de seu perfil; visualizando foto, nome de usuário e e-mail institucional.                          |
+| **Descrição:** O usuário deve possuir um modal para a visualização de seu perfil; Podendo visualizar foto, nome de usuário e e-mail institucional.                          |
 | **Atores:** Discente.                                          |
 | **Prioridade:** Médio.                                    |
 | **Entrada:** Não possui.                                       |
 | **Pré-condições:** Estar logado no sistema e ter pressionado o modal na parte de perfil                                                           |
-| **Saída:** Foto de perfil, nome e e-mail institucional.        |
+| **Saída:** Ter acesso aos dados de foto de perfil, nome e e-mail institucional.        |
 | **Pós-condições:** Será mostrado foto, nome e e-mail em um modal de perfil.                                                          |
 
-| RF 027 - Arquivar Solicitação                                                                              |
+| RF 026 - Arquivar Solicitação                                                                              |
 | ---------------------------------------------------------------------------------------------------------- |
 | **Descrição:** O usuário deve ter a habilidade de arquivar requisições caso seja viável -- como no caso de requisições negadas -- para limpar a tela inicial.                                                                       |
 | **Atores:** Discente.                                                                                      |
@@ -151,17 +141,7 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Requisição ser realocada para a aba de Arquivados.                                              |
 | **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                 |
 
-| RF 028 - Deletar Solicitação                                                                              |
-| ---------------------------------------------------------------------------------------------------------- |
-| **Descrição:** O usuário deve ter a habilidade de deletar requisições caso seja viável -- como no caso de requisições negadas ou com erros visíveis -- para limpar a tela inicial.                                                                       |
-| **Atores:** Discente.                                                                                      |
-| **Prioridade:** Médio.                                                                                     |
-| **Entrada:** Abrir modal de detalhes da requisição.                                                        |
-| **Pré-condições:** Ter requisição fora do modo de rascunho.                                                |
-| **Saída:** Requisição ser realocada para a aba de Lixeira.                                              |
-| **Pós-condições:** O usuário é direcionado para a página agora atualizada.                                 |
-
-| RF 029 - Visualizar Modal de anexar arquivos                                    |
+| RF 027 - Visualizar Modal de anexar arquivos                                    |
 | --------------------------------------------------------------                  |
 | **Descrição:** O usuário deve, na aba de preenchimento da requisição, ter acesso ao modal que comanda o ato de anexar arquivos como certificados.                              |
 | **Atores:** Discente.                                                           |
@@ -170,9 +150,9 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Pré-condições:** Estar na aba de preenchimento de informações.                |
 | **Saída:** Arquivos anexados no requerimento.                                   |
 | **Pós-condições:** Não possui.                                                  |
-                                                       |
 
-| RF 031 - Solicitar Recontagem de Solicitação                                                                |
+
+| RF 028 - Solicitar Recontagem de Solicitação                                                                |
 | --------------------------------------------------------------                           |
 | **Descrição:** O usuário deve ter a oportunidade de pedir recontagem de solicitação quando negada caso queira conferir se nenhuma informação foi ignorada ou vista de forma superficial.              |
 | **Atores:** Discente.                                                                    |
@@ -182,9 +162,9 @@ O aluno possui acesso ao sistema para enviar requisições juntamente com suas a
 | **Saída:** Pedido de recontagem solictado.                                                          |
 | **Pós-condições:** Não possui.                                                           |
 
-| RF 032 - Cancelar Recontagem de Solicitação                                                                |
+| RF 029 - Cancelar Recontagem de Solicitação                                                                |
 | --------------------------------------------------------------                           |
-| **Descrição:** O usuário deve ter a oportunidade de cancelar recontagem de solicitação caso não ache mais necessário análise.             |
+| **Descrição:** O usuário deve ter a oportunidade de cancelar recontagem de solicitação caso não ache mais necessário a análise.             |
 | **Atores:** Discente.                                                                    |
 | **Prioridade:** Médio.                                                                   |
 | **Entrada:** Não possui.                                                            |

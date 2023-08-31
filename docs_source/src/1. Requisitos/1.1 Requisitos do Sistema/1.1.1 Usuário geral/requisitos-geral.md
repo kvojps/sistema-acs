@@ -4,8 +4,8 @@
 | **Descrição:**   Um usuário deve ser capaz de realizar cadastro no sistema. |
 | **Atores:**   Nenhum.                                                       |
 | **Prioridade:**   Alta.                                                     |
-| **Entrada:**  Inserir nome completo, função, período em caso de discente, telefone, email, senha, cep, rua, bairro, cidade, UF, número.                                                           |
-| **Pré-condições:** Cadastrar-se com email institucional, senha com 8 ou mais caracteres incluindo caracteres especiais, letras maiúsculas, minúsculas e números.                                      |
+| **Entrada:**  Inserir nome completo, função, período em caso de discente, telefone, email, senha, cep, rua, bairro, cidade, UF e número.                                                           |
+| **Pré-condições:** Cadastrar-se com email institucional e senha com 8 ou mais caracteres, incluindo: caracteres especiais, letras maiúsculas, minúsculas e números.                                      |
 | **Saída:** Confirmação de cadastro.                                         |
 | **Pós-condições:** O usuário será direcionado para a tela de perfil para certificar que é membro da instituição, passando por um processo de verificação.                                               |
 
@@ -21,7 +21,7 @@
 
 | RF 003 - Escolher perfil do usuário                                                                                       |
 | ------------------------------------------------------------------------------------------------------------------------- |
-| **Descrição:** O usuário deve ser capaz de escolher seu perfil antes de realizaar login caso ele tenha mais de um perfil. |
+| **Descrição:** O usuário deve ser capaz de escolher seu perfil antes de realizaar login, caso ele tenha mais de um perfil. |
 | **Atores:** Nenhum.                                                                                                       |
 | **Prioridade:** Alta.                                                                                                     |
 | **Entrada:** Escolha do perfil de usuário.                                                                                |
@@ -57,7 +57,7 @@
 | **Prioridade:** Alta.                                                            |
 | **Entrada:** Inserir token recebido por e-mail.                                  |
 | **Pré-condições:** O usuário não pode ser verificado e deve estar logado.        |
-| **Saída:** Saídas: Confirmação da verificação institucional do usuário.          |
+| **Saída:** Confirmação da verificação institucional do usuário.                  |
 | **Pós-condições:** O usuário será direcionado para a tela inicial do sistema.    |
 
 | RF 007 - Alterar senha                                                                            |
@@ -65,7 +65,7 @@
 | **Descrição:** O usuário deve ser capaz de alterar sua própria senha.                             |
 | **Atores:** Usuário geral.                                                                        |
 | **Prioridade:** Baixa.                                                                            |
-| **Entrada:** Inserir a senha antiga para ser possível realizar a alteração da nova senha.         |
+| **Entrada:** Inserir a senha antiga para realizar a alteração da nova senha.                      |
 | **Pré-condições:** O usuário deve estar logado.                                                   |
 | **Saída:** Confirmação da alteração da senha.                                                     |
 | **Pós-condições:** O usuário recebe uma mensagem informando que a senha foi alterada com sucesso. |
@@ -76,7 +76,7 @@
 | **Atores:** Usuário geral.                                                                        |
 | **Prioridade:** Baixa.                                                                            |
 | **Entrada:** Recuperar senha.                                                                     |
-| **Pré-condições:** Recebe o link de recuperação de senha por e-mail.                              |
+| **Pré-condições:** Receber o link de recuperação de senha por e-mail.                             |
 | **Saída:** Confirmação da alteração da senha.                                                     |
 | **Pós-condições:** O usuário recebe uma mensagem informando que a senha foi alterada com sucesso. |
 
