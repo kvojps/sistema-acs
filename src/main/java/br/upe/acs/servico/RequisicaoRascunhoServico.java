@@ -22,13 +22,13 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class RequisicaoRascunhoServico {
 
-    private final RequisicaoServico requisicaoServico;
-
     private final RequisicaoRepositorio repositorio;
 
-    private final UsuarioServico usuarioServico;
-
     private final CertificadoRepositorio certificadoRepositorio;
+
+    private final RequisicaoServico requisicaoServico;
+
+    private final UsuarioServico usuarioServico;
 
     private final EmailServico emailServico;
 

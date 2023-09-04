@@ -49,6 +49,8 @@ public class Usuario implements UserDetails {
 
     private float horasPesquisa;
 
+	private boolean enabled;
+
 	@Enumerated(EnumType.STRING)
     private PerfilEnum perfil;
     
@@ -93,6 +95,6 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return this.enabled;
 	}
 }

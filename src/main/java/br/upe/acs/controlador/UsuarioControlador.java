@@ -135,10 +135,10 @@ public class UsuarioControlador {
             HttpServletRequest request,
             @RequestBody AlterarSenhaDTO alterarSenhaDTO
     ) {
-        String token = request.getHeader("Authorization").substring(7);
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         ResponseEntity<?> resposta;
         try {
-            servico.alterarSenha(token, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
+            servico.alterarSenha(email, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -156,11 +156,11 @@ public class UsuarioControlador {
     )
     @PatchMapping("/verificacao/novo")
     public ResponseEntity<?> alterarCodigoVerificacao(HttpServletRequest request) {
-        String token = request.getHeader("Authorization").substring(7);
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         ResponseEntity<?> resposta;
         try {
 
-            resposta = ResponseEntity.ok(new MensagemUtil(servico.alterarCodigoVerificacao(token)));
+            resposta = ResponseEntity.ok(new MensagemUtil(servico.alterarCodigoVerificacao(email)));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -177,14 +177,29 @@ public class UsuarioControlador {
             @RequestParam Endereco endereco,
             @RequestParam Long cursoId
     ) throws AcsExcecao {
-        String token = request.getHeader("Authorization").substring(7);
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         ResponseEntity<?> resposta;
         try {
-            servico.alterarDados(token, nomeCompleto, telefone, endereco, cursoId);
+            servico.alterarDados(email, nomeCompleto, telefone, endereco, cursoId);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
+        return resposta;
+    }
+
+    @Operation( summary = "Desativar meu Perfil")
+    @DeleteMapping("/me")
+    public ResponseEntity<?> desativarPerfilDoUsuário(HttpServletRequest request) {
+        ResponseEntity<?> resposta;
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+        try {
+            servico.desativarPerfilDoUsuario(email);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+        }
+
         return resposta;
     }
 
