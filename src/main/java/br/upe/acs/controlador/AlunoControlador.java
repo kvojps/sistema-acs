@@ -6,6 +6,7 @@ import br.upe.acs.utils.AcsExcecao;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,6 +81,23 @@ public class AlunoControlador {
 		} catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
 		}
+
+        return resposta;
+    }
+
+    @Operation(summary = "Busca horas de aluno por atividade")
+    @GetMapping("/horas/{atividadeId}")
+    public ResponseEntity<?> minhasHorasNaAtividade(
+            HttpServletRequest request,
+            @PathVariable("atividadeId") Long atividadeId
+    ) {
+        ResponseEntity<?> resposta;
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+        try {
+            resposta =  ResponseEntity.ok(servico.minhasHorasDeNaAtividade(email, atividadeId));
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+        }
 
         return resposta;
     }
