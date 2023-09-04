@@ -33,13 +33,11 @@ public class UsuarioServico {
 	
     private final UsuarioRepositorio repositorio;
 
-	private final JwtService jwtService;
+	private final CursoServico cursoServico;
 
 	private final PasswordEncoder passwordEncoder;
 
 	private final AuthenticationManager authenticationManager;
-
-	private final CursoServico cursoServico;
 
     public Usuario buscarUsuarioPorId(Long id) throws AcsExcecao {
 		Optional<Usuario> usuario = repositorio.findById(id);
@@ -106,9 +104,8 @@ public class UsuarioServico {
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
 	}
 
-	public void alterarSenha(String token, String senha, String novaSenha) throws AcsExcecao {
+	public void alterarSenha(String email, String senha, String novaSenha) throws AcsExcecao {
 		validarSenha(novaSenha);
-		String email = jwtService.extractUsername(token);
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
 		if (repositorio.findByEmail(email).isPresent()) {
 			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
@@ -117,9 +114,7 @@ public class UsuarioServico {
 		}
 	}
 
-	public void alterarDados(String token, String nomeCompleto, String telefone, Endereco endereco, Long cursoId) throws AcsExcecao {
-		String email = jwtService.extractUsername(token);
-
+	public void alterarDados(String email, String nomeCompleto, String telefone, Endereco endereco, Long cursoId) throws AcsExcecao {
 		if (repositorio.findByEmail(email).isPresent()) {
 			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
 			usuario.setNomeCompleto(nomeCompleto);
@@ -131,8 +126,7 @@ public class UsuarioServico {
 		}
 	}
 
-	public void desativarPerfilDoUsuario(String token) throws AcsExcecao {
-		String email = jwtService.extractUsername(token);
+	public void desativarPerfilDoUsuario(String email) throws AcsExcecao {
 		Usuario usuario = buscarUsuarioPorEmail(email);
 
 		if (usuario.getRequisicoes().isEmpty()) {
