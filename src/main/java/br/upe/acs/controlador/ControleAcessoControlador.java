@@ -4,6 +4,7 @@ import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.servico.ControleAcessoServico;
 import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class ControleAcessoControlador {
             }
             resposta = ResponseEntity.ok(servico.cadastrarUsuario(registro));
         } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;
@@ -50,7 +51,7 @@ public class ControleAcessoControlador {
         try {
             resposta = ResponseEntity.ok(servico.loginUsuario(login));
         } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
         return resposta;

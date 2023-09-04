@@ -3,6 +3,8 @@ package br.upe.acs.servico;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.CertificadoResposta;
 import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
+import br.upe.acs.dominio.Curso;
+import br.upe.acs.dominio.Endereco;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.enums.EixoEnum;
@@ -20,9 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
 
+import static br.upe.acs.servico.ControleAcessoServico.gerarCodigoVerificacao;
 import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
 import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
 
@@ -31,9 +34,14 @@ import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
 public class UsuarioServico {
 	
     private final UsuarioRepositorio repositorio;
-	private final JwtService jwtService;
+
+	private final CursoServico cursoServico;
+
 	private final PasswordEncoder passwordEncoder;
+
 	private final AuthenticationManager authenticationManager;
+
+	private final EmailServico emailServico;
 
     public Usuario buscarUsuarioPorId(Long id) throws AcsExcecao {
 		Optional<Usuario> usuario = repositorio.findById(id);
@@ -100,14 +108,53 @@ public class UsuarioServico {
 		return gerarPaginacaoRequisicoes(requisicoesAluno, pagina, quantidade);
 	}
 
-	public void alterarSenha(String token, String senha, String novaSenha) throws AcsExcecao {
+	public String alterarCodigoVerificacao(String email) throws AcsExcecao {
+		Usuario usuario = buscarUsuarioPorEmail(email);
+
+		if (usuario.isVerificado()) {
+			throw new AcsExcecao("Usuário já é verificado!");
+		}
+
+		String novoCodigoVerificacao = gerarCodigoVerificacao();
+
+		usuario.setCodigoVerificacao(novoCodigoVerificacao);
+
+		repositorio.save(usuario);
+
+		CompletableFuture.runAsync(() -> emailServico.enviarEmailCodigoVerificacao(email, novoCodigoVerificacao));
+
+		return "O código de verificação reenviado.";
+	}
+
+	public void alterarSenha(String email, String senha, String novaSenha) throws AcsExcecao {
 		validarSenha(novaSenha);
-		String email = jwtService.extractUsername(token);
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
 		if (repositorio.findByEmail(email).isPresent()) {
 			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
 			usuario.setSenha(passwordEncoder.encode(novaSenha));
 			repositorio.save(usuario);
+		}
+	}
+
+	public void alterarDados(String email, String nomeCompleto, String telefone, Endereco endereco, Long cursoId) throws AcsExcecao {
+		if (repositorio.findByEmail(email).isPresent()) {
+			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
+			usuario.setNomeCompleto(nomeCompleto);
+			usuario.setTelefone(telefone);
+			usuario.setEndereco(endereco);
+			Curso curso = cursoServico.buscarCursoPorId(cursoId);
+            usuario.setCurso(curso);
+            repositorio.save(usuario);
+		}
+	}
+
+	public void desativarPerfilDoUsuario(String email) throws AcsExcecao {
+		Usuario usuario = buscarUsuarioPorEmail(email);
+
+		if (usuario.getRequisicoes().isEmpty()) {
+			repositorio.deleteById(usuario.getId());
+		} else {
+			usuario.setEnabled(false);
 		}
 	}
 

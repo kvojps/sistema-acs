@@ -1,5 +1,7 @@
 package br.upe.acs.servico;
 
+import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.dto.RegistroDTO;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -21,5 +23,29 @@ public class EmailServico {
 		email.setSubject(emailInfo.getAssunto());
 		
 		emailRemetente.send(email);
+	}
+
+	public void enviarEmailCodigoVerificacao(String email, String codigoVerificacao) {
+		EmailDTO emailDTO = new EmailDTO();
+
+		emailDTO.setAssunto("Código de verificação - Sistema ACs UPE");
+		emailDTO.setDestinatario(email);
+		emailDTO.setMensagem(
+				"Para confirmar seu email no Sistema ACs UPE:\n" +
+						"1 - Realize o login no sistema\n" +
+						"2 - Insira e envie este código na página de verificação do sistema: " + codigoVerificacao);
+		enviarEmail(emailDTO);
+	}
+
+	public void enviarEmailAlteracaoStatusRequisicao(Requisicao requisicao) {
+		EmailDTO email = new EmailDTO();
+		email.setDestinatario(requisicao.getUsuario().getEmail());
+		email.setAssunto("Modificação na sua requisição " + requisicao.getId() + " - Sistema ACs UPE");
+		email.setMensagem("Gostaríamos de informar que sua requisição " + requisicao.getId()
+				+ " teve seu status alterado para "  + requisicao.getStatusRequisicao().name() + ".\n" +
+				"Para mais informações acesse o Sistema de ACs. " +
+				"Em caso de erros entre em contato com o turmaestest@gmail.com.\n" +
+				"Atenciosamente,\nCoordenação de " + requisicao.getCurso().getNome() + ".");
+		enviarEmail(email);
 	}
 }

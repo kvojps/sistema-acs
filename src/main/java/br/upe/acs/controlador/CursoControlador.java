@@ -3,6 +3,7 @@ package br.upe.acs.controlador;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.upe.acs.utils.MensagemUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,10 +43,10 @@ public class CursoControlador {
 	public ResponseEntity<?> buscarCursoPorId(@PathVariable("id") Long id) {
 		ResponseEntity<?> resposta;
 		try {
-			CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id).orElseThrow());
+			CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id));
 			resposta =  ResponseEntity.ok(cursoResposta);
 		} catch (AcsExcecao e) {
-			resposta = ResponseEntity.badRequest().body(e.getMessage());
+			resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
 		}
 
 		return resposta;

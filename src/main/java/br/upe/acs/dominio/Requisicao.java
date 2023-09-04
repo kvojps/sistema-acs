@@ -16,6 +16,9 @@ public class Requisicao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@Column(unique = true)
+	private String idRequisicao;
 	
 	@Temporal(TemporalType.DATE)
 	private Date criacao;
