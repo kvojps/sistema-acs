@@ -2,7 +2,6 @@ package br.upe.acs.servico;
 
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Pattern;
 
 import br.upe.acs.dominio.*;
 import br.upe.acs.repositorio.UsuarioRepositorio;
@@ -142,8 +141,7 @@ public class ControleAcessoServico {
 	}
 
 	private void validarEmailInstitucional(String email) throws AcsExcecao {
-		Pattern pattern = Pattern.compile("^[a-zA-Z._]*@upe\\.br$", Pattern.CASE_INSENSITIVE);
-		if (!pattern.matcher(email).find()) {
+		if (!email.split("@")[1].equals("upe.br")) {
 			throw new AcsExcecao("Email inválido! Por favor insira o email institucional válido.");
 		}
 	}
