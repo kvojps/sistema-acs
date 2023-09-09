@@ -39,8 +39,14 @@ public class RecuperarContaServico {
     }
 
     public void alterarSenha(String token, String novaSenha) throws AcsExcecao {
-        boolean isTokenDeRecuperacao = jwtService.extractClaim(token,
-                (claims -> claims.get("recuperacao", Boolean.class)));
+        boolean isTokenDeRecuperacao;
+
+        try {
+            isTokenDeRecuperacao = jwtService.extractClaim(token,
+                    (claims -> claims.get("recuperacao", Boolean.class)));
+        } catch (Exception e) {
+            throw new AcsExcecao("Token inválido!");
+        }
 
         if (!isTokenDeRecuperacao) {
             throw new AcsExcecao("Token inválido!");
