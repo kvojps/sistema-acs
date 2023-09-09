@@ -55,7 +55,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new InterceptadorVerficacao(repositorio, jwtService))
 				.addPathPatterns("/api/requisicao/**", "/api/atividade/**", "/api/certificado/**", "/api/aluno/**", "/api/usuario/**")
-				.excludePathPatterns("/api/usuario/me", "/api/usuario/verificacao/**");
+				.excludePathPatterns("/api/usuario/me", "/api/usuario/verificacao/**", "/api/usuario/conta/**");
 	}
 
 }

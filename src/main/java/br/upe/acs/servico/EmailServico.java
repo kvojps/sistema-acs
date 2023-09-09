@@ -1,7 +1,7 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.dominio.Requisicao;
-import br.upe.acs.dominio.dto.RegistroDTO;
+import br.upe.acs.dominio.Usuario;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -38,14 +38,25 @@ public class EmailServico {
 	}
 
 	public void enviarEmailAlteracaoStatusRequisicao(Requisicao requisicao) {
-		EmailDTO email = new EmailDTO();
-		email.setDestinatario(requisicao.getUsuario().getEmail());
-		email.setAssunto("Modificação na sua requisição " + requisicao.getId() + " - Sistema ACs UPE");
-		email.setMensagem("Gostaríamos de informar que sua requisição " + requisicao.getId()
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setDestinatario(requisicao.getUsuario().getEmail());
+		emailDTO.setAssunto("Modificação na sua requisição " + requisicao.getId() + " - Sistema ACs UPE");
+		emailDTO.setMensagem("Gostaríamos de informar que sua requisição " + requisicao.getId()
 				+ " teve seu status alterado para "  + requisicao.getStatusRequisicao().name() + ".\n" +
 				"Para mais informações acesse o Sistema de ACs. " +
 				"Em caso de erros entre em contato com o turmaestest@gmail.com.\n" +
 				"Atenciosamente,\nCoordenação de " + requisicao.getCurso().getNome() + ".");
-		enviarEmail(email);
+		enviarEmail(emailDTO);
+	}
+
+	public void enviarEmailDeRecuperacaoDeSenha(Usuario usuario, String token) {
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setDestinatario(usuario.getEmail());
+		emailDTO.setAssunto("Solicitação de recuperação de conta - Sistema ACs UPE");
+		emailDTO.setMensagem("Olá, " + usuario.getNomeCompleto() + ", \n" +
+				"Nós recebemos um pedido para redefinir a senha do e-mail " + usuario.getEmail()+".\n" +
+				"Clique no link abaixo para redefinir sua senha:\n" +
+				System.getenv("FRONTEND_URL") + "/account/reset/" + token);
+		enviarEmail(emailDTO);
 	}
 }
