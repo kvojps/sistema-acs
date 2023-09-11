@@ -1,5 +1,6 @@
 package br.upe.acs.controlador.respostas;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,11 +43,13 @@ public class RequisicaoResposta {
 		this.quantidadeDeHoras = (float) requisicao.getCertificados().stream()
 				.mapToDouble(Certificado::getCargaHoraria).sum();
 		this.certificados = converterCertificados(requisicao.getCertificados());
-
 	}
+	
 
 	private List<CertificadoResposta> converterCertificados(List<Certificado> certificados) {
 		return certificados.stream()
-				.map(CertificadoResposta::new).collect(Collectors.toList());
+				.map(CertificadoResposta::new)
+				.sorted(Comparator.comparing(CertificadoResposta::getId))
+				.collect(Collectors.toList());
 	}
 }
