@@ -1,10 +1,8 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.CertificadoResposta;
 import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Curso;
-import br.upe.acs.dominio.Endereco;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.enums.EixoEnum;
@@ -136,12 +134,11 @@ public class UsuarioServico {
 		}
 	}
 
-	public void alterarDados(String email, String nomeCompleto, String telefone, Endereco endereco, Long cursoId) throws AcsExcecao {
+	public void alterarDados(String email, String nomeCompleto, String telefone, Long cursoId) throws AcsExcecao {
 		if (repositorio.findByEmail(email).isPresent()) {
 			Usuario usuario = repositorio.findByEmail(email).orElseThrow();
 			usuario.setNomeCompleto(nomeCompleto);
 			usuario.setTelefone(telefone);
-			usuario.setEndereco(endereco);
 			Curso curso = cursoServico.buscarCursoPorId(cursoId);
             usuario.setCurso(curso);
             repositorio.save(usuario);

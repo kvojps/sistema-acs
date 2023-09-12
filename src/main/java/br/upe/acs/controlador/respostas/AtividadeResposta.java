@@ -2,8 +2,6 @@ package br.upe.acs.controlador.respostas;
 
 import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.enums.EixoEnum;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 
 @Getter

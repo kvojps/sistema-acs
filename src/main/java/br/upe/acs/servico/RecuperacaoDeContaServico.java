@@ -17,7 +17,7 @@ import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
 
 @Service
 @RequiredArgsConstructor
-public class RecuperarContaServico {
+public class RecuperacaoDeContaServico {
 
     private final UsuarioRepositorio usuarioRepositorio;
 

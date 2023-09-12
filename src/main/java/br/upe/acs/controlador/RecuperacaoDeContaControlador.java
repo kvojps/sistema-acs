@@ -1,7 +1,7 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.dominio.dto.RecuperacaoDeContaDTO;
-import br.upe.acs.servico.RecuperarContaServico;
+import br.upe.acs.servico.RecuperacaoDeContaServico;
 import br.upe.acs.utils.AcsExcecao;
 import br.upe.acs.utils.MensagemUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/usuario/conta/")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-public class RecuperarContaControlador {
+public class RecuperacaoDeContaControlador {
 
-    private final RecuperarContaServico servico;
+    private final RecuperacaoDeContaServico servico;
 
     @PostMapping("recuperar")
     public ResponseEntity<?> recuperarConta(@RequestParam String email) {
