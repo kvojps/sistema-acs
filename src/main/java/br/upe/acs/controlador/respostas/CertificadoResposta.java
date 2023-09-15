@@ -3,6 +3,8 @@ package br.upe.acs.controlador.respostas;
 import java.util.Date;
 
 import br.upe.acs.dominio.Certificado;
+import br.upe.acs.dominio.enums.CertificadoStatusEnum;
+import br.upe.acs.dominio.enums.EixoEnum;
 import lombok.Getter;
 
 @Getter
@@ -12,27 +14,32 @@ public class CertificadoResposta {
 	
 	private final String titulo;
 	
-	private final String descricao;
+	private final String observacao;
 	
-	private final Date data;
+	private final Date dataInicial;
+
+	private final Date dataFinal;
 	
-	private final int horas;
+	private EixoEnum eixoAtividade;
+
+	private String atividade;
 	
-	private final int chMaxima;
+	private final CertificadoStatusEnum statusCertificado;
 	
-	private final int chTotal;
-	
-	private final byte[] certificadoArquivo;
+	private final float cargaHoraria;
 
 	public CertificadoResposta(Certificado certificado) {
 		super();
 		this.id = certificado.getId();
 		this.titulo = certificado.getTitulo();
-		this.descricao = certificado.getDescricao();
-		this.data = certificado.getData();
-		this.horas = certificado.getHoras();
-		this.chMaxima = certificado.getChMaxima();
-		this.chTotal = certificado.getChTotal();
-		this.certificadoArquivo = certificado.getCertificado();
+		this.observacao = certificado.getObservacao();
+		this.dataInicial = certificado.getDataInicial();
+		this.dataFinal = certificado.getDataFinal();
+		if (certificado.getAtividade() != null) {
+			this.atividade = certificado.getAtividade().getDescricao();
+			this.eixoAtividade = certificado.getAtividade().getEixo();
+		}
+		this.cargaHoraria = certificado.getCargaHoraria();
+		this.statusCertificado = certificado.getStatusCertificado();
 	}
 }

@@ -22,19 +22,13 @@ public class Curso {
 	private Long id;
 	
 	private String nome;
+
+	private int horasComplementares;
 	
 	@OneToMany(mappedBy = "curso")
-	private List<Requisicao> requisicoes;
+	private List<Requisicao> requisicoes;	
 	
 	@OneToMany(mappedBy = "curso")
-	private List<Aluno> alunos;
+	private List<Usuario> usuarios;
 
-	@OneToMany(mappedBy = "curso")
-	private List<Coordenador> coordenadores;
-
-	@OneToMany(mappedBy = "curso")
-	private List<Comissao> comissao;
-
-	@OneToMany(mappedBy = "curso")
-	private List<Administrador> administradores;
 }

@@ -34,7 +34,7 @@ public class Endereco {
 	private int numero;
 
 	@OneToMany(mappedBy = "endereco")
-	private List<Aluno> alunos;
+	private List<Usuario> usuarios;
 }
 
 

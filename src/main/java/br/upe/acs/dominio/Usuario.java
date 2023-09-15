@@ -5,7 +5,6 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +13,7 @@ import br.upe.acs.dominio.enums.PerfilEnum;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,22 +27,44 @@ public class Usuario implements UserDetails {
 	
 	private String cpf;
 	
+	private String matricula;
+	
+	private int periodo;
+	
 	private String telefone;
 	
 	private String email;
 	
 	private String senha;
 	
-	@Enumerated(EnumType.STRING)
-	private PerfilEnum perfil;
+	private String codigoVerificacao;
 	
+	private boolean isVerificado;
+	
+    private float horasEnsino;
+
+    private float horasExtensao;
+
+    private float horasGestao;
+
+    private float horasPesquisa;
+
+	@Enumerated(EnumType.STRING)
+    private PerfilEnum perfil;
+    
+    @OneToMany(mappedBy = "usuario")
+    private List<Requisicao> requisicoes;
+    
+    @ManyToOne
+    private Endereco endereco;
+    
 	@ManyToOne
 	private Curso curso;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(perfil.name()));
-	}
+		return List.of(new SimpleGrantedAuthority(getPerfil().name()));
+	};
 
 	@Override
 	public String getPassword() {
