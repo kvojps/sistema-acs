@@ -1,8 +1,6 @@
 package br.upe.acs.dominio.dto;
 
 import br.upe.acs.dominio.enums.EixoEnum;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,9 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class AtividadeDTO {
-	
-	@Enumerated(EnumType.STRING)
+
 	private EixoEnum eixo;
-	
+
 	private String descricao;
+
+	private String criteriosParaAvaliacao;
+
+	private Integer chPorCertificado;
+
+	private int chMaxima;
+
 }

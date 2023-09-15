@@ -1,5 +1,6 @@
 package br.upe.acs.controlador.respostas;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,8 @@ import lombok.Getter;
 public class RequisicaoResposta {
 
 	private final Long id;
+
+	private final String idRequisicao;
 
 	private final Date dataDeSubmissao;
 
@@ -31,6 +34,7 @@ public class RequisicaoResposta {
 	public RequisicaoResposta(Requisicao requisicao) {
 		super();
 		this.id = requisicao.getId();
+		this.idRequisicao = requisicao.getIdRequisicao();
 		this.dataDeSubmissao = requisicao.getDataDeSubmissao();
 		this.token = requisicao.getToken();
 		this.arquivada = requisicao.isArquivada();
@@ -39,11 +43,13 @@ public class RequisicaoResposta {
 		this.quantidadeDeHoras = (float) requisicao.getCertificados().stream()
 				.mapToDouble(Certificado::getCargaHoraria).sum();
 		this.certificados = converterCertificados(requisicao.getCertificados());
-
 	}
+	
 
 	private List<CertificadoResposta> converterCertificados(List<Certificado> certificados) {
 		return certificados.stream()
-				.map(CertificadoResposta::new).collect(Collectors.toList());
+				.map(CertificadoResposta::new)
+				.sorted(Comparator.comparing(CertificadoResposta::getId))
+				.collect(Collectors.toList());
 	}
 }

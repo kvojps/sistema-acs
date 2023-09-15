@@ -2,8 +2,6 @@ package br.upe.acs.controlador.respostas;
 
 import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.enums.EixoEnum;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 
 @Getter
@@ -11,10 +9,13 @@ public class AtividadeResposta {
 
     private final Long id;
 
-    @Enumerated(EnumType.STRING)
     private final EixoEnum eixo;
 
     private final String descricao;
+
+    private final String criteriosParaAvaliacao;
+
+    private final Integer chPorCertificado;
 
     private final int chMaxima;
 
@@ -24,5 +25,7 @@ public class AtividadeResposta {
         this.eixo = atividade.getEixo();
         this.descricao = atividade.getDescricao();
         this.chMaxima = atividade.getChMaxima();
+        this.criteriosParaAvaliacao = atividade.getCriteriosParaAvaliacao();
+        this.chPorCertificado = atividade.getChPorCertificado();
     }
 }

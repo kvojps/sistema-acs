@@ -3,7 +3,9 @@ package br.upe.acs.servico;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 import br.upe.acs.dominio.Atividade;
@@ -46,6 +48,10 @@ public class CertificadoServico {
 	public Long adicionarCertificado(MultipartFile file, Long requisicaoId, String email) throws AcsExcecao, IOException {
 		Requisicao requisicao = requisicaoServico.buscarRequisicaoPorId(requisicaoId);
 
+		if (!Objects.equals(file.getContentType(), "application/pdf")) {
+			throw new AcsExcecao("É aceito somente pdf!");
+		}
+
 		if (!requisicao.getUsuario().getEmail().equals(email)) {
 			throw new AcsExcecao("Esse id não pertence a nenhuma requisição do aluno!");
 		}
@@ -58,8 +64,14 @@ public class CertificadoServico {
 			throw new AcsExcecao("Essa requisição já possui muitos certificados!");
 		}
 
+		byte[] fileBytes = file.getBytes();
+
+		if (certificadoUnico(requisicao, fileBytes)) {
+			throw new AcsExcecao("Essa certificado já foi cadastrado!");
+		}
+
 		Certificado certificado = new Certificado();
-		certificado.setCertificado(file.getBytes());
+		certificado.setCertificado(fileBytes);
 		certificado.setRequisicao(requisicao);
 		certificado.setStatusCertificado(CertificadoStatusEnum.RASCUNHO);
 		Certificado certificadoSalvo = repositorio.save(certificado);
@@ -106,5 +118,10 @@ public class CertificadoServico {
 	private static Date converterParaData(String dataString) throws ParseException {
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 		return formato.parse(dataString);
+	}
+
+	private boolean certificadoUnico(Requisicao requisicao, byte[] bytes) {
+		return requisicao.getCertificados().stream()
+				.anyMatch(certificado -> Arrays.equals(certificado.getCertificado(), bytes));
 	}
 }
