@@ -23,8 +23,8 @@ import java.util.Optional;
 import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 
-import static br.upe.acs.servico.ControleAcessoServico.gerarCodigoVerificacao;
-import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
+import static br.upe.acs.utils.AuthUtils.generateVerificationCode;
+import static br.upe.acs.utils.AuthUtils.validatePassword;
 import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
 
 @Service
@@ -113,7 +113,7 @@ public class UsuarioServico {
 			throw new AcsExcecao("Usuário já é verificado!");
 		}
 
-		String novoCodigoVerificacao = gerarCodigoVerificacao();
+		String novoCodigoVerificacao = generateVerificationCode();
 
 		usuario.setCodigoVerificacao(novoCodigoVerificacao);
 
@@ -125,7 +125,7 @@ public class UsuarioServico {
 	}
 
 	public void alterarSenha(String email, String senha, String novaSenha) throws AcsExcecao {
-		validarSenha(novaSenha);
+		validatePassword(novaSenha);
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
 		if (repositorio.findByEmail(email).isPresent()) {
 			Usuario usuario = repositorio.findByEmail(email).orElseThrow();

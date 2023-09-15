@@ -2,7 +2,7 @@ package br.upe.acs.controlador;
 
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
-import br.upe.acs.servico.ControleAcessoServico;
+import br.upe.acs.servico.AccessControlService;
 import br.upe.acs.utils.AcsExcecao;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class ControleAcessoControlador {
 
-    private final ControleAcessoServico servico;
+    private final AccessControlService servico;
 
     @Operation(summary = "Cadastro de usuário",
     		description = "Esse endpoint deve ser capaz de cadastrar um usuário no sistema.\n"
@@ -33,7 +33,7 @@ public class ControleAcessoControlador {
                 throw new AcsExcecao(String.join("; ", bindingResult.getAllErrors().stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage).toList()));
             }
-            resposta = ResponseEntity.ok(servico.cadastrarUsuario(registro));
+            resposta = ResponseEntity.ok(servico.registerUser(registro));
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -49,7 +49,7 @@ public class ControleAcessoControlador {
     public ResponseEntity<?> loginUsuario(@RequestBody LoginDTO login) {
         ResponseEntity<?> resposta;
         try {
-            resposta = ResponseEntity.ok(servico.loginUsuario(login));
+            resposta = ResponseEntity.ok(servico.loginUser(login));
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }

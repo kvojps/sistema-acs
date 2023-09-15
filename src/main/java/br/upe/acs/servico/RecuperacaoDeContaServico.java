@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import static br.upe.acs.servico.ControleAcessoServico.validarSenha;
+import static br.upe.acs.utils.AuthUtils.validatePassword;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +60,7 @@ public class RecuperacaoDeContaServico {
             throw new AcsExcecao("Token inválido!");
         }
 
-        validarSenha(novaSenha);
+        validatePassword(novaSenha);
 
         usuario.get().setSenha(passwordEncoder.encode(novaSenha));
 
