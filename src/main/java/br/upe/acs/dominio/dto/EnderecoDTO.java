@@ -21,4 +21,6 @@ public class EnderecoDTO {
 	private String UF;
 	
 	private int numero;
+
+	private String complemento;
 }

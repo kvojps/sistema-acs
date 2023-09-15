@@ -23,6 +23,8 @@ public class Curso {
 	
 	private String nome;
 
+	private String sigla;
+
 	private int horasComplementares;
 	
 	@OneToMany(mappedBy = "curso")

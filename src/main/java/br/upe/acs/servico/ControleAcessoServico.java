@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.AutenticacaoResposta;
-import br.upe.acs.dominio.dto.EmailDTO;
 import br.upe.acs.dominio.dto.EnderecoDTO;
 import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
@@ -25,23 +24,30 @@ import lombok.RequiredArgsConstructor;
 public class ControleAcessoServico {
 
 	private final UsuarioRepositorio usuarioRepositorio;
+
     private final JwtService jwtService;
+
     private final EnderecoServico enderecoServico;
+
     private final CursoServico cursoServico;
+
     private final EmailServico emailServico;
+
     private final PasswordEncoder passwordEncoder;
+
     private final AuthenticationManager authenticationManager;
 
     public AutenticacaoResposta cadastrarUsuario(RegistroDTO registro) throws AcsExcecao {
         verificarDadosUnicos(registro.getEmail(), registro.getCpf());
 		validarSenha(registro.getSenha());
 		validarEmailInstitucional(registro.getEmail());
+		validarMatricula(registro.getMatricula());
+		validarPeriodo(registro.getPeriodo());
 
 		Usuario usuarioSalvar = new Usuario();
 		Endereco enderecoSalvo = adicionarEnderecoUsuario(registro);
 		String codigoVerificacao = gerarCodigoVerificacao();
-		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId()).orElseThrow();
-
+		Curso cursoSalvar = cursoServico.buscarCursoPorId(registro.getCursoId());
 
 		usuarioSalvar.setNomeCompleto(registro.getNomeCompleto());
 		usuarioSalvar.setCpf(registro.getCpf());
@@ -52,13 +58,14 @@ public class ControleAcessoServico {
 		usuarioSalvar.setSenha(passwordEncoder.encode(registro.getSenha()));
 		usuarioSalvar.setCodigoVerificacao(codigoVerificacao);
 		usuarioSalvar.setVerificado(false);
+		usuarioSalvar.setEnabled(true);
 		usuarioSalvar.setEndereco(enderecoSalvo);
         usuarioSalvar.setCurso(cursoSalvar);
         usuarioSalvar.setPerfil(PerfilEnum.ALUNO);
 
        	usuarioRepositorio.save(usuarioSalvar);
 
-        CompletableFuture.runAsync(() -> enviarEmail(registro, codigoVerificacao));
+        CompletableFuture.runAsync(() -> emailServico.enviarEmailCodigoVerificacao(registro.getEmail(), codigoVerificacao));
 
         return gerarAutenticacaoResposta(usuarioSalvar);
     }
@@ -135,7 +142,29 @@ public class ControleAcessoServico {
 
 	private void validarEmailInstitucional(String email) throws AcsExcecao {
 		if (!email.split("@")[1].equals("upe.br")) {
-			throw new AcsExcecao("Email inválido! Por favor insira o email institucional.");
+			throw new AcsExcecao("Email inválido! Por favor insira o email institucional válido.");
+		}
+	}
+	
+	private void validarMatricula(String matricula) throws AcsExcecao{
+		
+		if(!matricula.matches("[0-9]+")) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");
+		}
+
+		if(matricula.length() < 4 || matricula.length() > 9) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");			
+		}
+
+		if(Integer.parseInt(matricula) < 1) {
+			throw new AcsExcecao("Por favor, insira uma matrícula válida");	
+		}		
+			
+	}
+	
+	private void validarPeriodo(int periodo) throws AcsExcecao{
+		if(periodo < 1 || periodo > 12) {
+			throw new AcsExcecao("Por favor, insira um período válido");
 		}
 	}
 
@@ -147,11 +176,12 @@ public class ControleAcessoServico {
 		enderecoSalvar.setRua(registro.getRua());
 		enderecoSalvar.setNumero(registro.getNumero());
 		enderecoSalvar.setUF(registro.getUF());
+		enderecoSalvar.setComplemento(registro.getComplemento());
 
 		return enderecoServico.adicionarEndereco(enderecoSalvar);
 	}
 
-	private static String gerarCodigoVerificacao() {
+	protected static String gerarCodigoVerificacao() {
 		String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder codigo = new StringBuilder();
 		Random random = new Random();
@@ -164,16 +194,6 @@ public class ControleAcessoServico {
 
 		return codigo.toString();
 	}
-
-	private void enviarEmail(RegistroDTO registro, String codigoVerificacao) {
-        EmailDTO email = new EmailDTO();
-
-        email.setAssunto("Código de verificação - Sistema ACs UPE");
-        email.setDestinatario(registro.getEmail());
-        email.setMensagem(
-                "Confirme seu email, envie esse código na página de verificação do sistema: " + codigoVerificacao);
-        emailServico.enviarEmail(email);
-    }
 
 	private AutenticacaoResposta gerarAutenticacaoResposta(Usuario usuario) {
 		String jwtToken = jwtService.generateToken(usuario);

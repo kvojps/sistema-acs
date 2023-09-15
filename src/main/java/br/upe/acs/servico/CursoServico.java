@@ -1,7 +1,6 @@
 package br.upe.acs.servico;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,11 @@ public class CursoServico {
 		return repositorio.findAll();
 	}
 	
-	public Optional<Curso> buscarCursoPorId(Long id) throws AcsExcecao {
+	public Curso buscarCursoPorId(Long id) throws AcsExcecao {
 		if (repositorio.findById(id).isEmpty()) {
 			throw new AcsExcecao("Não existe um curso associado a este id!");
 		}
 		
-		return repositorio.findById(id);
+		return repositorio.findById(id).get();
 	}
 }

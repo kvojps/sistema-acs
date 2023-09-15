@@ -1,6 +1,5 @@
 package br.upe.acs.config;
 
-import br.upe.acs.dominio.Usuario;
 import br.upe.acs.interceptador.InterceptadorVerficacao;
 import br.upe.acs.repositorio.UsuarioRepositorio;
 
@@ -23,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ApplicationConfig implements WebMvcConfigurer {
 
 	private final UsuarioRepositorio repositorio;
+
 	private final JwtService jwtService;
 
 	@Bean
@@ -54,7 +54,8 @@ public class ApplicationConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new InterceptadorVerficacao(repositorio, jwtService))
-				.addPathPatterns("/api/requisicao/**", "/api/atividade/**", "/api/certificado/**");
+				.addPathPatterns("/api/requisicao/**", "/api/atividade/**", "/api/certificado/**", "/api/aluno/**", "/api/usuario/**")
+				.excludePathPatterns("/api/usuario/me", "/api/usuario/verificacao/**", "/api/usuario/conta/**");
 	}
 
 }
