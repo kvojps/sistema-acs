@@ -97,12 +97,11 @@ public class AccessControlService {
         validatePassword(newPassword);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-        if (repository.findByEmail(email).isPresent()) {
-            Usuario user = repository.findByEmail(email).orElseThrow(() ->
-                    new AcsExcecao("There is no user associated with this email"));
-            user.setSenha(passwordEncoder.encode(newPassword));
-            repository.save(user);
-        }
+        Usuario user = repository.findByEmail(email).orElseThrow(() ->
+                new AcsExcecao("There is no user associated with this email"));
+        user.setSenha(passwordEncoder.encode(newPassword));
+
+        repository.save(user);
     }
 
     private void validateUserRegister(RegistroDTO authDto) throws AcsExcecao {
