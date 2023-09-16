@@ -30,7 +30,7 @@ public class AccessControlService {
 
     private final UsuarioRepositorio repository;
     private final JwtService jwtService;
-    private final EnderecoServico addressService;
+    private final AddressService addressService;
     private final CourseService courseService;
     private final EmailServico emailService;
     private final PasswordEncoder passwordEncoder;
@@ -115,7 +115,7 @@ public class AccessControlService {
     private Endereco addUserAddress(RegistroDTO authDto) {
         ModelMapper modelMapper = new ModelMapper();
         EnderecoDTO addressToSave = modelMapper.map(authDto, EnderecoDTO.class);
-        return addressService.adicionarEndereco(addressToSave);
+        return addressService.addAddress(addressToSave);
     }
 
     private AutenticacaoResposta generateAuthResponse(Usuario user) {

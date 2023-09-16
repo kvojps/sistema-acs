@@ -1,7 +1,7 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.controlador.respostas.ViaCepResposta;
-import br.upe.acs.servico.EnderecoServico;
+import br.upe.acs.servico.AddressService;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class EnderecoControlador {
 
-    private final EnderecoServico servico;
+    private final AddressService servico;
     @Operation(summary = "Buscar endereço por CEP", 
     		description = "Esse endpoint deve ser capaz de buscar o endereço de acordo com CEP na API ViaCep.\n"
     				+ "\nPré-condição: Nenhuma\n"
@@ -23,7 +23,7 @@ public class EnderecoControlador {
     public ResponseEntity<?> buscarEnderecoPorCep(@PathVariable String cep) {
         ResponseEntity<?> resposta;
         try {
-            ViaCepResposta viaCepResposta = new ViaCepResposta(servico.buscarEnderecoPorCep(cep));
+            ViaCepResposta viaCepResposta = new ViaCepResposta(servico.findAddressByCep(cep));
             resposta = ResponseEntity.ok(viaCepResposta);
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
