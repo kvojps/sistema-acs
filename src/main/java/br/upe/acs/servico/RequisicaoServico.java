@@ -16,14 +16,14 @@ public class RequisicaoServico {
 
 	private final RequisicaoRepositorio repositorio;
 
-	private final UsuarioServico usuarioServico;
+	private final UserService usuarioServico;
 
 	public List<Requisicao> listarRequisicoes() {
 		return repositorio.findAll();
 	}
 
 	public List<Requisicao> listarRequisicoesPorAluno(Long alunoId) throws AcsExcecao {
-		Usuario aluno = usuarioServico.buscarUsuarioPorId(alunoId);
+		Usuario aluno = usuarioServico.findUserById(alunoId);
 		return aluno.getRequisicoes();
 	}
 
@@ -49,7 +49,7 @@ public class RequisicaoServico {
 	public String arquivarRequisicao(Long id, String email) throws AcsExcecao{
 		Requisicao requisicao = repositorio.findById(id).orElseThrow();
 		String resposta;
-		Usuario usuario = usuarioServico.buscarUsuarioPorEmail(email);
+		Usuario usuario = usuarioServico.findUserByEmail(email);
 		RequisicaoStatusEnum status = requisicao.getStatusRequisicao();
 		boolean finalizada = false;
 		System.out.println(status);
@@ -79,7 +79,7 @@ public class RequisicaoServico {
 	
 	public String desarquivarRequisicao(Long id, String email) throws AcsExcecao{
 		Requisicao requisicao = repositorio.findById(id).orElseThrow();
-		Usuario usuario = usuarioServico.buscarUsuarioPorEmail(email);
+		Usuario usuario = usuarioServico.findUserByEmail(email);
 		
 		if(!usuario.equals(requisicao.getUsuario())) {
 			throw new AcsExcecao("Usuário não tem permissão para desarquivar essa requisição");
@@ -97,7 +97,7 @@ public class RequisicaoServico {
 	}
 	
 	public List<Requisicao> listarRequisicoesArquivadas(String email) throws AcsExcecao{
-		Usuario aluno = usuarioServico.buscarUsuarioPorEmail(email);
+		Usuario aluno = usuarioServico.findUserByEmail(email);
 
 		List<Requisicao> requisicoesArquivadas = aluno.getRequisicoes().stream()
 				.filter(Requisicao::isArquivada).toList();

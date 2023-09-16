@@ -27,12 +27,12 @@ public class RequisicaoRascunhoServico {
 
     private final RequisicaoServico requisicaoServico;
 
-    private final UsuarioServico usuarioServico;
+    private final UserService usuarioServico;
 
     private final EmailServico emailServico;
 
     public Long adicionarRequisicao(String email) throws AcsExcecao {
-        Usuario aluno = usuarioServico.buscarUsuarioPorEmail(email);
+        Usuario aluno = usuarioServico.findUserByEmail(email);
         List<Requisicao> requisicoesRacunhos = aluno.getRequisicoes().stream()
                 .filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
 

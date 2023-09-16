@@ -3,8 +3,7 @@ package br.upe.acs.controlador;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.UsuarioResposta;
 import br.upe.acs.dominio.dto.AlterarSenhaDTO;
-import br.upe.acs.dominio.enums.EixoEnum;
-import br.upe.acs.servico.UsuarioServico;
+import br.upe.acs.servico.UserService;
 import br.upe.acs.utils.AcsExcecao;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class UsuarioControlador {
 
-    private final UsuarioServico servico;
+    private final UserService servico;
     
     private final JwtService jwtService;
     
@@ -33,54 +32,13 @@ public class UsuarioControlador {
     public ResponseEntity<?> buscarUsuarioPorId(@PathVariable("id") Long id){
     	ResponseEntity<?> resposta;
     	try {
-    		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorId(id));
+    		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.findUserById(id));
     		resposta = ResponseEntity.ok(usuarioResposta);
     	} catch(AcsExcecao e){
     		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
     	
     	return resposta;
-    }
-    
-    @Operation(
-            summary = "Listar requisicões do aluno páginada",
-            description = "Esta rota permite buscar requisições já submetidas por um aluno de forma páginada. " +
-                    "Possui com retorno uma Map 'requisicoes' com uma lista de de requisições, paginaAtual, totalItens e totalPaginas. " +
-                    "Essa rota séra util para análise de requisições por parte dos coordenação e comissão."
-    )
-    @GetMapping("/requisicao/paginacao")
-    public  ResponseEntity<?> listarRequisicaoPorAlunoPaginacao(
-            @RequestParam Long alunoId,
-            @RequestParam(defaultValue = "0") int pagina,
-            @RequestParam(defaultValue = "10") int quantidade
-    ) {
-        ResponseEntity<?> resposta;
-        try {
-            resposta = ResponseEntity.ok(servico.listarRequisicoesPorAlunoPaginadas(alunoId, pagina, quantidade));
-
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
-        }
-
-        return resposta;
-    }
-    
-    @GetMapping("/requisicao/eixo")
-    public  ResponseEntity<?> listarRequisicaoPorAlunoPaginacaoEixo(
-            @RequestParam Long alunoId,
-            @RequestParam(defaultValue = "0") int pagina,
-            @RequestParam(defaultValue = "10") int quantidade,
-            @RequestParam EixoEnum eixo
-    ) {
-        ResponseEntity<?> resposta;
-        try {
-            resposta = ResponseEntity.ok(servico.listarRequisicoesPorAlunoPaginadasEixo(alunoId, eixo, pagina, quantidade));
-
-        } catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
-        }
-
-        return resposta;
     }
 
     @Operation(
@@ -95,7 +53,7 @@ public class UsuarioControlador {
         ResponseEntity<?> resposta;
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            var usuarioResposta = new UsuarioResposta(servico.buscarUsuarioPorEmail(email));
+            var usuarioResposta = new UsuarioResposta(servico.findUserByEmail(email));
             resposta = ResponseEntity.ok(usuarioResposta);
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -116,7 +74,8 @@ public class UsuarioControlador {
         ResponseEntity<?> resposta;
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(new MensagemUtil(servico.verificarUsuario(email, codigo)));
+            servico.verifyUser(email, codigo);
+            resposta = ResponseEntity.ok(new MensagemUtil("O usuário foi verificado"));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.status(406).body(new MensagemUtil(e.getMessage()));
         }
@@ -137,7 +96,7 @@ public class UsuarioControlador {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         ResponseEntity<?> resposta;
         try {
-            servico.alterarSenha(email, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
+            servico.changePassword(email, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -158,8 +117,8 @@ public class UsuarioControlador {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         ResponseEntity<?> resposta;
         try {
-
-            resposta = ResponseEntity.ok(new MensagemUtil(servico.alterarCodigoVerificacao(email)));
+            servico.resendVerificationCode(email);
+            resposta = ResponseEntity.ok(new MensagemUtil("Código de verificação reenviado"));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -178,7 +137,7 @@ public class UsuarioControlador {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         ResponseEntity<?> resposta;
         try {
-            servico.alterarDados(email, nomeCompleto, telefone, cursoId);
+            servico.updateUser(email, nomeCompleto, telefone, cursoId);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -192,7 +151,7 @@ public class UsuarioControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            servico.desativarPerfilDoUsuario(email);
+            servico.deactivateUser(email);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
