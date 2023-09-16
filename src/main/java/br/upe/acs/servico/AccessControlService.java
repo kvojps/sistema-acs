@@ -31,7 +31,7 @@ public class AccessControlService {
     private final UsuarioRepositorio repository;
     private final JwtService jwtService;
     private final EnderecoServico addressService;
-    private final CursoServico courseService;
+    private final CourseService courseService;
     private final EmailServico emailService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -46,7 +46,7 @@ public class AccessControlService {
         userToSave.setVerificado(false);
         userToSave.setEnabled(true);
         userToSave.setEndereco(addUserAddress(authDto));
-        userToSave.setCurso(courseService.buscarCursoPorId(authDto.getCursoId()));
+        userToSave.setCurso(courseService.findCourseById(authDto.getCursoId()));
         userToSave.setPerfil(PerfilEnum.ALUNO);
 
         repository.save(userToSave);

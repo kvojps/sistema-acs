@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.upe.acs.controlador.respostas.CursoResposta;
-import br.upe.acs.servico.CursoServico;
+import br.upe.acs.servico.CourseService;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*")
 public class CursoControlador {
 
-	private final CursoServico servico;
+	private final CourseService servico;
 
 	@Operation(summary = "Listar todos os cursos",
 			description = "Esse endpoint deve retornar todos os cursos existentes no banco de dados do sistema\n"
@@ -32,7 +32,7 @@ public class CursoControlador {
 	@GetMapping
 	public ResponseEntity<List<CursoResposta>> listarCursos() {
 		return ResponseEntity.ok(
-				servico.listarCursos().stream().map(CursoResposta::new).collect(Collectors.toList()));
+				servico.listCourses().stream().map(CursoResposta::new).collect(Collectors.toList()));
 	}
 
 	@Operation(summary = "Buscar curso por id",
@@ -43,7 +43,7 @@ public class CursoControlador {
 	public ResponseEntity<?> buscarCursoPorId(@PathVariable("id") Long id) {
 		ResponseEntity<?> resposta;
 		try {
-			CursoResposta cursoResposta = new CursoResposta(servico.buscarCursoPorId(id));
+			CursoResposta cursoResposta = new CursoResposta(servico.findCourseById(id));
 			resposta =  ResponseEntity.ok(cursoResposta);
 		} catch (AcsExcecao e) {
 			resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));

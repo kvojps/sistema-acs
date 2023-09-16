@@ -14,7 +14,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UsuarioRepositorio repository;
-    private final CursoServico courseService;
+    private final CourseService courseService;
 
     public Usuario findUserById(Long id) throws AcsExcecao {
         Optional<Usuario> user = repository.findById(id);
@@ -34,7 +34,7 @@ public class UserService {
 
         user.setNomeCompleto(fullName);
         user.setTelefone(phone);
-        Curso curso = courseService.buscarCursoPorId(courseId);
+        Curso curso = courseService.findCourseById(courseId);
         user.setCurso(curso);
         repository.save(user);
     }
