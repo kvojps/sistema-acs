@@ -18,15 +18,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import static br.upe.acs.utils.AuthUtils.generateVerificationCode;
+import static br.upe.acs.utils.AuthUtils.validatePassword;
 
 @Service
 @RequiredArgsConstructor
 public class AccessControlService {
 
-    private final UsuarioRepositorio userRepository;
+    private final UsuarioRepositorio repository;
     private final JwtService jwtService;
     private final EnderecoServico addressService;
     private final CursoServico courseService;
@@ -38,7 +40,6 @@ public class AccessControlService {
         validateUserRegister(authDto);
 
         ModelMapper modelMapper = new ModelMapper();
-
         Usuario userToSave = modelMapper.map(authDto, Usuario.class);
         userToSave.setSenha(passwordEncoder.encode(authDto.getSenha()));
         userToSave.setCodigoVerificacao(generateVerificationCode());
@@ -48,7 +49,7 @@ public class AccessControlService {
         userToSave.setCurso(courseService.buscarCursoPorId(authDto.getCursoId()));
         userToSave.setPerfil(PerfilEnum.ALUNO);
 
-        userRepository.save(userToSave);
+        repository.save(userToSave);
 
         CompletableFuture.runAsync(() -> emailService.enviarEmailCodigoVerificacao(authDto.getEmail(), userToSave.getCodigoVerificacao()));
 
@@ -56,22 +57,58 @@ public class AccessControlService {
     }
 
     public AutenticacaoResposta loginUser(LoginDTO login) throws AcsExcecao {
+        Usuario user = repository.findByEmail(login.getEmail()).orElseThrow(() ->
+                new AcsExcecao("There is no user associated with this id"));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getSenha()));
 
-        Usuario usuario;
-        if (userRepository.findByEmail(login.getEmail()).isPresent()) {
-            usuario = userRepository.findByEmail(login.getEmail()).orElseThrow();
-        } else {
-            throw new AcsExcecao("User not found!");
+        return generateAuthResponse(user);
+    }
+
+    public void verifyUser(String email, String verificationCode) throws AcsExcecao {
+        Usuario user = repository.findByEmail(email).orElseThrow(() ->
+                new AcsExcecao("There is no user associated with this id"));
+
+        if (user.isVerificado()) {
+            throw new AcsExcecao("This user is already verified");
+        } else if (!verificationCode.equals(user.getCodigoVerificacao())) {
+            throw new AcsExcecao("The verification code is incorrect");
         }
 
-        return generateAuthResponse(usuario);
+        user.setVerificado(true);
+        repository.save(user);
+    }
+
+    public void resendVerificationCode(String email) throws AcsExcecao {
+        Optional<Usuario> userOpt = repository.findByEmail(email);
+        Usuario user = userOpt.orElseThrow(() -> new AcsExcecao("There is no user associated with this id"));
+
+        if (user.isVerificado()) {
+            throw new AcsExcecao("This user is already verified");
+        }
+
+        String newVerificationCode = generateVerificationCode();
+        user.setCodigoVerificacao(newVerificationCode);
+        repository.save(user);
+
+        CompletableFuture.runAsync(() -> emailService.enviarEmailCodigoVerificacao(email, newVerificationCode));
+    }
+
+    public void changePassword(String email, String password, String newPassword) throws AcsExcecao {
+        validatePassword(newPassword);
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+
+        if (repository.findByEmail(email).isPresent()) {
+            Usuario user = repository.findByEmail(email).orElseThrow(() ->
+                    new AcsExcecao("There is no user associated with this email"));
+            user.setSenha(passwordEncoder.encode(newPassword));
+            repository.save(user);
+        }
     }
 
     private void validateUserRegister(RegistroDTO authDto) throws AcsExcecao {
         String formattedCpf = authDto.getCpf().replaceAll("[^0-9]", "");
-        boolean cpfExists = userRepository.findByCpf(formattedCpf).isPresent();
-        boolean emailExists = userRepository.findByEmail(authDto.getEmail()).isPresent();
+        boolean cpfExists = repository.findByCpf(formattedCpf).isPresent();
+        boolean emailExists = repository.findByEmail(authDto.getEmail()).isPresent();
         AuthUtils authValidation = new AuthUtils();
         authValidation.validateAuthData(authDto, cpfExists, emailExists);
     }
