@@ -3,6 +3,7 @@ package br.upe.acs.controlador;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.dominio.dto.AlterarSenhaDTO;
 import br.upe.acs.dominio.dto.LoginDTO;
+import br.upe.acs.dominio.dto.RecuperacaoDeContaDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.servico.AccessControlService;
 import br.upe.acs.utils.AcsExcecao;
@@ -124,5 +125,34 @@ public class ControleAcessoControlador {
         }
 
         return resposta;
+    }
+
+    @PostMapping("recuperar")
+    public ResponseEntity<?> recuperarConta(@RequestParam String email) {
+        ResponseEntity<?> resposta;
+        try{
+            servico.recoveryAccount(email);
+            return ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+        }
+        return resposta;
+    }
+
+    @PostMapping("alterar-senha")
+    public ResponseEntity<?> alterarSenha(
+            HttpServletRequest request,
+            @RequestBody RecuperacaoDeContaDTO recuperacaoDeContaDTO
+    ) {
+        ResponseEntity<?> resposta;
+        String token = request.getHeader("Authorization").substring(7);
+        try {
+            servico.forgotPassword(token, recuperacaoDeContaDTO.novaSenha());
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsExcecao e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+        }
+
+        return  resposta;
     }
 }

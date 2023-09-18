@@ -18,6 +18,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -99,6 +101,39 @@ public class AccessControlService {
 
         Usuario user = repository.findByEmail(email).orElseThrow(() ->
                 new AcsExcecao("There is no user associated with this email"));
+        user.setSenha(passwordEncoder.encode(newPassword));
+
+        repository.save(user);
+    }
+
+    public void recoveryAccount(String email) throws AcsExcecao {
+        Optional<Usuario> userOpt = repository.findByEmail(email);
+        Usuario user = userOpt.orElseThrow(() -> new AcsExcecao("User not found"));
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("recovery", true);
+        String token = jwtService.generateToken(claims, user, 1000 * 60 * 15);
+        CompletableFuture.runAsync(() -> emailService.enviarEmailDeRecuperacaoDeSenha(user, token));
+    }
+
+    public void forgotPassword(String token, String newPassword) throws AcsExcecao {
+        boolean isTokenRecovery;
+
+        try {
+            isTokenRecovery = jwtService.extractClaim(token,
+                    (claims -> claims.get("recovery", Boolean.class)));
+        } catch (Exception e) {
+            throw new AcsExcecao("Invalid token!");
+        }
+
+        if (!isTokenRecovery) {
+            throw new AcsExcecao("Invalid token!");
+        }
+
+        String email = jwtService.extractUsername(token);
+        Optional<Usuario> userOpt = repository.findByEmail(email);
+        Usuario user = userOpt.orElseThrow(() -> new AcsExcecao("Invalid token"));
+        validatePassword(newPassword);
         user.setSenha(passwordEncoder.encode(newPassword));
 
         repository.save(user);
