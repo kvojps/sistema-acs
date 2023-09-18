@@ -1,7 +1,7 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.servico.RequisicaoRascunhoServico;
+import br.upe.acs.servico.RequestSketchService;
 import br.upe.acs.utils.AcsExcecao;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class RequisicaoRascunhoControlador {
 
-    private final RequisicaoRascunhoServico servico;
+    private final RequestSketchService servico;
 
     private final JwtService jwtService;
 
@@ -33,7 +33,7 @@ public class RequisicaoRascunhoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.status(201).body(servico.adicionarRequisicao(email));
+            resposta = ResponseEntity.status(201).body(servico.addRequest(email));
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -51,7 +51,7 @@ public class RequisicaoRascunhoControlador {
     public ResponseEntity<?> submeterRequisicao(@PathVariable("id") Long requisicaoId) {
         ResponseEntity<?> resposta;
         try {
-            resposta = ResponseEntity.ok(new MensagemUtil(servico.submeterRequisicao(requisicaoId)));
+            resposta = ResponseEntity.ok(new MensagemUtil(servico.submitRequest(requisicaoId)));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -70,7 +70,7 @@ public class RequisicaoRascunhoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            servico.excluirRequisicao(requisicaoId, email);
+            servico.deleteRequest(requisicaoId, email);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
