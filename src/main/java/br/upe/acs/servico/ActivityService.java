@@ -23,7 +23,7 @@ public class ActivityService {
 
 	public Atividade findActivityById(Long id) throws AcsExcecao {
 		return repository.findById(id).orElseThrow(() ->
-				new AcsExcecao("Não existe uma activity associada a este id!"));
+				new AcsExcecao("Activity not found"));
 	}
 
 	//TODO: REFACTOR THIS METHOD TO USE JUST REPO
