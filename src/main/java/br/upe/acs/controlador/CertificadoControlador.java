@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.CertificadoResposta;
-import br.upe.acs.servico.CertificadoServico;
+import br.upe.acs.servico.CertificateService;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin(origins = "*")
 public class CertificadoControlador {
 
-    private final CertificadoServico servico;
+    private final CertificateService servico;
 
     private final JwtService jwtService;
 
@@ -36,7 +36,7 @@ public class CertificadoControlador {
     public ResponseEntity<?> buscarCertificadoPorId(@PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
         try {
-            CertificadoResposta certificadoResposta = new CertificadoResposta(servico.buscarCertificadoPorId(id));
+            CertificadoResposta certificadoResposta = new CertificadoResposta(servico.findCertificateById(id));
             resposta = ResponseEntity.ok(certificadoResposta);
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -54,7 +54,7 @@ public class CertificadoControlador {
     public ResponseEntity<?> buscarPdfDoCertificadoPorId(@PathVariable("id") Long certificadoId) {
         ResponseEntity<?> resposta;
         try {
-            ArquivoResposta arquivo = new ArquivoResposta(servico.buscarPdfDoCertificadoPorId(certificadoId));
+            ArquivoResposta arquivo = new ArquivoResposta(servico.findCertificatePdfById(certificadoId));
             resposta = ResponseEntity.ok(arquivo);
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -78,7 +78,7 @@ public class CertificadoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.status(201).body(servico.adicionarCertificado(certificado, requisicaoId, email));
+            resposta = ResponseEntity.status(201).body(servico.addCertificate(certificado, requisicaoId, email));
         } catch (Exception e) {
             resposta = ResponseEntity.status(404).body(new MensagemUtil(e.getMessage()));
         }
@@ -101,7 +101,7 @@ public class CertificadoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            servico.alterarCertificado(id, certificadoDTO, email);
+            servico.updateCertificate(id, certificadoDTO, email);
             resposta = ResponseEntity.noContent().build();
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -119,7 +119,7 @@ public class CertificadoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            servico.excluirCertificado(certificadoId, email);
+            servico.deleteCertificate(certificadoId, email);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
