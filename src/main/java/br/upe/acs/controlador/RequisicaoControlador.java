@@ -10,7 +10,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
-import br.upe.acs.servico.RequisicaoServico;
+import br.upe.acs.servico.RequestService;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*")
 public class RequisicaoControlador {
 
-    private final RequisicaoServico servico;
+    private final RequestService servico;
 
     private final JwtService jwtService;
 
@@ -31,7 +31,7 @@ public class RequisicaoControlador {
     )
     @GetMapping
     public ResponseEntity<List<RequisicaoResposta>> listarRequisicoes() {
-        return ResponseEntity.ok(servico.listarRequisicoes().stream().filter(requisicao -> !requisicao.isArquivada())
+        return ResponseEntity.ok(servico.listRequests().stream().filter(requisicao -> !requisicao.isArquivada())
                 .map(RequisicaoResposta::new).toList());
     }
 
@@ -44,7 +44,7 @@ public class RequisicaoControlador {
     @GetMapping("/paginacao")
     public ResponseEntity<Map<String, Object>> listarRequisicoesPaginas(@RequestParam(defaultValue = "0") int pagina,
                                                                         @RequestParam(defaultValue = "10") int quantidade) {
-        return ResponseEntity.ok(servico.listarRequisicoesPaginadas(pagina, quantidade));
+        return ResponseEntity.ok(servico.listRequestsPaginated(pagina, quantidade));
     }
 
     @Operation(
@@ -56,7 +56,7 @@ public class RequisicaoControlador {
     @GetMapping("/usuario/{id}")
     public ResponseEntity<?> listarRequisicoesPorAluno(@PathVariable("id") Long alunoId) {
         try {
-            return ResponseEntity.ok(servico.listarRequisicoesPorAluno(alunoId).stream()
+            return ResponseEntity.ok(servico.listRequestByStudent(alunoId).stream()
                     .filter(requisicao -> !requisicao.isArquivada()).map(RequisicaoResposta::new).toList());
         } catch (AcsExcecao e) {
             return ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -72,7 +72,7 @@ public class RequisicaoControlador {
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarRequisicaoPorId(@PathVariable("id") Long id) {
         try {
-            RequisicaoResposta requisicaoResposta = new RequisicaoResposta(servico.buscarRequisicaoPorId(id));
+            RequisicaoResposta requisicaoResposta = new RequisicaoResposta(servico.findRequestById(id));
             return ResponseEntity.ok(requisicaoResposta);
         } catch (AcsExcecao e) {
             return ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -90,7 +90,7 @@ public class RequisicaoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.ok(servico.listarRequisicoesArquivadas(email)
+            resposta = ResponseEntity.ok(servico.listArchivedRequests(email)
                     .stream().map(RequisicaoResposta::new).toList());
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
@@ -110,7 +110,8 @@ public class RequisicaoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.ok(new MensagemUtil(servico.arquivarRequisicao(id, email)));
+            servico.archiveRequest(id, email);
+            resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -128,7 +129,8 @@ public class RequisicaoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.ok(new MensagemUtil(servico.desarquivarRequisicao(id, email)));
+            servico.unarchiveRequest(id, email);
+            resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }

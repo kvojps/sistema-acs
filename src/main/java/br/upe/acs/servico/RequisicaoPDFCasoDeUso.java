@@ -20,11 +20,11 @@ import java.nio.file.Paths;
 @Service
 public class RequisicaoPDFCasoDeUso {
 
-    private final RequisicaoServico servico;
+    private final RequestService servico;
 
     private final ITemplateEngine templateEngine;
 
-    public RequisicaoPDFCasoDeUso(RequisicaoServico requisicaoServico, TemplateEngine templateEngine) {
+    public RequisicaoPDFCasoDeUso(RequestService requisicaoServico, TemplateEngine templateEngine) {
         this.servico = requisicaoServico;
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
@@ -35,7 +35,7 @@ public class RequisicaoPDFCasoDeUso {
     }
 
     public byte[] gerarRequisicaoPDF(Long id) throws AcsExcecao {
-        Requisicao requisicao = servico.buscarRequisicaoPorId(id);
+        Requisicao requisicao = servico.findRequestById(id);
 
         if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
             throw new AcsExcecao("Não possivel gerar um pdf de uma requisição que não esteja trânsito!");

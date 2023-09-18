@@ -25,7 +25,7 @@ public class RequisicaoRascunhoServico {
 
     private final CertificadoRepositorio certificadoRepositorio;
 
-    private final RequisicaoServico requisicaoServico;
+    private final RequestService requisicaoServico;
 
     private final UserService usuarioServico;
 
@@ -56,7 +56,7 @@ public class RequisicaoRascunhoServico {
     }
 
     public String submeterRequisicao(Long requisicaoId) throws AcsExcecao {
-        Requisicao requisicao = requisicaoServico.buscarRequisicaoPorId(requisicaoId);
+        Requisicao requisicao = requisicaoServico.findRequestById(requisicaoId);
 
         if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
             throw new AcsExcecao("Essa requisição já foi submetido!");
@@ -87,7 +87,7 @@ public class RequisicaoRascunhoServico {
     }
 
     public void excluirRequisicao(Long requisicaoId, String email) throws AcsExcecao {
-        Requisicao requisicao = requisicaoServico.buscarRequisicaoPorId(requisicaoId);
+        Requisicao requisicao = requisicaoServico.findRequestById(requisicaoId);
         if (!requisicao.getUsuario().getEmail().equals(email)) {
             throw new AcsExcecao("Usuário sem premissão para excluir esse requisição!");
         }

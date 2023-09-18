@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
-import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
+import static br.upe.acs.servico.RequestService.generateRequestsPagination;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public class StudentService {
                 .filter(requisicao -> !requisicao.isArquivada())
                 .sorted(Comparator.comparing(Requisicao::getStatusRequisicao))
                 .map(RequisicaoSimplesResposta::new).toList());
-        return gerarPaginacaoRequisicoes(studentRequests, page, amount);
+        return generateRequestsPagination(studentRequests, page, amount);
     }
 
     //TODO: ADD TO CONTROLLER
@@ -63,7 +63,7 @@ public class StudentService {
                 .map(RequisicaoSimplesResposta::new).toList());
 
 
-        return gerarPaginacaoRequisicoes(studentRequests, page, amount);
+        return generateRequestsPagination(studentRequests, page, amount);
     }
 
     public AtividadeComplementarVO generateStudentAcs(String email) throws AcsExcecao {
