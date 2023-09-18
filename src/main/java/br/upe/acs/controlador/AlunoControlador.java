@@ -1,7 +1,6 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.controlador.respostas.UsuarioResposta;
 import br.upe.acs.utils.AcsExcecao;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.upe.acs.servico.AlunoServico;
+import br.upe.acs.servico.StudentService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*")
 public class AlunoControlador {
 
-    private final AlunoServico servico;
+    private final StudentService servico;
 
     private final JwtService jwtService;
 
@@ -37,7 +36,7 @@ public class AlunoControlador {
         ResponseEntity<?> resposta;
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.listarRequisicoesPaginadas(email, pagina, quantidade));
+            resposta = ResponseEntity.ok(servico.listRequestsPaginated(pagina, email, quantidade));
 
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -56,7 +55,7 @@ public class AlunoControlador {
         ResponseEntity<?> resposta;
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.atividadesComplementaresAluno(email));
+            resposta = ResponseEntity.ok(servico.generateStudentAcs(email));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -64,25 +63,6 @@ public class AlunoControlador {
         return resposta;
     }
 
-    @Operation(
-            summary = "Buscar aluno por id",
-            description = "Esta rota permite buscar um aluno via seu id. As informações retornadas incluem " +
-                    "informações como id, nome completo, número de matricula, telefone, email, perfis, curso, " +
-                    "periodo e se é verificado. Essa rota séra util para gerenciamento de usuarios e para coordenação " +
-                    "e comissão tenha acesso aos dados dos alunos."
-    )
-    @GetMapping("/{id}")
-    public ResponseEntity<?> buscarAlunoPorId(@PathVariable("id") Long id) {
-        ResponseEntity<?> resposta;
-        try {
-			UsuarioResposta alunoResposta = new UsuarioResposta(servico.buscarAlunoPorId(id));
-			resposta = ResponseEntity.ok(alunoResposta);
-		} catch (AcsExcecao e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
-		}
-
-        return resposta;
-    }
 
     @Operation(summary = "Busca horas de aluno por atividade")
     @GetMapping("/horas/{atividadeId}")
@@ -93,7 +73,7 @@ public class AlunoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta =  ResponseEntity.ok(servico.minhasHorasDeNaAtividade(email, atividadeId));
+            resposta =  ResponseEntity.ok(servico.generateHoursAcsStatusByActivity(email, atividadeId));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
