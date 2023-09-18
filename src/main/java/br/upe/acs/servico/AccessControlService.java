@@ -60,7 +60,7 @@ public class AccessControlService {
 
     public AutenticacaoResposta loginUser(LoginDTO login) {
         Usuario user = repository.findByEmail(login.getEmail()).orElseThrow(() ->
-                new AcsException("There is no user associated with this id"));
+                new AcsException("There is no user associated with this email"));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getSenha()));
 
         return generateAuthResponse(user);
@@ -68,7 +68,7 @@ public class AccessControlService {
 
     public void verifyUser(String email, String verificationCode) {
         Usuario user = repository.findByEmail(email).orElseThrow(() ->
-                new AcsException("There is no user associated with this id"));
+                new AcsException("There is no user associated with this email"));
 
         if (user.isVerificado()) {
             throw new AcsException("This user is already verified");
@@ -82,7 +82,7 @@ public class AccessControlService {
 
     public void resendVerificationCode(String email) {
         Optional<Usuario> userOpt = repository.findByEmail(email);
-        Usuario user = userOpt.orElseThrow(() -> new AcsException("There is no user associated with this id"));
+        Usuario user = userOpt.orElseThrow(() -> new AcsException("There is no user associated with this email"));
 
         if (user.isVerificado()) {
             throw new AcsException("This user is already verified");
@@ -107,8 +107,8 @@ public class AccessControlService {
     }
 
     public void recoveryAccount(String email) {
-        Optional<Usuario> userOpt = repository.findByEmail(email);
-        Usuario user = userOpt.orElseThrow(() -> new AcsException("User not found"));
+        Usuario user = repository.findByEmail(email).orElseThrow(() ->
+                new AcsException("There is no user associated with this email"));
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("recovery", true);
