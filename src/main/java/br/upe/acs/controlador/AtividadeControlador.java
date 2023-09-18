@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.upe.acs.controlador.respostas.AtividadeResposta;
 import br.upe.acs.dominio.dto.AtividadeDTO;
-import br.upe.acs.servico.AtividadeServico;
+import br.upe.acs.servico.ActivityService;
 import br.upe.acs.utils.AcsExcecao;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class AtividadeControlador {
 
-    private final AtividadeServico servico;
+    private final ActivityService servico;
 
     @Operation(summary = "Listar todas as atividades",
             description = "Esse endpoint deve retornar todas as atividades existentes no banco de dados do sistema de Acs\n"
@@ -35,7 +35,7 @@ public class AtividadeControlador {
                     + "\nPós-condições: Nenhuma")
     @GetMapping
     public ResponseEntity<List<AtividadeResposta>> listarAtividades() {
-        return ResponseEntity.ok(servico.listarAtividades().stream().map(AtividadeResposta::new)
+        return ResponseEntity.ok(servico.listActivities().stream().map(AtividadeResposta::new)
                 .collect(Collectors.toList()));
     }
 
@@ -47,7 +47,7 @@ public class AtividadeControlador {
     public ResponseEntity<?> buscarAtividadePorId(@PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
         try {
-            AtividadeResposta atividadeResposta = new AtividadeResposta(servico.buscarAtividadePorId(id));
+            AtividadeResposta atividadeResposta = new AtividadeResposta(servico.findActivityById(id));
             resposta = ResponseEntity.ok(atividadeResposta);
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
@@ -63,7 +63,7 @@ public class AtividadeControlador {
     public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam String eixo){
     	ResponseEntity<?> resposta;
     	try {
-    		resposta = ResponseEntity.ok(servico.buscarAtividadePorEixo(eixo).stream().map(AtividadeResposta::new).toList());
+    		resposta = ResponseEntity.ok(servico.findActivityByAxle(eixo).stream().map(AtividadeResposta::new).toList());
     	} catch(AcsExcecao e) {
     		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
@@ -79,7 +79,7 @@ public class AtividadeControlador {
         ResponseEntity<?> resposta;
 
         try {
-            resposta = ResponseEntity.ok(new AtividadeResposta(servico.criarAtividade(atividade)));
+            resposta = ResponseEntity.ok(new AtividadeResposta(servico.createActivity(atividade)));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -95,7 +95,7 @@ public class AtividadeControlador {
     ) {
         ResponseEntity<?> resposta;
         try {
-            resposta = ResponseEntity.ok(new AtividadeResposta(servico.alterarAtividade(id, atividadeDTO)));
+            resposta = ResponseEntity.ok(new AtividadeResposta(servico.updateActivity(id, atividadeDTO)));
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -109,7 +109,7 @@ public class AtividadeControlador {
     public ResponseEntity<?> excluirAtividade(HttpServletRequest request, @PathVariable("id") Long id) {
         ResponseEntity<?> resposta;
         try {
-            servico.excluirAtividade(id);
+            servico.deleteActivity(id);
             resposta = ResponseEntity.noContent().build();
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));

@@ -29,7 +29,7 @@ public class CertificadoServico {
 
 	private final RequisicaoServico requisicaoServico;
 
-	private final AtividadeServico atividadeServico;
+	private final ActivityService activityService;
 
 	public Certificado buscarCertificadoPorId(Long id) throws AcsExcecao {
 		Optional<Certificado> certificado = repositorio.findById(id);
@@ -85,7 +85,7 @@ public class CertificadoServico {
 		}
 		Atividade atividade = null;
 		if (certificadoDTO.getAtividadeId() != 0) {
-			atividade = atividadeServico.buscarAtividadePorId(certificadoDTO.getAtividadeId());
+			atividade = activityService.findActivityById(certificadoDTO.getAtividadeId());
 		}
 
 		certificado.setTitulo(certificadoDTO.getTitulo());

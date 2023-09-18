@@ -25,7 +25,7 @@ import static br.upe.acs.servico.RequisicaoServico.gerarPaginacaoRequisicoes;
 public class StudentService {
 
     private final UsuarioRepositorio repository;
-    private final AtividadeServico activityService;
+    private final ActivityService activityService;
 
     public Map<String, Object> listRequestsPaginated(int page, String email, int amount) throws AcsExcecao {
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
@@ -74,7 +74,7 @@ public class StudentService {
     }
 
     public MinhasHorasNaAtividadeVO generateHoursAcsStatusByActivity(String email, Long activityId) throws AcsExcecao {
-        Atividade atividade = activityService.buscarAtividadePorId(activityId);
+        Atividade atividade = activityService.findActivityById(activityId);
 
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
                 new AcsExcecao("There is no user associated with this id"));
