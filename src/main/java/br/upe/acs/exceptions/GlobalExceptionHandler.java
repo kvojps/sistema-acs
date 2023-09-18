@@ -14,6 +14,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AcsException.class)
     public ResponseEntity<Object> handleAcsException(AcsException ex) {
-        return ResponseEntity.internalServerError().body(ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }
