@@ -34,7 +34,7 @@ public class AccessControlService {
     private final JwtService jwtService;
     private final AddressService addressService;
     private final CourseService courseService;
-    private final EmailServico emailService;
+    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
@@ -53,7 +53,7 @@ public class AccessControlService {
 
         repository.save(userToSave);
 
-        CompletableFuture.runAsync(() -> emailService.enviarEmailCodigoVerificacao(authDto.getEmail(), userToSave.getCodigoVerificacao()));
+        CompletableFuture.runAsync(() -> emailService.sendVerificationCode(authDto.getEmail(), userToSave.getCodigoVerificacao()));
 
         return generateAuthResponse(userToSave);
     }
@@ -92,7 +92,7 @@ public class AccessControlService {
         user.setCodigoVerificacao(newVerificationCode);
         repository.save(user);
 
-        CompletableFuture.runAsync(() -> emailService.enviarEmailCodigoVerificacao(email, newVerificationCode));
+        CompletableFuture.runAsync(() -> emailService.sendVerificationCode(email, newVerificationCode));
     }
 
     public void changePassword(String email, String password, String newPassword) throws AcsExcecao {
@@ -113,7 +113,7 @@ public class AccessControlService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("recovery", true);
         String token = jwtService.generateToken(claims, user, 1000 * 60 * 15);
-        CompletableFuture.runAsync(() -> emailService.enviarEmailDeRecuperacaoDeSenha(user, token));
+        CompletableFuture.runAsync(() -> emailService.sendRequestRecoveryPassword(user, token));
     }
 
     public void forgotPassword(String token, String newPassword) throws AcsExcecao {

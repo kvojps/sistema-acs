@@ -11,21 +11,21 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class EmailServico {
+public class EmailService {
 	
-	private final JavaMailSender emailRemetente;
+	private final JavaMailSender emailSender;
 	
-	public void enviarEmail(EmailDTO emailInfo) {
+	public void sendEmail(EmailDTO emailInfo) {
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setFrom("lapesupe@gmail.com");
 		email.setTo(emailInfo.getDestinatario());
 		email.setText(emailInfo.getMensagem());
 		email.setSubject(emailInfo.getAssunto());
 		
-		emailRemetente.send(email);
+		emailSender.send(email);
 	}
 
-	public void enviarEmailCodigoVerificacao(String email, String codigoVerificacao) {
+	public void sendVerificationCode(String email, String verificationCode) {
 		EmailDTO emailDTO = new EmailDTO();
 
 		emailDTO.setAssunto("Código de verificação - Sistema ACs UPE");
@@ -33,11 +33,11 @@ public class EmailServico {
 		emailDTO.setMensagem(
 				"Para confirmar seu email no Sistema ACs UPE:\n" +
 						"1 - Realize o login no sistema\n" +
-						"2 - Insira e envie este código na página de verificação do sistema: " + codigoVerificacao);
-		enviarEmail(emailDTO);
+						"2 - Insira e envie este código na página de verificação do sistema: " + verificationCode);
+		sendEmail(emailDTO);
 	}
 
-	public void enviarEmailAlteracaoStatusRequisicao(Requisicao requisicao) {
+	public void sendRequestStatusChanged(Requisicao requisicao) {
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setDestinatario(requisicao.getUsuario().getEmail());
 		emailDTO.setAssunto("Modificação na sua requisição " + requisicao.getId() + " - Sistema ACs UPE");
@@ -46,10 +46,10 @@ public class EmailServico {
 				"Para mais informações acesse o Sistema de ACs. " +
 				"Em caso de erros entre em contato com o turmaestest@gmail.com.\n" +
 				"Atenciosamente,\nCoordenação de " + requisicao.getCurso().getNome() + ".");
-		enviarEmail(emailDTO);
+		sendEmail(emailDTO);
 	}
 
-	public void enviarEmailDeRecuperacaoDeSenha(Usuario usuario, String token) {
+	public void sendRequestRecoveryPassword(Usuario usuario, String token) {
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setDestinatario(usuario.getEmail());
 		emailDTO.setAssunto("Solicitação de recuperação de conta - Sistema ACs UPE");
@@ -57,6 +57,6 @@ public class EmailServico {
 				"Nós recebemos um pedido para redefinir a senha do e-mail " + usuario.getEmail()+".\n" +
 				"Clique no link abaixo para redefinir sua senha:\n" +
 				System.getenv("FRONTEND_URL") + "/account/reset/" + token);
-		enviarEmail(emailDTO);
+		sendEmail(emailDTO);
 	}
 }

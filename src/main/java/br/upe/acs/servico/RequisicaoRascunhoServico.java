@@ -29,7 +29,7 @@ public class RequisicaoRascunhoServico {
 
     private final UserService usuarioServico;
 
-    private final EmailServico emailServico;
+    private final EmailService emailService;
 
     public Long adicionarRequisicao(String email) throws AcsExcecao {
         Usuario aluno = usuarioServico.findUserByEmail(email);
@@ -81,7 +81,7 @@ public class RequisicaoRascunhoServico {
         modificarCertificados(requisicao.getCertificados());
         repositorio.save(requisicao);
 
-        CompletableFuture.runAsync(() -> emailServico.enviarEmailAlteracaoStatusRequisicao(requisicao));
+        CompletableFuture.runAsync(() -> emailService.sendRequestStatusChanged(requisicao));
 
         return token;
     }
