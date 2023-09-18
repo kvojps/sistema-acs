@@ -1,6 +1,6 @@
 package br.upe.acs.controlador;
 
-import br.upe.acs.servico.RequisicaoPDFCasoDeUso;
+import br.upe.acs.servico.RequestPdfService;
 import br.upe.acs.utils.AcsExcecao;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class RequisicaoPDFControlador {
 
-    private final RequisicaoPDFCasoDeUso casoDeUso;
+    private final RequestPdfService casoDeUso;
 
     @Operation(
             summary = "Baixar pdf de uma requisição",
@@ -34,7 +34,7 @@ public class RequisicaoPDFControlador {
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDisposition(ContentDisposition.attachment()
                     .filename("requisição" + requisicaoId + ".pdf").build());
-            resposta = ResponseEntity.ok().headers(headers).body(casoDeUso.gerarRequisicaoPDF(requisicaoId));
+            resposta = ResponseEntity.ok().headers(headers).body(casoDeUso.generateRequestPdf(requisicaoId));
         } catch (AcsExcecao e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
