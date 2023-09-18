@@ -9,7 +9,7 @@ import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.dominio.enums.PerfilEnum;
 import br.upe.acs.repositorio.UsuarioRepositorio;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import br.upe.acs.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

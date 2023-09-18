@@ -6,8 +6,8 @@ import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RecuperacaoDeContaDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.servico.AccessControlService;
-import br.upe.acs.utils.AcsException;
-import br.upe.acs.utils.InvalidRegisterException;
+import br.upe.acs.exceptions.AcsException;
+import br.upe.acs.exceptions.InvalidRegisterException;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,17 +30,11 @@ public class ControleAcessoControlador {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegistroDTO registerDto, BindingResult bindingResult) {
-        try {
-            if (bindingResult.hasErrors()) {
-                throw new InvalidRegisterException(String.join("; ", bindingResult.getAllErrors().stream()
-                        .map(DefaultMessageSourceResolvable::getDefaultMessage).toList()));
-            }
-            return ResponseEntity.status(HttpStatus.CREATED).body(servico.registerUser(registerDto));
-        }catch (InvalidRegisterException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (AcsException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+        if (bindingResult.hasErrors()) {
+            throw new InvalidRegisterException(String.join("; ", bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).toList()));
         }
+        return ResponseEntity.status(HttpStatus.CREATED).body(servico.registerUser(registerDto));
     }
 
     @Operation(summary = "Login de usuário",

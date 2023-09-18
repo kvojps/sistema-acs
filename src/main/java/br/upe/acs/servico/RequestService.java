@@ -5,7 +5,7 @@ import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

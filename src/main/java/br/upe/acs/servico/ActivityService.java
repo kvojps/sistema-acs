@@ -4,7 +4,7 @@ import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.dto.AtividadeDTO;
 import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.repositorio.AtividadeRepositorio;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

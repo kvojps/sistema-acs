@@ -1,7 +1,7 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.dominio.dto.ViaCepDTO;
-import br.upe.acs.utils.CepInvalidoExcecao;
+import br.upe.acs.exceptions.CepInvalidoExcecao;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

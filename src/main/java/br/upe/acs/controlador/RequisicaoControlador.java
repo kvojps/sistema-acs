@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.servico.RequestService;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.upe.acs.controlador.respostas.CursoResposta;
 import br.upe.acs.servico.CourseService;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 

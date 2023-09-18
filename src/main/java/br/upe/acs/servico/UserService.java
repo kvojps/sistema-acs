@@ -3,7 +3,7 @@ package br.upe.acs.servico;
 import br.upe.acs.dominio.Curso;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.repositorio.UsuarioRepositorio;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package br.upe.acs.utils;
+package br.upe.acs.exceptions;
 
 import java.io.Serial;
 

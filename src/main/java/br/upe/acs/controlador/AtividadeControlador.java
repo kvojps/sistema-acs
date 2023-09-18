@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.upe.acs.controlador.respostas.AtividadeResposta;
 import br.upe.acs.dominio.dto.AtividadeDTO;
 import br.upe.acs.servico.ActivityService;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

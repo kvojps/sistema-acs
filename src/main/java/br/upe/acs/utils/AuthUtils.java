@@ -2,6 +2,8 @@ package br.upe.acs.utils;
 
 
 import br.upe.acs.dominio.dto.RegistroDTO;
+import br.upe.acs.exceptions.AcsException;
+import br.upe.acs.exceptions.InvalidRegisterException;
 
 import java.util.Random;
 

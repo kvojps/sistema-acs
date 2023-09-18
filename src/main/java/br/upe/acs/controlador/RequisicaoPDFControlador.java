@@ -1,7 +1,7 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.servico.RequestPdfService;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

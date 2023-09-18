@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.CertificadoResposta;
 import br.upe.acs.servico.CertificateService;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;

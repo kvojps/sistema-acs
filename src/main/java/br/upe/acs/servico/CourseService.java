@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.upe.acs.dominio.Curso;
 import br.upe.acs.repositorio.CursoRepositorio;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 
 @Service

@@ -11,7 +11,7 @@ import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
 import br.upe.acs.dominio.vo.MinhasHorasNaAtividadeVO;
 import br.upe.acs.repositorio.UsuarioRepositorio;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;

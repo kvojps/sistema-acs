@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.repositorio.CertificadoRepositorio;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 
 @Service

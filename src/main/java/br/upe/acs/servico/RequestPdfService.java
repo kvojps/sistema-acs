@@ -2,7 +2,7 @@ package br.upe.acs.servico;
 
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
-import br.upe.acs.utils.AcsException;
+import br.upe.acs.exceptions.AcsException;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;

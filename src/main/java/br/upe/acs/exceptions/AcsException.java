@@ -1,4 +1,4 @@
-package br.upe.acs.utils;
+package br.upe.acs.exceptions;
 
 public class AcsException extends RuntimeException {
 
