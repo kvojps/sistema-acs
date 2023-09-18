@@ -5,7 +5,7 @@ import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class RequestService {
         return repository.findAll();
     }
 
-    public List<Requisicao> listRequestByStudent(Long studentId) throws AcsExcecao {
+    public List<Requisicao> listRequestByStudent(Long studentId) throws AcsException {
         Usuario student = userService.findUserById(studentId);
         return student.getRequisicoes();
     }
@@ -37,51 +37,51 @@ public class RequestService {
         return generateRequestsPagination(requests, page, quantity);
     }
 
-    public Requisicao findRequestById(Long id) throws AcsExcecao {
-        return repository.findById(id).orElseThrow(() -> new AcsExcecao("Request not found"));
+    public Requisicao findRequestById(Long id) throws AcsException {
+        return repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
     }
 
-    public void archiveRequest(Long id, String email) throws AcsExcecao {
+    public void archiveRequest(Long id, String email) throws AcsException {
         boolean isFinished = false;
-        Requisicao requisicao = repository.findById(id).orElseThrow(() -> new AcsExcecao("Request not found"));
+        Requisicao requisicao = repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
         Usuario usuario = userService.findUserByEmail(email);
         RequisicaoStatusEnum status = requisicao.getStatusRequisicao();
 
         if (!usuario.equals(requisicao.getUsuario())) {
-            throw new AcsExcecao("User not authorized to archive this request");
+            throw new AcsException("User not authorized to archive this request");
         }
         if (status == RequisicaoStatusEnum.ACEITO || status == RequisicaoStatusEnum.NEGADO) {
             isFinished = true;
         }
         if (!isFinished) {
-            throw new AcsExcecao("Unable to archive an unfinished request");
+            throw new AcsException("Unable to archive an unfinished request");
         }
 
         if (!requisicao.isArquivada()) {
             requisicao.setArquivada(true);
             repository.save(requisicao);
         } else {
-            throw new AcsExcecao("Request already archived");
+            throw new AcsException("Request already archived");
         }
     }
 
-    public void unarchiveRequest(Long id, String email) throws AcsExcecao {
+    public void unarchiveRequest(Long id, String email) throws AcsException {
         Requisicao request = repository.findById(id).orElseThrow();
         Usuario usuario = userService.findUserByEmail(email);
 
         if (!usuario.equals(request.getUsuario())) {
-            throw new AcsExcecao("User not authorized to unarchive this request");
+            throw new AcsException("User not authorized to unarchive this request");
         }
 
         if (request.isArquivada()) {
             request.setArquivada(false);
             repository.save(request);
         } else {
-            throw new AcsExcecao("The request is not archived");
+            throw new AcsException("The request is not archived");
         }
     }
 
-    public List<Requisicao> listArchivedRequests(String email) throws AcsExcecao {
+    public List<Requisicao> listArchivedRequests(String email) throws AcsException {
         Usuario student = userService.findUserByEmail(email);
 
         return student.getRequisicoes().stream().filter(Requisicao::isArquivada).toList();

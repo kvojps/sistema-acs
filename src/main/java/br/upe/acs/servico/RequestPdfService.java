@@ -2,7 +2,7 @@ package br.upe.acs.servico;
 
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
@@ -33,11 +33,11 @@ public class RequestPdfService {
         this.templateEngine = templateEngine;
     }
 
-    public byte[] generateRequestPdf(Long id) throws AcsExcecao {
+    public byte[] generateRequestPdf(Long id) throws AcsException {
         Requisicao requisicao = service.findRequestById(id);
 
         if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
-            throw new AcsExcecao("It is not possible to generate a PDF of a request that is not in transit");
+            throw new AcsException("It is not possible to generate a PDF of a request that is not in transit");
         }
 
         Context context = defineTemplateValuesHtml(requisicao);
@@ -60,7 +60,7 @@ public class RequestPdfService {
             return filePdf;
 
         } catch (Exception e) {
-            throw new AcsExcecao("Error generating pdf file");
+            throw new AcsException("Error generating pdf file");
         }
 
     }

@@ -7,7 +7,7 @@ import br.upe.acs.dominio.enums.CertificadoStatusEnum;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.CertificadoRepositorio;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,18 +28,18 @@ public class RequestSketchService {
     private final EmailService emailService;
 
     //TODO: This method really add a request?
-    public Long addRequest(String email) throws AcsExcecao {
+    public Long addRequest(String email) throws AcsException {
         Usuario student = userService.findUserByEmail(email);
         List<Requisicao> requestsSketch = student.getRequisicoes().stream()
                 .filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
 
         if (student.getHorasEnsino() + student.getHorasExtensao() + student.getHorasGestao() +
                 student.getHorasPesquisa() >= student.getCurso().getHorasComplementares()) {
-            throw new AcsExcecao("The student has already completed his additional hours");
+            throw new AcsException("The student has already completed his additional hours");
         }
 
         if (requestsSketch.size() >= 2) {
-            throw new AcsExcecao("Student can only have 2 draft requests");
+            throw new AcsException("Student can only have 2 draft requests");
         }
 
         Requisicao request = new Requisicao();
@@ -55,20 +55,20 @@ public class RequestSketchService {
         return requestSaved.getId();
     }
 
-    public String submitRequest(Long requestId) throws AcsExcecao {
+    public String submitRequest(Long requestId) throws AcsException {
         Requisicao request = requestService.findRequestById(requestId);
 
         if (request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
-            throw new AcsExcecao("This request has already been submitted");
+            throw new AcsException("This request has already been submitted");
         }
 
         if (request.getCertificados().isEmpty()) {
-            throw new AcsExcecao("A request needs at least one certificate");
+            throw new AcsException("A request needs at least one certificate");
         }
         List<Certificado> invalidCertificates = request.getCertificados().stream()
                 .filter(certificado -> !isValidCertificate(certificado)).toList();
         if (!invalidCertificates.isEmpty()) {
-            throw new AcsExcecao(
+            throw new AcsException(
                     "Certificates: " + String.join( "; ", invalidCertificates.stream()
                             .map(certificado -> certificado.getId().toString()).toList())
                             + " have invalid data."
@@ -86,14 +86,14 @@ public class RequestSketchService {
         return token;
     }
 
-    public void deleteRequest(Long requestId, String email) throws AcsExcecao {
+    public void deleteRequest(Long requestId, String email) throws AcsException {
         Requisicao requisicao = requestService.findRequestById(requestId);
         if (!requisicao.getUsuario().getEmail().equals(email)) {
-            throw new AcsExcecao("User without permission to delete this request");
+            throw new AcsException("User without permission to delete this request");
         }
 
         if (!requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)) {
-            throw new AcsExcecao("A request already submitted cannot be deleted");
+            throw new AcsException("A request already submitted cannot be deleted");
         }
 
         repository.deleteById(requestId);

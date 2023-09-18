@@ -1,7 +1,7 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.servico.RequestPdfService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class RequisicaoPDFControlador {
             headers.setContentDisposition(ContentDisposition.attachment()
                     .filename("requisição" + requisicaoId + ".pdf").build());
             resposta = ResponseEntity.ok().headers(headers).body(casoDeUso.generateRequestPdf(requisicaoId));
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 

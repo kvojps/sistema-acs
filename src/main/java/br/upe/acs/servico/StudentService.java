@@ -11,7 +11,7 @@ import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
 import br.upe.acs.dominio.vo.MinhasHorasNaAtividadeVO;
 import br.upe.acs.repositorio.UsuarioRepositorio;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -27,9 +27,9 @@ public class StudentService {
     private final UsuarioRepositorio repository;
     private final ActivityService activityService;
 
-    public Map<String, Object> listRequestsPaginated(int page, String email, int amount) throws AcsExcecao {
+    public Map<String, Object> listRequestsPaginated(int page, String email, int amount) throws AcsException {
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
-                new AcsExcecao("There is no user associated with this id"));
+                new AcsException("There is no user associated with this id"));
 
         List<RequisicaoSimplesResposta> studentRequests = new ArrayList<>(student.getRequisicoes().stream()
                 .filter(requisicao -> !requisicao.isArquivada())
@@ -41,10 +41,10 @@ public class StudentService {
     //TODO: ADD TO CONTROLLER
     //TODO: REFACTOR THIS METHOD TO USE JUST REPO
     public Map<String, Object> listStudentRequestsPaginatedByAxle(Long studentId, EixoEnum axle, int page, int amount)
-            throws AcsExcecao {
+            throws AcsException {
 
         Optional<Usuario> student = repository.findById(studentId);
-        List<Requisicao> requests = student.orElseThrow(() -> new AcsExcecao("")).getRequisicoes().stream()
+        List<Requisicao> requests = student.orElseThrow(() -> new AcsException("")).getRequisicoes().stream()
                 .filter(requisicao -> requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO).toList();
 
         List<Requisicao> requestFiltered = new ArrayList<>();
@@ -66,18 +66,18 @@ public class StudentService {
         return generateRequestsPagination(studentRequests, page, amount);
     }
 
-    public AtividadeComplementarVO generateStudentAcs(String email) throws AcsExcecao {
+    public AtividadeComplementarVO generateStudentAcs(String email) throws AcsException {
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
-                new AcsExcecao("There is no user associated with this id"));
+                new AcsException("There is no user associated with this id"));
 
         return new AtividadeComplementarVO(student);
     }
 
-    public MinhasHorasNaAtividadeVO generateHoursAcsStatusByActivity(String email, Long activityId) throws AcsExcecao {
+    public MinhasHorasNaAtividadeVO generateHoursAcsStatusByActivity(String email, Long activityId) throws AcsException {
         Atividade atividade = activityService.findActivityById(activityId);
 
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
-                new AcsExcecao("There is no user associated with this id"));
+                new AcsException("There is no user associated with this id"));
 
         return calculateActivityHours(student, atividade.getChMaxima());
     }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.upe.acs.controlador.respostas.CursoResposta;
 import br.upe.acs.servico.CourseService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +45,7 @@ public class CursoControlador {
 		try {
 			CursoResposta cursoResposta = new CursoResposta(servico.findCourseById(id));
 			resposta =  ResponseEntity.ok(cursoResposta);
-		} catch (AcsExcecao e) {
+		} catch (AcsException e) {
 			resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
 		}
 

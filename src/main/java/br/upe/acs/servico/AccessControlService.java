@@ -9,7 +9,7 @@ import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.dominio.enums.PerfilEnum;
 import br.upe.acs.repositorio.UsuarioRepositorio;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import br.upe.acs.utils.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -38,7 +38,7 @@ public class AccessControlService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public AutenticacaoResposta registerUser(RegistroDTO authDto) throws AcsExcecao {
+    public AutenticacaoResposta registerUser(RegistroDTO authDto) {
         validateUserRegister(authDto);
 
         ModelMapper modelMapper = new ModelMapper();
@@ -58,34 +58,34 @@ public class AccessControlService {
         return generateAuthResponse(userToSave);
     }
 
-    public AutenticacaoResposta loginUser(LoginDTO login) throws AcsExcecao {
+    public AutenticacaoResposta loginUser(LoginDTO login) {
         Usuario user = repository.findByEmail(login.getEmail()).orElseThrow(() ->
-                new AcsExcecao("There is no user associated with this id"));
+                new AcsException("There is no user associated with this id"));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getSenha()));
 
         return generateAuthResponse(user);
     }
 
-    public void verifyUser(String email, String verificationCode) throws AcsExcecao {
+    public void verifyUser(String email, String verificationCode) {
         Usuario user = repository.findByEmail(email).orElseThrow(() ->
-                new AcsExcecao("There is no user associated with this id"));
+                new AcsException("There is no user associated with this id"));
 
         if (user.isVerificado()) {
-            throw new AcsExcecao("This user is already verified");
+            throw new AcsException("This user is already verified");
         } else if (!verificationCode.equals(user.getCodigoVerificacao())) {
-            throw new AcsExcecao("The verification code is incorrect");
+            throw new AcsException("The verification code is incorrect");
         }
 
         user.setVerificado(true);
         repository.save(user);
     }
 
-    public void resendVerificationCode(String email) throws AcsExcecao {
+    public void resendVerificationCode(String email) {
         Optional<Usuario> userOpt = repository.findByEmail(email);
-        Usuario user = userOpt.orElseThrow(() -> new AcsExcecao("There is no user associated with this id"));
+        Usuario user = userOpt.orElseThrow(() -> new AcsException("There is no user associated with this id"));
 
         if (user.isVerificado()) {
-            throw new AcsExcecao("This user is already verified");
+            throw new AcsException("This user is already verified");
         }
 
         String newVerificationCode = generateVerificationCode();
@@ -95,20 +95,20 @@ public class AccessControlService {
         CompletableFuture.runAsync(() -> emailService.sendVerificationCode(email, newVerificationCode));
     }
 
-    public void changePassword(String email, String password, String newPassword) throws AcsExcecao {
+    public void changePassword(String email, String password, String newPassword) {
         validatePassword(newPassword);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
         Usuario user = repository.findByEmail(email).orElseThrow(() ->
-                new AcsExcecao("There is no user associated with this email"));
+                new AcsException("There is no user associated with this email"));
         user.setSenha(passwordEncoder.encode(newPassword));
 
         repository.save(user);
     }
 
-    public void recoveryAccount(String email) throws AcsExcecao {
+    public void recoveryAccount(String email) {
         Optional<Usuario> userOpt = repository.findByEmail(email);
-        Usuario user = userOpt.orElseThrow(() -> new AcsExcecao("User not found"));
+        Usuario user = userOpt.orElseThrow(() -> new AcsException("User not found"));
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("recovery", true);
@@ -116,30 +116,30 @@ public class AccessControlService {
         CompletableFuture.runAsync(() -> emailService.sendRequestRecoveryPassword(user, token));
     }
 
-    public void forgotPassword(String token, String newPassword) throws AcsExcecao {
+    public void forgotPassword(String token, String newPassword) {
         boolean isTokenRecovery;
 
         try {
             isTokenRecovery = jwtService.extractClaim(token,
                     (claims -> claims.get("recovery", Boolean.class)));
         } catch (Exception e) {
-            throw new AcsExcecao("Invalid token!");
+            throw new AcsException("Invalid token!");
         }
 
         if (!isTokenRecovery) {
-            throw new AcsExcecao("Invalid token!");
+            throw new AcsException("Invalid token!");
         }
 
         String email = jwtService.extractUsername(token);
         Optional<Usuario> userOpt = repository.findByEmail(email);
-        Usuario user = userOpt.orElseThrow(() -> new AcsExcecao("Invalid token"));
+        Usuario user = userOpt.orElseThrow(() -> new AcsException("Invalid token"));
         validatePassword(newPassword);
         user.setSenha(passwordEncoder.encode(newPassword));
 
         repository.save(user);
     }
 
-    private void validateUserRegister(RegistroDTO authDto) throws AcsExcecao {
+    private void validateUserRegister(RegistroDTO authDto) {
         String formattedCpf = authDto.getCpf().replaceAll("[^0-9]", "");
         boolean cpfExists = repository.findByCpf(formattedCpf).isPresent();
         boolean emailExists = repository.findByEmail(authDto.getEmail()).isPresent();

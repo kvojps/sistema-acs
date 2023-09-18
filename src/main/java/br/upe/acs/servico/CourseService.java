@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.upe.acs.dominio.Curso;
 import br.upe.acs.repositorio.CursoRepositorio;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,8 +19,8 @@ public class CourseService {
 		return repository.findAll();
 	}
 	
-	public Curso findCourseById(Long id) throws AcsExcecao {
+	public Curso findCourseById(Long id) throws AcsException {
 		return repository.findById(id).orElseThrow(() ->
-				new AcsExcecao("There is no user associated with this email"));
+				new AcsException("There is no course associated with this id"));
 	}
 }

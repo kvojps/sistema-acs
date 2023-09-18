@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.CertificadoResposta;
 import br.upe.acs.servico.CertificateService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +38,7 @@ public class CertificadoControlador {
         try {
             CertificadoResposta certificadoResposta = new CertificadoResposta(servico.findCertificateById(id));
             resposta = ResponseEntity.ok(certificadoResposta);
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
         
@@ -56,7 +56,7 @@ public class CertificadoControlador {
         try {
             ArquivoResposta arquivo = new ArquivoResposta(servico.findCertificatePdfById(certificadoId));
             resposta = ResponseEntity.ok(arquivo);
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
@@ -121,7 +121,7 @@ public class CertificadoControlador {
         try {
             servico.deleteCertificate(certificadoId, email);
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 

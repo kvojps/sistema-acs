@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.upe.acs.controlador.respostas.AtividadeResposta;
 import br.upe.acs.dominio.dto.AtividadeDTO;
 import br.upe.acs.servico.ActivityService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,7 @@ public class AtividadeControlador {
         try {
             AtividadeResposta atividadeResposta = new AtividadeResposta(servico.findActivityById(id));
             resposta = ResponseEntity.ok(atividadeResposta);
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
@@ -64,7 +64,7 @@ public class AtividadeControlador {
     	ResponseEntity<?> resposta;
     	try {
     		resposta = ResponseEntity.ok(servico.findActivityByAxle(eixo).stream().map(AtividadeResposta::new).toList());
-    	} catch(AcsExcecao e) {
+    	} catch(AcsException e) {
     		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
     	return resposta;
@@ -80,7 +80,7 @@ public class AtividadeControlador {
 
         try {
             resposta = ResponseEntity.ok(new AtividadeResposta(servico.createActivity(atividade)));
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
         return resposta;
@@ -111,7 +111,7 @@ public class AtividadeControlador {
         try {
             servico.deleteActivity(id);
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 

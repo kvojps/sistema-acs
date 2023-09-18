@@ -1,7 +1,7 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +38,7 @@ public class AlunoControlador {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
             resposta = ResponseEntity.ok(servico.listRequestsPaginated(pagina, email, quantidade));
 
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
@@ -56,7 +56,7 @@ public class AlunoControlador {
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
             resposta = ResponseEntity.ok(servico.generateStudentAcs(email));
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
@@ -74,7 +74,7 @@ public class AlunoControlador {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
             resposta =  ResponseEntity.ok(servico.generateHoursAcsStatusByActivity(email, atividadeId));
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 

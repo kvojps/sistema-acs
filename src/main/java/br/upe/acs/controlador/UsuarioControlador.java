@@ -3,7 +3,7 @@ package br.upe.acs.controlador;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controlador.respostas.UsuarioResposta;
 import br.upe.acs.servico.UserService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class UsuarioControlador {
     	try {
     		UsuarioResposta usuarioResposta = new UsuarioResposta(servico.findUserById(id));
     		resposta = ResponseEntity.ok(usuarioResposta);
-    	} catch(AcsExcecao e){
+    	} catch(AcsException e){
     		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}
     	
@@ -54,7 +54,7 @@ public class UsuarioControlador {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
             var usuarioResposta = new UsuarioResposta(servico.findUserByEmail(email));
             resposta = ResponseEntity.ok(usuarioResposta);
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
@@ -68,13 +68,13 @@ public class UsuarioControlador {
             @RequestParam String nomeCompleto,
             @RequestParam String telefone,
             @RequestParam Long cursoId
-    ) throws AcsExcecao {
+    ) throws AcsException {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         ResponseEntity<?> resposta;
         try {
             servico.updateUser(email, nomeCompleto, telefone, cursoId);
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
         return resposta;
@@ -88,7 +88,7 @@ public class UsuarioControlador {
         try {
             servico.deactivateUser(email);
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 

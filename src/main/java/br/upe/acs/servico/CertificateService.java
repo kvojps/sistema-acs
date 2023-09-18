@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.repositorio.CertificadoRepositorio;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,36 +28,36 @@ public class CertificateService {
     private final RequestService requestService;
     private final ActivityService activityService;
 
-    public Certificado findCertificateById(Long id) throws AcsExcecao {
+    public Certificado findCertificateById(Long id) throws AcsException {
         return repository.findById(id).orElseThrow(() ->
-                new AcsExcecao("Certificate not found"));
+                new AcsException("Certificate not found"));
     }
 
-    public byte[] findCertificatePdfById(Long certificateId) throws AcsExcecao {
+    public byte[] findCertificatePdfById(Long certificateId) throws AcsException {
         Certificado certificate = findCertificateById(certificateId);
         return certificate.getCertificado();
     }
 
-    public Long addCertificate(MultipartFile file, Long requestId, String email) throws AcsExcecao, IOException {
+    public Long addCertificate(MultipartFile file, Long requestId, String email) throws AcsException, IOException {
         Requisicao requisicao = requestService.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
-            throw new AcsExcecao("Only pdf is accepted");
+            throw new AcsException("Only pdf is accepted");
         }
         if (!requisicao.getUsuario().getEmail().equals(email)) {
-            throw new AcsExcecao("Certificate not found");
+            throw new AcsException("Certificate not found");
         }
         if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
-            throw new AcsExcecao("This request is already submitted and not pin new certificates");
+            throw new AcsException("This request is already submitted and not pin new certificates");
         }
         if (requisicao.getCertificados().size() >= 10) {
-            throw new AcsExcecao("This request has more certificates than allowed");
+            throw new AcsException("This request has more certificates than allowed");
         }
 
         byte[] fileBytes = file.getBytes();
 
         if (isCertificateUnique(requisicao, fileBytes)) {
-            throw new AcsExcecao("This certificate has already been registered");
+            throw new AcsException("This certificate has already been registered");
         }
 
         Certificado certificate = new Certificado();
@@ -70,10 +70,10 @@ public class CertificateService {
     }
 
     public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email)
-            throws AcsExcecao, ParseException {
+            throws AcsException, ParseException {
         Certificado certificado = findCertificateById(certificateId);
         if (!certificado.getRequisicao().getUsuario().getEmail().equals(email)) {
-            throw new AcsExcecao("Certificate not found");
+            throw new AcsException("Certificate not found");
         }
         Atividade atividade = null;
         if (certificateDto.getAtividadeId() != 0) {
@@ -95,14 +95,14 @@ public class CertificateService {
         repository.save(certificado);
     }
 
-    public void deleteCertificate(Long certificateId, String email) throws AcsExcecao {
+    public void deleteCertificate(Long certificateId, String email) throws AcsException {
         Certificado certificate = findCertificateById(certificateId);
         if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
-            throw new AcsExcecao("User unauthorized to delete this certificate");
+            throw new AcsException("User unauthorized to delete this certificate");
         }
 
         if (!certificate.getStatusCertificado().equals(CertificadoStatusEnum.RASCUNHO)) {
-            throw new AcsExcecao("A certificate already submitted cannot be deleted");
+            throw new AcsException("A certificate already submitted cannot be deleted");
         }
 
         repository.deleteById(certificateId);

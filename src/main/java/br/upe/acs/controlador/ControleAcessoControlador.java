@@ -6,45 +6,41 @@ import br.upe.acs.dominio.dto.LoginDTO;
 import br.upe.acs.dominio.dto.RecuperacaoDeContaDTO;
 import br.upe.acs.dominio.dto.RegistroDTO;
 import br.upe.acs.servico.AccessControlService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
+import br.upe.acs.utils.InvalidRegisterException;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/acesso/auth")
+@RequestMapping("api/auth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ControleAcessoControlador {
 
     private final AccessControlService servico;
-
     private final JwtService jwtService;
 
-    @Operation(summary = "Cadastro de usuário",
-    		description = "Esse endpoint deve ser capaz de cadastrar um usuário no sistema.\n"
-    				+ "\nPré-condição: Cadastar-se com email institucional, senha com 8 ou mais caracteres incluindo caracteres especiais, letras maiúsculas e minúsculas. \n"
-    				+ "\nPós-condição: O usuário será direcionado para a tela de perfil para certificar que é membro da instituição, passando por um processo de verificação.")
-    @PostMapping("/cadastro")
-    public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody RegistroDTO registro, BindingResult bindingResult) {
-        ResponseEntity<?> resposta;
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegistroDTO registerDto, BindingResult bindingResult) {
         try {
             if (bindingResult.hasErrors()) {
-                throw new AcsExcecao(String.join("; ", bindingResult.getAllErrors().stream()
+                throw new InvalidRegisterException(String.join("; ", bindingResult.getAllErrors().stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage).toList()));
             }
-            resposta = ResponseEntity.ok(servico.registerUser(registro));
-        } catch (Exception e) {
-            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(servico.registerUser(registerDto));
+        }catch (InvalidRegisterException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (AcsException e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
-
-        return resposta;
     }
 
     @Operation(summary = "Login de usuário",
@@ -78,7 +74,7 @@ public class ControleAcessoControlador {
         try {
             servico.changePassword(email, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
@@ -99,7 +95,7 @@ public class ControleAcessoControlador {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
             servico.verifyUser(email, codigo);
             resposta = ResponseEntity.ok(new MensagemUtil("O usuário foi verificado"));
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.status(406).body(new MensagemUtil(e.getMessage()));
         }
 
@@ -120,7 +116,7 @@ public class ControleAcessoControlador {
         try {
             servico.resendVerificationCode(email);
             resposta = ResponseEntity.ok(new MensagemUtil("Código de verificação reenviado"));
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
@@ -133,7 +129,7 @@ public class ControleAcessoControlador {
         try{
             servico.recoveryAccount(email);
             return ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
         return resposta;
@@ -149,7 +145,7 @@ public class ControleAcessoControlador {
         try {
             servico.forgotPassword(token, recuperacaoDeContaDTO.novaSenha());
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 

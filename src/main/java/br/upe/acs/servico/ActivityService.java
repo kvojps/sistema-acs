@@ -4,7 +4,7 @@ import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.dto.AtividadeDTO;
 import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.repositorio.AtividadeRepositorio;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -21,13 +21,13 @@ public class ActivityService {
 		return repository.findAll();
 	}
 
-	public Atividade findActivityById(Long id) throws AcsExcecao {
+	public Atividade findActivityById(Long id) throws AcsException {
 		return repository.findById(id).orElseThrow(() ->
-				new AcsExcecao("Activity not found"));
+				new AcsException("Activity not found"));
 	}
 
 	//TODO: REFACTOR THIS METHOD TO USE JUST REPO
-	public List<Atividade> findActivityByAxle(String axle) throws AcsExcecao{
+	public List<Atividade> findActivityByAxle(String axle) throws AcsException {
 		boolean isExists = false;
 		EixoEnum axleFormat = null;
 		for(EixoEnum c : EixoEnum.values()) {
@@ -37,34 +37,34 @@ public class ActivityService {
 			}
 		}
 		if(!isExists) {
-			throw new AcsExcecao("This axle does not exists");
+			throw new AcsException("This axle does not exists");
 		}
 
 		List<Atividade> activities = repository.findByEixo(axleFormat);
 		if(activities.isEmpty()) {
-			throw new AcsExcecao("Does not exist one activity related with this axle");
+			throw new AcsException("Does not exist one activity related with this axle");
 		}
 
 		return activities;
 	}
 
-	public Atividade createActivity(AtividadeDTO activity) throws AcsExcecao {
+	public Atividade createActivity(AtividadeDTO activity) throws AcsException {
 		ModelMapper modelMapper = new ModelMapper();
 		Atividade activityToSave = modelMapper.map(activity, Atividade.class);
 
 		return repository.save(activityToSave);
 	}
 
-	public void deleteActivity(Long id) throws AcsExcecao {
+	public void deleteActivity(Long id) throws AcsException {
 		repository.findById(id).orElseThrow(() ->
-				new AcsExcecao("Activity not found"));
+				new AcsException("Activity not found"));
 
         repository.deleteById(id);
     }
 
-    public Atividade updateActivity(Long id, AtividadeDTO activity) throws AcsExcecao {
+    public Atividade updateActivity(Long id, AtividadeDTO activity) throws AcsException {
         Atividade activityUpdated = repository.findById(id).orElseThrow(() ->
-				new AcsExcecao("Activity not found"));
+				new AcsException("Activity not found"));
 
         activityUpdated.setEixo(activity.getEixo());
         activityUpdated.setDescricao(activity.getDescricao());

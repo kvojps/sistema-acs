@@ -2,7 +2,7 @@ package br.upe.acs.controlador;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.servico.RequestSketchService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,7 +52,7 @@ public class RequisicaoRascunhoControlador {
         ResponseEntity<?> resposta;
         try {
             resposta = ResponseEntity.ok(new MensagemUtil(servico.submitRequest(requisicaoId)));
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 
@@ -72,7 +72,7 @@ public class RequisicaoRascunhoControlador {
         try {
             servico.deleteRequest(requisicaoId, email);
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
 

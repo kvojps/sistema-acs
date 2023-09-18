@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.servico.RequestService;
-import br.upe.acs.utils.AcsExcecao;
+import br.upe.acs.utils.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
@@ -58,7 +58,7 @@ public class RequisicaoControlador {
         try {
             return ResponseEntity.ok(servico.listRequestByStudent(alunoId).stream()
                     .filter(requisicao -> !requisicao.isArquivada()).map(RequisicaoResposta::new).toList());
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             return ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
     }
@@ -74,7 +74,7 @@ public class RequisicaoControlador {
         try {
             RequisicaoResposta requisicaoResposta = new RequisicaoResposta(servico.findRequestById(id));
             return ResponseEntity.ok(requisicaoResposta);
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             return ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
     }
@@ -92,7 +92,7 @@ public class RequisicaoControlador {
         try {
             resposta = ResponseEntity.ok(servico.listArchivedRequests(email)
                     .stream().map(RequisicaoResposta::new).toList());
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
 
@@ -112,7 +112,7 @@ public class RequisicaoControlador {
         try {
             servico.archiveRequest(id, email);
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
         return resposta;
@@ -131,7 +131,7 @@ public class RequisicaoControlador {
         try {
             servico.unarchiveRequest(id, email);
             resposta = ResponseEntity.noContent().build();
-        } catch (AcsExcecao e) {
+        } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(e.getMessage());
         }
 

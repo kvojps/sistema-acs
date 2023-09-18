@@ -8,35 +8,11 @@ import java.util.Random;
 
 public class AuthUtils {
 
-    public void validateAuthData(RegistroDTO authDto, boolean cpfExists, boolean emailExists) throws AcsExcecao {
-        checkUniqueData(cpfExists, emailExists);
-        validatePassword(authDto.getSenha());
-        validateInstitutionalEmail(authDto.getEmail());
-        validateEnrollment(authDto.getMatricula());
-        validatePeriod(authDto.getPeriodo());
-    }
-
-    private void checkUniqueData(boolean cpfExists, boolean emailExists) throws AcsExcecao {
-        String message = "";
-
-        if (cpfExists) {
-            message += "cpf";
-        }
-
-        if (emailExists) {
-            message += "/email";
-        }
-
-        if (!message.isBlank()) {
-            throw new AcsExcecao("This data:  " + message + " already be registered!");
-        }
-    }
-
-    public static void validatePassword(String password) throws AcsExcecao {
+    public static void validatePassword(String password) {
         boolean withUppercase = false, withLowercase = false, withNumber = false, withSpecialChars = false;
 
         if (password.length() < 8) {
-            throw new AcsExcecao("The password must be 8 or more characters!");
+            throw new InvalidRegisterException("The password must be 8 or more characters!");
         }
 
         for (char characters : password.toCharArray()) {
@@ -67,35 +43,7 @@ public class AuthUtils {
                 error.append(" specials;");
             }
 
-            throw new AcsExcecao(error.toString());
-        }
-    }
-
-    private void validateInstitutionalEmail(String email) throws AcsExcecao {
-        if (!email.split("@")[1].equals("upe.br")) {
-            throw new AcsExcecao("Invalid email! Please insert a valid institutional email");
-        }
-    }
-
-    private void validateEnrollment(String enrollment) throws AcsExcecao {
-
-        if (!enrollment.matches("[0-9]+")) {
-            throw new AcsExcecao("Please, insert a valid enrollment");
-        }
-
-        if (enrollment.length() < 4 || enrollment.length() > 9) {
-            throw new AcsExcecao("Please, insert a valid enrollment");
-        }
-
-        if (Integer.parseInt(enrollment) < 1) {
-            throw new AcsExcecao("Please, insert a valid enrollments");
-        }
-
-    }
-
-    private void validatePeriod(int period) throws AcsExcecao {
-        if (period < 1 || period > 12) {
-            throw new AcsExcecao("Pleas, insert a valid period");
+            throw new InvalidRegisterException(error.toString());
         }
     }
 
@@ -111,5 +59,57 @@ public class AuthUtils {
         }
 
         return code.toString();
+    }
+
+    public void validateAuthData(RegistroDTO authDto, boolean cpfExists, boolean emailExists) {
+        checkUniqueData(cpfExists, emailExists);
+        validatePassword(authDto.getSenha());
+        validateInstitutionalEmail(authDto.getEmail());
+        validateEnrollment(authDto.getMatricula());
+        validatePeriod(authDto.getPeriodo());
+    }
+
+    private void checkUniqueData(boolean cpfExists, boolean emailExists) {
+        String message = "";
+
+        if (cpfExists) {
+            message += "cpf";
+        }
+
+        if (emailExists) {
+            message += "/email";
+        }
+
+        if (!message.isBlank()) {
+            throw new AcsException("This data:  " + message + " already be registered!");
+        }
+    }
+
+    private void validateInstitutionalEmail(String email) {
+        if (!email.split("@")[1].equals("upe.br")) {
+            throw new InvalidRegisterException("Invalid email! Please insert a valid institutional email");
+        }
+    }
+
+    private void validateEnrollment(String enrollment) {
+
+        if (!enrollment.matches("[0-9]+")) {
+            throw new InvalidRegisterException("Please, insert a valid enrollment");
+        }
+
+        if (enrollment.length() < 4 || enrollment.length() > 9) {
+            throw new InvalidRegisterException("Please, insert a valid enrollment");
+        }
+
+        if (Integer.parseInt(enrollment) < 1) {
+            throw new InvalidRegisterException("Please, insert a valid enrollments");
+        }
+
+    }
+
+    private void validatePeriod(int period) {
+        if (period < 1 || period > 12) {
+            throw new InvalidRegisterException("Please, insert a valid period");
+        }
     }
 }
