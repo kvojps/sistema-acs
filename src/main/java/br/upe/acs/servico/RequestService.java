@@ -3,6 +3,7 @@ package br.upe.acs.servico;
 import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.Requisicao;
+import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.repositorio.RequisicaoRepositorio;
 import br.upe.acs.exceptions.AcsException;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static br.upe.acs.utils.PaginationUtils.generateRequestsPagination;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,22 @@ public class RequestService {
                 .map(RequisicaoSimplesResposta::new).toList();
 
         return generateRequestsPagination(requests, page, quantity);
+    }
+
+    public Map<String, Object> listStudentRequestsPaginatedByAxle(Long studentId, EixoEnum axle, int page, int amount)
+            throws AcsException {
+        List<Requisicao> requests = repository.findByUsuarioId(studentId);
+
+        List<RequisicaoSimplesResposta> studentRequests = requests.stream()
+                .filter(request -> request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO)
+                .filter(request -> !request.isArquivada())
+                .filter(
+                        request -> request.getCertificados().stream()
+                                .anyMatch(certificado -> certificado.getAtividade().getEixo().equals(axle)))
+                .sorted(Comparator.comparing(Requisicao::getStatusRequisicao).reversed())
+                .map(RequisicaoSimplesResposta::new).toList();
+
+        return generateRequestsPagination(studentRequests, page, amount);
     }
 
     public Requisicao findRequestById(Long id) throws AcsException {
@@ -87,26 +106,4 @@ public class RequestService {
         return student.getRequisicoes().stream().filter(Requisicao::isArquivada).toList();
     }
 
-    //TODO: Change this method to utils
-    protected static Map<String, Object> generateRequestsPagination(List<RequisicaoSimplesResposta> list, int page, int amount) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("requisicoes", generatePagination(list, page, amount));
-        response.put("paginaAtual", page);
-        response.put("totalItens", list.size());
-        response.put("totalPaginas", Math.floorDiv(list.size(), amount) + (list.size() % amount == 0 ? 0 : 1));
-
-        return response;
-    }
-
-    //TODO: Change this method to utils
-    private static <T> List<T> generatePagination(List<T> list, int page, int amount) {
-        int starts = page * amount;
-        int end = Math.min(starts + amount, list.size());
-
-        if (starts >= end) {
-            return Collections.emptyList();
-        }
-
-        return list.subList(starts, end);
-    }
 }

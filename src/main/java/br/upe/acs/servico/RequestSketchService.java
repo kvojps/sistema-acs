@@ -27,7 +27,6 @@ public class RequestSketchService {
     private final UserService userService;
     private final EmailService emailService;
 
-    //TODO: This method really add a request?
     public Long addRequest(String email) throws AcsException {
         Usuario student = userService.findUserByEmail(email);
         List<Requisicao> requestsSketch = student.getRequisicoes().stream()

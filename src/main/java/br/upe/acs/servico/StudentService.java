@@ -1,13 +1,10 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.controlador.respostas.CertificadoResposta;
 import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
-import br.upe.acs.dominio.enums.EixoEnum;
-import br.upe.acs.dominio.enums.RequisicaoStatusEnum;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
 import br.upe.acs.dominio.vo.MinhasHorasNaAtividadeVO;
 import br.upe.acs.repositorio.UsuarioRepositorio;
@@ -18,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
-import static br.upe.acs.servico.RequestService.generateRequestsPagination;
+import static br.upe.acs.utils.PaginationUtils.generateRequestsPagination;
 
 @Service
 @RequiredArgsConstructor
@@ -35,34 +32,6 @@ public class StudentService {
                 .filter(requisicao -> !requisicao.isArquivada())
                 .sorted(Comparator.comparing(Requisicao::getStatusRequisicao))
                 .map(RequisicaoSimplesResposta::new).toList());
-        return generateRequestsPagination(studentRequests, page, amount);
-    }
-
-    //TODO: ADD TO CONTROLLER
-    //TODO: REFACTOR THIS METHOD TO USE JUST REPO
-    public Map<String, Object> listStudentRequestsPaginatedByAxle(Long studentId, EixoEnum axle, int page, int amount)
-            throws AcsException {
-
-        Optional<Usuario> student = repository.findById(studentId);
-        List<Requisicao> requests = student.orElseThrow(() -> new AcsException("")).getRequisicoes().stream()
-                .filter(requisicao -> requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO).toList();
-
-        List<Requisicao> requestFiltered = new ArrayList<>();
-        List<CertificadoResposta> certificates;
-
-        for (Requisicao req : requests) {
-            certificates = req.getCertificados().stream()
-                    .filter(certificado -> certificado.getAtividade().getEixo().equals(axle))
-                    .map(CertificadoResposta::new).toList();
-            if (!certificates.isEmpty()) {
-                requestFiltered.add(req);
-            }
-        }
-
-        List<RequisicaoSimplesResposta> studentRequests = new ArrayList<>(requestFiltered.stream()
-                .map(RequisicaoSimplesResposta::new).toList());
-
-
         return generateRequestsPagination(studentRequests, page, amount);
     }
 

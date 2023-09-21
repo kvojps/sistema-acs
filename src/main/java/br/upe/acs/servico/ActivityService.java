@@ -26,26 +26,8 @@ public class ActivityService {
 				new AcsException("Activity not found"));
 	}
 
-	//TODO: REFACTOR THIS METHOD TO USE JUST REPO
-	public List<Atividade> findActivityByAxle(String axle) throws AcsException {
-		boolean isExists = false;
-		EixoEnum axleFormat = null;
-		for(EixoEnum c : EixoEnum.values()) {
-			if(c.toString().equalsIgnoreCase(axle)) {
-				isExists = true;
-				axleFormat = c;
-			}
-		}
-		if(!isExists) {
-			throw new AcsException("This axle does not exists");
-		}
-
-		List<Atividade> activities = repository.findByEixo(axleFormat);
-		if(activities.isEmpty()) {
-			throw new AcsException("Does not exist one activity related with this axle");
-		}
-
-		return activities;
+	public List<Atividade> findActivityByAxle(EixoEnum axle) throws AcsException {
+		return repository.findByEixo(axle);
 	}
 
 	public Atividade createActivity(AtividadeDTO activity) throws AcsException {

@@ -3,6 +3,7 @@ package br.upe.acs.controlador;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.utils.MensagemUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -60,10 +61,10 @@ public class AtividadeControlador {
             + "\nPré-condição: É necessário que o usuário esteja logado e verificado no sistema. \n"
             + "\nPós-condição: Nenhuma")
     @GetMapping("/eixo")
-    public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam String eixo){
+    public ResponseEntity<?> buscarAtividadePorEixo(@RequestParam EixoEnum axle){
     	ResponseEntity<?> resposta;
     	try {
-    		resposta = ResponseEntity.ok(servico.findActivityByAxle(eixo).stream().map(AtividadeResposta::new).toList());
+    		resposta = ResponseEntity.ok(servico.findActivityByAxle(axle).stream().map(AtividadeResposta::new).toList());
     	} catch(AcsException e) {
     		resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
     	}

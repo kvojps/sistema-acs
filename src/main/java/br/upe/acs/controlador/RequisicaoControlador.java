@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.upe.acs.config.JwtService;
+import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.utils.MensagemUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.*;
@@ -136,6 +137,16 @@ public class RequisicaoControlador {
         }
 
         return resposta;
+    }
+
+    @GetMapping("/usuario/{id}/{eixo}")
+    public ResponseEntity<Map<String, ?>> listStudentRequestsPaginatedByAxle(
+            @PathVariable("id") Long studentId,
+            @PathVariable("eixo") EixoEnum axle,
+            @RequestParam int page,
+            @RequestParam int amount
+    ) {
+        return ResponseEntity.ok(servico.listStudentRequestsPaginatedByAxle(studentId, axle, page, amount));
     }
     
 }
