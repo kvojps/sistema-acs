@@ -1,21 +1,15 @@
 package br.upe.acs.servico;
 
-import br.upe.acs.controlador.respostas.RequisicaoSimplesResposta;
 import br.upe.acs.dominio.Atividade;
 import br.upe.acs.dominio.Certificado;
 import br.upe.acs.dominio.Requisicao;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.vo.AtividadeComplementarVO;
 import br.upe.acs.dominio.vo.MinhasHorasNaAtividadeVO;
-import br.upe.acs.repositorio.UsuarioRepositorio;
 import br.upe.acs.exceptions.AcsException;
-import org.springframework.stereotype.Service;
-
+import br.upe.acs.repositorio.UsuarioRepositorio;
 import lombok.RequiredArgsConstructor;
-
-import java.util.*;
-
-import static br.upe.acs.utils.PaginationUtils.generateRequestsPagination;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
