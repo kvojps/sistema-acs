@@ -20,11 +20,11 @@ import java.nio.file.Paths;
 @Service
 public class RequestPdfService {
 
-    private final RequestService service;
+    private final ReadRequestsUseCase service;
     private final ITemplateEngine templateEngine;
 
-    public RequestPdfService(RequestService requestService, TemplateEngine templateEngine) {
-        this.service = requestService;
+    public RequestPdfService(ReadRequestsUseCase readRequestsUseCase, TemplateEngine templateEngine) {
+        this.service = readRequestsUseCase;
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
         templateResolver.setSuffix(".html");

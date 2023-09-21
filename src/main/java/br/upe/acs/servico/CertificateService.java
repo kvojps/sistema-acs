@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class CertificateService {
 
     private final CertificadoRepositorio repository;
-    private final RequestService requestService;
+    private final ReadRequestsUseCase readRequestsUseCase;
     private final ActivityService activityService;
 
     public Certificado findCertificateById(Long id) throws AcsException {
@@ -39,7 +39,7 @@ public class CertificateService {
     }
 
     public Long addCertificate(MultipartFile file, Long requestId, String email) throws AcsException, IOException {
-        Requisicao requisicao = requestService.findRequestById(requestId);
+        Requisicao requisicao = readRequestsUseCase.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
             throw new AcsException("Only pdf is accepted");

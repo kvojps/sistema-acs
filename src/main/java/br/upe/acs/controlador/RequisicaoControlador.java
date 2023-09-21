@@ -11,7 +11,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.RequisicaoResposta;
-import br.upe.acs.servico.RequestService;
+import br.upe.acs.servico.ReadRequestsUseCase;
 import br.upe.acs.exceptions.AcsException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*")
 public class RequisicaoControlador {
 
-    private final RequestService servico;
+    private final ReadRequestsUseCase servico;
 
     private final JwtService jwtService;
 
@@ -45,8 +45,33 @@ public class RequisicaoControlador {
     @GetMapping("/paginacao")
     public ResponseEntity<Map<String, Object>> listarRequisicoesPaginas(@RequestParam(defaultValue = "0") int pagina,
                                                                         @RequestParam(defaultValue = "10") int quantidade) {
-        return ResponseEntity.ok(servico.listRequestsPaginated(pagina, quantidade));
+        return ResponseEntity.ok(servico.listNonSketchRequests(pagina, quantidade));
     }
+
+    @Operation(
+            summary = "Listar todas as requisições do aluno",
+            description = "Esta rota permite o aluno lista todas suas requisições de forma paginada, " +
+                    "possuindo com retorno um Map com um lista de requisições, a página atual, total de itens " +
+                    "e total de páginas."
+    )
+    @GetMapping("/requisicao/paginacao")
+    public  ResponseEntity<?> listUnarchivedRequests(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int quantidade
+    ) {
+        ResponseEntity<?> resposta;
+        try {
+            String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+            resposta = ResponseEntity.ok(servico.listStudentUnarchivedRequests(pagina, email, quantidade));
+
+        } catch (AcsException e) {
+            resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
+        }
+
+        return resposta;
+    }
+
 
     @Operation(
             summary = "Listar as requisições de um usuário específico",
@@ -100,45 +125,6 @@ public class RequisicaoControlador {
         return resposta;
     }
 
-    @Operation(
-            summary = "Arquivar requisição",
-            description = "Descrição: Através deste endpoint, o usuário pode arquivar uma requisição.\n" +
-                    "Pré-condições: O usuário deve estar logado.\n" +
-                    "Pós-condições: O usuário recebe uma mensagem de confirmação de requisição arquivada."
-    )
-    @PostMapping("/arquivar/{id}")
-    public ResponseEntity<?> arquivarRequisicao(@PathVariable Long id, HttpServletRequest request) {
-        ResponseEntity<?> resposta;
-        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        try {
-            servico.archiveRequest(id, email);
-            resposta = ResponseEntity.noContent().build();
-        } catch (AcsException e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return resposta;
-    }
-
-    @Operation(
-            summary = "Desarquivar requisição",
-            description = "Descrição: Através deste endpoint, o usuário pode desarquivar uma requisição.\n" +
-                    "Pré-condições: O usuário deve estar logado.\n" +
-                    "Pós-condições: O usuário recebe uma mensagem de confirmação de requisição desarquivada."
-    )
-    @PostMapping("/desarquivar/{id}")
-    public ResponseEntity<?> desarquivarRequisicao(@PathVariable Long id, HttpServletRequest request) {
-        ResponseEntity<?> resposta;
-        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        try {
-            servico.unarchiveRequest(id, email);
-            resposta = ResponseEntity.noContent().build();
-        } catch (AcsException e) {
-            resposta = ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        return resposta;
-    }
-
     @GetMapping("/usuario/{id}/{eixo}")
     public ResponseEntity<Map<String, ?>> listStudentRequestsPaginatedByAxle(
             @PathVariable("id") Long studentId,
@@ -146,7 +132,7 @@ public class RequisicaoControlador {
             @RequestParam int page,
             @RequestParam int amount
     ) {
-        return ResponseEntity.ok(servico.listStudentRequestsPaginatedByAxle(studentId, axle, page, amount));
+        return ResponseEntity.ok(servico.listStudentRequestsByAxle(studentId, axle, page, amount));
     }
     
 }

@@ -1,7 +1,7 @@
 package br.upe.acs.controlador;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.servico.RequestSketchService;
+import br.upe.acs.servico.RequestService;
 import br.upe.acs.exceptions.AcsException;
 import br.upe.acs.utils.MensagemUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class RequisicaoRascunhoControlador {
 
-    private final RequestSketchService servico;
+    private final RequestService servico;
 
     private final JwtService jwtService;
 
@@ -79,4 +79,42 @@ public class RequisicaoRascunhoControlador {
         return resposta;
     }
 
+    @Operation(
+            summary = "Arquivar requisição",
+            description = "Descrição: Através deste endpoint, o usuário pode arquivar uma requisição.\n" +
+                    "Pré-condições: O usuário deve estar logado.\n" +
+                    "Pós-condições: O usuário recebe uma mensagem de confirmação de requisição arquivada."
+    )
+    @PostMapping("/arquivar/{id}")
+    public ResponseEntity<?> arquivarRequisicao(@PathVariable Long id, HttpServletRequest request) {
+        ResponseEntity<?> resposta;
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+        try {
+            servico.archiveRequest(id, email);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsException e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return resposta;
+    }
+
+    @Operation(
+            summary = "Desarquivar requisição",
+            description = "Descrição: Através deste endpoint, o usuário pode desarquivar uma requisição.\n" +
+                    "Pré-condições: O usuário deve estar logado.\n" +
+                    "Pós-condições: O usuário recebe uma mensagem de confirmação de requisição desarquivada."
+    )
+    @PostMapping("/desarquivar/{id}")
+    public ResponseEntity<?> desarquivarRequisicao(@PathVariable Long id, HttpServletRequest request) {
+        ResponseEntity<?> resposta;
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+        try {
+            servico.unarchiveRequest(id, email);
+            resposta = ResponseEntity.noContent().build();
+        } catch (AcsException e) {
+            resposta = ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return resposta;
+    }
 }
