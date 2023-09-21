@@ -14,7 +14,8 @@ import lombok.RequiredArgsConstructor;
 public class CourseService {
 	
 	private final CursoRepositorio repository;
-	
+
+	//TODO: Adicionar paginação
 	public List<Curso> listCourses() {
 		return repository.findAll();
 	}

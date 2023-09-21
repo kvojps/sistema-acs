@@ -24,6 +24,8 @@ public class StudentService {
     private final UsuarioRepositorio repository;
     private final ActivityService activityService;
 
+    //TODO: Listar as requisições do usuário que não estão arquivadas e ordenar pelo seu status (Não é o lugar correto)
+    //TODO: Configurar uma query JPA para fazer esta busca
     public Map<String, Object> listRequestsPaginated(int page, String email, int amount) throws AcsException {
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this id"));

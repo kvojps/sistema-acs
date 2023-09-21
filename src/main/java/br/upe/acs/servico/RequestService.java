@@ -21,15 +21,19 @@ public class RequestService {
     private final RequisicaoRepositorio repository;
     private final UserService userService;
 
+    //TODO: Adicionar paginação
     public List<Requisicao> listRequests() {
         return repository.findAll();
     }
 
+    //TODO: Adicionar paginação
     public List<Requisicao> listRequestByStudent(Long studentId) throws AcsException {
         Usuario student = userService.findUserById(studentId);
         return student.getRequisicoes();
     }
 
+    //TODO: Listar as requisições do usuário que não são rascunhos e ordenar pela data de submissão
+    //TODO: Remover paginated e alterar o nome do método
     public Map<String, Object> listRequestsPaginated(int page, int quantity) {
 
         List<RequisicaoSimplesResposta> requests = repository.findAll().stream()
@@ -40,8 +44,9 @@ public class RequestService {
         return generateRequestsPagination(requests, page, quantity);
     }
 
-    public Map<String, Object> listStudentRequestsPaginatedByAxle(Long studentId, EixoEnum axle, int page, int amount)
-            throws AcsException {
+    //TODO: Configurar uma query no JPA para fazer esta busca
+    //TODO: Remover paginated e alterar o nome do método
+    public Map<String, Object> listStudentRequestsPaginatedByAxle(Long studentId, EixoEnum axle, int page, int amount) {
         List<Requisicao> requests = repository.findByUsuarioId(studentId);
 
         List<RequisicaoSimplesResposta> studentRequests = requests.stream()
