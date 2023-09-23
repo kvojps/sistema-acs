@@ -1,15 +1,10 @@
 package br.upe.acs.controlador;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import br.upe.acs.utils.MensagemUtil;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.upe.acs.controlador.respostas.CursoResposta;
 import br.upe.acs.servico.CourseService;
@@ -30,9 +25,11 @@ public class CursoControlador {
 					+ "\nPré-condição: O usuário deve estar logado e verificado\n"
 					+ "\nPós-condição: Nenhuma")
 	@GetMapping
-	public ResponseEntity<List<CursoResposta>> listarCursos() {
-		return ResponseEntity.ok(
-				servico.listCourses().stream().map(CursoResposta::new).collect(Collectors.toList()));
+	public ResponseEntity<Map<String, ?>> listarCursos(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int amount
+	) {
+		return ResponseEntity.ok(servico.listCourses(page, amount));
 	}
 
 	@Operation(summary = "Buscar curso por id",
