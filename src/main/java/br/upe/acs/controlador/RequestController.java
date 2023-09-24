@@ -5,10 +5,14 @@ import br.upe.acs.controlador.respostas.RequisicaoResposta;
 import br.upe.acs.dominio.Usuario;
 import br.upe.acs.dominio.enums.EixoEnum;
 import br.upe.acs.servico.ReadRequestsUseCase;
+import br.upe.acs.servico.RequestPdfService;
 import br.upe.acs.servico.RequestService;
 import br.upe.acs.utils.MensagemUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,7 @@ public class RequestController {
 
     private final RequestService service;
     private final ReadRequestsUseCase readRequestsService;
+    private final RequestPdfService requestPdfService;
     private final JwtService jwtService;
 
     @PostMapping
@@ -72,6 +77,16 @@ public class RequestController {
     @GetMapping("/{id}")
     public ResponseEntity<RequisicaoResposta> findRequestById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(new RequisicaoResposta(readRequestsService.findRequestById(id)));
+    }
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<?> generateRequestPdfById(@PathVariable("id") Long requestId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename("requisição" + requestId + ".pdf").build());
+
+        return ResponseEntity.ok().headers(headers).body(requestPdfService.generateRequestPdf(requestId));
     }
 
     @PutMapping("/{id}")

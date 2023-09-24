@@ -33,7 +33,8 @@ public class RequestPdfService {
         this.templateEngine = templateEngine;
     }
 
-    public byte[] generateRequestPdf(Long id) throws AcsException {
+    //TODO: Especializar exceção
+    public byte[] generateRequestPdf(Long id) {
         Requisicao requisicao = service.findRequestById(id);
 
         if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
