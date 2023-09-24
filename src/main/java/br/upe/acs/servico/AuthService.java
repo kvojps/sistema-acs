@@ -50,7 +50,7 @@ public class AuthService {
         repository.save(user);
     }
 
-    public void updateVerificationCode(String email) {
+    public void getNewVerificationCode(String email) {
         Optional<Usuario> userOpt = repository.findByEmail(email);
         Usuario user = userOpt.orElseThrow(() -> new AcsException("There is no user associated with this email"));
 

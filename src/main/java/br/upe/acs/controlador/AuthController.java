@@ -25,6 +25,23 @@ public class AuthController {
         return ResponseEntity.ok(service.login(login));
     }
 
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyEmail(HttpServletRequest request,
+                                             @RequestParam(value = "code") String code) {
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+        service.verifyEmail(email, code);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/verify/new-code")
+    public ResponseEntity<?> getNewVerificationCode(HttpServletRequest request) {
+        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+        service.getNewVerificationCode(email);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("/password")
     public ResponseEntity<?> updatePassword(HttpServletRequest request, @RequestBody AlterarSenhaDTO alterarSenhaDTO) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
@@ -33,35 +50,18 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("password/forgot")
+    @GetMapping("password/forgot")
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
         service.forgotPassword(email);
 
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/password/recovery")
+    @PatchMapping("/password/recovery")
     public ResponseEntity<?> recoveryPassword(HttpServletRequest request,
                                               @RequestBody RecuperacaoDeContaDTO recuperacaoDeContaDTO) {
         String token = request.getHeader("Authorization").substring(7);
         service.recoveryPassword(token, recuperacaoDeContaDTO.novaSenha());
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/verify")
-    public ResponseEntity<?> verifyUserEmail(HttpServletRequest request,
-                                             @RequestParam(value = "code") String code) {
-        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        service.verifyEmail(email, code);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PatchMapping("/verify/new-code")
-    public ResponseEntity<?> updateVerificationCode(HttpServletRequest request) {
-        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        service.updateVerificationCode(email);
 
         return ResponseEntity.noContent().build();
     }
