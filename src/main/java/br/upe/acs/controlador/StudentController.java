@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("api/student/utilization")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-public class AlunoController {
+public class StudentController {
 
     private final StudentService service;
     private final JwtService jwtService;
