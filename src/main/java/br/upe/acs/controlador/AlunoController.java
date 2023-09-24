@@ -25,7 +25,7 @@ public class AlunoController {
         return ResponseEntity.ok(service.getStudentAcs(email));
     }
 
-    @GetMapping("/horas/{activityId}")
+    @GetMapping("/hours/{activityId}")
     public ResponseEntity<MinhasHorasNaAtividadeVO> getActivityHours(HttpServletRequest request, @PathVariable("activityId") Long activityId) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         return ResponseEntity.ok(service.getHoursAcsStatusByActivity(email, activityId));
