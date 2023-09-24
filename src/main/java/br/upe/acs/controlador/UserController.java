@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/user")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-public class UsuarioControlador {
+public class UserController {
 
     private final UserService servico;
 
