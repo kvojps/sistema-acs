@@ -1,5 +1,5 @@
 @startuml classes
-    class Atividade [[java:br.upe.acs.dominio.Atividade]] {
+    class Atividade [[java:br.upe.acs.model.Atividade]] {
         -id: Long
         -eixo: EixoEnum
         -descricao: String
@@ -14,7 +14,7 @@
     }
 
     Atividade --> "*" Certificado : getCertificados()
-    class Certificado [[java:br.upe.acs.dominio.Certificado]] {
+    class Certificado [[java:br.upe.acs.model.Certificado]] {
         -id: Long
         -titulo: String
         -descricao: String
@@ -41,7 +41,7 @@
     }
 
     Certificado --> "1" Atividade : getAtividade()
-    class Curso [[java:br.upe.acs.dominio.Curso]] {
+    class Curso [[java:br.upe.acs.model.Curso]] {
         -id: Long
         -nome: String
     }
@@ -58,7 +58,7 @@
     }
 
     Curso --> "*" Requisicao : getRequisicoes()
-    class Endereco [[java:br.upe.acs.dominio.Endereco]] {
+    class Endereco [[java:br.upe.acs.model.Endereco]] {
         -id: Long
         -cep: String
         -rua: String
@@ -76,7 +76,7 @@
     }
 
     Endereco --> "*" Usuario : getUsuarios()
-    class Requisicao [[java:br.upe.acs.dominio.Requisicao]] {
+    class Requisicao [[java:br.upe.acs.model.Requisicao]] {
         -id: Long
         -data: Date
         -semestre: int
@@ -110,7 +110,7 @@
     }
 
     Requisicao --> "1" Usuario : getUsuario()
-    class Usuario [[java:br.upe.acs.dominio.Usuario]] {
+    class Usuario [[java:br.upe.acs.model.Usuario]] {
         -{static} serialVersionUID: long
         -id: Long
         -nomeCompleto: String

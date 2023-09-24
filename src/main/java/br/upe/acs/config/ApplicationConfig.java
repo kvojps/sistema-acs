@@ -1,7 +1,7 @@
 package br.upe.acs.config;
 
-import br.upe.acs.interceptador.InterceptadorVerficacao;
-import br.upe.acs.repositorio.UsuarioRepositorio;
+import br.upe.acs.utils.interceptor.InterceptadorVerficacao;
+import br.upe.acs.repository.UsuarioRepositorio;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
