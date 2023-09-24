@@ -1,7 +1,7 @@
 package br.upe.acs.servico;
 
 import br.upe.acs.dominio.dto.ViaCepDTO;
-import br.upe.acs.exceptions.CepInvalidoExcecao;
+import br.upe.acs.exceptions.CepInvalidException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,27 +15,28 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AddressService {
 
-	private final EnderecoRepositorio repository;
+    private final EnderecoRepositorio repository;
 
-	public Endereco createAddress(EnderecoDTO addressDto) {
-		ModelMapper modelMapper = new ModelMapper();
-		Endereco addressToSave = modelMapper.map(addressDto, Endereco.class);
+    public Endereco createAddress(EnderecoDTO addressDto) {
+        ModelMapper modelMapper = new ModelMapper();
+        Endereco addressToSave = modelMapper.map(addressDto, Endereco.class);
 
-		return repository.save(addressToSave);
-	}
+        return repository.save(addressToSave);
+    }
 
-	public ViaCepDTO findAddressByCep(String cep) throws CepInvalidoExcecao {
-		ViaCepDTO viaCepDTO;
+    public ViaCepDTO findAddressByCep(String cep) {
+        ViaCepDTO viaCepDTO;
 
-		try {
-			viaCepDTO = new RestTemplate().getForEntity(String.format("https://viacep.com.br/ws/%s/json/", cep), ViaCepDTO.class).getBody();
-			assert viaCepDTO != null;
-			if (viaCepDTO.getLocalidade().isEmpty()) {
-				throw new CepInvalidoExcecao("CEP not found");
-			}
-		} catch (Exception e) {
-			throw new CepInvalidoExcecao("Invalid CEP");
-		}
-		return viaCepDTO;
-	}
+        try {
+            viaCepDTO = new RestTemplate().getForEntity(String.format("https://viacep.com.br/ws/%s/json/", cep), ViaCepDTO.class).getBody();
+            assert viaCepDTO != null;
+            if (viaCepDTO.getLocalidade().isEmpty()) {
+                throw new CepInvalidException("CEP not found");
+            }
+        } catch (Exception e) {
+            throw new CepInvalidException("Invalid CEP");
+        }
+
+        return viaCepDTO;
+    }
 }
