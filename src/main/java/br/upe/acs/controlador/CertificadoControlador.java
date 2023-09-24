@@ -78,7 +78,7 @@ public class CertificadoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.status(201).body(servico.addCertificate(certificado, requisicaoId, email));
+            resposta = ResponseEntity.status(201).body(servico.createCertificate(certificado, requisicaoId, email));
         } catch (Exception e) {
             resposta = ResponseEntity.status(404).body(new MensagemUtil(e.getMessage()));
         }

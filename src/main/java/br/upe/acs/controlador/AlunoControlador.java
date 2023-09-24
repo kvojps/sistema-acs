@@ -31,7 +31,7 @@ public class AlunoControlador {
         ResponseEntity<?> resposta;
         try {
             String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-            resposta = ResponseEntity.ok(servico.generateStudentAcs(email));
+            resposta = ResponseEntity.ok(servico.getStudentAcs(email));
         } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }
@@ -49,7 +49,7 @@ public class AlunoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta =  ResponseEntity.ok(servico.generateHoursAcsStatusByActivity(email, atividadeId));
+            resposta =  ResponseEntity.ok(servico.getHoursAcsStatusByActivity(email, atividadeId));
         } catch (AcsException e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }

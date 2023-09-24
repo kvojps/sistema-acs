@@ -17,7 +17,7 @@ public class AddressService {
 
 	private final EnderecoRepositorio repository;
 
-	public Endereco addAddress(EnderecoDTO addressDto) {
+	public Endereco createAddress(EnderecoDTO addressDto) {
 		ModelMapper modelMapper = new ModelMapper();
 		Endereco addressToSave = modelMapper.map(addressDto, Endereco.class);
 

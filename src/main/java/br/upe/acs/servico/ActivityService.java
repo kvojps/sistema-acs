@@ -15,46 +15,46 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ActivityService {
 
-	private final AtividadeRepositorio repository;
+    private final AtividadeRepositorio repository;
 
-	public List<Atividade> listActivities() {
-		return repository.findAll();
-	}
+    public Atividade createActivity(AtividadeDTO activity) throws AcsException {
+        ModelMapper modelMapper = new ModelMapper();
+        Atividade activityToSave = modelMapper.map(activity, Atividade.class);
 
-	public Atividade findActivityById(Long id) throws AcsException {
-		return repository.findById(id).orElseThrow(() ->
-				new AcsException("Activity not found"));
-	}
+        return repository.save(activityToSave);
+    }
 
-	public List<Atividade> findActivityByAxle(EixoEnum axle) throws AcsException {
-		return repository.findByEixo(axle);
-	}
+    public List<Atividade> listActivities() {
+        return repository.findAll();
+    }
 
-	public Atividade createActivity(AtividadeDTO activity) throws AcsException {
-		ModelMapper modelMapper = new ModelMapper();
-		Atividade activityToSave = modelMapper.map(activity, Atividade.class);
+    public Atividade findActivityById(Long id) throws AcsException {
+        return repository.findById(id).orElseThrow(() ->
+                new AcsException("Activity not found"));
+    }
 
-		return repository.save(activityToSave);
-	}
-
-	public void deleteActivity(Long id) throws AcsException {
-		repository.findById(id).orElseThrow(() ->
-				new AcsException("Activity not found"));
-
-        repository.deleteById(id);
+    public List<Atividade> findActivityByAxle(EixoEnum axle) throws AcsException {
+        return repository.findByEixo(axle);
     }
 
     public Atividade updateActivity(Long id, AtividadeDTO activity) throws AcsException {
         Atividade activityUpdated = repository.findById(id).orElseThrow(() ->
-				new AcsException("Activity not found"));
+                new AcsException("Activity not found"));
 
         activityUpdated.setEixo(activity.getEixo());
         activityUpdated.setDescricao(activity.getDescricao());
         activityUpdated.setCriteriosParaAvaliacao(activity.getCriteriosParaAvaliacao());
-		activityUpdated.setChMaxima(activity.getChMaxima());
+        activityUpdated.setChMaxima(activity.getChMaxima());
         activityUpdated.setChPorCertificado(activity.getChPorCertificado());
 
         repository.save(activityUpdated);
         return activityUpdated;
+    }
+
+    public void deleteActivity(Long id) throws AcsException {
+        repository.findById(id).orElseThrow(() ->
+                new AcsException("Activity not found"));
+
+        repository.deleteById(id);
     }
 }

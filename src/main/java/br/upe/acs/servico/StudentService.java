@@ -18,14 +18,14 @@ public class StudentService {
     private final UsuarioRepositorio repository;
     private final ActivityService activityService;
 
-    public AtividadeComplementarVO generateStudentAcs(String email) throws AcsException {
+    public AtividadeComplementarVO getStudentAcs(String email) throws AcsException {
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this id"));
 
         return new AtividadeComplementarVO(student);
     }
 
-    public MinhasHorasNaAtividadeVO generateHoursAcsStatusByActivity(String email, Long activityId) throws AcsException {
+    public MinhasHorasNaAtividadeVO getHoursAcsStatusByActivity(String email, Long activityId) throws AcsException {
         Atividade atividade = activityService.findActivityById(activityId);
 
         Usuario student = repository.findByEmail(email).orElseThrow(() ->

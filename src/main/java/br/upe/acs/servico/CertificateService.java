@@ -28,17 +28,7 @@ public class CertificateService {
     private final ReadRequestsUseCase readRequestsUseCase;
     private final ActivityService activityService;
 
-    public Certificado findCertificateById(Long id) throws AcsException {
-        return repository.findById(id).orElseThrow(() ->
-                new AcsException("Certificate not found"));
-    }
-
-    public byte[] findCertificatePdfById(Long certificateId) throws AcsException {
-        Certificado certificate = findCertificateById(certificateId);
-        return certificate.getCertificado();
-    }
-
-    public Long addCertificate(MultipartFile file, Long requestId, String email) throws AcsException, IOException {
+    public Long createCertificate(MultipartFile file, Long requestId, String email) throws AcsException, IOException {
         Requisicao requisicao = readRequestsUseCase.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
@@ -67,6 +57,16 @@ public class CertificateService {
 
         Certificado certificateSaved = repository.save(certificate);
         return certificateSaved.getId();
+    }
+
+    public Certificado findCertificateById(Long id) throws AcsException {
+        return repository.findById(id).orElseThrow(() ->
+                new AcsException("Certificate not found"));
+    }
+
+    public byte[] findCertificatePdfById(Long certificateId) throws AcsException {
+        Certificado certificate = findCertificateById(certificateId);
+        return certificate.getCertificado();
     }
 
     public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email)

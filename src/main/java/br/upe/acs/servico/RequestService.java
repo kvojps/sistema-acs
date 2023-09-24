@@ -27,7 +27,7 @@ public class RequestService {
     private final UserService userService;
     private final EmailService emailService;
 
-    public Long addRequest(String email) throws AcsException {
+    public Long createRequest(String email) throws AcsException {
         Usuario student = userService.findUserByEmail(email);
         List<Requisicao> requestsSketch = student.getRequisicoes().stream()
                 .filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
@@ -48,7 +48,7 @@ public class RequestService {
         request.setCurso(student.getCurso());
 
         Requisicao requestSaved = repository.save(request);
-        requestSaved.setIdRequisicao(String.format("%s-%05d",student.getCurso().getSigla(), requestSaved.getId()));
+        requestSaved.setIdRequisicao(String.format("%s-%05d", student.getCurso().getSigla(), requestSaved.getId()));
         repository.save(requestSaved);
 
         return requestSaved.getId();
@@ -68,7 +68,7 @@ public class RequestService {
                 .filter(certificado -> !isValidCertificate(certificado)).toList();
         if (!invalidCertificates.isEmpty()) {
             throw new AcsException(
-                    "Certificates: " + String.join( "; ", invalidCertificates.stream()
+                    "Certificates: " + String.join("; ", invalidCertificates.stream()
                             .map(certificado -> certificado.getId().toString()).toList())
                             + " have invalid data."
             );
@@ -141,7 +141,7 @@ public class RequestService {
     private boolean isValidCertificate(Certificado certificate) {
         boolean isValid = true;
 
-        if (certificate.getCertificado() == null){
+        if (certificate.getCertificado() == null) {
             isValid = false;
         } else if (certificate.getTitulo() == null || certificate.getTitulo().isBlank()) {
             isValid = false;
@@ -175,7 +175,7 @@ public class RequestService {
     }
 
     private void modifyCertificates(List<Certificado> certificates) {
-        for (Certificado certificado: certificates) {
+        for (Certificado certificado : certificates) {
             certificado.setStatusCertificado(CertificadoStatusEnum.ENCAMINHADO_COORDENACAO);
             certificateRepository.save(certificado);
         }

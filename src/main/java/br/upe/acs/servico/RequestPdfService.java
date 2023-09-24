@@ -43,9 +43,9 @@ public class RequestPdfService {
         Context context = defineTemplateValuesHtml(requisicao);
 
         String documentHtml = templateEngine.process("requisicao.html", context);
-        Path pathDoPdf = Paths.get("src/main/resources/requisicao" + id +".pdf");
+        Path pathDoPdf = Paths.get("src/main/resources/requisicao" + id + ".pdf");
 
-        try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/requisicao" + id +".pdf")) {
+        try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/requisicao" + id + ".pdf")) {
             ITextRenderer renderer = new ITextRenderer();
             SharedContext sharedContext = renderer.getSharedContext();
             sharedContext.setPrint(true);

@@ -18,6 +18,7 @@ public class ReadRequestsUseCase {
 
     private final RequisicaoRepositorio repository;
 
+    //TODO: Esses métodos de list deve ser um método só com todos esses filtros, sendo a passagem deles opcional
     public Map<String, Object> listRequests(int page, int amount) {
         List<RequisicaoSimplesResposta> requests = repository.findAll().stream()
                 .map(RequisicaoSimplesResposta::new).toList();

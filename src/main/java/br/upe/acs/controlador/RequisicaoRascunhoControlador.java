@@ -33,7 +33,7 @@ public class RequisicaoRascunhoControlador {
         ResponseEntity<?> resposta;
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         try {
-            resposta = ResponseEntity.status(201).body(servico.addRequest(email));
+            resposta = ResponseEntity.status(201).body(servico.createRequest(email));
         } catch (Exception e) {
             resposta = ResponseEntity.badRequest().body(new MensagemUtil(e.getMessage()));
         }

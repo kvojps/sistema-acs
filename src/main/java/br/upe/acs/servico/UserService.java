@@ -93,6 +93,6 @@ public class UserService {
     private Endereco addUserAddress(RegistroDTO authDto) {
         ModelMapper modelMapper = new ModelMapper();
         EnderecoDTO addressToSave = modelMapper.map(authDto, EnderecoDTO.class);
-        return addressService.addAddress(addressToSave);
+        return addressService.createAddress(addressToSave);
     }
 }
