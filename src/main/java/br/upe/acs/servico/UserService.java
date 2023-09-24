@@ -61,6 +61,7 @@ public class UserService {
                 new AcsException("There is no user associated with this email"));
     }
 
+    //TODO: reajustar para receber um DTO
     public void updateUser(String email, String fullName, String phone, Long courseId) throws AcsException {
         Usuario user = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this email"));
