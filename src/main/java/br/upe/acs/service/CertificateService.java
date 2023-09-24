@@ -28,8 +28,7 @@ public class CertificateService {
     private final ReadRequestsUseCase readRequestsUseCase;
     private final ActivityService activityService;
 
-    //TODO: Especializar a exceção
-    public Long createCertificate(MultipartFile file, Long requestId, String email) throws AcsException, IOException {
+    public Long createCertificate(MultipartFile file, Long requestId, String email) {
         Requisicao requisicao = readRequestsUseCase.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
@@ -45,7 +44,12 @@ public class CertificateService {
             throw new AcsException("This request has more certificates than allowed");
         }
 
-        byte[] fileBytes = file.getBytes();
+        byte[] fileBytes;
+        try {
+            fileBytes = file.getBytes();
+        } catch (IOException e) {
+            throw new AcsException(e.getMessage());
+        }
 
         if (isCertificateUnique(requisicao, fileBytes)) {
             throw new AcsException("This certificate has already been registered");
@@ -60,19 +64,17 @@ public class CertificateService {
         return certificateSaved.getId();
     }
 
-    public Certificado findCertificateById(Long id) throws AcsException {
+    public Certificado findCertificateById(Long id) {
         return repository.findById(id).orElseThrow(() ->
                 new AcsException("Certificate not found"));
     }
 
-    public byte[] findCertificatePdfById(Long certificateId) throws AcsException {
+    public byte[] findCertificatePdfById(Long certificateId) {
         Certificado certificate = findCertificateById(certificateId);
         return certificate.getCertificado();
     }
 
-    //TODO: Especializar a exceção
-    public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email)
-            throws AcsException, ParseException {
+    public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email) {
         Certificado certificado = findCertificateById(certificateId);
         if (!certificado.getRequisicao().getUsuario().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
@@ -97,7 +99,7 @@ public class CertificateService {
         repository.save(certificado);
     }
 
-    public void deleteCertificate(Long certificateId, String email) throws AcsException {
+    public void deleteCertificate(Long certificateId, String email) {
         Certificado certificate = findCertificateById(certificateId);
         if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
             throw new AcsException("User unauthorized to delete this certificate");
@@ -110,9 +112,13 @@ public class CertificateService {
         repository.deleteById(certificateId);
     }
 
-    private Date convertDate(String dateString) throws ParseException {
+    private Date convertDate(String dateString) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.parse(dateString);
+        try {
+            return format.parse(dateString);
+        } catch (ParseException e) {
+            throw new AcsException(e.getMessage());
+        }
     }
 
     private boolean isCertificateUnique(Requisicao requisicao, byte[] bytes) {

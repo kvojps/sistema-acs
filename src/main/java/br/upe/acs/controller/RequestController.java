@@ -7,7 +7,6 @@ import br.upe.acs.model.enums.EixoEnum;
 import br.upe.acs.service.ReadRequestsUseCase;
 import br.upe.acs.service.RequestPdfService;
 import br.upe.acs.service.RequestService;
-import br.upe.acs.utils.MessageUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ContentDisposition;
@@ -91,7 +90,7 @@ public class RequestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> submitRequest(@PathVariable("id") Long requestId) {
-        return ResponseEntity.ok(new MessageUtil(service.submitRequest(requestId)));
+        return ResponseEntity.ok(service.submitRequest(requestId));
     }
 
     @PatchMapping("/archive/{id}")

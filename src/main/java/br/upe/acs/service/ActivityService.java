@@ -37,7 +37,7 @@ public class ActivityService {
         return repository.findByEixo(axle);
     }
 
-    public Atividade updateActivity(Long id, AtividadeDTO activity) throws AcsException {
+    public void updateActivity(Long id, AtividadeDTO activity) throws AcsException {
         Atividade activityUpdated = repository.findById(id).orElseThrow(() ->
                 new AcsException("Activity not found"));
 
@@ -48,7 +48,6 @@ public class ActivityService {
         activityUpdated.setChPorCertificado(activity.getChPorCertificado());
 
         repository.save(activityUpdated);
-        return activityUpdated;
     }
 
     public void deleteActivity(Long id) throws AcsException {
