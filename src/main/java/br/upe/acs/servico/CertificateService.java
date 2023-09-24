@@ -28,6 +28,7 @@ public class CertificateService {
     private final ReadRequestsUseCase readRequestsUseCase;
     private final ActivityService activityService;
 
+    //TODO: Especializar a exceção
     public Long createCertificate(MultipartFile file, Long requestId, String email) throws AcsException, IOException {
         Requisicao requisicao = readRequestsUseCase.findRequestById(requestId);
 
@@ -69,6 +70,7 @@ public class CertificateService {
         return certificate.getCertificado();
     }
 
+    //TODO: Especializar a exceção
     public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email)
             throws AcsException, ParseException {
         Certificado certificado = findCertificateById(certificateId);
