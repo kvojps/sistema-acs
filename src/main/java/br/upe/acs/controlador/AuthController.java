@@ -20,7 +20,7 @@ public class AuthController {
     private final AuthService service;
     private final JwtService jwtService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<AutenticacaoResposta> loginUser(@RequestBody LoginDTO login) {
         return ResponseEntity.ok(service.login(login));
     }

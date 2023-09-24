@@ -23,7 +23,7 @@ public class UserController {
     private final UserService servico;
     private final JwtService jwtService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<UsuarioResposta> createUser(@Valid @RequestBody RegistroDTO registerDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRegisterException(String.join("; ", bindingResult.getAllErrors().stream()
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     //TODO: reajustar para receber um DTO
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestParam String nomeCompleto,
                                         @RequestParam String telefone, @RequestParam Long cursoId) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
@@ -53,7 +53,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     public ResponseEntity<?> deactivateUser(HttpServletRequest request) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         servico.deactivateUser(email);
