@@ -22,4 +22,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleInvalidCepException(CepInvalidException ex) {
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(ex.getMessage());
     }
+
+    @ExceptionHandler(InvalidFileFormatException.class)
+    public ResponseEntity<Object> handleInvalidFileFormatException(InvalidFileFormatException ex) {
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ConvertFileException.class)
+    public ResponseEntity<Object> handleConvertFileException(ConvertFileException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+    }
 }

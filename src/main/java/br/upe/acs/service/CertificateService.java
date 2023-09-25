@@ -11,6 +11,8 @@ import br.upe.acs.model.Atividade;
 import br.upe.acs.model.dto.CertificadoDTO;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
+import br.upe.acs.utils.exceptions.ConvertFileException;
+import br.upe.acs.utils.exceptions.InvalidFileFormatException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +34,7 @@ public class CertificateService {
         Requisicao request = readRequestsUseCase.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
-            throw new AcsException("Only pdf is accepted");
+            throw new InvalidFileFormatException("Only pdf is accepted");
         }
         if (!request.getUsuario().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
@@ -41,14 +43,14 @@ public class CertificateService {
             throw new AcsException("This request is already submitted and not pin new certificates");
         }
         if (request.getCertificados().size() >= 10) {
-            throw new AcsException("This request has more certificates than allowed");
+            throw new InvalidFileFormatException("This request has more certificates than allowed");
         }
 
         byte[] fileBytes;
         try {
             fileBytes = file.getBytes();
         } catch (IOException e) {
-            throw new AcsException(e.getMessage());
+            throw new ConvertFileException(e.getMessage());
         }
 
         if (isCertificateUnique(request, fileBytes)) {
