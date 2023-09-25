@@ -5,7 +5,6 @@ import br.upe.acs.controller.responses.RequisicaoResposta;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.enums.EixoEnum;
 import br.upe.acs.service.ReadRequestsUseCase;
-import br.upe.acs.service.RequestPdfService;
 import br.upe.acs.service.RequestService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +25,22 @@ public class RequestController {
 
     private final RequestService service;
     private final ReadRequestsUseCase readRequestsService;
-    private final RequestPdfService requestPdfService;
     private final JwtService jwtService;
 
     @PostMapping
     public ResponseEntity<?> createRequest(HttpServletRequest request) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         return ResponseEntity.status(201).body(service.createRequest(email));
+    }
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<?> createRequestPdf(@PathVariable("id") Long requestId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename("requisição" + requestId + ".pdf").build());
+
+        return ResponseEntity.ok().headers(headers).body(service.createRequestPdf(requestId));
     }
 
     @GetMapping
@@ -76,16 +84,6 @@ public class RequestController {
     @GetMapping("/{id}")
     public ResponseEntity<RequisicaoResposta> findRequestById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(new RequisicaoResposta(readRequestsService.findRequestById(id)));
-    }
-
-    @GetMapping("/{id}/pdf")
-    public ResponseEntity<?> generateRequestPdfById(@PathVariable("id") Long requestId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.attachment()
-                .filename("requisição" + requestId + ".pdf").build());
-
-        return ResponseEntity.ok().headers(headers).body(requestPdfService.generateRequestPdf(requestId));
     }
 
     @PutMapping("/{id}")

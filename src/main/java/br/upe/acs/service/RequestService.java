@@ -7,6 +7,7 @@ import br.upe.acs.model.enums.CertificadoStatusEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
 import br.upe.acs.repository.CertificadoRepositorio;
 import br.upe.acs.repository.RequisicaoRepositorio;
+import br.upe.acs.utils.RequestPdfUtils;
 import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class RequestService {
     private final RequisicaoRepositorio repository;
     private final CertificadoRepositorio certificateRepository;
     private final ReadRequestsUseCase readRequestsUseCase;
+    private final RequestPdfUtils requestPdfUtils;
     private final UserService userService;
     private final EmailService emailService;
 
@@ -52,6 +54,11 @@ public class RequestService {
         repository.save(requestSaved);
 
         return requestSaved.getId();
+    }
+
+    public byte[] createRequestPdf(Long requestId) {
+        Requisicao request = readRequestsUseCase.findRequestById(requestId);
+        return requestPdfUtils.generateRequestPdf(request);
     }
 
     public String submitRequest(Long requestId) {

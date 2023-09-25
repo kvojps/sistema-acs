@@ -1,4 +1,4 @@
-package br.upe.acs.service;
+package br.upe.acs.utils;
 
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
@@ -18,13 +18,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class RequestPdfService {
+public class RequestPdfUtils {
 
-    private final ReadRequestsUseCase service;
     private final ITemplateEngine templateEngine;
 
-    public RequestPdfService(ReadRequestsUseCase readRequestsUseCase, TemplateEngine templateEngine) {
-        this.service = readRequestsUseCase;
+    public RequestPdfUtils(TemplateEngine templateEngine) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
         templateResolver.setSuffix(".html");
@@ -33,9 +31,7 @@ public class RequestPdfService {
         this.templateEngine = templateEngine;
     }
 
-    public byte[] generateRequestPdf(Long id) {
-        Requisicao request = service.findRequestById(id);
-
+    public byte[] generateRequestPdf(Requisicao request) {
         if (request.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
             throw new AcsException("It is not possible to generate a PDF of a request that is not in transit");
         }
@@ -43,9 +39,9 @@ public class RequestPdfService {
         Context context = defineTemplateValuesHtml(request);
 
         String documentHtml = templateEngine.process("requisicao.html", context);
-        Path pathDoPdf = Paths.get("src/main/resources/requisicao" + id + ".pdf");
+        Path pathDoPdf = Paths.get("src/main/resources/requisicao" + request.getId() + ".pdf");
 
-        try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/requisicao" + id + ".pdf")) {
+        try (FileOutputStream outputStream = new FileOutputStream("src/main/resources/requisicao" + request.getId() + ".pdf")) {
             ITextRenderer renderer = new ITextRenderer();
             SharedContext sharedContext = renderer.getSharedContext();
             sharedContext.setPrint(true);
@@ -62,7 +58,6 @@ public class RequestPdfService {
         } catch (Exception e) {
             throw new AcsException("Error generating pdf file");
         }
-
     }
 
     private Context defineTemplateValuesHtml(Requisicao requisicao) {
