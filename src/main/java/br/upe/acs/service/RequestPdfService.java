@@ -33,7 +33,6 @@ public class RequestPdfService {
         this.templateEngine = templateEngine;
     }
 
-    //TODO: Especializar exceção
     public byte[] generateRequestPdf(Long id) {
         Requisicao requisicao = service.findRequestById(id);
 
