@@ -25,7 +25,7 @@ public class CertificateController {
     public ResponseEntity<?> createCertificate(HttpServletRequest request, Long requestId,
                                                @RequestPart(value = "certificate") MultipartFile certificate) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        return ResponseEntity.status(201).body(service.createCertificate(certificate, requestId, email));
+        return ResponseEntity.status(201).body(new CertificadoResposta(service.createCertificate(certificate, requestId, email)));
     }
 
     @GetMapping("/{id}")
@@ -37,7 +37,7 @@ public class CertificateController {
     public ResponseEntity<?> findCertificatePdfById(@PathVariable("id") Long certificateId) {
         return ResponseEntity.ok(new ArquivoResposta(service.findCertificatePdfById(certificateId)));
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCertificate(HttpServletRequest request, @PathVariable("id") Long id, @RequestBody CertificadoDTO certificateDto) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));

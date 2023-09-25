@@ -16,18 +16,16 @@ import static br.upe.acs.utils.PaginationUtils.generatePagination;
 @Service
 @RequiredArgsConstructor
 public class CourseService {
-	
-	private final CursoRepositorio repository;
 
-	public Map<String, Object> listCourses(int page, int amount) {
+    private final CursoRepositorio repository;
 
-		List<CursoResposta> courses = repository.findAll().stream().map(CursoResposta::new).toList();
+    public Map<String, Object> listCourses(int page, int amount) {
+        List<CursoResposta> courses = repository.findAll().stream().map(CursoResposta::new).toList();
+        return generatePagination(courses, page, amount);
+    }
 
-		return generatePagination(courses, page, amount);
-	}
-	
-	public Curso findCourseById(Long id) throws AcsException {
-		return repository.findById(id).orElseThrow(() ->
-				new AcsException("There is no course associated with this id"));
-	}
+    public Curso findCourseById(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new AcsException("There is no course associated with this id"));
+    }
 }

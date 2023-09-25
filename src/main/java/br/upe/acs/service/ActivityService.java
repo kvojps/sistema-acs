@@ -17,7 +17,7 @@ public class ActivityService {
 
     private final AtividadeRepositorio repository;
 
-    public Atividade createActivity(AtividadeDTO activity) throws AcsException {
+    public Atividade createActivity(AtividadeDTO activity) {
         ModelMapper modelMapper = new ModelMapper();
         Atividade activityToSave = modelMapper.map(activity, Atividade.class);
 
@@ -28,16 +28,15 @@ public class ActivityService {
         return repository.findAll();
     }
 
-    public Atividade findActivityById(Long id) throws AcsException {
-        return repository.findById(id).orElseThrow(() ->
-                new AcsException("Activity not found"));
+    public Atividade findActivityById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new AcsException("Activity not found"));
     }
 
-    public List<Atividade> findActivityByAxle(EixoEnum axle) throws AcsException {
+    public List<Atividade> findActivityByAxle(EixoEnum axle) {
         return repository.findByEixo(axle);
     }
 
-    public void updateActivity(Long id, AtividadeDTO activity) throws AcsException {
+    public void updateActivity(Long id, AtividadeDTO activity) {
         Atividade activityUpdated = repository.findById(id).orElseThrow(() ->
                 new AcsException("Activity not found"));
 
@@ -50,10 +49,8 @@ public class ActivityService {
         repository.save(activityUpdated);
     }
 
-    public void deleteActivity(Long id) throws AcsException {
-        repository.findById(id).orElseThrow(() ->
-                new AcsException("Activity not found"));
-
+    public void deleteActivity(Long id) {
+        repository.findById(id).orElseThrow(() -> new AcsException("Activity not found"));
         repository.deleteById(id);
     }
 }

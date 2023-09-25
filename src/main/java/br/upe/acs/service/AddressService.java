@@ -9,6 +9,8 @@ import br.upe.acs.model.Endereco;
 import br.upe.acs.model.dto.EnderecoDTO;
 import br.upe.acs.repository.EnderecoRepositorio;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -25,18 +27,23 @@ public class AddressService {
     }
 
     public ViaCepDTO findAddressByCep(String cep) {
-        ViaCepDTO viaCepDTO;
-
-        try {
-            viaCepDTO = new RestTemplate().getForEntity(String.format("https://viacep.com.br/ws/%s/json/", cep), ViaCepDTO.class).getBody();
-            assert viaCepDTO != null;
-            if (viaCepDTO.getLocalidade().isEmpty()) {
-                throw new CepInvalidException("CEP not found");
-            }
-        } catch (Exception e) {
-            throw new CepInvalidException("Invalid CEP");
+        if (!cep.matches("\\d{8}")) {
+            throw new CepInvalidException("CEP must be an 8-digit numeric value.");
         }
 
-        return viaCepDTO;
+        try {
+            String apiUrl = String.format("https://viacep.com.br/ws/%s/json/", cep);
+            ViaCepDTO viaCepDTO = new RestTemplate().getForEntity(apiUrl, ViaCepDTO.class).getBody();
+
+            if (viaCepDTO != null && !viaCepDTO.getLocalidade().isEmpty()) {
+                return viaCepDTO;
+            } else {
+                throw new CepInvalidException("CEP not found");
+            }
+        } catch (HttpClientErrorException.NotFound e) {
+            throw new CepInvalidException("CEP not found: " + e.getMessage());
+        } catch (RestClientException e) {
+            throw new CepInvalidException("Failed to fetch CEP data: " + e.getMessage());
+        }
     }
 }

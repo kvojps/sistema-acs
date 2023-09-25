@@ -6,15 +6,14 @@ import br.upe.acs.model.Usuario;
 import br.upe.acs.model.dto.EnderecoDTO;
 import br.upe.acs.model.dto.RegistroDTO;
 import br.upe.acs.model.enums.PerfilEnum;
-import br.upe.acs.utils.exceptions.AcsException;
 import br.upe.acs.repository.UsuarioRepositorio;
 import br.upe.acs.utils.AuthUtils;
+import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import static br.upe.acs.utils.AuthUtils.generateVerificationCode;
@@ -49,20 +48,17 @@ public class UserService {
         return userSaved;
     }
 
-    public Usuario findUserById(Long id) throws AcsException {
-        Optional<Usuario> user = repository.findById(id);
-        return user.orElseThrow(() ->
+    public Usuario findUserById(Long id) {
+        return repository.findById(id).orElseThrow(() ->
                 new AcsException("There is no user associated with this id"));
     }
 
-    public Usuario findUserByEmail(String email) throws AcsException {
-        Optional<Usuario> user = repository.findByEmail(email);
-        return user.orElseThrow(() ->
+    public Usuario findUserByEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this email"));
     }
 
-    //TODO: reajustar para receber um DTO
-    public void updateUser(String email, String fullName, String phone, Long courseId) throws AcsException {
+    public void updateUser(String email, String fullName, String phone, Long courseId) {
         Usuario user = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this email"));
 
@@ -73,7 +69,7 @@ public class UserService {
         repository.save(user);
     }
 
-    public void deactivateUser(String email) throws AcsException {
+    public void deactivateUser(String email) {
         Usuario user = findUserByEmail(email);
 
         if (user.getRequisicoes().isEmpty()) {

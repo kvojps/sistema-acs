@@ -27,7 +27,7 @@ public class RequestService {
     private final UserService userService;
     private final EmailService emailService;
 
-    public Long createRequest(String email) throws AcsException {
+    public Long createRequest(String email) {
         Usuario student = userService.findUserByEmail(email);
         List<Requisicao> requestsSketch = student.getRequisicoes().stream()
                 .filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
@@ -54,7 +54,7 @@ public class RequestService {
         return requestSaved.getId();
     }
 
-    public String submitRequest(Long requestId) throws AcsException {
+    public String submitRequest(Long requestId) {
         Requisicao request = readRequestsUseCase.findRequestById(requestId);
 
         if (request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
@@ -85,7 +85,7 @@ public class RequestService {
         return token;
     }
 
-    public void archiveRequest(Long id, String email) throws AcsException {
+    public void archiveRequest(Long id, String email) {
         boolean isFinished = false;
         Requisicao requisicao = repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
         Usuario usuario = userService.findUserByEmail(email);
@@ -109,7 +109,7 @@ public class RequestService {
         }
     }
 
-    public void unarchiveRequest(Long id, String email) throws AcsException {
+    public void unarchiveRequest(Long id, String email) {
         Requisicao request = repository.findById(id).orElseThrow();
         Usuario usuario = userService.findUserByEmail(email);
 
@@ -125,7 +125,7 @@ public class RequestService {
         }
     }
 
-    public void deleteRequest(Long requestId, String email) throws AcsException {
+    public void deleteRequest(Long requestId, String email) {
         Requisicao requisicao = readRequestsUseCase.findRequestById(requestId);
         if (!requisicao.getUsuario().getEmail().equals(email)) {
             throw new AcsException("User without permission to delete this request");

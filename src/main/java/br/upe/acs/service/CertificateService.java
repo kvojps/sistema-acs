@@ -28,19 +28,19 @@ public class CertificateService {
     private final ReadRequestsUseCase readRequestsUseCase;
     private final ActivityService activityService;
 
-    public Long createCertificate(MultipartFile file, Long requestId, String email) {
-        Requisicao requisicao = readRequestsUseCase.findRequestById(requestId);
+    public Certificado createCertificate(MultipartFile file, Long requestId, String email) {
+        Requisicao request = readRequestsUseCase.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
             throw new AcsException("Only pdf is accepted");
         }
-        if (!requisicao.getUsuario().getEmail().equals(email)) {
+        if (!request.getUsuario().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
-        if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
+        if (request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
             throw new AcsException("This request is already submitted and not pin new certificates");
         }
-        if (requisicao.getCertificados().size() >= 10) {
+        if (request.getCertificados().size() >= 10) {
             throw new AcsException("This request has more certificates than allowed");
         }
 
@@ -51,22 +51,20 @@ public class CertificateService {
             throw new AcsException(e.getMessage());
         }
 
-        if (isCertificateUnique(requisicao, fileBytes)) {
+        if (isCertificateUnique(request, fileBytes)) {
             throw new AcsException("This certificate has already been registered");
         }
 
         Certificado certificate = new Certificado();
         certificate.setCertificado(fileBytes);
-        certificate.setRequisicao(requisicao);
+        certificate.setRequisicao(request);
         certificate.setStatusCertificado(CertificadoStatusEnum.RASCUNHO);
 
-        Certificado certificateSaved = repository.save(certificate);
-        return certificateSaved.getId();
+        return repository.save(certificate);
     }
 
     public Certificado findCertificateById(Long id) {
-        return repository.findById(id).orElseThrow(() ->
-                new AcsException("Certificate not found"));
+        return repository.findById(id).orElseThrow(() -> new AcsException("Certificate not found"));
     }
 
     public byte[] findCertificatePdfById(Long certificateId) {
@@ -96,13 +94,14 @@ public class CertificateService {
         }
 
         certificado.setCargaHoraria((certificateDto.getQuantidadeDeHoras()));
+
         repository.save(certificado);
     }
 
     public void deleteCertificate(Long certificateId, String email) {
         Certificado certificate = findCertificateById(certificateId);
         if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
-            throw new AcsException("User unauthorized to delete this certificate");
+            throw new AcsException("Certificate not found");
         }
 
         if (!certificate.getStatusCertificado().equals(CertificadoStatusEnum.RASCUNHO)) {

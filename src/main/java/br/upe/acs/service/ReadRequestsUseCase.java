@@ -52,7 +52,6 @@ public class ReadRequestsUseCase {
     }
 
     public Map<String, Object> listStudentRequestsByAxle(Long studentId, EixoEnum axle, int page, int amount) {
-
         List<RequisicaoSimplesResposta> studentRequests = repository.findRequestsByUserIdAndAxle(studentId, axle)
                 .stream().map(RequisicaoSimplesResposta::new).toList();
 
