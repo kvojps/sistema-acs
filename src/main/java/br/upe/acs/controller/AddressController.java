@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/address")
+@RequestMapping("api/addresses")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class AddressController {

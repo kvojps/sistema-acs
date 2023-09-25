@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("api/certificate")
+@RequestMapping("api/certificates")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class CertificateController {

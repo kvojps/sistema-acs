@@ -10,7 +10,7 @@ import br.upe.acs.service.CourseService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/course")
+@RequestMapping("api/courses")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class CourseController {

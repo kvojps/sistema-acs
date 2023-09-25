@@ -50,7 +50,7 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("password/forgot")
+    @GetMapping("/password/forgot")
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
         service.forgotPassword(email);
 

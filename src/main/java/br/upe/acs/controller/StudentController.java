@@ -11,7 +11,7 @@ import br.upe.acs.service.StudentService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/student/utilization")
+@RequestMapping("api/students")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class StudentController {
