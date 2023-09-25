@@ -1,6 +1,6 @@
 package br.upe.acs.config;
 
-import br.upe.acs.utils.interceptor.InterceptadorVerficacao;
+import br.upe.acs.utils.interceptor.RequestInterceptor;
 import br.upe.acs.repository.UsuarioRepositorio;
 
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new InterceptadorVerficacao(repositorio, jwtService))
+		registry.addInterceptor(new RequestInterceptor(repositorio, jwtService))
 				.addPathPatterns("/api/requisicao/**", "/api/atividade/**", "/api/certificado/**", "/api/aluno/**", "/api/usuario/**")
 				.excludePathPatterns("/api/usuario/me", "/api/usuario/verificacao/**", "/api/usuario/conta/**");
 	}

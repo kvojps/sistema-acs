@@ -13,16 +13,15 @@ import java.util.Optional;
 
 @Configuration
 @RequiredArgsConstructor
-public class InterceptadorVerficacao implements HandlerInterceptor {
+public class RequestInterceptor implements HandlerInterceptor {
 
-    private final UsuarioRepositorio usuarioRepositorio;
-
+    private final UsuarioRepositorio userRepository;
     private final JwtService jwtService;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         final String token = request.getHeader("Authorization").substring(7);
         final String email = jwtService.extractUsername(token);
-        Optional<Usuario> usuario = usuarioRepositorio.findByEmail(email);
+        Optional<Usuario> usuario = userRepository.findByEmail(email);
         if (usuario.isPresent() && !usuario.get().isVerificado()) {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -36,6 +35,4 @@ public class InterceptadorVerficacao implements HandlerInterceptor {
         }
         return true;
     }
-
-
 }

@@ -27,5 +27,4 @@ public class PaginationUtils {
 
         return list.subList(starts, end);
     }
-
 }
