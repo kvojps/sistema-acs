@@ -64,8 +64,8 @@ public class UserService {
 
         user.setNomeCompleto(fullName);
         user.setTelefone(phone);
-        Curso curso = courseService.findCourseById(courseId);
-        user.setCurso(curso);
+        Curso course = courseService.findCourseById(courseId);
+        user.setCurso(course);
         repository.save(user);
     }
 

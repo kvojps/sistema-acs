@@ -34,13 +34,13 @@ public class RequestPdfService {
     }
 
     public byte[] generateRequestPdf(Long id) {
-        Requisicao requisicao = service.findRequestById(id);
+        Requisicao request = service.findRequestById(id);
 
-        if (requisicao.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
+        if (request.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
             throw new AcsException("It is not possible to generate a PDF of a request that is not in transit");
         }
 
-        Context context = defineTemplateValuesHtml(requisicao);
+        Context context = defineTemplateValuesHtml(request);
 
         String documentHtml = templateEngine.process("requisicao.html", context);
         Path pathDoPdf = Paths.get("src/main/resources/requisicao" + id + ".pdf");

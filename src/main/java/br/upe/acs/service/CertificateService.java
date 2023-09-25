@@ -73,29 +73,29 @@ public class CertificateService {
     }
 
     public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email) {
-        Certificado certificado = findCertificateById(certificateId);
-        if (!certificado.getRequisicao().getUsuario().getEmail().equals(email)) {
+        Certificado certificate = findCertificateById(certificateId);
+        if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
-        Atividade atividade = null;
+        Atividade activity = null;
         if (certificateDto.getAtividadeId() != 0) {
-            atividade = activityService.findActivityById(certificateDto.getAtividadeId());
+            activity = activityService.findActivityById(certificateDto.getAtividadeId());
         }
 
-        certificado.setTitulo(certificateDto.getTitulo());
-        certificado.setAtividade(atividade);
+        certificate.setTitulo(certificateDto.getTitulo());
+        certificate.setAtividade(activity);
 
         if (certificateDto.getDataIncial() != null) {
-            certificado.setDataInicial(convertDate(certificateDto.getDataIncial()));
+            certificate.setDataInicial(convertDate(certificateDto.getDataIncial()));
         }
 
         if (certificateDto.getDataFinal() != null) {
-            certificado.setDataFinal(convertDate(certificateDto.getDataFinal()));
+            certificate.setDataFinal(convertDate(certificateDto.getDataFinal()));
         }
 
-        certificado.setCargaHoraria((certificateDto.getQuantidadeDeHoras()));
+        certificate.setCargaHoraria((certificateDto.getQuantidadeDeHoras()));
 
-        repository.save(certificado);
+        repository.save(certificate);
     }
 
     public void deleteCertificate(Long certificateId, String email) {

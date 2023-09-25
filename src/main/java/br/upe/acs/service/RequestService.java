@@ -87,11 +87,11 @@ public class RequestService {
 
     public void archiveRequest(Long id, String email) {
         boolean isFinished = false;
-        Requisicao requisicao = repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
-        Usuario usuario = userService.findUserByEmail(email);
-        RequisicaoStatusEnum status = requisicao.getStatusRequisicao();
+        Requisicao request = repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
+        Usuario user = userService.findUserByEmail(email);
+        RequisicaoStatusEnum status = request.getStatusRequisicao();
 
-        if (!usuario.equals(requisicao.getUsuario())) {
+        if (!user.equals(request.getUsuario())) {
             throw new AcsException("User not authorized to archive this request");
         }
         if (status == RequisicaoStatusEnum.ACEITO || status == RequisicaoStatusEnum.NEGADO) {
@@ -101,9 +101,9 @@ public class RequestService {
             throw new AcsException("Unable to archive an unfinished request");
         }
 
-        if (!requisicao.isArquivada()) {
-            requisicao.setArquivada(true);
-            repository.save(requisicao);
+        if (!request.isArquivada()) {
+            request.setArquivada(true);
+            repository.save(request);
         } else {
             throw new AcsException("Request already archived");
         }
@@ -111,9 +111,9 @@ public class RequestService {
 
     public void unarchiveRequest(Long id, String email) {
         Requisicao request = repository.findById(id).orElseThrow();
-        Usuario usuario = userService.findUserByEmail(email);
+        Usuario user = userService.findUserByEmail(email);
 
-        if (!usuario.equals(request.getUsuario())) {
+        if (!user.equals(request.getUsuario())) {
             throw new AcsException("User not authorized to unarchive this request");
         }
 
@@ -126,12 +126,12 @@ public class RequestService {
     }
 
     public void deleteRequest(Long requestId, String email) {
-        Requisicao requisicao = readRequestsUseCase.findRequestById(requestId);
-        if (!requisicao.getUsuario().getEmail().equals(email)) {
+        Requisicao request = readRequestsUseCase.findRequestById(requestId);
+        if (!request.getUsuario().getEmail().equals(email)) {
             throw new AcsException("User without permission to delete this request");
         }
 
-        if (!requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)) {
+        if (!request.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)) {
             throw new AcsException("A request already submitted cannot be deleted");
         }
 
@@ -175,9 +175,9 @@ public class RequestService {
     }
 
     private void modifyCertificates(List<Certificado> certificates) {
-        for (Certificado certificado : certificates) {
-            certificado.setStatusCertificado(CertificadoStatusEnum.ENCAMINHADO_COORDENACAO);
-            certificateRepository.save(certificado);
+        for (Certificado certificate : certificates) {
+            certificate.setStatusCertificado(CertificadoStatusEnum.ENCAMINHADO_COORDENACAO);
+            certificateRepository.save(certificate);
         }
     }
 }

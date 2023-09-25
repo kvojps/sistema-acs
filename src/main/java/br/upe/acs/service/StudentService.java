@@ -26,12 +26,12 @@ public class StudentService {
     }
 
     public MinhasHorasNaAtividadeVO getHoursAcsStatusByActivity(String email, Long activityId) {
-        Atividade atividade = activityService.findActivityById(activityId);
+        Atividade activity = activityService.findActivityById(activityId);
 
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this id"));
 
-        return calculateActivityHours(student, atividade.getChMaxima());
+        return calculateActivityHours(student, activity.getChMaxima());
     }
 
     private MinhasHorasNaAtividadeVO calculateActivityHours(Usuario student, int chMax) {
