@@ -37,16 +37,16 @@ public class ActivityService {
     }
 
     public void updateActivity(Long id, AtividadeDTO activity) {
-        Atividade activityUpdated = repository.findById(id).orElseThrow(() ->
+        Atividade activityToUpdate = repository.findById(id).orElseThrow(() ->
                 new AcsException("Activity not found"));
 
-        activityUpdated.setEixo(activity.getEixo());
-        activityUpdated.setDescricao(activity.getDescricao());
-        activityUpdated.setCriteriosParaAvaliacao(activity.getCriteriosParaAvaliacao());
-        activityUpdated.setChMaxima(activity.getChMaxima());
-        activityUpdated.setChPorCertificado(activity.getChPorCertificado());
+        activityToUpdate.setEixo(activity.getEixo());
+        activityToUpdate.setDescricao(activity.getDescricao());
+        activityToUpdate.setCriteriosParaAvaliacao(activity.getCriteriosParaAvaliacao());
+        activityToUpdate.setChMaxima(activity.getChMaxima());
+        activityToUpdate.setChPorCertificado(activity.getChPorCertificado());
 
-        repository.save(activityUpdated);
+        repository.save(activityToUpdate);
     }
 
     public void deleteActivity(Long id) {
