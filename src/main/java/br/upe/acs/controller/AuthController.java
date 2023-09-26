@@ -6,6 +6,7 @@ import br.upe.acs.model.dto.AlterarSenhaDTO;
 import br.upe.acs.model.dto.LoginDTO;
 import br.upe.acs.model.dto.RecuperacaoDeContaDTO;
 import br.upe.acs.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +21,23 @@ public class AuthController {
     private final AuthService service;
     private final JwtService jwtService;
 
+    @Operation(summary = "Realizar login")
     @PostMapping
     public ResponseEntity<AutenticacaoResposta> loginUser(@RequestBody LoginDTO login) {
         return ResponseEntity.ok(service.login(login));
     }
 
+    @Operation(summary = "Verificar usuário por token")
     @GetMapping("/verify")
     public ResponseEntity<?> verifyEmail(HttpServletRequest request,
-                                             @RequestParam(value = "code") String code) {
+                                         @RequestParam(value = "code") String code) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         service.verifyEmail(email, code);
 
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Obter novo código de verificação por token")
     @GetMapping("/verify/new-code")
     public ResponseEntity<?> getNewVerificationCode(HttpServletRequest request) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
@@ -42,6 +46,7 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Atualizar senha por token")
     @PatchMapping("/password")
     public ResponseEntity<?> updatePassword(HttpServletRequest request, @RequestBody AlterarSenhaDTO alterarSenhaDTO) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
@@ -50,6 +55,7 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Esquecer senha")
     @GetMapping("/password/forgot")
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
         service.forgotPassword(email);
@@ -57,6 +63,7 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Recuperar senha por token")
     @PatchMapping("/password/recovery")
     public ResponseEntity<?> recoveryPassword(HttpServletRequest request,
                                               @RequestBody RecuperacaoDeContaDTO recuperacaoDeContaDTO) {

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.upe.acs.model.enums.EixoEnum;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,33 +27,39 @@ public class ActivityController {
 
     private final ActivityService servico;
 
+    @Operation(summary = "Criar atividade")
     @PostMapping
     public ResponseEntity<AtividadeResposta> createActivity(@RequestBody AtividadeDTO activity) {
         return ResponseEntity.ok(new AtividadeResposta(servico.createActivity(activity)));
     }
 
+    @Operation(summary = "Listar atividades")
     @GetMapping
     public ResponseEntity<List<AtividadeResposta>> listActivities() {
         return ResponseEntity.ok(servico.listActivities().stream().map(AtividadeResposta::new)
                 .collect(Collectors.toList()));
     }
 
+    @Operation(summary = "Buscar atividade por id")
     @GetMapping("/{id}")
     public ResponseEntity<AtividadeResposta> findActivityById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(new AtividadeResposta(servico.findActivityById(id)));
     }
 
+    @Operation(summary = "Buscar atividade por eixo")
     @GetMapping("/axle")
     public ResponseEntity<List<AtividadeResposta>> findActivityByAxle(@RequestParam EixoEnum axle) {
         return ResponseEntity.ok(servico.findActivityByAxle(axle).stream().map(AtividadeResposta::new).toList());
     }
 
+    @Operation(summary = "Atualizar atividade por id")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateActivity(@PathVariable("id") Long id, @RequestBody AtividadeDTO activityDto) {
         servico.updateActivity(id, activityDto);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Apagar atividade por id")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteActivity(@PathVariable("id") Long id) {
         servico.deleteActivity(id);
