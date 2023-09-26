@@ -58,7 +58,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Apagar usuário pelo token")
+    @Operation(summary = "Apagar usuário por token")
     @DeleteMapping
     public ResponseEntity<?> deactivateUser(HttpServletRequest request) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
