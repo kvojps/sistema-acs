@@ -27,11 +27,11 @@ import lombok.RequiredArgsConstructor;
 public class CertificateService {
 
     private final CertificadoRepositorio repository;
-    private final ReadRequestsUseCase readRequestsUseCase;
+    private final RequestService requestService;
     private final ActivityService activityService;
 
     public Certificado createCertificate(MultipartFile file, Long requestId, String email) {
-        Requisicao request = readRequestsUseCase.findRequestById(requestId);
+        Requisicao request = requestService.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
             throw new InvalidFileFormatException("Only pdf is accepted");

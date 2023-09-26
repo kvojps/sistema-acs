@@ -1,9 +1,12 @@
 package br.upe.acs.service;
 
+import br.upe.acs.controller.responses.RequisicaoSimplesResposta;
 import br.upe.acs.model.Certificado;
+import br.upe.acs.model.Curso;
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
+import br.upe.acs.model.enums.EixoEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
 import br.upe.acs.repository.CertificadoRepositorio;
 import br.upe.acs.repository.RequisicaoRepositorio;
@@ -16,8 +19,11 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
+
+import static br.upe.acs.utils.PaginationUtils.generatePagination;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +31,9 @@ public class RequestService {
 
     private final RequisicaoRepositorio repository;
     private final CertificadoRepositorio certificateRepository;
-    private final ReadRequestsUseCase readRequestsUseCase;
-    private final RequestPdfUtils requestPdfUtils;
     private final UserService userService;
+    private final CourseService courseService;
+    private final RequestPdfUtils requestPdfUtils;
     private final EmailUtils emailUtils;
 
     public Long createRequest(String email) {
@@ -58,12 +64,12 @@ public class RequestService {
     }
 
     public byte[] createRequestPdf(Long requestId) {
-        Requisicao request = readRequestsUseCase.findRequestById(requestId);
+        Requisicao request = findRequestById(requestId);
         return requestPdfUtils.generateRequestPdf(request);
     }
 
     public String submitRequest(Long requestId) {
-        Requisicao request = readRequestsUseCase.findRequestById(requestId);
+        Requisicao request = findRequestById(requestId);
 
         if (request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
             throw new AcsException("This request has already been submitted");
@@ -91,6 +97,33 @@ public class RequestService {
         CompletableFuture.runAsync(() -> emailUtils.sendRequestStatusChanged(request));
 
         return token;
+    }
+
+    public Map<String, Object> listRequests(Boolean isArchived, RequisicaoStatusEnum status, Long userId, Long courseId, int page, int amount) {
+        Usuario user = null;
+        Curso course = null;
+        if (userId != null){
+            user = userService.findUserById(userId);
+        }
+        if (courseId != null) {
+            course = courseService.findCourseById(courseId);
+        }
+
+        List<RequisicaoSimplesResposta> requests = repository.findWithFilters(isArchived, status, user, course)
+                .stream().map(RequisicaoSimplesResposta::new).toList();
+
+        return generatePagination(requests, page, amount);
+    }
+
+    public Map<String, Object> listStudentRequestsByAxle(Long studentId, EixoEnum axle, int page, int amount) {
+        List<RequisicaoSimplesResposta> studentRequests = repository.findRequestsByUserIdAndAxle(studentId, axle)
+                .stream().map(RequisicaoSimplesResposta::new).toList();
+
+        return generatePagination(studentRequests, page, amount);
+    }
+
+    public Requisicao findRequestById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
     }
 
     public void archiveRequest(Long id, String email) {
@@ -134,7 +167,7 @@ public class RequestService {
     }
 
     public void deleteRequest(Long requestId, String email) {
-        Requisicao request = readRequestsUseCase.findRequestById(requestId);
+        Requisicao request = findRequestById(requestId);
         if (!request.getUsuario().getEmail().equals(email)) {
             throw new AcsException("User without permission to delete this request");
         }

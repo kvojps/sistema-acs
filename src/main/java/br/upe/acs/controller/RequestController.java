@@ -2,9 +2,8 @@ package br.upe.acs.controller;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controller.responses.RequisicaoResposta;
-import br.upe.acs.model.Usuario;
 import br.upe.acs.model.enums.EixoEnum;
-import br.upe.acs.service.ReadRequestsUseCase;
+import br.upe.acs.model.enums.RequisicaoStatusEnum;
 import br.upe.acs.service.RequestService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,7 +22,6 @@ import java.util.Map;
 public class RequestController {
 
     private final RequestService service;
-    private final ReadRequestsUseCase readRequestsService;
     private final JwtService jwtService;
 
     @PostMapping
@@ -44,33 +41,13 @@ public class RequestController {
     }
 
     @GetMapping
-    public ResponseEntity<Map<String, ?>> listRequests(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Map<String, ?>> listRequests(@RequestParam(required = false) Boolean isArchived,
+                                                       @RequestParam(required = false) RequisicaoStatusEnum status,
+                                                       @RequestParam(required = false) Long userId,
+                                                       @RequestParam(required = false) Long courseId,
+                                                       @RequestParam(defaultValue = "0") int page,
                                                        @RequestParam(defaultValue = "10") int amount) {
-        return ResponseEntity.ok(readRequestsService.listRequests(page, amount));
-    }
-
-    @GetMapping("/non-sketch")
-    public ResponseEntity<Map<String, Object>> listNonSketchRequests(@RequestParam(defaultValue = "0") int page,
-                                                                     @RequestParam(defaultValue = "10") int amount) {
-        return ResponseEntity.ok(readRequestsService.listNonSketchRequests(page, amount));
-    }
-
-    @GetMapping("/archived")
-    public ResponseEntity<?> listArchivedRequests(@AuthenticationPrincipal Usuario user) {
-        return ResponseEntity.ok(readRequestsService.listArchivedRequests(user.getId())
-                .stream().map(RequisicaoResposta::new).toList());
-    }
-
-    @GetMapping("/unarchived")
-    public ResponseEntity<?> listUnarchivedRequests(@AuthenticationPrincipal Usuario user, @RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "10") int amount) {
-        return ResponseEntity.ok(readRequestsService.listStudentUnarchivedRequests(user.getId(), page, amount));
-    }
-
-    @GetMapping("/user/{id}")
-    public ResponseEntity<?> listRequestsByStudent(@PathVariable("id") Long studentId, @RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "10") int amount) {
-        return ResponseEntity.ok(readRequestsService.listRequestByStudent(studentId, page, amount));
+        return ResponseEntity.ok(service.listRequests(isArchived, status, userId, courseId, page, amount));
     }
 
     @GetMapping("/user/{id}/{axle}")
@@ -78,12 +55,12 @@ public class RequestController {
                                                                              @PathVariable("axle") EixoEnum axle,
                                                                              @RequestParam(defaultValue = "0") int page,
                                                                              @RequestParam(defaultValue = "10") int amount) {
-        return ResponseEntity.ok(readRequestsService.listStudentRequestsByAxle(studentId, axle, page, amount));
+        return ResponseEntity.ok(service.listStudentRequestsByAxle(studentId, axle, page, amount));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RequisicaoResposta> findRequestById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(new RequisicaoResposta(readRequestsService.findRequestById(id)));
+        return ResponseEntity.ok(new RequisicaoResposta(service.findRequestById(id)));
     }
 
     @PutMapping("/{id}")
