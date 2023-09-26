@@ -1,17 +1,17 @@
-package br.upe.acs.service;
+package br.upe.acs.utils;
 
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.Usuario;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import br.upe.acs.model.dto.EmailDTO;
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class EmailService {
+public class EmailUtils {
 
     private final JavaMailSender emailSender;
 
@@ -27,26 +27,26 @@ public class EmailService {
         sendEmail(emailDTO);
     }
 
-    public void sendRequestStatusChanged(Requisicao requisicao) {
+    public void sendRequestStatusChanged(Requisicao request) {
         EmailDTO emailDTO = new EmailDTO();
 
-        emailDTO.setDestinatario(requisicao.getUsuario().getEmail());
-        emailDTO.setAssunto("Modificação na sua requisição " + requisicao.getId() + " - Sistema ACs UPE");
-        emailDTO.setMensagem("Gostaríamos de informar que sua requisição " + requisicao.getId()
-                + " teve seu status alterado para " + requisicao.getStatusRequisicao().name() + ".\n" +
+        emailDTO.setDestinatario(request.getUsuario().getEmail());
+        emailDTO.setAssunto("Modificação na sua requisição " + request.getId() + " - Sistema ACs UPE");
+        emailDTO.setMensagem("Gostaríamos de informar que sua requisição " + request.getId()
+                + " teve seu status alterado para " + request.getStatusRequisicao().name() + ".\n" +
                 "Para mais informações acesse o Sistema de ACs. " +
                 "Em caso de erros entre em contato com o turmaestest@gmail.com.\n" +
-                "Atenciosamente,\nCoordenação de " + requisicao.getCurso().getNome() + ".");
+                "Atenciosamente,\nCoordenação de " + request.getCurso().getNome() + ".");
         sendEmail(emailDTO);
     }
 
-    public void sendRequestRecoveryPassword(Usuario usuario, String token) {
+    public void sendRequestRecoveryPassword(Usuario user, String token) {
         EmailDTO emailDTO = new EmailDTO();
 
-        emailDTO.setDestinatario(usuario.getEmail());
+        emailDTO.setDestinatario(user.getEmail());
         emailDTO.setAssunto("Solicitação de recuperação de conta - Sistema ACs UPE");
-        emailDTO.setMensagem("Olá, " + usuario.getNomeCompleto() + ", \n" +
-                "Nós recebemos um pedido para redefinir a senha do e-mail " + usuario.getEmail() + ".\n" +
+        emailDTO.setMensagem("Olá, " + user.getNomeCompleto() + ", \n" +
+                "Nós recebemos um pedido para redefinir a senha do e-mail " + user.getEmail() + ".\n" +
                 "Clique no link abaixo para redefinir sua senha:\n" +
                 System.getenv("FRONTEND_URL") + "/account/reset/" + token);
         sendEmail(emailDTO);

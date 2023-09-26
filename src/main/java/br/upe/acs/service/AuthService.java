@@ -5,6 +5,7 @@ import br.upe.acs.controller.responses.AutenticacaoResposta;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.dto.LoginDTO;
 import br.upe.acs.repository.UsuarioRepositorio;
+import br.upe.acs.utils.EmailUtils;
 import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +25,7 @@ import static br.upe.acs.utils.AuthUtils.validatePassword;
 public class AuthService {
 
     private final UsuarioRepositorio repository;
-    private final EmailService emailService;
+    private final EmailUtils emailUtils;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
@@ -62,7 +63,7 @@ public class AuthService {
         user.setCodigoVerificacao(newVerificationCode);
         repository.save(user);
 
-        CompletableFuture.runAsync(() -> emailService.sendVerificationCode(email, newVerificationCode));
+        CompletableFuture.runAsync(() -> emailUtils.sendVerificationCode(email, newVerificationCode));
     }
 
     public void updatePassword(String email, String password, String newPassword) {
@@ -84,7 +85,7 @@ public class AuthService {
         claims.put("recovery", true);
         String token = jwtService.generateToken(claims, user, 1000 * 60 * 15);
 
-        CompletableFuture.runAsync(() -> emailService.sendRequestRecoveryPassword(user, token));
+        CompletableFuture.runAsync(() -> emailUtils.sendRequestRecoveryPassword(user, token));
     }
 
     public void recoveryPassword(String token, String newPassword) {

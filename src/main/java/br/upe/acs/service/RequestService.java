@@ -7,6 +7,7 @@ import br.upe.acs.model.enums.CertificadoStatusEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
 import br.upe.acs.repository.CertificadoRepositorio;
 import br.upe.acs.repository.RequisicaoRepositorio;
+import br.upe.acs.utils.EmailUtils;
 import br.upe.acs.utils.RequestPdfUtils;
 import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class RequestService {
     private final ReadRequestsUseCase readRequestsUseCase;
     private final RequestPdfUtils requestPdfUtils;
     private final UserService userService;
-    private final EmailService emailService;
+    private final EmailUtils emailUtils;
 
     public Long createRequest(String email) {
         Usuario student = userService.findUserByEmail(email);
@@ -87,7 +88,7 @@ public class RequestService {
         modifyCertificates(request.getCertificados());
         repository.save(request);
 
-        CompletableFuture.runAsync(() -> emailService.sendRequestStatusChanged(request));
+        CompletableFuture.runAsync(() -> emailUtils.sendRequestStatusChanged(request));
 
         return token;
     }

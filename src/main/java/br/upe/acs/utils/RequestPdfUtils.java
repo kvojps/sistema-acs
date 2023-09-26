@@ -3,7 +3,7 @@ package br.upe.acs.utils;
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
 import br.upe.acs.utils.exceptions.AcsException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Service
+@Component
 public class RequestPdfUtils {
 
     private final ITemplateEngine templateEngine;

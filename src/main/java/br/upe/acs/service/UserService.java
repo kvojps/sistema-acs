@@ -8,6 +8,7 @@ import br.upe.acs.model.dto.RegistroDTO;
 import br.upe.acs.model.enums.PerfilEnum;
 import br.upe.acs.repository.UsuarioRepositorio;
 import br.upe.acs.utils.AuthUtils;
+import br.upe.acs.utils.EmailUtils;
 import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -25,7 +26,7 @@ public class UserService {
     private final UsuarioRepositorio repository;
     private final AddressService addressService;
     private final CourseService courseService;
-    private final EmailService emailService;
+    private final EmailUtils emailUtils;
     private final PasswordEncoder passwordEncoder;
 
     public Usuario createUser(RegistroDTO userDto) {
@@ -43,7 +44,7 @@ public class UserService {
 
         Usuario userSaved = repository.save(userToSave);
 
-        CompletableFuture.runAsync(() -> emailService.sendVerificationCode(userDto.getEmail(), userToSave.getCodigoVerificacao()));
+        CompletableFuture.runAsync(() -> emailUtils.sendVerificationCode(userDto.getEmail(), userToSave.getCodigoVerificacao()));
 
         return userSaved;
     }
