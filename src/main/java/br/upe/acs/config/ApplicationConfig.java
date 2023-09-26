@@ -21,41 +21,40 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class ApplicationConfig implements WebMvcConfigurer {
 
-	private final UsuarioRepositorio repositorio;
+    private final UsuarioRepositorio repository;
+    private final JwtService jwtService;
 
-	private final JwtService jwtService;
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return usermail -> repository.findByEmail(usermail)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    }
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		return usermail -> repositorio.findByEmail(usermail)
-				.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-	}
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
 
-	@Bean
-	public AuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(userDetailsService());
-		authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
-		return authProvider;
-	}
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-		return config.getAuthenticationManager();
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new RequestInterceptor(repositorio, jwtService))
-				.addPathPatterns("/api/requisicao/**", "/api/atividade/**", "/api/certificado/**", "/api/aluno/**", "/api/usuario/**")
-				.excludePathPatterns("/api/usuario/me", "/api/usuario/verificacao/**", "/api/usuario/conta/**");
-	}
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new RequestInterceptor(repository, jwtService))
+                .addPathPatterns("/api/requisicao/**", "/api/atividade/**", "/api/certificado/**", "/api/aluno/**", "/api/usuario/**")
+                .excludePathPatterns("/api/usuario/me", "/api/usuario/verificacao/**", "/api/usuario/conta/**");
+    }
 
 }

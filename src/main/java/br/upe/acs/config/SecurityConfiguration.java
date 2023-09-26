@@ -16,38 +16,37 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-	
-	private final JwtAuthenticationFilter jwtAuthFilter;
-	
-	private final AuthenticationProvider authenticationProvider;
-	
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-		http
-			.csrf(csrf -> csrf.disable())
-			.authorizeHttpRequests(authorizeRequests ->
-				authorizeRequests
-					.requestMatchers("/api/auth/**", "/v3/**", "/swagger-ui/**", "/api/usuario/conta/recuperar")
-						.permitAll()
-						.requestMatchers(HttpMethod.GET,"/api/endereco/**", "/api/curso/**")
-						.permitAll()
-						.requestMatchers("api/usuario/requisicao/paginacao/**")
-						.hasAnyAuthority("COORDENADOR", "ADMINISTRADOR")
-					.anyRequest().authenticated()
-			)
-			.sessionManagement(sessionManagement ->
-				sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			)
-			.authenticationProvider(authenticationProvider)
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-			.cors(cors -> {
-				try {
-					cors.init(http);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			});
 
-		return http.build();
-	}
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/api/auth/**", "/v3/**", "/swagger-ui/**", "/api/usuario/conta/recuperar")
+                                .permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/endereco/**", "/api/curso/**")
+                                .permitAll()
+                                .requestMatchers("api/usuario/requisicao/paginacao/**")
+                                .hasAnyAuthority("COORDENADOR", "ADMINISTRADOR")
+                                .anyRequest().authenticated()
+                )
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(cors -> {
+                    try {
+                        cors.init(http);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+        return http.build();
+    }
 }
