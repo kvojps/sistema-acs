@@ -25,7 +25,7 @@ public class RequestController {
     private final RequestService service;
     private final JwtService jwtService;
 
-    @Operation(summary = "Criar requisição rascunho")
+    @Operation(summary = "Criar requisição rascunho por token")
     @PostMapping
     public ResponseEntity<?> createRequest(HttpServletRequest request) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
