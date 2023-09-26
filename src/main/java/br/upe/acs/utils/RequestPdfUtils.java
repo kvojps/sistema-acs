@@ -60,23 +60,23 @@ public class RequestPdfUtils {
         }
     }
 
-    private Context defineTemplateValuesHtml(Requisicao requisicao) {
+    private Context defineTemplateValuesHtml(Requisicao request) {
         Context context = new Context();
 
-        context.setVariable("protocolo", requisicao.getToken());
-        context.setVariable("cpf", requisicao.getUsuario().getCpf());
-        context.setVariable("data", requisicao.getDataDeSubmissao().toString());
-        context.setVariable("nome", requisicao.getUsuario().getNomeCompleto());
-        context.setVariable("curso", requisicao.getUsuario().getCurso().getNome());
-        context.setVariable("periodo", requisicao.getUsuario().getPeriodo());
-        context.setVariable("rua", requisicao.getUsuario().getEndereco().getRua());
-        context.setVariable("bairro", requisicao.getUsuario().getEndereco().getBairro());
-        context.setVariable("numero", requisicao.getUsuario().getEndereco().getNumero());
-        context.setVariable("cidade", requisicao.getUsuario().getEndereco().getCidade());
-        context.setVariable("uf", requisicao.getUsuario().getEndereco().getUF());
-        context.setVariable("cep", requisicao.getUsuario().getEndereco().getCep());
-        context.setVariable("email", requisicao.getUsuario().getEmail());
-        context.setVariable("telefone", requisicao.getUsuario().getTelefone());
+        context.setVariable("protocolo", request.getToken());
+        context.setVariable("cpf", request.getUsuario().getCpf());
+        context.setVariable("data", request.getDataDeSubmissao().toString());
+        context.setVariable("nome", request.getUsuario().getNomeCompleto());
+        context.setVariable("curso", request.getUsuario().getCurso().getNome());
+        context.setVariable("periodo", request.getUsuario().getPeriodo());
+        context.setVariable("rua", request.getUsuario().getEndereco().getRua());
+        context.setVariable("bairro", request.getUsuario().getEndereco().getBairro());
+        context.setVariable("numero", request.getUsuario().getEndereco().getNumero());
+        context.setVariable("cidade", request.getUsuario().getEndereco().getCidade());
+        context.setVariable("uf", request.getUsuario().getEndereco().getUF());
+        context.setVariable("cep", request.getUsuario().getEndereco().getCep());
+        context.setVariable("email", request.getUsuario().getEmail());
+        context.setVariable("telefone", request.getUsuario().getTelefone());
 
         return context;
     }
