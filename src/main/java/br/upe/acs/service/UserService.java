@@ -5,6 +5,7 @@ import br.upe.acs.model.Endereco;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.dto.EnderecoDTO;
 import br.upe.acs.model.dto.RegistroDTO;
+import br.upe.acs.model.dto.UserUpdateDTO;
 import br.upe.acs.model.enums.PerfilEnum;
 import br.upe.acs.repository.UsuarioRepositorio;
 import br.upe.acs.utils.AuthUtils;
@@ -59,13 +60,12 @@ public class UserService {
                 new AcsException("There is no user associated with this email"));
     }
 
-    public void updateUser(String email, String fullName, String phone, Long courseId) {
-        Usuario user = repository.findByEmail(email).orElseThrow(() ->
-                new AcsException("There is no user associated with this email"));
+    public void updateUser(Long id, UserUpdateDTO userUpdateDTO) {
+        Usuario user = findUserById(id);
 
-        user.setNomeCompleto(fullName);
-        user.setTelefone(phone);
-        Curso course = courseService.findCourseById(courseId);
+        user.setNomeCompleto(userUpdateDTO.getFullName());
+        user.setTelefone(userUpdateDTO.getPhone());
+        Curso course = courseService.findCourseById(userUpdateDTO.getCourseId());
         user.setCurso(course);
         repository.save(user);
     }
