@@ -2,7 +2,7 @@ package br.upe.acs.model;
 
 import java.util.List;
 
-import br.upe.acs.model.enums.EixoEnum;
+import br.upe.acs.model.enums.AxleEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,28 +14,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "activities")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Atividade {
+public class Activity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	private EixoEnum eixo;
+	private AxleEnum axle;
 
-	private String descricao;
+	private String description;
 
-	private String criteriosParaAvaliacao;
+	private String evaluationMethods;
 
-	private int chMaxima;
+	private int workloadMax;
 
-    private Integer chPorCertificado;
+    private Integer workloadCertificate;
 
-	@OneToMany(mappedBy = "atividade")
-	private List<Certificado> certificados;
+	@OneToMany(mappedBy = "activity")
+	private List<Certificado> certificates;
 
 }

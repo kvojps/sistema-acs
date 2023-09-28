@@ -1,5 +1,5 @@
 package br.upe.acs.model.enums;
 
-public enum EixoEnum {
+public enum AxleEnum {
 	PESQUISA, EXTENSAO, ENSINO, GESTAO
 }

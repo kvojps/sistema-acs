@@ -3,7 +3,7 @@ package br.upe.acs.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.upe.acs.model.enums.EixoEnum;
+import br.upe.acs.model.enums.AxleEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.upe.acs.controller.responses.AtividadeResposta;
-import br.upe.acs.model.dto.AtividadeDTO;
+import br.upe.acs.controller.responses.ActivityResponse;
+import br.upe.acs.model.dto.ActivityDTO;
 import br.upe.acs.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,32 +29,32 @@ public class ActivityController {
 
     @Operation(summary = "Criar atividade")
     @PostMapping
-    public ResponseEntity<AtividadeResposta> createActivity(@RequestBody AtividadeDTO activity) {
-        return ResponseEntity.ok(new AtividadeResposta(servico.createActivity(activity)));
+    public ResponseEntity<ActivityResponse> createActivity(@RequestBody ActivityDTO activity) {
+        return ResponseEntity.ok(new ActivityResponse(servico.createActivity(activity)));
     }
 
     @Operation(summary = "Listar atividades")
     @GetMapping
-    public ResponseEntity<List<AtividadeResposta>> listActivities() {
-        return ResponseEntity.ok(servico.listActivities().stream().map(AtividadeResposta::new)
+    public ResponseEntity<List<ActivityResponse>> listActivities() {
+        return ResponseEntity.ok(servico.listActivities().stream().map(ActivityResponse::new)
                 .collect(Collectors.toList()));
     }
 
     @Operation(summary = "Buscar atividade por id")
     @GetMapping("/{id}")
-    public ResponseEntity<AtividadeResposta> findActivityById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(new AtividadeResposta(servico.findActivityById(id)));
+    public ResponseEntity<ActivityResponse> findActivityById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(new ActivityResponse(servico.findActivityById(id)));
     }
 
     @Operation(summary = "Buscar atividade por eixo")
     @GetMapping("/axle")
-    public ResponseEntity<List<AtividadeResposta>> findActivityByAxle(@RequestParam EixoEnum axle) {
-        return ResponseEntity.ok(servico.findActivityByAxle(axle).stream().map(AtividadeResposta::new).toList());
+    public ResponseEntity<List<ActivityResponse>> findActivityByAxle(@RequestParam AxleEnum axle) {
+        return ResponseEntity.ok(servico.findActivityByAxle(axle).stream().map(ActivityResponse::new).toList());
     }
 
     @Operation(summary = "Atualizar atividade por id")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateActivity(@PathVariable("id") Long id, @RequestBody AtividadeDTO activityDto) {
+    public ResponseEntity<?> updateActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDto) {
         servico.updateActivity(id, activityDto);
         return ResponseEntity.noContent().build();
     }

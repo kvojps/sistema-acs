@@ -4,7 +4,7 @@ import java.util.Date;
 
 import br.upe.acs.model.Certificado;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
-import br.upe.acs.model.enums.EixoEnum;
+import br.upe.acs.model.enums.AxleEnum;
 import lombok.Getter;
 
 @Getter
@@ -20,7 +20,7 @@ public class CertificadoResposta {
 
 	private final Date dataFinal;
 	
-	private EixoEnum eixoAtividade;
+	private AxleEnum eixoAtividade;
 
 	private String atividade;
 	
@@ -35,9 +35,9 @@ public class CertificadoResposta {
 		this.observacao = certificado.getObservacao();
 		this.dataInicial = certificado.getDataInicial();
 		this.dataFinal = certificado.getDataFinal();
-		if (certificado.getAtividade() != null) {
-			this.atividade = certificado.getAtividade().getDescricao();
-			this.eixoAtividade = certificado.getAtividade().getEixo();
+		if (certificado.getActivity() != null) {
+			this.atividade = certificado.getActivity().getDescription();
+			this.eixoAtividade = certificado.getActivity().getAxle();
 		}
 		this.cargaHoraria = certificado.getCargaHoraria();
 		this.statusCertificado = certificado.getStatusCertificado();

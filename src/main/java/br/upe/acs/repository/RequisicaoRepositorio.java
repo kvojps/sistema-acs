@@ -3,7 +3,7 @@ package br.upe.acs.repository;
 import br.upe.acs.model.Curso;
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.Usuario;
-import br.upe.acs.model.enums.EixoEnum;
+import br.upe.acs.model.enums.AxleEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,8 +26,8 @@ public interface RequisicaoRepositorio extends JpaRepository<Requisicao, Long> {
 					"AND request.usuario.id = :userId " +
 					"AND EXISTS (SELECT 1 FROM Certificado certificate " +
 					"WHERE certificate.requisicao.id = request.id " +
-					"AND certificate.atividade.eixo = :axle)" +
+					"AND certificate.activity.axle = :axle)" +
 					"ORDER BY request.dataDeSubmissao"
 	)
-	List<Requisicao> findRequestsByUserIdAndAxle(Long userId, EixoEnum axle);
+	List<Requisicao> findRequestsByUserIdAndAxle(Long userId, AxleEnum axle);
 }

@@ -6,7 +6,7 @@ import br.upe.acs.model.Curso;
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
-import br.upe.acs.model.enums.EixoEnum;
+import br.upe.acs.model.enums.AxleEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
 import br.upe.acs.repository.CertificadoRepositorio;
 import br.upe.acs.repository.RequisicaoRepositorio;
@@ -115,7 +115,7 @@ public class RequestService {
         return generatePagination(requests, page, amount);
     }
 
-    public Map<String, Object> listStudentRequestsByAxle(Long studentId, EixoEnum axle, int page, int amount) {
+    public Map<String, Object> listStudentRequestsByAxle(Long studentId, AxleEnum axle, int page, int amount) {
         List<RequisicaoSimplesResposta> studentRequests = repository.findRequestsByUserIdAndAxle(studentId, axle)
                 .stream().map(RequisicaoSimplesResposta::new).toList();
 
@@ -192,7 +192,7 @@ public class RequestService {
             isValid = false;
         } else if (certificate.getCargaHoraria() < 1) {
             isValid = false;
-        } else if (certificate.getAtividade() == null) {
+        } else if (certificate.getActivity() == null) {
             isValid = false;
         }
 

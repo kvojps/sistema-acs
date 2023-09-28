@@ -39,6 +39,6 @@ public class Certificado{
 	private Requisicao requisicao;
 	
 	@ManyToOne
-	private Atividade atividade;
+	private Activity activity;
 
 }

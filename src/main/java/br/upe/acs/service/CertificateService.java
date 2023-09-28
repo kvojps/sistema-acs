@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
-import br.upe.acs.model.Atividade;
+import br.upe.acs.model.Activity;
 import br.upe.acs.model.dto.CertificadoDTO;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
@@ -79,13 +79,13 @@ public class CertificateService {
         if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
-        Atividade activity = null;
+        Activity activity = null;
         if (certificateDto.getAtividadeId() != 0) {
             activity = activityService.findActivityById(certificateDto.getAtividadeId());
         }
 
         certificate.setTitulo(certificateDto.getTitulo());
-        certificate.setAtividade(activity);
+        certificate.setActivity(activity);
 
         if (certificateDto.getDataIncial() != null) {
             certificate.setDataInicial(convertDate(certificateDto.getDataIncial()));

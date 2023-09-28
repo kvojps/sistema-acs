@@ -1,6 +1,6 @@
 package br.upe.acs.service;
 
-import br.upe.acs.model.Atividade;
+import br.upe.acs.model.Activity;
 import br.upe.acs.model.Certificado;
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.Usuario;
@@ -26,12 +26,12 @@ public class StudentService {
     }
 
     public MinhasHorasNaAtividadeVO getHoursAcsStatusByActivity(String email, Long activityId) {
-        Atividade activity = activityService.findActivityById(activityId);
+        Activity activity = activityService.findActivityById(activityId);
 
         Usuario student = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this id"));
 
-        return calculateActivityHours(student, activity.getChMaxima());
+        return calculateActivityHours(student, activity.getWorkloadMax());
     }
 
     private MinhasHorasNaAtividadeVO calculateActivityHours(Usuario student, int chMax) {

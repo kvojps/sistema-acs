@@ -2,7 +2,7 @@ package br.upe.acs.controller;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controller.responses.RequisicaoResposta;
-import br.upe.acs.model.enums.EixoEnum;
+import br.upe.acs.model.enums.AxleEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
 import br.upe.acs.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,7 +57,7 @@ public class RequestController {
     @Operation(summary = "Listar requisições do estudante por eixo")
     @GetMapping("/user/{id}/{axle}")
     public ResponseEntity<Map<String, ?>> listStudentRequestsPaginatedByAxle(@PathVariable("id") Long studentId,
-                                                                             @PathVariable("axle") EixoEnum axle,
+                                                                             @PathVariable("axle") AxleEnum axle,
                                                                              @RequestParam(defaultValue = "0") int page,
                                                                              @RequestParam(defaultValue = "10") int amount) {
         return ResponseEntity.ok(service.listStudentRequestsByAxle(studentId, axle, page, amount));
