@@ -9,11 +9,18 @@ import org.springframework.stereotype.Component;
 import br.upe.acs.model.dto.EmailDTO;
 import lombok.RequiredArgsConstructor;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
 public class EmailUtils {
+
+    public static List<String> EMAILS_TEST = Arrays.asList("elizabeth.robichaud@upe.br", "david.dougherty@upe.br");
+
 
     private final JavaMailSender emailSender;
 
@@ -61,8 +68,7 @@ public class EmailUtils {
         email.setText(emailInfo.getMensagem());
         email.setSubject(emailInfo.getAssunto());
 
-        //TODO AS: Para não ficar tentando enviar email desnecessário
-        if (!(emailInfo.getDestinatario().equals("elizabeth.robichaud@upe.br") || emailInfo.getDestinatario().equals("david.dougherty@upe.br"))) {
+        if (!EMAILS_TEST.contains(emailInfo.getDestinatario())) {
             emailSender.send(email);
         }
     }
