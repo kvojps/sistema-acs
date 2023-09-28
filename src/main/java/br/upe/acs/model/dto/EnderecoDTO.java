@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class EnderecoDTO {
-	private Long id;
-	
+
 	private String cep;
 	
 	private String rua;

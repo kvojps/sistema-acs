@@ -2,7 +2,9 @@ package br.upe.acs.controller;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controller.responses.UsuarioResposta;
+import br.upe.acs.model.Usuario;
 import br.upe.acs.model.dto.RegistroDTO;
+import br.upe.acs.model.dto.UserUpdateDTO;
 import br.upe.acs.utils.exceptions.InvalidRegisterException;
 import br.upe.acs.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,14 +50,11 @@ public class UserController {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         return ResponseEntity.ok(new UsuarioResposta(servico.findUserByEmail(email)));
     }
-
-    //TODO: reajustar para receber um DTO
+    
     @Operation(summary = "Atualizar usuário pelo token")
     @PutMapping
-    public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestParam String nomeCompleto,
-                                        @RequestParam String telefone, @RequestParam Long cursoId) {
-        String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        servico.updateUser(email, nomeCompleto, telefone, cursoId);
+    public ResponseEntity<?> updateUser(@AuthenticationPrincipal Usuario user, @RequestBody UserUpdateDTO userUpdateDTO) {
+        servico.updateUser(user.getId(), userUpdateDTO);
         return ResponseEntity.noContent().build();
     }
 
