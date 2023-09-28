@@ -7,8 +7,6 @@
     * [1.1 Requisitos do Sistema](../../../1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/README.md)
       * [**1.1.1 Usuário geral**](../../../1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.1%20Usu%C3%A1rio%20geral/README.md)
       * [1.1.2 Aluno](../../../1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.2%20Aluno/README.md)
-      * [1.1.3 Coordenação](../../../1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.3%20Coordena%C3%A7%C3%A3o/README.md)
-      * [1.1.4 Comissão](../../../1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.4%20Comiss%C3%A3o/README.md)
     * [1.2 Requisitos Arquiteturais](../../../1.%20Requisitos/1.2%20Requisitos%20Arquiteturais/README.md)
   * [2. Níveis](../../../2.%20N%C3%ADveis/README.md)
     * [2.1 Contexto - C1](../../../2.%20N%C3%ADveis/2.1%20Contexto%20-%20C1/README.md)
@@ -32,90 +30,89 @@
 
 ---
 
-## RF 001 - Realizar cadastro via sistema
-- **Descrição**: Um usuário deve ser capaz de realizar cadastro no sistema, vale ressaltar que para todo cadastro feito 
-é atribuído ao usuário o perfil de aluno.
+## RF 001 - Realizar Cadastro Via Sistema
+- **Descrição**: Um usuário deve ser capaz de se cadastrar no sistema, sendo importante destacar que, após o cadastro, 
+o perfil do usuário é automaticamente definido como "aluno".
 - **Atores**: Nenhum.
 - **Prioridade**: Média.
-- **Entrada**: Inserir nome completo, CPF, matrícula, período, telefone, email, senha, curso, cep, complemento e número. 
-A partir do Cep é esperado que o sistema complete os dados rua, bairro, cidade e uf.
-- **Pré condições**: Inserir e-mail institucional, matrícula e período válidos. A senha deve conter 8 caracteres
-incluindo maiúsculos, minúsculos, especial e numérico.
-- **Saída**: Retornar os dados do usuário.
-- **Pós-condições**: O usuário será redirecionado para a tela de login, para realizar o primeiro login.
+- **Entrada**: Nome completo, CPF, matrícula, período, telefone, e-mail, senha, curso, CEP, complemento e número. 
+A partir do CEP, espera-se que o sistema preencha automaticamente os campos de rua, bairro, cidade e estado (UF).
+- **Pré-condições**: Fornecer um e-mail institucional válido, matrícula e período válidos. A senha deve conter 8 
+caracteres, incluindo letras maiúsculas, minúsculas, caracteres especiais e números.
+- **Saída**: Retorna os dados do usuário.
+- **Pós-condições**: O usuário é redirecionado para a tela de login para efetuar o primeiro acesso.
 
-## RF 002 - Realizar login via sistema
-- **Descrição**: Um usuário deve ser capaz de realizar login no sistema.
+## RF 002 - Realizar Login Via Sistema
+- **Descrição**: Um usuário deve ser capaz de efetuar login no sistema.
 - **Atores**: Usuário geral.
 - **Prioridade**: Média.
-- **Entrada**: Inserir e-mail e senha.
+- **Entrada**: E-mail e senha.
 - **Pré-condições**: O usuário deve estar cadastrado.
-- **Saída**: Retornar token JWT do usuário.
-- **Pós-condições**: O usuário será direcionado para a tela inicial do sistema após login bem-sucedido.
+- **Saída**: Retorna um token JWT do usuário.
+- **Pós-condições**: O usuário é direcionado para a tela inicial do sistema após um login bem-sucedido.
 
-## RF 003 - Sair do sistema
+## RF 003 - Sair do Sistema
 - **Descrição**: O usuário deve ser capaz de sair do sistema.
 - **Atores**: Usuário geral.
 - **Prioridade**: Baixa.
-- **Entrada**: Selecionar o botão de logoff presente na tela inicial do sistema.
+- **Entrada**: Selecionar o botão de logoff na tela inicial do sistema.
 - **Pré-condições**: O usuário deve estar logado.
-- **Saída**: Não há saída.
-- **Pós-condições**: O usuário será direcionado para a tela de login.
+- **Saída**: Não gera saída.
+- **Pós-condições**: O usuário é redirecionado para a tela de login.
 
-## RF 004 - Verificar usuário institucional
-- **Descrição**: O usuário deve realizar o processo de verificação, o qual receberá um código via e-mail para confirmar 
-se é uma conta institucional própria.
+## RF 004 - Verificar Conta de Usuário Institucional
+- **Descrição**: O usuário deve realizar um processo de verificação, no qual receberá um código via e-mail para 
+confirmar se a conta é de fato uma conta institucional válida.
 - **Atores**: Usuário geral.
 - **Prioridade**: Alta.
-- **Entrada**: Inserir código recebido por e-mail na seção de verificação do usuário.
-- **Pré-condições**: O usuário não pode ser verificado e deve estar logado.
-- **Saída**: Não há saída.
-- **Pós-condições**: O usuário será direcionado para a tela inicial do sistema.
+- **Entrada**: Inserir o código recebido por e-mail na seção de verificação do usuário.
+- **Pré-condições**: O usuário deve estar não verificado e deve estar logado.
+- **Saída**: Não gera saída.
+- **Pós-condições**: O usuário é redirecionado para a tela inicial do sistema após a verificação bem-sucedida.
 
-## RF 005 - Alterar senha
+## RF 005 - Alterar Senha
 - **Descrição**: O usuário deve ser capaz de alterar sua própria senha.
 - **Atores**: Usuário geral.
 - **Prioridade**: Alta.
-- **Entrada**: Inserir a senha antiga e a nova.
+- **Entrada**: Inserir a senha antiga e a nova senha.
 - **Pré-condições**: O usuário deve estar logado.
-- **Saída**: Não há saída.
-- **Pós-condições**: O usuário recebe uma mensagem informando que a senha foi alterada com sucesso.
+- **Saída**: Não gera saída.
+- **Pós-condições**: O usuário recebe uma mensagem confirmando a alteração bem-sucedida da senha.
 
-## RF 006 - Recuperar senha
+## RF 006 - Recuperar Senha
 - **Descrição**: O usuário deve ser capaz de recuperar sua senha.
 - **Atores**: Usuário geral.
 - **Prioridade**: Alta.
-- **Entrada**: Inserir e-mail.
-- **Pré-condições**: Recebe o link de recuperação de senha por e-mail.
-- **Saída**: Não há saída.
-- **Pós-condições**: O usuário recebe uma mensagem informando que a senha foi alterada com sucesso.
+- **Entrada**: Inserir o e-mail.
+- **Pré-condições**: O usuário recebe um link de recuperação de senha por e-mail.
+- **Saída**: Não gera saída.
+- **Pós-condições**: O usuário recebe uma mensagem confirmando a alteração bem-sucedida da senha.
 
-## RF 007 - Consultar dados do próprio usuário
-- **Descrição**: O usuário deve ser capaz de visualizar todos os seus dados. Sendo possível visualizar o nome completo,
-cpf, matrícula, período, telefone, e-mail, senha, status de verificação, curso, período e endereço.
+## RF 007 - Consultar Dados do Próprio Usuário
+- **Descrição**: O usuário deve ser capaz de visualizar todos os seus dados, incluindo nome completo, CPF, matrícula, 
+período, telefone, e-mail, senha, status de verificação, curso, período e endereço.
 - **Atores**: Usuário geral.
 - **Prioridade**: Alta.
-- **Entrada**: Não possui entradas.
+- **Entrada**: Não requer entrada de dados.
 - **Pré-condições**: O usuário deve estar logado.
-- **Saída**: Retornar os dados do usuário.
+- **Saída**: Retorna os dados do usuário.
 - **Pós-condições**: O usuário é direcionado para a página de perfil.
 
-## RF 008 - Editar dados do próprio usuário
-- **Descrição**: O usuário deve ser capaz de editar seus dados exceto e-mail, matrícula e CPF.
+## RF 008 - Editar Dados do Próprio Usuário
+- **Descrição**: O usuário deve ser capaz de editar seus dados, com exceção do e-mail, matrícula e CPF.
 - **Atores**: Usuário geral.
 - **Prioridade**: Alta.
-- **Entrada**: Inserir dados a serem alterados (nome completo, período, telefone, curso e endereço).
+- **Entrada**: Inserir os dados a serem alterados (nome completo, período, telefone, curso e endereço).
 - **Pré-condições**: O usuário deve estar logado.
-- **Saída**: Não há saída.
-- **Pós-condições**: O usuário recebe uma mensagem informando que os seus dados foram alterados com sucesso.
+- **Saída**: Não gera saída.
+- **Pós-condições**: O usuário recebe uma mensagem confirmando a alteração bem-sucedida dos dados.
 
-## RF 009 - Apagar dados do usuário
-- **Descrição**: O usuário deve ser capaz de solicitar que todos os seus dados sejam apagados do sistema, apenas é
-possível se não possuir nenhuma requisição cadastrada, caso contrário a conta é apenas desativada.
+## RF 009 - Apagar Dados do Usuário
+- **Descrição**: O usuário deve ser capaz de solicitar a exclusão de todos os seus dados do sistema, desde que não 
+tenha nenhuma requisição cadastrada. Caso contrário, a conta é apenas desativada.
 - **Atores**: Usuário geral.
 - **Prioridade**: Alta.
-- **Entrada**: Inserir senha do usuário para confirmação da exclusão.
+- **Entrada**: Inserir a senha do usuário para confirmar a exclusão.
 - **Pré-condições**: O usuário deve estar logado.
-- **Saída**: Não há saída.
+- **Saída**: Não gera saída.
 - **Pós-condições**: O usuário é redirecionado para a tela de login do sistema.
-                          

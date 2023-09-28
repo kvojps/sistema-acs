@@ -3,8 +3,6 @@
     * [1.1 Requisitos do Sistema](1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/HOME)
       * [1.1.1 Usuário geral](1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.1%20Usu%C3%A1rio%20geral/HOME)
       * [1.1.2 Aluno](1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.2%20Aluno/HOME)
-      * [1.1.3 Coordenação](1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.3%20Coordena%C3%A7%C3%A3o/HOME)
-      * [1.1.4 Comissão](1.%20Requisitos/1.1%20Requisitos%20do%20Sistema/1.1.4%20Comiss%C3%A3o/HOME)
     * [1.2 Requisitos Arquiteturais](1.%20Requisitos/1.2%20Requisitos%20Arquiteturais/HOME)
   * [2. Níveis](2.%20N%C3%ADveis/HOME)
     * [2.1 Contexto - C1](2.%20N%C3%ADveis/2.1%20Contexto%20-%20C1/HOME)
