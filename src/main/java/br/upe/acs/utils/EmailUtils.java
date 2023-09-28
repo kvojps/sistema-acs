@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import br.upe.acs.model.dto.EmailDTO;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 public class EmailUtils {
@@ -59,6 +61,9 @@ public class EmailUtils {
         email.setText(emailInfo.getMensagem());
         email.setSubject(emailInfo.getAssunto());
 
-        emailSender.send(email);
+        //TODO AS: Para não ficar tentando enviar email desnecessário
+        if (!(emailInfo.getDestinatario().equals("elizabeth.robichaud@upe.br") || emailInfo.getDestinatario().equals("david.dougherty@upe.br"))) {
+            emailSender.send(email);
+        }
     }
 }
