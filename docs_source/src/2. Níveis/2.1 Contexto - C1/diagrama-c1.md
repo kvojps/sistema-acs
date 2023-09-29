@@ -8,7 +8,6 @@ externos e outras entidades com as quais o sistema interage.
 Este diagrama desempenha um papel crucial na comunicação clara e concisa da função e propósito do sistema, bem como na 
 ilustração de sua interação com o ambiente circundante. Ele oferece uma representação de alto nível da arquitetura, 
 permitindo que as partes interessadas identifiquem facilmente as partes envolvidas e compreendam a extensão do sistema.
-
 Além disso, o diagrama de contexto serve como uma base sólida para a criação de diagramas mais detalhados, servindo como
 ponto de partida para a decomposição do sistema em componentes menores. Isso auxilia na definição dos limites e na 
 identificação das interfaces do sistema, tornando-se uma ferramenta essencial para a compreensão inicial da arquitetura 
@@ -62,7 +61,7 @@ permitem aos alunos inserir os dados necessários para as requisições, enquant
 e administrar essas requisições de forma organizada, efetiva e segura.
 
 ### Sistema externos
-- **Sistema de e-mail:** Este componente é responsável pelo envio de e-mails automáticos relacionados às requisições, 
+- **Cliente SMTP:** Este componente é responsável pelo envio de e-mails automáticos relacionados às requisições, 
 notificações entre os atores do sistema e e-mails associados às etapas de configuração de contas de usuário. Desempenha 
 um papel crucial na comunicação efetiva do sistema, assegurando que as partes relevantes sejam informadas sobre o status
 das requisições, atualizações e outras informações importantes. Os e-mails automáticos são acionados com base em eventos

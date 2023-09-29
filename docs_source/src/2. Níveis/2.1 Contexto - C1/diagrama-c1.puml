@@ -13,6 +13,7 @@ rectangle sistema_acs as "Sistema ACs" #f0d890
 rectangle "Elementos externos" as external_elements {
     agent cliente_smtp as "Cliente SMTP"
     agent via_cep as "Via cep API"
+    actor Escolaridade #text:blue
 }
 
 Administrador -down-> Coordenador
