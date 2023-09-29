@@ -27,7 +27,7 @@ public class Course {
 
 	private int additionalHours;
 	
-	@OneToMany(mappedBy = "curso")
-	private List<Usuario> users;
+	@OneToMany(mappedBy = "course")
+	private List<User> users;
 
 }

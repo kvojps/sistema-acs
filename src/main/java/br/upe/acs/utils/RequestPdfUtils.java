@@ -64,19 +64,19 @@ public class RequestPdfUtils {
         Context context = new Context();
 
         context.setVariable("protocolo", request.getToken());
-        context.setVariable("cpf", request.getUsuario().getCpf());
+        context.setVariable("cpf", request.getUser().getCpf());
         context.setVariable("data", request.getDataDeSubmissao().toString());
-        context.setVariable("nome", request.getUsuario().getNomeCompleto());
-        context.setVariable("curso", request.getUsuario().getCurso().getName());
-        context.setVariable("periodo", request.getUsuario().getPeriodo());
-        context.setVariable("rua", request.getUsuario().getAddress().getStreet());
-        context.setVariable("bairro", request.getUsuario().getAddress().getDistrict());
-        context.setVariable("numero", request.getUsuario().getAddress().getNumber());
-        context.setVariable("cidade", request.getUsuario().getAddress().getCity());
-        context.setVariable("uf", request.getUsuario().getAddress().getUf());
-        context.setVariable("cep", request.getUsuario().getAddress().getCep());
-        context.setVariable("email", request.getUsuario().getEmail());
-        context.setVariable("telefone", request.getUsuario().getTelefone());
+        context.setVariable("nome", request.getUser().getFullName());
+        context.setVariable("curso", request.getUser().getCourse().getName());
+        context.setVariable("periodo", request.getUser().getPeriod());
+        context.setVariable("rua", request.getUser().getAddress().getStreet());
+        context.setVariable("bairro", request.getUser().getAddress().getDistrict());
+        context.setVariable("numero", request.getUser().getAddress().getNumber());
+        context.setVariable("cidade", request.getUser().getAddress().getCity());
+        context.setVariable("uf", request.getUser().getAddress().getUf());
+        context.setVariable("cep", request.getUser().getAddress().getCep());
+        context.setVariable("email", request.getUser().getEmail());
+        context.setVariable("telefone", request.getUser().getTelephone());
 
         return context;
     }

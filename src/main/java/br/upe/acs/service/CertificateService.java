@@ -36,7 +36,7 @@ public class CertificateService {
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
             throw new InvalidFileFormatException("Only pdf is accepted");
         }
-        if (!request.getUsuario().getEmail().equals(email)) {
+        if (!request.getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
         if (request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
@@ -76,7 +76,7 @@ public class CertificateService {
 
     public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email) {
         Certificado certificate = findCertificateById(certificateId);
-        if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
+        if (!certificate.getRequisicao().getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
         Activity activity = null;
@@ -102,7 +102,7 @@ public class CertificateService {
 
     public void deleteCertificate(Long certificateId, String email) {
         Certificado certificate = findCertificateById(certificateId);
-        if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
+        if (!certificate.getRequisicao().getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
 

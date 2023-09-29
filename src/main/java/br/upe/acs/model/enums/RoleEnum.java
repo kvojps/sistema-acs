@@ -1,5 +1,5 @@
 package br.upe.acs.model.enums;
 
-public enum PerfilEnum {
+public enum RoleEnum {
 	COMISSAO, COORDENADOR, ALUNO, ADMINISTRADOR
 }

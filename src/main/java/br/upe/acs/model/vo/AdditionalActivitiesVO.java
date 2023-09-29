@@ -4,7 +4,7 @@ import br.upe.acs.model.User;
 import lombok.Getter;
 
 @Getter
-public class AdditionalActivitiesDTO {
+public class AdditionalActivitiesVO {
 
     private final float hoursExtensao;
 
@@ -24,7 +24,7 @@ public class AdditionalActivitiesDTO {
 
     private final int hoursCourse;
 
-    public AdditionalActivitiesDTO(User aluno) {
+    public AdditionalActivitiesVO(User aluno) {
         this.hoursExtensao = aluno.getHoursExtensao();
         this.hoursGestao = aluno.getHoursGestao();
         this.hoursEnsino = aluno.getHoursEnsino();

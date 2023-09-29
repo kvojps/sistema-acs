@@ -1,7 +1,7 @@
 package br.upe.acs.config;
 
 import br.upe.acs.utils.interceptor.RequestInterceptor;
-import br.upe.acs.repository.UsuarioRepositorio;
+import br.upe.acs.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class ApplicationConfig implements WebMvcConfigurer {
 
-    private final UsuarioRepositorio repository;
+    private final UserRepository repository;
     private final JwtService jwtService;
 
     @Bean

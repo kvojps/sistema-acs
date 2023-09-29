@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "addresses")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,7 +34,7 @@ public class Address {
 	
 
 	@OneToMany(mappedBy = "address")
-	private List<Usuario> users;
+	private List<User> users;
 	
 }
 

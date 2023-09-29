@@ -9,69 +9,64 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.upe.acs.model.enums.PerfilEnum;
+import br.upe.acs.model.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Usuario implements UserDetails {
+public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private String nomeCompleto;
+	private String fullName;
 	
 	private String cpf;
 	
-	private String matricula;
+	private String enrollment;
 	
-	private int periodo;
+	private int period;
 	
-	private String telefone;
+	private String telephone;
 	
 	private String email;
 	
-	private String senha;
+	private String password;
 	
-	private String codigoVerificacao;
+	private String verificationCode;
 	
-	private boolean isVerificado;
+	private boolean verified;
 	
-    private float horasEnsino;
+    private float hoursEnsino;
 
-    private float horasExtensao;
+    private float hoursExtensao;
 
-    private float horasGestao;
+    private float hoursGestao;
 
-    private float horasPesquisa;
+    private float hoursPesquisa;
 
 	private boolean enabled;
 
 	@Enumerated(EnumType.STRING)
-    private PerfilEnum perfil;
+    private RoleEnum role;
     
-    @OneToMany(mappedBy = "usuario")
-    private List<Requisicao> requisicoes;
+    @OneToMany(mappedBy = "user")
+    private List<Requisicao> requests;
     
     @ManyToOne
     private Address address;
     
 	@ManyToOne
-	private Course curso;
+	private Course course;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(getPerfil().name()));
+		return List.of(new SimpleGrantedAuthority(role.name()));
 	};
-
-	@Override
-	public String getPassword() {
-		return senha;
-	}
 
 	@Override
 	public String getUsername() {

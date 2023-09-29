@@ -1,8 +1,8 @@
 package br.upe.acs.utils.interceptor;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.model.Usuario;
-import br.upe.acs.repository.UsuarioRepositorio;
+import br.upe.acs.model.User;
+import br.upe.acs.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +15,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RequestInterceptor implements HandlerInterceptor {
 
-    private final UsuarioRepositorio userRepository;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         final String token = request.getHeader("Authorization").substring(7);
         final String email = jwtService.extractUsername(token);
-        Optional<Usuario> usuario = userRepository.findByEmail(email);
-        if (usuario.isPresent() && !usuario.get().isVerificado()) {
+        Optional<User> usuario = userRepository.findByEmail(email);
+        if (usuario.isPresent() && !usuario.get().isVerified()) {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.setStatus(403);

@@ -39,7 +39,7 @@ public class Requisicao {
 	private RequisicaoStatusEnum statusRequisicao;
 
 	@ManyToOne
-	private Usuario usuario;
+	private User user;
 
 	@OneToMany(mappedBy = "requisicao",cascade = CascadeType.REMOVE)
 	private List<Certificado> certificados;

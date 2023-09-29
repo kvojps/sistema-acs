@@ -1,6 +1,6 @@
 package br.upe.acs.controller.responses;
 
-import br.upe.acs.model.Usuario;
+import br.upe.acs.model.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -27,15 +27,15 @@ public class UsuarioResposta {
 
 	private final boolean verificado;
 
-	public UsuarioResposta(Usuario usuario) {
-		this.id = usuario.getId();
-		this.nomeCompleto = usuario.getNomeCompleto();
-		this.matricula = usuario.getMatricula();
-		this.telefone = usuario.getTelefone();
-		this.email = usuario.getEmail();
-		this.perfis = usuario.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-		this.curso = new CourseResponse(usuario.getCurso());
-		this.periodo = usuario.getPeriodo();
-		this.verificado = usuario.isVerificado();
+	public UsuarioResposta(User user) {
+		this.id = user.getId();
+		this.nomeCompleto = user.getFullName();
+		this.matricula = user.getEnrollment();
+		this.telefone = user.getTelephone();
+		this.email = user.getEmail();
+		this.perfis = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+		this.curso = new CourseResponse(user.getCourse());
+		this.periodo = user.getPeriod();
+		this.verificado = user.isVerified();
 	}
 }

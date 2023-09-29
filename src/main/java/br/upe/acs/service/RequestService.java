@@ -4,7 +4,7 @@ import br.upe.acs.controller.responses.RequisicaoSimplesResposta;
 import br.upe.acs.model.Certificado;
 import br.upe.acs.model.Course;
 import br.upe.acs.model.Requisicao;
-import br.upe.acs.model.Usuario;
+import br.upe.acs.model.User;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
 import br.upe.acs.model.enums.AxleEnum;
 import br.upe.acs.model.enums.RequisicaoStatusEnum;
@@ -32,17 +32,16 @@ public class RequestService {
     private final RequisicaoRepositorio repository;
     private final CertificadoRepositorio certificateRepository;
     private final UserService userService;
-    private final CourseService courseService;
     private final RequestPdfUtils requestPdfUtils;
     private final EmailUtils emailUtils;
 
     public Long createRequest(String email) {
-        Usuario student = userService.findUserByEmail(email);
-        List<Requisicao> requestsSketch = student.getRequisicoes().stream()
+        User student = userService.findUserByEmail(email);
+        List<Requisicao> requestsSketch = student.getRequests().stream()
                 .filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
 
-        if (student.getHorasEnsino() + student.getHorasExtensao() + student.getHorasGestao() +
-                student.getHorasPesquisa() >= student.getCurso().getAdditionalHours()) {
+        if (student.getHoursEnsino() + student.getHoursExtensao() + student.getHoursGestao() +
+                student.getHoursPesquisa() >= student.getCourse().getAdditionalHours()) {
             throw new AcsException("The student has already completed his additional hours");
         }
 
@@ -53,10 +52,10 @@ public class RequestService {
         Requisicao request = new Requisicao();
         request.setStatusRequisicao(RequisicaoStatusEnum.RASCUNHO);
         request.setCriacao(new Date());
-        request.setUsuario(student);
+        request.setUser(student);
 
         Requisicao requestSaved = repository.save(request);
-        requestSaved.setIdRequisicao(String.format("%s-%05d", student.getCurso().getAcronym(), requestSaved.getId()));
+        requestSaved.setIdRequisicao(String.format("%s-%05d", student.getCourse().getAcronym(), requestSaved.getId()));
         repository.save(requestSaved);
 
         return requestSaved.getId();
@@ -99,16 +98,10 @@ public class RequestService {
     }
 
     public Map<String, Object> listRequests(Boolean isArchived, RequisicaoStatusEnum status, Long userId, Long courseId, int page, int amount) {
-        Usuario user = null;
+        User user = null;
         Course course = null;
-        if (userId != null){
-            user = userService.findUserById(userId);
-        }
-        if (courseId != null) {
-            course = courseService.findCourseById(courseId);
-        }
 
-        List<RequisicaoSimplesResposta> requests = repository.findWithFilters(isArchived, status, user, course)
+        List<RequisicaoSimplesResposta> requests = repository.findWithFilters(isArchived, status, userId, courseId)
                 .stream().map(RequisicaoSimplesResposta::new).toList();
 
         return generatePagination(requests, page, amount);
@@ -128,10 +121,10 @@ public class RequestService {
     public void archiveRequest(Long id, String email) {
         boolean isFinished = false;
         Requisicao request = repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
-        Usuario user = userService.findUserByEmail(email);
+        User user = userService.findUserByEmail(email);
         RequisicaoStatusEnum status = request.getStatusRequisicao();
 
-        if (!user.equals(request.getUsuario())) {
+        if (!user.equals(request.getUser())) {
             throw new AcsException("User not authorized to archive this request");
         }
         if (status == RequisicaoStatusEnum.ACEITO || status == RequisicaoStatusEnum.NEGADO) {
@@ -151,9 +144,9 @@ public class RequestService {
 
     public void unarchiveRequest(Long id, String email) {
         Requisicao request = repository.findById(id).orElseThrow();
-        Usuario user = userService.findUserByEmail(email);
+        User user = userService.findUserByEmail(email);
 
-        if (!user.equals(request.getUsuario())) {
+        if (!user.equals(request.getUser())) {
             throw new AcsException("User not authorized to unarchive this request");
         }
 
@@ -167,7 +160,7 @@ public class RequestService {
 
     public void deleteRequest(Long requestId, String email) {
         Requisicao request = findRequestById(requestId);
-        if (!request.getUsuario().getEmail().equals(email)) {
+        if (!request.getUser().getEmail().equals(email)) {
             throw new AcsException("User without permission to delete this request");
         }
 

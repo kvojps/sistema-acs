@@ -2,7 +2,7 @@ package br.upe.acs.controller;
 
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controller.responses.UsuarioResposta;
-import br.upe.acs.model.Usuario;
+import br.upe.acs.model.User;
 import br.upe.acs.model.dto.RegistrationDTO;
 import br.upe.acs.model.dto.UserUpdateDTO;
 import br.upe.acs.utils.exceptions.InvalidRegisterException;
@@ -53,7 +53,7 @@ public class UserController {
     
     @Operation(summary = "Atualizar usuário pelo token")
     @PutMapping
-    public ResponseEntity<?> updateUser(@AuthenticationPrincipal Usuario user, @RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<?> updateUser(@AuthenticationPrincipal User user, @RequestBody UserUpdateDTO userUpdateDTO) {
         servico.updateUser(user.getId(), userUpdateDTO);
         return ResponseEntity.noContent().build();
     }
