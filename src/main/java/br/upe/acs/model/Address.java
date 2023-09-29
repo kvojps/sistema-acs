@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Endereco {
+public class Address {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,22 +19,22 @@ public class Endereco {
 
 	private String cep;
 
-	private String rua;
+	private String street;
 
-	private String bairro;
+	private String district;
 
-	private String cidade;
+	private String city;
 
-	private String UF;
+	private String uf;
 
-	private int numero;
+	private int number;
 
 	@Column(nullable = true)
-	private String complemento;
+	private String complement;
 	
 
-	@OneToMany(mappedBy = "endereco")
-	private List<Usuario> usuarios;
+	@OneToMany(mappedBy = "address")
+	private List<Usuario> users;
 	
 }
 

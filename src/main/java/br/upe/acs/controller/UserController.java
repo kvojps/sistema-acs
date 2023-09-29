@@ -3,7 +3,7 @@ package br.upe.acs.controller;
 import br.upe.acs.config.JwtService;
 import br.upe.acs.controller.responses.UsuarioResposta;
 import br.upe.acs.model.Usuario;
-import br.upe.acs.model.dto.RegistroDTO;
+import br.upe.acs.model.dto.RegistrationDTO;
 import br.upe.acs.model.dto.UserUpdateDTO;
 import br.upe.acs.utils.exceptions.InvalidRegisterException;
 import br.upe.acs.service.UserService;
@@ -29,7 +29,7 @@ public class UserController {
 
     @Operation(summary = "Criar usuário")
     @PostMapping
-    public ResponseEntity<UsuarioResposta> createUser(@Valid @RequestBody RegistroDTO registerDto, BindingResult bindingResult) {
+    public ResponseEntity<UsuarioResposta> createUser(@Valid @RequestBody RegistrationDTO registerDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new InvalidRegisterException(String.join("; ", bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage).toList()));

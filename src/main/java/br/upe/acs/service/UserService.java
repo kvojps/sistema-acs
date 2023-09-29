@@ -1,10 +1,10 @@
 package br.upe.acs.service;
 
 import br.upe.acs.model.Course;
-import br.upe.acs.model.Endereco;
+import br.upe.acs.model.Address;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.dto.EnderecoDTO;
-import br.upe.acs.model.dto.RegistroDTO;
+import br.upe.acs.model.dto.RegistrationDTO;
 import br.upe.acs.model.dto.UserUpdateDTO;
 import br.upe.acs.model.enums.PerfilEnum;
 import br.upe.acs.repository.UsuarioRepositorio;
@@ -30,17 +30,17 @@ public class UserService {
     private final EmailUtils emailUtils;
     private final PasswordEncoder passwordEncoder;
 
-    public Usuario createUser(RegistroDTO userDto) {
+    public Usuario createUser(RegistrationDTO userDto) {
         validateUser(userDto);
 
         ModelMapper modelMapper = new ModelMapper();
         Usuario userToSave = modelMapper.map(userDto, Usuario.class);
-        userToSave.setSenha(passwordEncoder.encode(userDto.getSenha()));
+        userToSave.setSenha(passwordEncoder.encode(userDto.getPassword()));
         userToSave.setCodigoVerificacao(generateVerificationCode());
         userToSave.setVerificado(false);
         userToSave.setEnabled(true);
-        userToSave.setEndereco(addUserAddress(userDto));
-        userToSave.setCurso(courseService.findCourseById(userDto.getCursoId()));
+        userToSave.setAddress(addUserAddress(userDto));
+        userToSave.setCurso(courseService.findCourseById(userDto.getCourseId()));
         userToSave.setPerfil(PerfilEnum.ALUNO);
 
         Usuario userSaved = repository.save(userToSave);
@@ -80,7 +80,7 @@ public class UserService {
         }
     }
 
-    private void validateUser(RegistroDTO authDto) {
+    private void validateUser(RegistrationDTO authDto) {
         String formattedCpf = authDto.getCpf().replaceAll("[^0-9]", "");
         boolean cpfExists = repository.findByCpf(formattedCpf).isPresent();
         boolean emailExists = repository.findByEmail(authDto.getEmail()).isPresent();
@@ -88,7 +88,7 @@ public class UserService {
         authValidation.validateAuthData(authDto, cpfExists, emailExists);
     }
 
-    private Endereco addUserAddress(RegistroDTO authDto) {
+    private Address addUserAddress(RegistrationDTO authDto) {
         ModelMapper modelMapper = new ModelMapper();
         EnderecoDTO addressToSave = modelMapper.map(authDto, EnderecoDTO.class);
         return addressService.createAddress(addressToSave);

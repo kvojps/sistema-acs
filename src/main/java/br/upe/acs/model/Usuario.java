@@ -58,7 +58,7 @@ public class Usuario implements UserDetails {
     private List<Requisicao> requisicoes;
     
     @ManyToOne
-    private Endereco endereco;
+    private Address address;
     
 	@ManyToOne
 	private Course curso;
