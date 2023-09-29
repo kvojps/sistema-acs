@@ -7,19 +7,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class EnderecoDTO {
+public class AddressDTO {
 
 	private String cep;
-	
-	private String rua;
-	
-	private String bairro;
-	
-	private String cidade;
-	
-	private String UF;
-	
-	private int numero;
 
-	private String complemento;
+	private String street;
+
+	private String district;
+	
+	private String city;
+	
+	private String uf;
+
+	private int number;
+
+	private String complement;
+
 }
