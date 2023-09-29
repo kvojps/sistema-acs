@@ -36,7 +36,7 @@ public class EmailUtils {
                 + " teve seu status alterado para " + request.getStatusRequisicao().name() + ".\n" +
                 "Para mais informações acesse o Sistema de ACs. " +
                 "Em caso de erros entre em contato com o turmaestest@gmail.com.\n" +
-                "Atenciosamente,\nCoordenação de " + request.getCurso().getNome() + ".");
+                "Atenciosamente,\nCoordenação de " + request.getUsuario().getCurso() + ".");
         sendEmail(emailDTO);
     }
 

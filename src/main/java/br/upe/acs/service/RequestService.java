@@ -2,7 +2,7 @@ package br.upe.acs.service;
 
 import br.upe.acs.controller.responses.RequisicaoSimplesResposta;
 import br.upe.acs.model.Certificado;
-import br.upe.acs.model.Curso;
+import br.upe.acs.model.Course;
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
@@ -42,7 +42,7 @@ public class RequestService {
                 .filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
 
         if (student.getHorasEnsino() + student.getHorasExtensao() + student.getHorasGestao() +
-                student.getHorasPesquisa() >= student.getCurso().getHorasComplementares()) {
+                student.getHorasPesquisa() >= student.getCurso().getAdditionalHours()) {
             throw new AcsException("The student has already completed his additional hours");
         }
 
@@ -54,10 +54,9 @@ public class RequestService {
         request.setStatusRequisicao(RequisicaoStatusEnum.RASCUNHO);
         request.setCriacao(new Date());
         request.setUsuario(student);
-        request.setCurso(student.getCurso());
 
         Requisicao requestSaved = repository.save(request);
-        requestSaved.setIdRequisicao(String.format("%s-%05d", student.getCurso().getSigla(), requestSaved.getId()));
+        requestSaved.setIdRequisicao(String.format("%s-%05d", student.getCurso().getAcronym(), requestSaved.getId()));
         repository.save(requestSaved);
 
         return requestSaved.getId();
@@ -101,7 +100,7 @@ public class RequestService {
 
     public Map<String, Object> listRequests(Boolean isArchived, RequisicaoStatusEnum status, Long userId, Long courseId, int page, int amount) {
         Usuario user = null;
-        Curso course = null;
+        Course course = null;
         if (userId != null){
             user = userService.findUserById(userId);
         }

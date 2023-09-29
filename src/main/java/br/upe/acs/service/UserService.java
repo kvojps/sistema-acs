@@ -1,6 +1,6 @@
 package br.upe.acs.service;
 
-import br.upe.acs.model.Curso;
+import br.upe.acs.model.Course;
 import br.upe.acs.model.Endereco;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.dto.EnderecoDTO;
@@ -65,7 +65,7 @@ public class UserService {
 
         user.setNomeCompleto(userUpdateDTO.getFullName());
         user.setTelefone(userUpdateDTO.getPhone());
-        Curso course = courseService.findCourseById(userUpdateDTO.getCourseId());
+        Course course = courseService.findCourseById(userUpdateDTO.getCourseId());
         user.setCurso(course);
         repository.save(user);
     }

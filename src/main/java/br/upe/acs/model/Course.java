@@ -15,22 +15,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Curso {
+public class Course {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private String nome;
+	private String name;
 
-	private String sigla;
+	private String acronym;
 
-	private int horasComplementares;
+	private int additionalHours;
 	
 	@OneToMany(mappedBy = "curso")
-	private List<Requisicao> requisicoes;	
-	
-	@OneToMany(mappedBy = "curso")
-	private List<Usuario> usuarios;
+	private List<Usuario> users;
 
 }

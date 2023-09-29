@@ -41,9 +41,6 @@ public class Requisicao {
 	@ManyToOne
 	private Usuario usuario;
 
-	@ManyToOne
-	private Curso curso;
-
 	@OneToMany(mappedBy = "requisicao",cascade = CascadeType.REMOVE)
 	private List<Certificado> certificados;
 }

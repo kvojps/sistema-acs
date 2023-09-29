@@ -67,7 +67,7 @@ public class RequestPdfUtils {
         context.setVariable("cpf", request.getUsuario().getCpf());
         context.setVariable("data", request.getDataDeSubmissao().toString());
         context.setVariable("nome", request.getUsuario().getNomeCompleto());
-        context.setVariable("curso", request.getUsuario().getCurso().getNome());
+        context.setVariable("curso", request.getUsuario().getCurso().getName());
         context.setVariable("periodo", request.getUsuario().getPeriodo());
         context.setVariable("rua", request.getUsuario().getEndereco().getRua());
         context.setVariable("bairro", request.getUsuario().getEndereco().getBairro());

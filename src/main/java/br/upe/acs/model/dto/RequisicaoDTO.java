@@ -17,8 +17,6 @@ public class RequisicaoDTO {
 	
 	private String observacao;
 	
-	private Long cursoId;
-	
 	private Long usuarioId;
 	
 	private MultipartFile[] certificados;

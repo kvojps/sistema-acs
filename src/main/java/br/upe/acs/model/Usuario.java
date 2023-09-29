@@ -61,7 +61,7 @@ public class Usuario implements UserDetails {
     private Endereco endereco;
     
 	@ManyToOne
-	private Curso curso;
+	private Course curso;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

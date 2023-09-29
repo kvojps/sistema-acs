@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.upe.acs.controller.responses.CursoResposta;
+import br.upe.acs.controller.responses.CourseResponse;
 import br.upe.acs.service.CourseService;
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,7 @@ public class CourseController {
 
     @Operation(summary = "Buscar curso por id")
     @GetMapping("/{id}")
-    public ResponseEntity<CursoResposta> findCourseById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(new CursoResposta(service.findCourseById(id)));
+    public ResponseEntity<CourseResponse> findCourseById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(new CourseResponse(service.findCourseById(id)));
     }
 }

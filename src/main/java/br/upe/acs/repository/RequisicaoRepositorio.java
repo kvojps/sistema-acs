@@ -1,6 +1,6 @@
 package br.upe.acs.repository;
 
-import br.upe.acs.model.Curso;
+import br.upe.acs.model.Course;
 import br.upe.acs.model.Requisicao;
 import br.upe.acs.model.Usuario;
 import br.upe.acs.model.enums.AxleEnum;
@@ -16,9 +16,9 @@ public interface RequisicaoRepositorio extends JpaRepository<Requisicao, Long> {
 			"WHERE (:arquivada IS NULL OR r.arquivada = :arquivada) " +
 			"AND (:statusRequisicao IS NULL OR r.statusRequisicao = :statusRequisicao) " +
 			"AND (:usuario IS NULL OR r.usuario = :usuario) " +
-			"AND (:curso IS NULL OR r.curso = :curso)")
+			"AND (:course IS NULL OR r.usuario.curso = :course)")
 	List<Requisicao> findWithFilters(
-			Boolean arquivada, RequisicaoStatusEnum statusRequisicao, Usuario usuario, Curso curso);
+			Boolean arquivada, RequisicaoStatusEnum statusRequisicao, Usuario usuario, Course course);
 
 	@Query(
 			"SELECT request FROM Requisicao request " +

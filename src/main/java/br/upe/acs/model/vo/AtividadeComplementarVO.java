@@ -29,11 +29,11 @@ public class AtividadeComplementarVO {
         this.horasGestao = aluno.getHorasGestao();
         this.horasEnsino = aluno.getHorasEnsino();
         this.horasPesquisa = aluno.getHorasPesquisa();
-        this.horasExtensaoPercentual = percentual(aluno.getHorasExtensao(), aluno.getCurso().getHorasComplementares());
-        this.horasGestaoPercentual = percentual(aluno.getHorasGestao(), aluno.getCurso().getHorasComplementares());
-        this.horasEnsinoPercentual = percentual(aluno.getHorasEnsino(), aluno.getCurso().getHorasComplementares());
-        this.horasPesquisaPercentual = percentual(aluno.getHorasPesquisa(), aluno.getCurso().getHorasComplementares());
-        this.horasTotaisCurso = aluno.getCurso().getHorasComplementares();
+        this.horasExtensaoPercentual = percentual(aluno.getHorasExtensao(), aluno.getCurso().getAdditionalHours());
+        this.horasGestaoPercentual = percentual(aluno.getHorasGestao(), aluno.getCurso().getAdditionalHours());
+        this.horasEnsinoPercentual = percentual(aluno.getHorasEnsino(), aluno.getCurso().getAdditionalHours());
+        this.horasPesquisaPercentual = percentual(aluno.getHorasPesquisa(), aluno.getCurso().getAdditionalHours());
+        this.horasTotaisCurso = aluno.getCurso().getAdditionalHours();
     }
 
     private String percentual(float f, int divisor) {

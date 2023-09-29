@@ -21,7 +21,7 @@ public class UsuarioResposta {
 
 	private final List<String> perfis;
 
-	private final CursoResposta curso;
+	private final CourseResponse curso;
 
 	private final int periodo;
 
@@ -34,7 +34,7 @@ public class UsuarioResposta {
 		this.telefone = usuario.getTelefone();
 		this.email = usuario.getEmail();
 		this.perfis = usuario.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-		this.curso = new CursoResposta(usuario.getCurso());
+		this.curso = new CourseResponse(usuario.getCurso());
 		this.periodo = usuario.getPeriodo();
 		this.verificado = usuario.isVerificado();
 	}
