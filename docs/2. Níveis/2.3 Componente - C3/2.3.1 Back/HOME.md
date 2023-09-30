@@ -7,7 +7,11 @@ componentes são elementos fundamentais que desempenham papéis específicos no 
 
 # Back-end
 ## Convenções
-Para promover a separação de responsabilidades, a coesão e a manutenção da arquitetura, são adotados padrões de nomenclatura para pastas, arquivos, funções e variáveis. As pastas são organizadas para representar as diferentes camadas do software e são nomeadas como "controlador", "serviço", "repositório" e "modelo". Os arquivos seguem a convenção de "nome da entidade + nome da camada", por exemplo, "RequisicaoController". Em relação às funções e variáveis, é recomendado utilizar o camelCase, pois isso melhora a legibilidade do código.
+Para promover a separação de responsabilidades, a coesão e a manutenção da arquitetura, são adotados padrões de nomenclatura
+para pastas, arquivos, funções e variáveis. As pastas são organizadas para representar as diferentes camadas do software e são
+nomeadas como "controlador", "serviço", "repositório" e "modelo". Os arquivos seguem a convenção de "nome da entidade + nome
+da camada", por exemplo, "RequisicaoController". Em relação às funções e variáveis, é recomendado utilizar o camelCase,
+pois isso melhora a legibilidade do código.
 
 ## Camadas
 * **Controlador:** O Controlador atua como uma ponte entre a interface do usuário e a lógica de negócio da aplicação. 
