@@ -2,7 +2,6 @@ package br.upe.acs.service;
 
 import br.upe.acs.controller.responses.SimpleRequestResponse;
 import br.upe.acs.model.Certificate;
-import br.upe.acs.model.Course;
 import br.upe.acs.model.Request;
 import br.upe.acs.model.User;
 import br.upe.acs.model.enums.CertificateStatusEnum;
@@ -81,7 +80,7 @@ public class RequestService {
         if (!invalidCertificates.isEmpty()) {
             throw new AcsException(
                     "Certificates: " + String.join("; ", invalidCertificates.stream()
-                            .map(certificado -> certificado.getId().toString()).toList())
+                            .map(certificate -> certificate.getId().toString()).toList())
                             + " have invalid data."
             );
         }
@@ -98,9 +97,6 @@ public class RequestService {
     }
 
     public Map<String, Object> listRequests(Boolean isArchived, RequestStatusEnum status, Long userId, Long courseId, int page, int amount) {
-        User user = null;
-        Course course = null;
-
         List<SimpleRequestResponse> requests = repository.findWithFilters(isArchived, status, userId, courseId)
                 .stream().map(SimpleRequestResponse::new).toList();
 

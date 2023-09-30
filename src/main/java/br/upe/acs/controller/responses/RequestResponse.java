@@ -21,7 +21,7 @@ public class RequestResponse {
 
 	private final String token;
 
-	private final boolean arquived;
+	private final boolean archived;
 	
 	private final RequestStatusEnum status;
 
@@ -29,7 +29,7 @@ public class RequestResponse {
 
 	private final float workload;
 
-	private final List<CertificateReponse> certificates;
+	private final List<CertificateResponse> certificates;
 
 	public RequestResponse(Request request) {
 		super();
@@ -37,19 +37,19 @@ public class RequestResponse {
 		this.identifier = request.getIdentifier();
 		this.sentIn = request.getSentIn();
 		this.token = request.getToken();
-		this.arquived = request.isArchived();
+		this.archived = request.isArchived();
 		this.status = request.getStatus();
 		this.note = request.getNote();
 		this.workload = (float) request.getCertificates().stream()
 				.mapToDouble(Certificate::getWorkload).sum();
-		this.certificates = converterCertificados(request.getCertificates());
+		this.certificates = convertCertificates(request.getCertificates());
 	}
 	
 
-	private List<CertificateReponse> converterCertificados(List<Certificate> certificates) {
+	private List<CertificateResponse> convertCertificates(List<Certificate> certificates) {
 		return certificates.stream()
-				.map(CertificateReponse::new)
-				.sorted(Comparator.comparing(CertificateReponse::getId))
+				.map(CertificateResponse::new)
+				.sorted(Comparator.comparing(CertificateResponse::getId))
 				.collect(Collectors.toList());
 	}
 }

@@ -1,7 +1,6 @@
 package br.upe.acs.model.dto;
 
 import br.upe.acs.model.enums.RequestStatusEnum;
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

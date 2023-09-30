@@ -1,10 +1,10 @@
 package br.upe.acs.controller;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.controller.responses.AutenticacaoResposta;
-import br.upe.acs.model.dto.AlterarSenhaDTO;
+import br.upe.acs.controller.responses.AuthenticationResponse;
+import br.upe.acs.model.dto.ChangePasswordDTO;
 import br.upe.acs.model.dto.LoginDTO;
-import br.upe.acs.model.dto.RecuperacaoDeContaDTO;
+import br.upe.acs.model.dto.AccountRecovery;
 import br.upe.acs.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class AuthController {
 
     @Operation(summary = "Realizar login")
     @PostMapping
-    public ResponseEntity<AutenticacaoResposta> loginUser(@RequestBody LoginDTO login) {
+    public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody LoginDTO login) {
         return ResponseEntity.ok(service.login(login));
     }
 
@@ -48,9 +48,9 @@ public class AuthController {
 
     @Operation(summary = "Atualizar senha por token")
     @PatchMapping("/password")
-    public ResponseEntity<?> updatePassword(HttpServletRequest request, @RequestBody AlterarSenhaDTO alterarSenhaDTO) {
+    public ResponseEntity<?> updatePassword(HttpServletRequest request, @RequestBody ChangePasswordDTO changePasswordDTO) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        service.updatePassword(email, alterarSenhaDTO.getSenha(), alterarSenhaDTO.getNovaSenha());
+        service.updatePassword(email, changePasswordDTO.getPassword(), changePasswordDTO.getNewPassword());
 
         return ResponseEntity.noContent().build();
     }
@@ -66,9 +66,9 @@ public class AuthController {
     @Operation(summary = "Recuperar senha por token")
     @PatchMapping("/password/recovery")
     public ResponseEntity<?> recoveryPassword(HttpServletRequest request,
-                                              @RequestBody RecuperacaoDeContaDTO recuperacaoDeContaDTO) {
+                                              @RequestBody AccountRecovery accountRecovery) {
         String token = request.getHeader("Authorization").substring(7);
-        service.recoveryPassword(token, recuperacaoDeContaDTO.novaSenha());
+        service.recoveryPassword(token, accountRecovery.newPassword());
 
         return ResponseEntity.noContent().build();
     }

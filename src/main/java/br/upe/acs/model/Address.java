@@ -29,9 +29,7 @@ public class Address {
 
 	private int number;
 
-	@Column(nullable = true)
 	private String complement;
-	
 
 	@OneToMany(mappedBy = "address")
 	private List<User> users;

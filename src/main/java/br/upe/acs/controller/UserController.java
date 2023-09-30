@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    private final UserService servico;
+    private final UserService service;
     private final JwtService jwtService;
 
     @Operation(summary = "Criar usuário")
@@ -35,26 +35,26 @@ public class UserController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage).toList()));
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(servico.createUser(registerDto)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(service.createUser(registerDto)));
     }
 
     @Operation(summary = "Buscar usuário por id")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(new UserResponse(servico.findUserById(id)));
+        return ResponseEntity.ok(new UserResponse(service.findUserById(id)));
     }
 
     @Operation(summary = "Buscar usuário pelo token")
     @GetMapping("/me")
     public ResponseEntity<UserResponse> findUserByEmail(HttpServletRequest request) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        return ResponseEntity.ok(new UserResponse(servico.findUserByEmail(email)));
+        return ResponseEntity.ok(new UserResponse(service.findUserByEmail(email)));
     }
     
     @Operation(summary = "Atualizar usuário pelo token")
     @PutMapping
     public ResponseEntity<?> updateUser(@AuthenticationPrincipal User user, @RequestBody UserUpdateDTO userUpdateDTO) {
-        servico.updateUser(user.getId(), userUpdateDTO);
+        service.updateUser(user.getId(), userUpdateDTO);
         return ResponseEntity.noContent().build();
     }
 
@@ -62,7 +62,7 @@ public class UserController {
     @DeleteMapping
     public ResponseEntity<?> deactivateUser(HttpServletRequest request) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-        servico.deactivateUser(email);
+        service.deactivateUser(email);
         return ResponseEntity.noContent().build();
     }
 }

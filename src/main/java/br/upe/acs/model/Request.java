@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "requests")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

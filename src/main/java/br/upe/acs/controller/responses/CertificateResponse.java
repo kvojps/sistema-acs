@@ -8,7 +8,7 @@ import br.upe.acs.model.enums.AxleEnum;
 import lombok.Getter;
 
 @Getter
-public class CertificateReponse {
+public class CertificateResponse {
 	
 	private final Long id;
 	
@@ -28,7 +28,7 @@ public class CertificateReponse {
 	
 	private final float workload;
 
-	public CertificateReponse(Certificate certificate) {
+	public CertificateResponse(Certificate certificate) {
 		super();
 		this.id = certificate.getId();
 		this.title = certificate.getTitle();

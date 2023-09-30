@@ -25,44 +25,44 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class ActivityController {
 
-    private final ActivityService servico;
+    private final ActivityService service;
 
     @Operation(summary = "Criar atividade")
     @PostMapping
     public ResponseEntity<ActivityResponse> createActivity(@RequestBody ActivityDTO activity) {
-        return ResponseEntity.ok(new ActivityResponse(servico.createActivity(activity)));
+        return ResponseEntity.ok(new ActivityResponse(service.createActivity(activity)));
     }
 
     @Operation(summary = "Listar atividades")
     @GetMapping
     public ResponseEntity<List<ActivityResponse>> listActivities() {
-        return ResponseEntity.ok(servico.listActivities().stream().map(ActivityResponse::new)
+        return ResponseEntity.ok(service.listActivities().stream().map(ActivityResponse::new)
                 .collect(Collectors.toList()));
     }
 
     @Operation(summary = "Buscar atividade por id")
     @GetMapping("/{id}")
     public ResponseEntity<ActivityResponse> findActivityById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(new ActivityResponse(servico.findActivityById(id)));
+        return ResponseEntity.ok(new ActivityResponse(service.findActivityById(id)));
     }
 
     @Operation(summary = "Buscar atividade por eixo")
     @GetMapping("/axle")
     public ResponseEntity<List<ActivityResponse>> findActivityByAxle(@RequestParam AxleEnum axle) {
-        return ResponseEntity.ok(servico.findActivityByAxle(axle).stream().map(ActivityResponse::new).toList());
+        return ResponseEntity.ok(service.findActivityByAxle(axle).stream().map(ActivityResponse::new).toList());
     }
 
     @Operation(summary = "Atualizar atividade por id")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDto) {
-        servico.updateActivity(id, activityDto);
+        service.updateActivity(id, activityDto);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Apagar atividade por id")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteActivity(@PathVariable("id") Long id) {
-        servico.deleteActivity(id);
+        service.deleteActivity(id);
         return ResponseEntity.noContent().build();
     }
 }

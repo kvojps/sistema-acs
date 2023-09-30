@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AlterarSenhaDTO {
+public class ChangePasswordDTO {
 
-    private String senha;
+    private String password;
 
-    private String novaSenha;
+    private String newPassword;
 
 }

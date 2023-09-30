@@ -42,4 +42,5 @@ public class RegistrationDTO {
 	private int number;
 	
 	private Long courseId;
+
 }

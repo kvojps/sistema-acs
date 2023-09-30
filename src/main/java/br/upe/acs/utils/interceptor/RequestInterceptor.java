@@ -21,14 +21,14 @@ public class RequestInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         final String token = request.getHeader("Authorization").substring(7);
         final String email = jwtService.extractUsername(token);
-        Optional<User> usuario = userRepository.findByEmail(email);
-        if (usuario.isPresent() && !usuario.get().isVerified()) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent() && !user.get().isVerified()) {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.setStatus(403);
             response.getWriter().write("""
                     {
-                        "mensagem": "Usuário não verificado"
+                        "message": "Unverified user!"
                     }
                     """);
             return false;

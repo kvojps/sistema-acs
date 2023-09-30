@@ -5,7 +5,7 @@ import br.upe.acs.model.Certificate;
 import br.upe.acs.model.Request;
 import br.upe.acs.model.User;
 import br.upe.acs.model.vo.AdditionalActivitiesVO;
-import br.upe.acs.model.vo.MinhasHorasNaAtividadeVO;
+import br.upe.acs.model.vo.MyHoursInActivityVO;
 import br.upe.acs.utils.exceptions.AcsException;
 import br.upe.acs.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class StudentService {
         return new AdditionalActivitiesVO(student);
     }
 
-    public MinhasHorasNaAtividadeVO getHoursAcsStatusByActivity(String email, Long activityId) {
+    public MyHoursInActivityVO getHoursAcsStatusByActivity(String email, Long activityId) {
         Activity activity = activityService.findActivityById(activityId);
 
         User student = repository.findByEmail(email).orElseThrow(() ->
@@ -34,7 +34,7 @@ public class StudentService {
         return calculateActivityHours(student, activity.getWorkloadMax());
     }
 
-    private MinhasHorasNaAtividadeVO calculateActivityHours(User student, int chMax) {
+    private MyHoursInActivityVO calculateActivityHours(User student, int chMax) {
         float sketchHours = 0;
         float progressHours = 0;
         float acceptedHours = 0;
@@ -52,6 +52,6 @@ public class StudentService {
 
         float remainingHours = chMax - (acceptedHours + progressHours + sketchHours + problemHours);
 
-        return new MinhasHorasNaAtividadeVO(acceptedHours, progressHours, sketchHours, problemHours, remainingHours);
+        return new MyHoursInActivityVO(acceptedHours, progressHours, sketchHours, problemHours, remainingHours);
     }
 }

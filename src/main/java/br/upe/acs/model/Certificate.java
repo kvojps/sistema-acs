@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "certificates")
 @Data
 @NoArgsConstructor
 public class Certificate {

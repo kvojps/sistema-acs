@@ -1,6 +1,6 @@
 package br.upe.acs.controller;
 
-import br.upe.acs.controller.responses.ViaCepResposta;
+import br.upe.acs.controller.responses.ViaCepResponse;
 import br.upe.acs.service.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,6 @@ public class AddressController {
     @Operation(summary = "Buscar endereço completo por cep")
     @GetMapping("/{cep}")
     public ResponseEntity<?> findAddressByCep(@PathVariable String cep) {
-        return ResponseEntity.ok(new ViaCepResposta(service.findAddressByCep(cep)));
+        return ResponseEntity.ok(new ViaCepResponse(service.findAddressByCep(cep)));
     }
 }

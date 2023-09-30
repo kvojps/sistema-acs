@@ -1,7 +1,7 @@
 package br.upe.acs.service;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.controller.responses.AutenticacaoResposta;
+import br.upe.acs.controller.responses.AuthenticationResponse;
 import br.upe.acs.model.User;
 import br.upe.acs.model.dto.LoginDTO;
 import br.upe.acs.repository.UserRepository;
@@ -30,9 +30,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    public AutenticacaoResposta login(LoginDTO login) {
+    public AuthenticationResponse login(LoginDTO login) {
         User user = repository.findByEmail(login.getEmail()).orElseThrow(() -> new AcsException("There is no user associated with this email"));
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getSenha()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
 
         return generateAuthResponse(user);
     }
@@ -110,9 +110,9 @@ public class AuthService {
         repository.save(user);
     }
 
-    private AutenticacaoResposta generateAuthResponse(User user) {
+    private AuthenticationResponse generateAuthResponse(User user) {
         String jwtToken = jwtService.generateToken(user);
-        AutenticacaoResposta authenticationResponse = new AutenticacaoResposta();
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);
 
         return authenticationResponse;
