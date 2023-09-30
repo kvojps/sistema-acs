@@ -1,7 +1,7 @@
 package br.upe.acs.utils;
 
-import br.upe.acs.model.Requisicao;
-import br.upe.acs.model.enums.RequisicaoStatusEnum;
+import br.upe.acs.model.Request;
+import br.upe.acs.model.enums.RequestStatusEnum;
 import br.upe.acs.utils.exceptions.AcsException;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.ITemplateEngine;
@@ -31,8 +31,8 @@ public class RequestPdfUtils {
         this.templateEngine = templateEngine;
     }
 
-    public byte[] generateRequestPdf(Requisicao request) {
-        if (request.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
+    public byte[] generateRequestPdf(Request request) {
+        if (request.getStatus() != RequestStatusEnum.TRANSITO) {
             throw new AcsException("It is not possible to generate a PDF of a request that is not in transit");
         }
 
@@ -60,12 +60,12 @@ public class RequestPdfUtils {
         }
     }
 
-    private Context defineTemplateValuesHtml(Requisicao request) {
+    private Context defineTemplateValuesHtml(Request request) {
         Context context = new Context();
 
         context.setVariable("protocolo", request.getToken());
         context.setVariable("cpf", request.getUser().getCpf());
-        context.setVariable("data", request.getDataDeSubmissao().toString());
+        context.setVariable("data", request.getSentIn().toString());
         context.setVariable("nome", request.getUser().getFullName());
         context.setVariable("curso", request.getUser().getCourse().getName());
         context.setVariable("periodo", request.getUser().getPeriod());

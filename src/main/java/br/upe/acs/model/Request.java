@@ -3,44 +3,46 @@ package br.upe.acs.model;
 import java.util.Date;
 import java.util.List;
 
-import br.upe.acs.model.enums.RequisicaoStatusEnum;
+import br.upe.acs.model.enums.RequestStatusEnum;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class Requisicao {
+public class Request {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(unique = true)
-	private String idRequisicao;
+	private String identifier;
 	
 	@Temporal(TemporalType.DATE)
-	private Date criacao;
+	private Date createIn;
 	
 	@Column(columnDefinition = "TEXT")
-	private String observacao;
+	private String note;
 	
 	@Temporal(TemporalType.DATE)
-	private Date dataDeSubmissao;
+	private Date sentIn;
 
 	private String token;
 
-	private boolean arquivada;
+	private boolean archived;
 	
-	private byte[] requisicaoArquivoAssinada;
+	private byte[] signedFile;
 	
 	@Enumerated(EnumType.STRING)
-	private RequisicaoStatusEnum statusRequisicao;
+	private RequestStatusEnum status;
 
 	@ManyToOne
 	private User user;
 
-	@OneToMany(mappedBy = "requisicao",cascade = CascadeType.REMOVE)
-	private List<Certificado> certificados;
+	@OneToMany(mappedBy = "request",cascade = CascadeType.REMOVE)
+	private List<Certificado> certificates;
 }

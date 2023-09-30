@@ -36,7 +36,7 @@ public class Certificado{
 	private CertificadoStatusEnum statusCertificado;
 	
 	@ManyToOne
-	private Requisicao requisicao;
+	private Request request;
 	
 	@ManyToOne
 	private Activity activity;

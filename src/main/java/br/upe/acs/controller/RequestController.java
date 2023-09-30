@@ -1,9 +1,9 @@
 package br.upe.acs.controller;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.controller.responses.RequisicaoResposta;
+import br.upe.acs.controller.responses.RequestResponse;
 import br.upe.acs.model.enums.AxleEnum;
-import br.upe.acs.model.enums.RequisicaoStatusEnum;
+import br.upe.acs.model.enums.RequestStatusEnum;
 import br.upe.acs.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +46,7 @@ public class RequestController {
     @Operation(summary = "Listar requisições")
     @GetMapping
     public ResponseEntity<Map<String, ?>> listRequests(@RequestParam(required = false) Boolean isArchived,
-                                                       @RequestParam(required = false) RequisicaoStatusEnum status,
+                                                       @RequestParam(required = false) RequestStatusEnum status,
                                                        @RequestParam(required = false) Long userId,
                                                        @RequestParam(required = false) Long courseId,
                                                        @RequestParam(defaultValue = "0") int page,
@@ -65,8 +65,8 @@ public class RequestController {
 
     @Operation(summary = "Buscar requisição por id")
     @GetMapping("/{id}")
-    public ResponseEntity<RequisicaoResposta> findRequestById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(new RequisicaoResposta(service.findRequestById(id)));
+    public ResponseEntity<RequestResponse> findRequestById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(new RequestResponse(service.findRequestById(id)));
     }
 
     @Operation(summary = "Submeter requisição por id")

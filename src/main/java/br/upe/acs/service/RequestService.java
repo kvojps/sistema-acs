@@ -1,15 +1,15 @@
 package br.upe.acs.service;
 
-import br.upe.acs.controller.responses.RequisicaoSimplesResposta;
+import br.upe.acs.controller.responses.SimpleRequestResponse;
 import br.upe.acs.model.Certificado;
 import br.upe.acs.model.Course;
-import br.upe.acs.model.Requisicao;
+import br.upe.acs.model.Request;
 import br.upe.acs.model.User;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
 import br.upe.acs.model.enums.AxleEnum;
-import br.upe.acs.model.enums.RequisicaoStatusEnum;
+import br.upe.acs.model.enums.RequestStatusEnum;
 import br.upe.acs.repository.CertificadoRepositorio;
-import br.upe.acs.repository.RequisicaoRepositorio;
+import br.upe.acs.repository.RequestRepository;
 import br.upe.acs.utils.EmailUtils;
 import br.upe.acs.utils.RequestPdfUtils;
 import br.upe.acs.utils.exceptions.AcsException;
@@ -29,7 +29,7 @@ import static br.upe.acs.utils.PaginationUtils.generatePagination;
 @RequiredArgsConstructor
 public class RequestService {
 
-    private final RequisicaoRepositorio repository;
+    private final RequestRepository repository;
     private final CertificadoRepositorio certificateRepository;
     private final UserService userService;
     private final RequestPdfUtils requestPdfUtils;
@@ -37,8 +37,8 @@ public class RequestService {
 
     public Long createRequest(String email) {
         User student = userService.findUserByEmail(email);
-        List<Requisicao> requestsSketch = student.getRequests().stream()
-                .filter(requisicao -> requisicao.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)).toList();
+        List<Request> requestsSketch = student.getRequests().stream()
+                .filter(request -> request.getStatus().equals(RequestStatusEnum.RASCUNHO)).toList();
 
         if (student.getHoursEnsino() + student.getHoursExtensao() + student.getHoursGestao() +
                 student.getHoursPesquisa() >= student.getCourse().getAdditionalHours()) {
@@ -49,35 +49,35 @@ public class RequestService {
             throw new AcsException("Student can only have 2 draft requests");
         }
 
-        Requisicao request = new Requisicao();
-        request.setStatusRequisicao(RequisicaoStatusEnum.RASCUNHO);
-        request.setCriacao(new Date());
+        Request request = new Request();
+        request.setStatus(RequestStatusEnum.RASCUNHO);
+        request.setCreateIn(new Date());
         request.setUser(student);
 
-        Requisicao requestSaved = repository.save(request);
-        requestSaved.setIdRequisicao(String.format("%s-%05d", student.getCourse().getAcronym(), requestSaved.getId()));
+        Request requestSaved = repository.save(request);
+        requestSaved.setIdentifier(String.format("%s-%05d", student.getCourse().getAcronym(), requestSaved.getId()));
         repository.save(requestSaved);
 
         return requestSaved.getId();
     }
 
     public byte[] createRequestPdf(Long requestId) {
-        Requisicao request = findRequestById(requestId);
+        Request request = findRequestById(requestId);
         return requestPdfUtils.generateRequestPdf(request);
     }
 
     public String submitRequest(Long requestId) {
-        Requisicao request = findRequestById(requestId);
+        Request request = findRequestById(requestId);
 
-        if (request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
+        if (request.getStatus() != RequestStatusEnum.RASCUNHO) {
             throw new AcsException("This request has already been submitted");
         }
 
-        if (request.getCertificados().isEmpty()) {
+        if (request.getCertificates().isEmpty()) {
             throw new AcsException("A request needs at least one certificate");
         }
-        List<Certificado> invalidCertificates = request.getCertificados().stream()
-                .filter(certificado -> !isValidCertificate(certificado)).toList();
+        List<Certificado> invalidCertificates = request.getCertificates().stream()
+                .filter(certificate -> !isValidCertificate(certificate)).toList();
         if (!invalidCertificates.isEmpty()) {
             throw new AcsException(
                     "Certificates: " + String.join("; ", invalidCertificates.stream()
@@ -87,9 +87,9 @@ public class RequestService {
         }
         String token = generateRequestToken();
         request.setToken(token);
-        request.setDataDeSubmissao(new Date());
-        request.setStatusRequisicao(RequisicaoStatusEnum.TRANSITO);
-        modifyCertificates(request.getCertificados());
+        request.setSentIn(new Date());
+        request.setStatus(RequestStatusEnum.TRANSITO);
+        modifyCertificates(request.getCertificates());
         repository.save(request);
 
         CompletableFuture.runAsync(() -> emailUtils.sendRequestStatusChanged(request));
@@ -97,45 +97,45 @@ public class RequestService {
         return token;
     }
 
-    public Map<String, Object> listRequests(Boolean isArchived, RequisicaoStatusEnum status, Long userId, Long courseId, int page, int amount) {
+    public Map<String, Object> listRequests(Boolean isArchived, RequestStatusEnum status, Long userId, Long courseId, int page, int amount) {
         User user = null;
         Course course = null;
 
-        List<RequisicaoSimplesResposta> requests = repository.findWithFilters(isArchived, status, userId, courseId)
-                .stream().map(RequisicaoSimplesResposta::new).toList();
+        List<SimpleRequestResponse> requests = repository.findWithFilters(isArchived, status, userId, courseId)
+                .stream().map(SimpleRequestResponse::new).toList();
 
         return generatePagination(requests, page, amount);
     }
 
     public Map<String, Object> listStudentRequestsByAxle(Long studentId, AxleEnum axle, int page, int amount) {
-        List<RequisicaoSimplesResposta> studentRequests = repository.findRequestsByUserIdAndAxle(studentId, axle)
-                .stream().map(RequisicaoSimplesResposta::new).toList();
+        List<SimpleRequestResponse> studentRequests = repository.findRequestsByUserIdAndAxle(studentId, axle)
+                .stream().map(SimpleRequestResponse::new).toList();
 
         return generatePagination(studentRequests, page, amount);
     }
 
-    public Requisicao findRequestById(Long id) {
+    public Request findRequestById(Long id) {
         return repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
     }
 
     public void archiveRequest(Long id, String email) {
         boolean isFinished = false;
-        Requisicao request = repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
+        Request request = repository.findById(id).orElseThrow(() -> new AcsException("Request not found"));
         User user = userService.findUserByEmail(email);
-        RequisicaoStatusEnum status = request.getStatusRequisicao();
+        RequestStatusEnum status = request.getStatus();
 
         if (!user.equals(request.getUser())) {
             throw new AcsException("User not authorized to archive this request");
         }
-        if (status == RequisicaoStatusEnum.ACEITO || status == RequisicaoStatusEnum.NEGADO) {
+        if (status == RequestStatusEnum.ACEITO || status == RequestStatusEnum.NEGADO) {
             isFinished = true;
         }
         if (!isFinished) {
             throw new AcsException("Unable to archive an unfinished request");
         }
 
-        if (!request.isArquivada()) {
-            request.setArquivada(true);
+        if (!request.isArchived()) {
+            request.setArchived(true);
             repository.save(request);
         } else {
             throw new AcsException("Request already archived");
@@ -143,15 +143,15 @@ public class RequestService {
     }
 
     public void unarchiveRequest(Long id, String email) {
-        Requisicao request = repository.findById(id).orElseThrow();
+        Request request = repository.findById(id).orElseThrow();
         User user = userService.findUserByEmail(email);
 
         if (!user.equals(request.getUser())) {
             throw new AcsException("User not authorized to unarchive this request");
         }
 
-        if (request.isArquivada()) {
-            request.setArquivada(false);
+        if (request.isArchived()) {
+            request.setArchived(false);
             repository.save(request);
         } else {
             throw new AcsException("The request is not archived");
@@ -159,12 +159,12 @@ public class RequestService {
     }
 
     public void deleteRequest(Long requestId, String email) {
-        Requisicao request = findRequestById(requestId);
+        Request request = findRequestById(requestId);
         if (!request.getUser().getEmail().equals(email)) {
             throw new AcsException("User without permission to delete this request");
         }
 
-        if (!request.getStatusRequisicao().equals(RequisicaoStatusEnum.RASCUNHO)) {
+        if (!request.getStatus().equals(RequestStatusEnum.RASCUNHO)) {
             throw new AcsException("A request already submitted cannot be deleted");
         }
 

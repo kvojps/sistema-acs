@@ -55,7 +55,7 @@ public class User implements UserDetails {
     private RoleEnum role;
     
     @OneToMany(mappedBy = "user")
-    private List<Requisicao> requests;
+    private List<Request> requests;
     
     @ManyToOne
     private Address address;

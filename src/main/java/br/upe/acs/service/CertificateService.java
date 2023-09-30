@@ -10,14 +10,14 @@ import java.util.Objects;
 import br.upe.acs.model.Activity;
 import br.upe.acs.model.dto.CertificadoDTO;
 import br.upe.acs.model.enums.CertificadoStatusEnum;
-import br.upe.acs.model.enums.RequisicaoStatusEnum;
+import br.upe.acs.model.enums.RequestStatusEnum;
 import br.upe.acs.utils.exceptions.ConvertFileException;
 import br.upe.acs.utils.exceptions.InvalidFileFormatException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.upe.acs.model.Certificado;
-import br.upe.acs.model.Requisicao;
+import br.upe.acs.model.Request;
 import br.upe.acs.repository.CertificadoRepositorio;
 import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class CertificateService {
     private final ActivityService activityService;
 
     public Certificado createCertificate(MultipartFile file, Long requestId, String email) {
-        Requisicao request = requestService.findRequestById(requestId);
+        Request request = requestService.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
             throw new InvalidFileFormatException("Only pdf is accepted");
@@ -39,10 +39,10 @@ public class CertificateService {
         if (!request.getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
-        if (request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
+        if (request.getStatus() != RequestStatusEnum.RASCUNHO) {
             throw new AcsException("This request is already submitted and not pin new certificates");
         }
-        if (request.getCertificados().size() >= 10) {
+        if (request.getCertificates().size() >= 10) {
             throw new InvalidFileFormatException("This request has more certificates than allowed");
         }
 
@@ -59,7 +59,7 @@ public class CertificateService {
 
         Certificado certificate = new Certificado();
         certificate.setCertificado(fileBytes);
-        certificate.setRequisicao(request);
+        certificate.setRequest(request);
         certificate.setStatusCertificado(CertificadoStatusEnum.RASCUNHO);
 
         return repository.save(certificate);
@@ -76,7 +76,7 @@ public class CertificateService {
 
     public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email) {
         Certificado certificate = findCertificateById(certificateId);
-        if (!certificate.getRequisicao().getUser().getEmail().equals(email)) {
+        if (!certificate.getRequest().getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
         Activity activity = null;
@@ -102,7 +102,7 @@ public class CertificateService {
 
     public void deleteCertificate(Long certificateId, String email) {
         Certificado certificate = findCertificateById(certificateId);
-        if (!certificate.getRequisicao().getUser().getEmail().equals(email)) {
+        if (!certificate.getRequest().getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
 
@@ -122,8 +122,8 @@ public class CertificateService {
         }
     }
 
-    private boolean isCertificateUnique(Requisicao requisicao, byte[] bytes) {
-        return requisicao.getCertificados().stream()
-                .anyMatch(certificado -> Arrays.equals(certificado.getCertificado(), bytes));
+    private boolean isCertificateUnique(Request request, byte[] bytes) {
+        return request.getCertificates().stream()
+                .anyMatch(certificate -> Arrays.equals(certificate.getCertificado(), bytes));
     }
 }

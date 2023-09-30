@@ -1,5 +1,5 @@
 package br.upe.acs.model.enums;
 
-public enum RequisicaoStatusEnum {
+public enum RequestStatusEnum {
 	RASCUNHO, PROBLEMA, TRANSITO, ACEITO, NEGADO
 }

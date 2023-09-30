@@ -1,6 +1,6 @@
 package br.upe.acs.utils;
 
-import br.upe.acs.model.Requisicao;
+import br.upe.acs.model.Request;
 import br.upe.acs.model.User;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -27,13 +27,13 @@ public class EmailUtils {
         sendEmail(emailDTO);
     }
 
-    public void sendRequestStatusChanged(Requisicao request) {
+    public void sendRequestStatusChanged(Request request) {
         EmailDTO emailDTO = new EmailDTO();
 
         emailDTO.setDestinatario(request.getUser().getEmail());
         emailDTO.setAssunto("Modificação na sua requisição " + request.getId() + " - Sistema ACs UPE");
         emailDTO.setMensagem("Gostaríamos de informar que sua requisição " + request.getId()
-                + " teve seu status alterado para " + request.getStatusRequisicao().name() + ".\n" +
+                + " teve seu status alterado para " + request.getStatus().name() + ".\n" +
                 "Para mais informações acesse o Sistema de ACs. " +
                 "Em caso de erros entre em contato com o turmaestest@gmail.com.\n" +
                 "Atenciosamente,\nCoordenação de " + request.getUser().getCourse() + ".");
