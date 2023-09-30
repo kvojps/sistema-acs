@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CertificadoDTO {
+public class CertificateDTO {
 
-	private String titulo;
+	private String title;
 		
-	private String dataIncial;
+	private String startDate;
 
-	private String dataFinal;
+	private String endDate;
 	
-	private float quantidadeDeHoras;
+	private float workload;
 	
-	private Long atividadeId;
+	private Long activityId;
 }

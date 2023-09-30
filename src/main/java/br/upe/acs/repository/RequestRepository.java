@@ -22,7 +22,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 			"SELECT request FROM Request request " +
 					"WHERE NOT request.archived " +
 					"AND request.user.id = :userId " +
-					"AND EXISTS (SELECT 1 FROM Certificado certificate " +
+					"AND EXISTS (SELECT 1 FROM Certificate certificate " +
 					"WHERE certificate.request.id = request.id " +
 					"AND certificate.activity.axle = :axle)" +
 					"ORDER BY request.sentIn"

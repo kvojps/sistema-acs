@@ -1,7 +1,7 @@
 package br.upe.acs.service;
 
 import br.upe.acs.model.Activity;
-import br.upe.acs.model.Certificado;
+import br.upe.acs.model.Certificate;
 import br.upe.acs.model.Request;
 import br.upe.acs.model.User;
 import br.upe.acs.model.vo.AdditionalActivitiesVO;
@@ -40,12 +40,12 @@ public class StudentService {
         float acceptedHours = 0;
         float problemHours = 0;
         for (Request request : student.getRequests()) {
-            for (Certificado certificate : request.getCertificates()) {
-                switch (certificate.getStatusCertificado()) {
-                    case RASCUNHO -> sketchHours += certificate.getCargaHoraria();
-                    case PROBLEMA -> problemHours += certificate.getCargaHoraria();
-                    case CONCLUIDO -> acceptedHours += certificate.getCargaHoraria();
-                    default -> progressHours += certificate.getCargaHoraria();
+            for (Certificate certificate : request.getCertificates()) {
+                switch (certificate.getStatus()) {
+                    case RASCUNHO -> sketchHours += certificate.getWorkload();
+                    case PROBLEMA -> problemHours += certificate.getWorkload();
+                    case CONCLUIDO -> acceptedHours += certificate.getWorkload();
+                    default -> progressHours += certificate.getWorkload();
                 }
             }
         }

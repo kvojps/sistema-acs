@@ -1,6 +1,6 @@
 package br.upe.acs.controller.responses;
 
-import br.upe.acs.model.Certificado;
+import br.upe.acs.model.Certificate;
 import br.upe.acs.model.Request;
 import br.upe.acs.model.enums.RequestStatusEnum;
 import lombok.Getter;
@@ -26,6 +26,6 @@ public class SimpleRequestResponse {
         this.status = request.getStatus();
         this.sentIn = request.getSentIn();
         this.workload = (float) request.getCertificates().stream()
-                .mapToDouble(Certificado::getCargaHoraria).sum();
+                .mapToDouble(Certificate::getWorkload).sum();
     }
 }

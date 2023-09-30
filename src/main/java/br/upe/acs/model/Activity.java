@@ -36,6 +36,6 @@ public class Activity {
     private Integer workloadCertificate;
 
 	@OneToMany(mappedBy = "activity")
-	private List<Certificado> certificates;
+	private List<Certificate> certificates;
 
 }

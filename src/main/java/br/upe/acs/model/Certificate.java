@@ -2,7 +2,7 @@ package br.upe.acs.model;
 
 import java.util.Date;
 
-import br.upe.acs.model.enums.CertificadoStatusEnum;
+import br.upe.acs.model.enums.CertificateStatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,30 +10,30 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Certificado{
+public class Certificate {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private String titulo;
+	private String title;
 	
 	
 	@Column(columnDefinition = "TEXT")
-	private String observacao;
+	private String note;
 	
 	@Temporal(TemporalType.DATE)
-	private Date dataInicial;
+	private Date startDate;
 
 	@Temporal(TemporalType.DATE)
-	private Date dataFinal;
+	private Date endDate;
 	
-	private float cargaHoraria;
+	private float workload;
 	
-	private byte[] certificado;
+	private byte[] certificate;
 	
 	@Enumerated(EnumType.STRING)
-	private CertificadoStatusEnum statusCertificado;
+	private CertificateStatusEnum status;
 	
 	@ManyToOne
 	private Request request;

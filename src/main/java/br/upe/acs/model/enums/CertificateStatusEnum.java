@@ -1,5 +1,5 @@
 package br.upe.acs.model.enums;
 
-public enum CertificadoStatusEnum {
+public enum CertificateStatusEnum {
 	RASCUNHO, PROBLEMA, ENCAMINHADO_COORDENACAO, ENCAMINHADO_COMISSAO, ENCAMINHADO_ESCOLARIDADE, CONCLUIDO
 }

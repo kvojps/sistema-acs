@@ -1,14 +1,14 @@
 package br.upe.acs.service;
 
 import br.upe.acs.controller.responses.SimpleRequestResponse;
-import br.upe.acs.model.Certificado;
+import br.upe.acs.model.Certificate;
 import br.upe.acs.model.Course;
 import br.upe.acs.model.Request;
 import br.upe.acs.model.User;
-import br.upe.acs.model.enums.CertificadoStatusEnum;
+import br.upe.acs.model.enums.CertificateStatusEnum;
 import br.upe.acs.model.enums.AxleEnum;
 import br.upe.acs.model.enums.RequestStatusEnum;
-import br.upe.acs.repository.CertificadoRepositorio;
+import br.upe.acs.repository.CertificateRepository;
 import br.upe.acs.repository.RequestRepository;
 import br.upe.acs.utils.EmailUtils;
 import br.upe.acs.utils.RequestPdfUtils;
@@ -30,7 +30,7 @@ import static br.upe.acs.utils.PaginationUtils.generatePagination;
 public class RequestService {
 
     private final RequestRepository repository;
-    private final CertificadoRepositorio certificateRepository;
+    private final CertificateRepository certificateRepository;
     private final UserService userService;
     private final RequestPdfUtils requestPdfUtils;
     private final EmailUtils emailUtils;
@@ -76,7 +76,7 @@ public class RequestService {
         if (request.getCertificates().isEmpty()) {
             throw new AcsException("A request needs at least one certificate");
         }
-        List<Certificado> invalidCertificates = request.getCertificates().stream()
+        List<Certificate> invalidCertificates = request.getCertificates().stream()
                 .filter(certificate -> !isValidCertificate(certificate)).toList();
         if (!invalidCertificates.isEmpty()) {
             throw new AcsException(
@@ -171,18 +171,18 @@ public class RequestService {
         repository.deleteById(requestId);
     }
 
-    private boolean isValidCertificate(Certificado certificate) {
+    private boolean isValidCertificate(Certificate certificate) {
         boolean isValid = true;
 
-        if (certificate.getCertificado() == null) {
+        if (certificate.getCertificate() == null) {
             isValid = false;
-        } else if (certificate.getTitulo() == null || certificate.getTitulo().isBlank()) {
+        } else if (certificate.getTitle() == null || certificate.getTitle().isBlank()) {
             isValid = false;
-        } else if (certificate.getDataInicial().after(new Date())) {
+        } else if (certificate.getStartDate().after(new Date())) {
             isValid = false;
-        } else if (certificate.getDataFinal().after(new Date())) {
+        } else if (certificate.getEndDate().after(new Date())) {
             isValid = false;
-        } else if (certificate.getCargaHoraria() < 1) {
+        } else if (certificate.getWorkload() < 1) {
             isValid = false;
         } else if (certificate.getActivity() == null) {
             isValid = false;
@@ -207,9 +207,9 @@ public class RequestService {
         return partialToken + Long.toString(epochSeconds);
     }
 
-    private void modifyCertificates(List<Certificado> certificates) {
-        for (Certificado certificate : certificates) {
-            certificate.setStatusCertificado(CertificadoStatusEnum.ENCAMINHADO_COORDENACAO);
+    private void modifyCertificates(List<Certificate> certificates) {
+        for (Certificate certificate : certificates) {
+            certificate.setStatus(CertificateStatusEnum.ENCAMINHADO_COORDENACAO);
             certificateRepository.save(certificate);
         }
     }

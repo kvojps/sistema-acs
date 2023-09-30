@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.upe.acs.model.Certificado;
+import br.upe.acs.model.Certificate;
 import br.upe.acs.model.Request;
 import br.upe.acs.model.enums.RequestStatusEnum;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class RequestResponse {
 
 	private final float workload;
 
-	private final List<CertificadoResposta> certificates;
+	private final List<CertificateReponse> certificates;
 
 	public RequestResponse(Request request) {
 		super();
@@ -41,15 +41,15 @@ public class RequestResponse {
 		this.status = request.getStatus();
 		this.note = request.getNote();
 		this.workload = (float) request.getCertificates().stream()
-				.mapToDouble(Certificado::getCargaHoraria).sum();
+				.mapToDouble(Certificate::getWorkload).sum();
 		this.certificates = converterCertificados(request.getCertificates());
 	}
 	
 
-	private List<CertificadoResposta> converterCertificados(List<Certificado> certificates) {
+	private List<CertificateReponse> converterCertificados(List<Certificate> certificates) {
 		return certificates.stream()
-				.map(CertificadoResposta::new)
-				.sorted(Comparator.comparing(CertificadoResposta::getId))
+				.map(CertificateReponse::new)
+				.sorted(Comparator.comparing(CertificateReponse::getId))
 				.collect(Collectors.toList());
 	}
 }

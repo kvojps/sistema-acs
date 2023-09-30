@@ -44,5 +44,5 @@ public class Request {
 	private User user;
 
 	@OneToMany(mappedBy = "request",cascade = CascadeType.REMOVE)
-	private List<Certificado> certificates;
+	private List<Certificate> certificates;
 }
