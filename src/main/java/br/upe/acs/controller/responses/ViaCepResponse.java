@@ -7,7 +7,7 @@ import lombok.Getter;
 public class ViaCepResponse {
     private final String cep;
 
-    private final String rua;
+    private final String street;
 
     private final String district;
 
@@ -18,7 +18,7 @@ public class ViaCepResponse {
     public ViaCepResponse(ViaCepDTO viaCepDTO) {
         super();
         this.cep = viaCepDTO.getCep();
-        this.rua = viaCepDTO.getLogradouro();
+        this.street = viaCepDTO.getLogradouro();
         this.district = viaCepDTO.getBairro();
         this.city = viaCepDTO.getLocalidade();
         this.uf = viaCepDTO.getUf();
