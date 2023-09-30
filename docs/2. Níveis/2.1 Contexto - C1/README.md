@@ -25,36 +25,82 @@
       * [2.4.4 Máquina de estados](../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.4%20M%C3%A1quina%20de%20estados/README.md)
       * [2.4.5 Sequência](../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.5%20Sequ%C3%AAncia/README.md)
   * [3. Manutenção da arquitetura](../../3.%20Manuten%C3%A7%C3%A3o%20da%20arquitetura/README.md)
-  * [4. Apêndices](../../4.%20Ap%C3%AAndices/README.md)
-    * [4.1 Reuniões](../../4.%20Ap%C3%AAndices/4.1%20Reuni%C3%B5es/README.md)
 
 ---
 
-![diagram](https://www.plantuml.com/plantuml/svg/0/ZLPDRzms4BthLqpjQzP80nHf7A38OcFaqY86t8zZC4kDTeb8f4fIZlrpZ1w2_81UUjKVwoFrHQrj83RWrP9lXc_clQ7ypWTseMjgUg_vuBXXKZ_IXfGrGUw2BNu8Hsc4VCjAQjuN_hCsBGD8h89rD-6-5k8lucqZHP7Mw0_VzGzEMpgljP6BalrHohSnt-M-xcH4RUlE07AwlBEDzhx_vyajwqenNEBvqUQsRBJHFhYdjw-yiZKxNN8fT5wzB7z-ypAZL1WRX89joLOJim-Exml2pqVYj2BcLZCnEVcxqrxtNoDBPHkoFk6KkA0hhS304xfowDYLJ5s3270mzc9CrqqDQYtOC5AqR8xiKkuD9LHsH0l-ZG1UMlBIKSjeQtrHY2afyXxPEtquXiX_rQUi2fMjEr6obzDY4X2dZFMYOiLewv4fQWuqt_8cWMhDGmWAL9Da5sXT_wsX4b_jYo7RV112dmmYIJWmuQ5xZmhRsn1YbwlS77DTsvJtj9AiYFxRnCItrlZ-uLRgr5EOl1AdNTGgE3qKjk-m0FsGrI8281VLymIbZjRn83M-G6RE9QT1IbScJoIKxpYTAYheMr34ty60-DLtzda5Jyoyr0gQ84Yjk4fxr3mvoUUv1l_I9gNR_78oZvSOy_ktnTBAJTS2D9f-XLZi4Z40PVtFW6ksCpGpOGOkO8Z0ve1humOnql2dhK8fdix6xxJT-JCwvzTx_kdDUZBpYAKhr-8Q3H14clj1SYU3eAeBSR8yLPrHsXgu9MemwxXeDWnNRErgkFWW9j2krlYGJpU__NwTs8uB51VEfYjbnNOLij2zmZMIt89AT8tIExYxVmXQWVRer9eJrNYHuAp5sV_2aSZfP036xP1iAjE4IdRHFQxYuxOBnrUhRiSMT06RS76QdPDYbkaRWvTAiXI_seCrrFzdK0M6BsqVh8qofx2LFnELFpNlf4rKy4Zn-Q-RPyyUqTbrjW_YI9lAkeR7pfJZ3OQZn4d_TNrrxgwkSnRpLCnpidBNOjdvBK6Ny1SNEMoENMlzTF3m_f1DbBrOlP0sjLJVcsMyK8SqViscj5yCqan2VMSDOzJKukUZtg5x-5_XVm00)
+![diagram](https://www.plantuml.com/plantuml/svg/0/TLAxJWCn4Epz5QjB7IbqG85o2Yaea285qPuMUnDP-15vVGI4-1Z4f-J7sCjTY0F4ZJqx8tjdrbFEc7Bh7TnQN2Vq2Fe2ng1ZoFIQe-9d6pOe1A3ECItpcoF0BN7qf5GYdJ6ifLGjAAqiWo5ekTrz9Xkv0kGEOGVU5SZQNmArQqE4KVV2zPDhgQ1cqLlctTTPEYP30OsS_nNKnjjWEQVVae-oMnO5UMnGSzTZjUmnr3DfUhIQcCkhoOcxkIDF8KS6kP1I6Cpr05r3FSyms5mB0EsiRDImpvlzCxE-0ClxXqLL25yiDffwpQEL4SYvNjnLXQyvw-WaI8EIyAcjKyjZ4xTXV5CcfShKZlmGj3f6Vk3syr67oVsKYzIKAYCy2Fx4eQOKZFokRm00)
 
-O principal objetivo do diagrama de contexto, de acordo com o modelo C4, é fornecer uma visão geral e simplificada da arquitetura do sistema, destacando seu relacionamento com o ambiente externo. O diagrama de contexto mostra o sistema em foco como uma única caixa central, cercada por elementos externos, como usuários, sistemas externos e outras entidades com as quais o sistema interage.Esse diagrama é útil para comunicar de forma clara e concisa a função e o propósito do sistema, bem como sua interação com o ambiente ao seu redor. Ele fornece uma representação de alto nível da arquitetura, permitindo que os stakeholders identifiquem facilmente as partes interessadas envolvidas e entendam a amplitude do sistema.
+## Objetivo do Diagrama de Contexto no Modelo C4
 
-Além disso, o diagrama de contexto é uma base sólida para a elaboração de outros diagramas mais detalhados, pois fornece um ponto de partida para a decomposição do sistema em componentes menores. Ele ajuda a definir os limites e a identificar as interfaces do sistema, sendo uma ferramenta essencial para a compreensão inicial da arquitetura em um nível mais amplo.
+O principal objetivo do diagrama de contexto, conforme definido pelo modelo C4, é proporcionar uma visão geral e 
+simplificada da arquitetura de um sistema, enfatizando seus vínculos com o ambiente externo. Nesse diagrama, o sistema 
+central em foco é representado como uma única caixa central, cercada por elementos externos, como usuários, sistemas 
+externos e outras entidades com as quais o sistema interage.
 
-* **Escopo:** Um único sistema de software.
-* **Elementos primários:**  O sistema de software no escopo.
-* **Elementos de suporte:** Pessoas (por exemplo, usuários, atores, funções ou personas) e sistemas de software (dependências externas) que estão diretamente conectados ao sistema de software no escopo.
-* **Público alvo:** Todos, técnicos e não técnicos, dentro e fora da equipe de desenvolvimento de software.
+Este diagrama desempenha um papel crucial na comunicação clara e concisa da função e propósito do sistema, bem como na 
+ilustração de sua interação com o ambiente circundante. Ele oferece uma representação de alto nível da arquitetura, 
+permitindo que as partes interessadas identifiquem facilmente as partes envolvidas e compreendam a extensão do sistema.
+Além disso, o diagrama de contexto serve como uma base sólida para a criação de diagramas mais detalhados, servindo como
+ponto de partida para a decomposição do sistema em componentes menores. Isso auxilia na definição dos limites e na 
+identificação das interfaces do sistema, tornando-se uma ferramenta essencial para a compreensão inicial da arquitetura 
+em um nível mais amplo.
+
+**Escopo:** O diagrama de contexto se aplica a um único sistema de software.
+
+**Elementos principais:** O elemento central é o sistema de software em questão.
+
+**Elementos de suporte:** Incluem pessoas (como usuários, atores, funções ou personas) e sistemas de software (
+dependências externas) que têm conexões diretas com o sistema de software em foco.
+
+**Público-alvo:** Este diagrama é destinado a todas as partes interessadas, sejam elas técnicas ou não, dentro e fora 
+da equipe de desenvolvimento de software. Ele desempenha um papel fundamental na comunicação eficaz da arquitetura do 
+sistema.
+
 
 ## Principais elementos
 ### Personas
-Cada usuário possui obrigatoriamente um perfil, que define os níveis de autorização no sistema.
-* **Aluno:** Esse usuário representa aqueles que possuem acesso ao sistema para enviar requisições juntamente com suas atividades complementares. É importante ressaltar que apenas os membros da Universidade de Pernambuco possuem permissão para acessar o sistema.
-* **Comissão:** Esse usuário desempenha um papel fundamental na avaliação das requisições de atividades complementares. Sua responsabilidade principal é verificar cuidadosamente os dados da requisição e os certificados apresentados. Além disso, é sua responsabilidade atribuir a quantidade de horas correspondente às atividades e definir o status da requisição como deferido ou indeferido, com base nas informações fornecidas e nos critérios estabelecidos.
-* **Coordenação:** O responsável pelo gerenciamento das requisições possui o perfil de coordenador. Ele é o primeiro a receber as requisições e realiza validações iniciais, tendo autoridade para indeferir uma requisição sem envolvê-la com a comissão responsável. Somente um usuário com esse perfil possui a autoridade para concluir o fluxo da requisição. O coordenador desempenha um papel crucial na triagem inicial, garantindo que apenas as requisições válidas e adequadas prossigam para o próximo estágio do processo.
-* **Administrador:** Esse usuário é responsável por atribuir os perfis de comissão e coordenação. Para realizar essa atribuição, é necessário enviar um e-mail para a conta de administração, solicitando o cadastro de usuários com esses perfis específicos. Esse processo garante que apenas usuários autorizados possuam os privilégios necessários para desempenhar as funções de comissão e coordenação, mantendo assim a segurança e a organização do sistema.
+Cada usuário é obrigatoriamente associado a um perfil que define os níveis de autorização no sistema. É fundamental 
+ressaltar que somente membros da Universidade de Pernambuco têm permissão para acessar o sistema.
+- **Aluno:** Este perfil é designado aos usuários que têm acesso ao sistema para submeter requisições juntamente com suas
+atividades complementares.
+- **Comissão:** Os usuários com perfil de comissão desempenham um papel crítico na avaliação das requisições de atividades
+complementares. Sua responsabilidade principal é a verificação dos dados da requisição e dos certificados apresentados. 
+Além disso, cabe a eles atribuir a quantidade de horas correspondente às atividades e determinar o status da requisição
+como deferido ou indeferido, com base nas informações fornecidas e nos critérios estabelecidos.
+- **Coordenação:** Os responsáveis pelo gerenciamento das requisições são atribuídos ao perfil de coordenação. Eles são
+os primeiros a receber as requisições e conduzem as validações iniciais, com a autoridade para indeferir uma requisição
+sem a necessidade de envolvê-la com a comissão responsável. Somente usuários com este perfil têm autoridade para concluir
+o fluxo da requisição. A função da coordenação é crucial na triagem inicial, assegurando que apenas as requisições válidas
+e apropriadas prossigam para a avaliação da comissão.
+- **Administrador:** O perfil de administrador é responsável por atribuir os perfis de comissão e coordenação. Para
+realizar essa atribuição, é necessário enviar um e-mail para a conta de administração, solicitando o cadastro de usuários
+com esses perfis específicos. Esse procedimento garante que apenas usuários autorizados tenham os privilégios necessários
+para desempenhar as funções de comissão e coordenação, mantendo, assim, a segurança e organização do sistema.
+
 #### Personas Externas
-* **Escolaridade:** Esse ator não possui interação direta com o sistema, porém desempenha um papel crucial ao receber e-mails durante o processo de cadastro das requisições. Ele é notificado quando um aluno realiza o cadastro de uma requisição e também quando a requisição é concluída. Sua responsabilidade é inserir as informações das atividades complementares no Siga, garantindo que os registros sejam atualizados adequadamente. Embora não esteja diretamente envolvido no sistema, esse ator desempenha uma função indispensável para o fluxo de trabalho eficiente e preciso.
+- **Escolaridade:** Este ator não interage diretamente com o sistema, mas desempenha um papel crucial ao receber e-mails
+durante o processo de cadastro das requisições. Ele é notificado quando um aluno realiza o cadastro de uma requisição e 
+também quando a requisição é concluída. Sua responsabilidade é inserir as informações das atividades complementares no 
+Siga, garantindo que os registros sejam atualizados adequadamente. Embora não esteja diretamente envolvido no sistema,
+esse ator desempenha uma função indispensável para o fluxo de trabalho eficiente e preciso.
 
 ### Sistema principal
-* **Sistema ACs-UPE:** Essa plataforma web é um sistema que oferece aos alunos a capacidade de cadastrar requisições, ao mesmo tempo em que permite o gerenciamento dessas requisições pela coordenação e comissão. É um ambiente centralizado que facilita o processo de solicitações de atividades complementares, promovendo uma comunicação eficiente entre os alunos e as equipes responsáveis pela avaliação e aprovação das requisições. A plataforma oferece recursos que permitem aos alunos inserir os dados necessários para as requisições, enquanto a coordenação e a comissão podem acessar e administrar essas requisições de forma organizada, efetiva e segura.
+- **Sistema ACs-UPE:** Esta plataforma web é um sistema que proporciona aos alunos a capacidade de cadastrar requisições,
+ao mesmo tempo em que permite o gerenciamento dessas requisições pela coordenação e comissão. Trata-se de um ambiente 
+centralizado que simplifica o processo de solicitação de atividades complementares, fomentando uma comunicação eficiente
+entre os alunos e as equipes responsáveis pela avaliação e aprovação das requisições. A plataforma oferece recursos que 
+permitem aos alunos inserir os dados necessários para as requisições, enquanto a coordenação e a comissão podem acessar 
+e administrar essas requisições de forma organizada, efetiva e segura.
 
 ### Sistema externos
-* **Sistema de e-mail:** Responsável pelo envio de e-mails automáticos relacionados às requisições para a escolaridade, envio de e-mails de notificação entre os atores do sistema, bem como e-mails relacionados às etapas de configuração de contas de usuário. Esse componente desempenha um papel crucial na comunicação efetiva do sistema, garantindo que as partes relevantes sejam informadas sobre o status das requisições, atualizações e outras informações importantes. Os e-mails automáticos são disparados de acordo com eventos específicos, agilizando o fluxo de trabalho e mantendo os usuários informados em tempo hábil.
-* **Sistema de autenticação:** O recurso de login com credenciais do Google oferece aos usuários a conveniência de utilizar suas contas do Google para acessar diversos serviços e aplicativos. Isso elimina a necessidade de criar novas credenciais e permite um processo de login simplificado e seguro. Ao aproveitar as credenciais existentes do Google, os usuários podem acessar rapidamente os serviços desejados, reduzindo o atrito no processo de autenticação e melhorando a experiência do usuário. Além disso, o login com credenciais do Google também proporciona um nível adicional de confiança e segurança, uma vez que a autenticação é realizada pela infraestrutura robusta e confiável do Google.
-* **API do Via CEP:** O recurso permite obter automaticamente os dados de endereço do usuário apenas informando o CEP. Com essa funcionalidade, é possível simplificar e agilizar o processo de preenchimento de informações de endereço, eliminando a necessidade de digitar manualmente cada campo. Ao inserir o CEP, o sistema realiza uma busca em uma base de dados atualizada e recupera automaticamente as informações de rua, número, bairro, cidade e estado associados ao CEP fornecido. Isso proporciona uma experiência mais conveniente para o usuário, reduzindo erros de digitação e economizando tempo ao preencher formulários ou realizar transações online que requerem informações de endereço.
+- **Cliente SMTP:** Este componente é responsável pelo envio de e-mails automáticos relacionados às requisições, 
+notificações entre os atores do sistema e e-mails associados às etapas de configuração de contas de usuário. Desempenha 
+um papel crucial na comunicação efetiva do sistema, assegurando que as partes relevantes sejam informadas sobre o status
+das requisições, atualizações e outras informações importantes. Os e-mails automáticos são acionados com base em eventos
+específicos, otimizando o fluxo de trabalho e mantendo os usuários informados de maneira oportuna.
+- **API do Via CEP:** Este recurso permite a obtenção automática de dados de endereço do usuário simplesmente informando
+o CEP. Com essa funcionalidade, é possível simplificar e agilizar o processo de preenchimento de informações de endereço,
+eliminando a necessidade de inserir manualmente cada campo. Ao inserir o CEP, o sistema realiza uma busca em uma base de
+dados atualizada e recupera automaticamente as informações de rua, número, bairro, cidade e estado associados ao CEP 
+fornecido. Isso proporciona uma experiência mais conveniente para o usuário, reduzindo erros de digitação e economizando
+tempo ao preencher formulários ou realizar transações online que requerem informações de endereço.

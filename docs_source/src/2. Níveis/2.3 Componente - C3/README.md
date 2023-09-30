@@ -1,4 +1,12 @@
-O objetivo principal dos diagramas de componentes no C4 Model é mostrar a estrutura interna dos contêineres do sistema e como eles são compostos por diferentes componentes. Os diagramas de componentes fornecem uma visão detalhada dos principais blocos de construção estruturais do sistema e suas interações. Esses diagramas ajudam a entender a arquitetura de um sistema de software em um nível mais granular, identificando os componentes individuais e suas responsabilidades. Eles mostram como os componentes se relacionam entre si, quais são as dependências e como eles colaboram para fornecer as funcionalidades do sistema.
+Nos diagramas de componentes do modelo C4, o objetivo principal é apresentar a estrutura interna dos contêineres do 
+sistema e como eles se compõem de diferentes componentes. Esses diagramas oferecem uma visão detalhada dos blocos de 
+construção fundamentais do sistema e de suas interações essenciais.
+
+Os diagramas de componentes são ferramentas essenciais para compreender a arquitetura do software em um nível granular,
+permitindo a identificação dos componentes individuais e de suas responsabilidades específicas. Eles destacam as relações
+entre esses componentes, revelando suas dependências e ilustrando como colaboram para oferecer as funcionalidades do 
+sistema. Em resumo, esses diagramas ajudam a desvendar os detalhes da estrutura interna, permitindo uma compreensão mais
+profunda e clara da arquitetura do sistema.
 
 * **Escopo:** Um único contêiner.
 * **Elementos primários:** Componentes dentro do contêiner no escopo.
@@ -9,7 +17,8 @@ O objetivo principal dos diagramas de componentes no C4 Model é mostrar a estru
 * As tecnologias de desenvolvimento utilizadas são: 
   * Front-end: TypeScript associado aos frameworks React + NextJs.
   * Back-end: Java associado ao framework Spring boot.
-* O projeto não possui nenhuma espécie de orçamento, tornando a aquisição de serviços de terceiros um custo pessoal, portanto os serviços utilizados devem ser gratuitos e o servidor pessoal ou da instituição;.
+* O projeto não possui nenhuma espécie de orçamento, tornando a aquisição de serviços de terceiros um custo pessoal, 
+portanto os serviços utilizados devem ser gratuitos e o servidor pessoal ou da instituição;
 * A aplicação será disponibilizada como página web.
-* O sistema deve permanecer online 24 horas por dia, 7 dias por semana, com tolerância a interrupções de no máximo 2 horas em situações excepcionais para manutenções ou atualizações planejadas.
-* O serviço de API deve ser criado com um banco de dados completo, com gerenciamento de concorrência e maior capacidade de armazenamento, dado que o sistema será desenvolvido com foco em manter múltiplos usuários acessando concorrentemente.
+* O sistema deve permanecer online 24 horas por dia, 7 dias por semana, com tolerância a interrupções de no máximo 2 horas
+em situações excepcionais para manutenções ou atualizações planejadas.

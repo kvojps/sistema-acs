@@ -1,3 +1,16 @@
-O nível de código no C4 Model tem como objetivo principal representar a implementação detalhada dos componentes de software em um sistema. Ela está relacionada à perspectiva de implementação técnica do sistema, mostrando como o código é organizado, estruturado e interage entre si. Permite aos desenvolvedores e engenheiros de software entenderem a estrutura interna dos componentes, como classes, métodos, interfaces e relacionamentos, além de possibilitar a análise das dependências entre eles.
+No Modelo C4, o nível de código tem como objetivo principal representar a implementação detalhada dos componentes de 
+software em um sistema. Ele está diretamente relacionado à perspectiva de implementação técnica do sistema, exibindo como
+o código é organizado, estruturado e interage entre si. Essa perspectiva permite aos desenvolvedores e engenheiros de 
+software mergulharem nas entranhas dos componentes, analisando elementos como classes, métodos, interfaces e seus 
+relacionamentos. Além disso, possibilita a análise das dependências entre esses elementos, proporcionando uma compreensão
+profunda da implementação técnica do sistema.
 
-Este nível fornece informações cruciais sobre como o sistema está sendo implementado em termos de código. Ela ajuda a garantir a consistência e a clareza na implementação, permitindo uma compreensão detalhada da estrutura e do funcionamento interno dos componentes de software. Ao visualizar a camada de código, os desenvolvedores podem identificar padrões de design, resolver problemas de implementação, entender a lógica de negócio e realizar melhorias no código existente. Além disso, ela pode servir como uma referência valiosa para a manutenção, depuração e evolução do sistema ao longo do tempo.
+O nível de código fornece informações cruciais sobre como o sistema está sendo implementado em termos de código. Desempenha
+um papel fundamental na garantia da consistência e clareza na implementação, permitindo uma compreensão minuciosa da estrutura
+e do funcionamento interno dos componentes de software. Ao explorar a camada de código, os desenvolvedores podem identificar
+padrões de design, resolver problemas de implementação, compreender a lógica de negócio e efetuar melhorias no código existente.
+Além disso, esse nível pode servir como uma referência inestimável para a manutenção, depuração e evolução contínua do sistema
+ao longo do tempo.
+
+Em resumo, o nível de código no Modelo C4 é uma ferramenta essencial que possibilita uma visão aprofundada da implementação
+técnica do sistema, facilitando tanto a compreensão quanto aprimoramento contínuo da estrutura de software.

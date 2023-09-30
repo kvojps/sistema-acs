@@ -25,8 +25,6 @@
       * [2.4.4 Máquina de estados](../../../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.4%20M%C3%A1quina%20de%20estados/README.md)
       * [2.4.5 Sequência](../../../../2.%20N%C3%ADveis/2.4%20C%C3%B3digo%20-%20C4/2.4.5%20Sequ%C3%AAncia/README.md)
   * [3. Manutenção da arquitetura](../../../../3.%20Manuten%C3%A7%C3%A3o%20da%20arquitetura/README.md)
-  * [4. Apêndices](../../../../4.%20Ap%C3%AAndices/README.md)
-    * [4.1 Reuniões](../../../../4.%20Ap%C3%AAndices/4.1%20Reuni%C3%B5es/README.md)
 
 ---
 
