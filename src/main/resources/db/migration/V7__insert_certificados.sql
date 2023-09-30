@@ -1,5 +1,5 @@
-INSERT INTO public.certificado(
-    id, carga_horaria, certificado, data_final, data_inicial, observacao, status_certificado, titulo, atividade_id, requisicao_id)
+INSERT INTO public.certificates(
+    id, workload, certificate, end_date, start_date, note, status, title, activity_id, request_id)
 VALUES
     ('1','10.5','binary data','2021-08-09','2021-08-09',NULL,'RASCUNHO','Pharetra non eget.','36','13'),
     ('2','10.5','binary data','2022-08-11','2022-08-11',NULL,'RASCUNHO','Pharetra non eget.','37','13'),

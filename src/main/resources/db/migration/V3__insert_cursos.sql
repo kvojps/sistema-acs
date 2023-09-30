@@ -1,4 +1,4 @@
-INSERT INTO public.curso(id, horas_complementares, nome, sigla)
+INSERT INTO public.courses(id, additional_hours, name, acronym)
 VALUES
     (1, 180, 'Ciências Biológicas', 'BIO'),
     (2, 180, 'Ciências Sociais', 'CS'),

@@ -9,11 +9,8 @@ import org.springframework.stereotype.Component;
 import br.upe.acs.model.dto.EmailDTO;
 import lombok.RequiredArgsConstructor;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -68,7 +65,7 @@ public class EmailUtils {
         email.setText(emailInfo.getMessage());
         email.setSubject(emailInfo.getSubject());
 
-        if (!EMAILS_TEST.contains(emailInfo.getDestinatario())) {
+        if (!EMAILS_TEST.contains(emailInfo.getTo())) {
             emailSender.send(email);
         }
     }
