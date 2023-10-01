@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,17 +24,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(HttpMethod.POST, "/api/users/**")
                                 .permitAll()
-                                .requestMatchers("/api/auth/**", "/v3/**", "/swagger-ui/**", "/api/usuario/conta/recuperar")
+                                .requestMatchers("/api/auth/**", "/v3/**", "/swagger-ui/**")
                                 .permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/endereco/**", "/api/curso/**")
+                                .requestMatchers(HttpMethod.GET, "/api/addresses/**", "/api/courses/**")
                                 .permitAll()
-                                .requestMatchers("api/usuario/requisicao/paginacao/**")
-                                .hasAnyAuthority("COORDENADOR", "ADMINISTRADOR")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

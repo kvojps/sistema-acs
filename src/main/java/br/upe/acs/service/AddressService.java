@@ -1,13 +1,13 @@
 package br.upe.acs.service;
 
+import br.upe.acs.model.Address;
 import br.upe.acs.model.dto.ViaCepDTO;
 import br.upe.acs.utils.exceptions.CepInvalidException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import br.upe.acs.model.Endereco;
-import br.upe.acs.model.dto.EnderecoDTO;
-import br.upe.acs.repository.EnderecoRepositorio;
+import br.upe.acs.model.dto.AddressDTO;
+import br.upe.acs.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
@@ -17,11 +17,11 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AddressService {
 
-    private final EnderecoRepositorio repository;
+    private final AddressRepository repository;
 
-    public Endereco createAddress(EnderecoDTO addressDto) {
+    public Address createAddress(AddressDTO addressDto) {
         ModelMapper modelMapper = new ModelMapper();
-        Endereco addressToSave = modelMapper.map(addressDto, Endereco.class);
+        Address addressToSave = modelMapper.map(addressDto, Address.class);
 
         return repository.save(addressToSave);
     }

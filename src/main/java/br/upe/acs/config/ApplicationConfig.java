@@ -1,7 +1,7 @@
 package br.upe.acs.config;
 
 import br.upe.acs.utils.interceptor.RequestInterceptor;
-import br.upe.acs.repository.UsuarioRepositorio;
+import br.upe.acs.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,13 +21,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class ApplicationConfig implements WebMvcConfigurer {
 
-    private final UsuarioRepositorio repository;
+    private final UserRepository repository;
     private final JwtService jwtService;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return usermail -> repository.findByEmail(usermail)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+        return userEmail -> repository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
     @Bean
@@ -53,8 +53,8 @@ public class ApplicationConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new RequestInterceptor(repository, jwtService))
-                .addPathPatterns("/api/requisicao/**", "/api/atividade/**", "/api/certificado/**", "/api/aluno/**", "/api/usuario/**")
-                .excludePathPatterns("/api/usuario/me", "/api/usuario/verificacao/**", "/api/usuario/conta/**");
+                .addPathPatterns("/api/requests/**", "/api/activities/**", "/api/certificates/**", "/api/students/**", "/api/users/**")
+                .excludePathPatterns("/api/users/me", "/api/users/**");
     }
 
 }

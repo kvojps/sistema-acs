@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class EmailDTO {
 	
-	private String destinatario;
+	private String to;
 	
-	private String assunto;
+	private String subject;
 	
-	private String mensagem;
+	private String message;
 }

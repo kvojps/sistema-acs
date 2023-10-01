@@ -1,9 +1,9 @@
 package br.upe.acs.service;
 
-import br.upe.acs.model.Atividade;
-import br.upe.acs.model.dto.AtividadeDTO;
-import br.upe.acs.model.enums.EixoEnum;
-import br.upe.acs.repository.AtividadeRepositorio;
+import br.upe.acs.model.Activity;
+import br.upe.acs.model.dto.ActivityDTO;
+import br.upe.acs.model.enums.AxleEnum;
+import br.upe.acs.repository.ActivityRepository;
 import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,36 +15,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ActivityService {
 
-    private final AtividadeRepositorio repository;
+    private final ActivityRepository repository;
 
-    public Atividade createActivity(AtividadeDTO activity) {
+    public Activity createActivity(ActivityDTO activity) {
         ModelMapper modelMapper = new ModelMapper();
-        Atividade activityToSave = modelMapper.map(activity, Atividade.class);
+        Activity activityToSave = modelMapper.map(activity, Activity.class);
 
         return repository.save(activityToSave);
     }
 
-    public List<Atividade> listActivities() {
+    public List<Activity> listActivities() {
         return repository.findAll();
     }
 
-    public Atividade findActivityById(Long id) {
+    public Activity findActivityById(Long id) {
         return repository.findById(id).orElseThrow(() -> new AcsException("Activity not found"));
     }
 
-    public List<Atividade> findActivityByAxle(EixoEnum axle) {
-        return repository.findByEixo(axle);
+    public List<Activity> findActivityByAxle(AxleEnum axle) {
+        return repository.findByAxle(axle);
     }
 
-    public void updateActivity(Long id, AtividadeDTO activity) {
-        Atividade activityToUpdate = repository.findById(id).orElseThrow(() ->
+    public void updateActivity(Long id, ActivityDTO activity) {
+        Activity activityToUpdate = repository.findById(id).orElseThrow(() ->
                 new AcsException("Activity not found"));
 
-        activityToUpdate.setEixo(activity.getEixo());
-        activityToUpdate.setDescricao(activity.getDescricao());
-        activityToUpdate.setCriteriosParaAvaliacao(activity.getCriteriosParaAvaliacao());
-        activityToUpdate.setChMaxima(activity.getChMaxima());
-        activityToUpdate.setChPorCertificado(activity.getChPorCertificado());
+        activityToUpdate.setAxle(activity.getAxle());
+        activityToUpdate.setDescription(activity.getDescription());
+        activityToUpdate.setEvaluationMethods(activity.getEvaluationMethods());
+        activityToUpdate.setWorkloadMax(activity.getWorkloadMax());
+        activityToUpdate.setWorkloadCertificate(activity.getWorkloadCertificate());
 
         repository.save(activityToUpdate);
     }

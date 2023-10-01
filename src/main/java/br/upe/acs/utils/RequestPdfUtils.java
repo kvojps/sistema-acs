@@ -1,7 +1,7 @@
 package br.upe.acs.utils;
 
-import br.upe.acs.model.Requisicao;
-import br.upe.acs.model.enums.RequisicaoStatusEnum;
+import br.upe.acs.model.Request;
+import br.upe.acs.model.enums.RequestStatusEnum;
 import br.upe.acs.utils.exceptions.AcsException;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.ITemplateEngine;
@@ -31,8 +31,8 @@ public class RequestPdfUtils {
         this.templateEngine = templateEngine;
     }
 
-    public byte[] generateRequestPdf(Requisicao request) {
-        if (request.getStatusRequisicao() != RequisicaoStatusEnum.TRANSITO) {
+    public byte[] generateRequestPdf(Request request) {
+        if (request.getStatus() != RequestStatusEnum.TRANSITO) {
             throw new AcsException("It is not possible to generate a PDF of a request that is not in transit");
         }
 
@@ -60,23 +60,23 @@ public class RequestPdfUtils {
         }
     }
 
-    private Context defineTemplateValuesHtml(Requisicao request) {
+    private Context defineTemplateValuesHtml(Request request) {
         Context context = new Context();
 
         context.setVariable("protocolo", request.getToken());
-        context.setVariable("cpf", request.getUsuario().getCpf());
-        context.setVariable("data", request.getDataDeSubmissao().toString());
-        context.setVariable("nome", request.getUsuario().getNomeCompleto());
-        context.setVariable("curso", request.getUsuario().getCurso().getNome());
-        context.setVariable("periodo", request.getUsuario().getPeriodo());
-        context.setVariable("rua", request.getUsuario().getEndereco().getRua());
-        context.setVariable("bairro", request.getUsuario().getEndereco().getBairro());
-        context.setVariable("numero", request.getUsuario().getEndereco().getNumero());
-        context.setVariable("cidade", request.getUsuario().getEndereco().getCidade());
-        context.setVariable("uf", request.getUsuario().getEndereco().getUF());
-        context.setVariable("cep", request.getUsuario().getEndereco().getCep());
-        context.setVariable("email", request.getUsuario().getEmail());
-        context.setVariable("telefone", request.getUsuario().getTelefone());
+        context.setVariable("cpf", request.getUser().getCpf());
+        context.setVariable("data", request.getSentAt().toString());
+        context.setVariable("nome", request.getUser().getFullName());
+        context.setVariable("curso", request.getUser().getCourse().getName());
+        context.setVariable("periodo", request.getUser().getPeriod());
+        context.setVariable("rua", request.getUser().getAddress().getStreet());
+        context.setVariable("bairro", request.getUser().getAddress().getDistrict());
+        context.setVariable("numero", request.getUser().getAddress().getNumber());
+        context.setVariable("cidade", request.getUser().getAddress().getCity());
+        context.setVariable("uf", request.getUser().getAddress().getUf());
+        context.setVariable("cep", request.getUser().getAddress().getCep());
+        context.setVariable("email", request.getUser().getEmail());
+        context.setVariable("telefone", request.getUser().getPhone());
 
         return context;
     }

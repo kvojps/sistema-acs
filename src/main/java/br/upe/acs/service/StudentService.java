@@ -1,13 +1,13 @@
 package br.upe.acs.service;
 
-import br.upe.acs.model.Atividade;
-import br.upe.acs.model.Certificado;
-import br.upe.acs.model.Requisicao;
-import br.upe.acs.model.Usuario;
-import br.upe.acs.model.vo.AtividadeComplementarVO;
-import br.upe.acs.model.vo.MinhasHorasNaAtividadeVO;
+import br.upe.acs.model.Activity;
+import br.upe.acs.model.Certificate;
+import br.upe.acs.model.Request;
+import br.upe.acs.model.User;
+import br.upe.acs.model.vo.AdditionalActivitiesVO;
+import br.upe.acs.model.vo.MyHoursInActivityVO;
 import br.upe.acs.utils.exceptions.AcsException;
-import br.upe.acs.repository.UsuarioRepositorio;
+import br.upe.acs.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,43 +15,43 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StudentService {
 
-    private final UsuarioRepositorio repository;
+    private final UserRepository repository;
     private final ActivityService activityService;
 
-    public AtividadeComplementarVO getStudentAcs(String email) {
-        Usuario student = repository.findByEmail(email).orElseThrow(() ->
+    public AdditionalActivitiesVO getStudentAcs(String email) {
+        User student = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this id"));
 
-        return new AtividadeComplementarVO(student);
+        return new AdditionalActivitiesVO(student);
     }
 
-    public MinhasHorasNaAtividadeVO getHoursAcsStatusByActivity(String email, Long activityId) {
-        Atividade activity = activityService.findActivityById(activityId);
+    public MyHoursInActivityVO getHoursAcsStatusByActivity(String email, Long activityId) {
+        Activity activity = activityService.findActivityById(activityId);
 
-        Usuario student = repository.findByEmail(email).orElseThrow(() ->
+        User student = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this id"));
 
-        return calculateActivityHours(student, activity.getChMaxima());
+        return calculateActivityHours(student, activity.getWorkloadMax());
     }
 
-    private MinhasHorasNaAtividadeVO calculateActivityHours(Usuario student, int chMax) {
+    private MyHoursInActivityVO calculateActivityHours(User student, int chMax) {
         float sketchHours = 0;
         float progressHours = 0;
         float acceptedHours = 0;
         float problemHours = 0;
-        for (Requisicao request : student.getRequisicoes()) {
-            for (Certificado certificate : request.getCertificados()) {
-                switch (certificate.getStatusCertificado()) {
-                    case RASCUNHO -> sketchHours += certificate.getCargaHoraria();
-                    case PROBLEMA -> problemHours += certificate.getCargaHoraria();
-                    case CONCLUIDO -> acceptedHours += certificate.getCargaHoraria();
-                    default -> progressHours += certificate.getCargaHoraria();
+        for (Request request : student.getRequests()) {
+            for (Certificate certificate : request.getCertificates()) {
+                switch (certificate.getStatus()) {
+                    case RASCUNHO -> sketchHours += certificate.getWorkload();
+                    case PROBLEMA -> problemHours += certificate.getWorkload();
+                    case CONCLUIDO -> acceptedHours += certificate.getWorkload();
+                    default -> progressHours += certificate.getWorkload();
                 }
             }
         }
 
         float remainingHours = chMax - (acceptedHours + progressHours + sketchHours + problemHours);
 
-        return new MinhasHorasNaAtividadeVO(acceptedHours, progressHours, sketchHours, problemHours, remainingHours);
+        return new MyHoursInActivityVO(acceptedHours, progressHours, sketchHours, problemHours, remainingHours);
     }
 }

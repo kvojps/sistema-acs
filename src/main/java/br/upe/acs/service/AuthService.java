@@ -1,10 +1,10 @@
 package br.upe.acs.service;
 
 import br.upe.acs.config.JwtService;
-import br.upe.acs.controller.responses.AutenticacaoResposta;
-import br.upe.acs.model.Usuario;
+import br.upe.acs.controller.responses.AuthenticationResponse;
+import br.upe.acs.model.User;
 import br.upe.acs.model.dto.LoginDTO;
-import br.upe.acs.repository.UsuarioRepositorio;
+import br.upe.acs.repository.UserRepository;
 import br.upe.acs.utils.EmailUtils;
 import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
@@ -24,43 +24,43 @@ import static br.upe.acs.utils.AuthUtils.validatePassword;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UsuarioRepositorio repository;
+    private final UserRepository repository;
     private final EmailUtils emailUtils;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    public AutenticacaoResposta login(LoginDTO login) {
-        Usuario user = repository.findByEmail(login.getEmail()).orElseThrow(() -> new AcsException("There is no user associated with this email"));
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getSenha()));
+    public AuthenticationResponse login(LoginDTO login) {
+        User user = repository.findByEmail(login.getEmail()).orElseThrow(() -> new AcsException("There is no user associated with this email"));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
 
         return generateAuthResponse(user);
     }
 
     public void verifyEmail(String email, String verificationCode) {
-        Usuario user = repository.findByEmail(email).orElseThrow(() ->
+        User user = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this email"));
 
-        if (user.isVerificado()) {
+        if (user.isVerified()) {
             throw new AcsException("This user is already verified");
-        } else if (!verificationCode.equals(user.getCodigoVerificacao())) {
+        } else if (!verificationCode.equals(user.getVerificationCode())) {
             throw new AcsException("The verification code is incorrect");
         }
 
-        user.setVerificado(true);
+        user.setVerified(true);
         repository.save(user);
     }
 
     public void getNewVerificationCode(String email) {
-        Usuario user = repository.findByEmail(email).orElseThrow(() ->
+        User user = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this email"));
 
-        if (user.isVerificado()) {
+        if (user.isVerified()) {
             throw new AcsException("This user is already verified");
         }
 
         String newVerificationCode = generateVerificationCode();
-        user.setCodigoVerificacao(newVerificationCode);
+        user.setVerificationCode(newVerificationCode);
         repository.save(user);
 
         CompletableFuture.runAsync(() -> emailUtils.sendVerificationCode(email, newVerificationCode));
@@ -70,15 +70,15 @@ public class AuthService {
         validatePassword(newPassword);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-        Usuario user = repository.findByEmail(email).orElseThrow(() ->
+        User user = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this email"));
-        user.setSenha(passwordEncoder.encode(newPassword));
+        user.setPassword(passwordEncoder.encode(newPassword));
 
         repository.save(user);
     }
 
     public void forgotPassword(String email) {
-        Usuario user = repository.findByEmail(email).orElseThrow(() ->
+        User user = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this email"));
 
         Map<String, Object> claims = new HashMap<>();
@@ -102,17 +102,17 @@ public class AuthService {
         }
 
         String email = jwtService.extractUsername(token);
-        Usuario user = repository.findByEmail(email).orElseThrow(() ->
+        User user = repository.findByEmail(email).orElseThrow(() ->
                 new AcsException("There is no user associated with this email"));
         validatePassword(newPassword);
-        user.setSenha(passwordEncoder.encode(newPassword));
+        user.setPassword(passwordEncoder.encode(newPassword));
 
         repository.save(user);
     }
 
-    private AutenticacaoResposta generateAuthResponse(Usuario user) {
+    private AuthenticationResponse generateAuthResponse(User user) {
         String jwtToken = jwtService.generateToken(user);
-        AutenticacaoResposta authenticationResponse = new AutenticacaoResposta();
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);
 
         return authenticationResponse;

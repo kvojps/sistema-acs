@@ -7,18 +7,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
-import br.upe.acs.model.Atividade;
-import br.upe.acs.model.dto.CertificadoDTO;
-import br.upe.acs.model.enums.CertificadoStatusEnum;
-import br.upe.acs.model.enums.RequisicaoStatusEnum;
+import br.upe.acs.model.Activity;
+import br.upe.acs.model.dto.CertificateDTO;
+import br.upe.acs.model.enums.CertificateStatusEnum;
+import br.upe.acs.model.enums.RequestStatusEnum;
 import br.upe.acs.utils.exceptions.ConvertFileException;
 import br.upe.acs.utils.exceptions.InvalidFileFormatException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.upe.acs.model.Certificado;
-import br.upe.acs.model.Requisicao;
-import br.upe.acs.repository.CertificadoRepositorio;
+import br.upe.acs.model.Certificate;
+import br.upe.acs.model.Request;
+import br.upe.acs.repository.CertificateRepository;
 import br.upe.acs.utils.exceptions.AcsException;
 import lombok.RequiredArgsConstructor;
 
@@ -26,23 +26,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CertificateService {
 
-    private final CertificadoRepositorio repository;
+    private final CertificateRepository repository;
     private final RequestService requestService;
     private final ActivityService activityService;
 
-    public Certificado createCertificate(MultipartFile file, Long requestId, String email) {
-        Requisicao request = requestService.findRequestById(requestId);
+    public Certificate createCertificate(MultipartFile file, Long requestId, String email) {
+        Request request = requestService.findRequestById(requestId);
 
         if (!Objects.equals(file.getContentType(), "application/pdf")) {
             throw new InvalidFileFormatException("Only pdf is accepted");
         }
-        if (!request.getUsuario().getEmail().equals(email)) {
+        if (!request.getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
-        if (request.getStatusRequisicao() != RequisicaoStatusEnum.RASCUNHO) {
+        if (request.getStatus() != RequestStatusEnum.RASCUNHO) {
             throw new AcsException("This request is already submitted and not pin new certificates");
         }
-        if (request.getCertificados().size() >= 10) {
+        if (request.getCertificates().size() >= 10) {
             throw new InvalidFileFormatException("This request has more certificates than allowed");
         }
 
@@ -57,56 +57,56 @@ public class CertificateService {
             throw new AcsException("This certificate has already been registered");
         }
 
-        Certificado certificate = new Certificado();
-        certificate.setCertificado(fileBytes);
-        certificate.setRequisicao(request);
-        certificate.setStatusCertificado(CertificadoStatusEnum.RASCUNHO);
+        Certificate certificate = new Certificate();
+        certificate.setCertificate(fileBytes);
+        certificate.setRequest(request);
+        certificate.setStatus(CertificateStatusEnum.RASCUNHO);
 
         return repository.save(certificate);
     }
 
-    public Certificado findCertificateById(Long id) {
+    public Certificate findCertificateById(Long id) {
         return repository.findById(id).orElseThrow(() -> new AcsException("Certificate not found"));
     }
 
     public byte[] findCertificatePdfById(Long certificateId) {
-        Certificado certificate = findCertificateById(certificateId);
-        return certificate.getCertificado();
+        Certificate certificate = findCertificateById(certificateId);
+        return certificate.getCertificate();
     }
 
-    public void updateCertificate(Long certificateId, CertificadoDTO certificateDto, String email) {
-        Certificado certificate = findCertificateById(certificateId);
-        if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
+    public void updateCertificate(Long certificateId, CertificateDTO certificateDto, String email) {
+        Certificate certificate = findCertificateById(certificateId);
+        if (!certificate.getRequest().getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
-        Atividade activity = null;
-        if (certificateDto.getAtividadeId() != 0) {
-            activity = activityService.findActivityById(certificateDto.getAtividadeId());
+        Activity activity = null;
+        if (certificateDto.getActivityId() != 0) {
+            activity = activityService.findActivityById(certificateDto.getActivityId());
         }
 
-        certificate.setTitulo(certificateDto.getTitulo());
-        certificate.setAtividade(activity);
+        certificate.setTitle(certificateDto.getTitle());
+        certificate.setActivity(activity);
 
-        if (certificateDto.getDataIncial() != null) {
-            certificate.setDataInicial(convertDate(certificateDto.getDataIncial()));
+        if (certificateDto.getStartDate() != null) {
+            certificate.setStartDate(convertDate(certificateDto.getStartDate()));
         }
 
-        if (certificateDto.getDataFinal() != null) {
-            certificate.setDataFinal(convertDate(certificateDto.getDataFinal()));
+        if (certificateDto.getEndDate() != null) {
+            certificate.setEndDate(convertDate(certificateDto.getEndDate()));
         }
 
-        certificate.setCargaHoraria((certificateDto.getQuantidadeDeHoras()));
+        certificate.setWorkload((certificateDto.getWorkload()));
 
         repository.save(certificate);
     }
 
     public void deleteCertificate(Long certificateId, String email) {
-        Certificado certificate = findCertificateById(certificateId);
-        if (!certificate.getRequisicao().getUsuario().getEmail().equals(email)) {
+        Certificate certificate = findCertificateById(certificateId);
+        if (!certificate.getRequest().getUser().getEmail().equals(email)) {
             throw new AcsException("Certificate not found");
         }
 
-        if (!certificate.getStatusCertificado().equals(CertificadoStatusEnum.RASCUNHO)) {
+        if (!certificate.getStatus().equals(CertificateStatusEnum.RASCUNHO)) {
             throw new AcsException("A certificate already submitted cannot be deleted");
         }
 
@@ -122,8 +122,8 @@ public class CertificateService {
         }
     }
 
-    private boolean isCertificateUnique(Requisicao requisicao, byte[] bytes) {
-        return requisicao.getCertificados().stream()
-                .anyMatch(certificado -> Arrays.equals(certificado.getCertificado(), bytes));
+    private boolean isCertificateUnique(Request request, byte[] bytes) {
+        return request.getCertificates().stream()
+                .anyMatch(certificate -> Arrays.equals(certificate.getCertificate(), bytes));
     }
 }

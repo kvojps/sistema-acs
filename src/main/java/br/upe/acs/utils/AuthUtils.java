@@ -1,7 +1,7 @@
 package br.upe.acs.utils;
 
 
-import br.upe.acs.model.dto.RegistroDTO;
+import br.upe.acs.model.dto.RegistrationDTO;
 import br.upe.acs.utils.exceptions.AcsException;
 import br.upe.acs.utils.exceptions.InvalidRegisterException;
 
@@ -63,12 +63,12 @@ public class AuthUtils {
         return code.toString();
     }
 
-    public void validateAuthData(RegistroDTO authDto, boolean cpfExists, boolean emailExists) {
+    public void validateAuthData(RegistrationDTO authDto, boolean cpfExists, boolean emailExists) {
         checkUniqueData(cpfExists, emailExists);
-        validatePassword(authDto.getSenha());
+        validatePassword(authDto.getPassword());
         validateInstitutionalEmail(authDto.getEmail());
-        validateEnrollment(authDto.getMatricula());
-        validatePeriod(authDto.getPeriodo());
+        validateEnrollment(authDto.getEnrollment());
+        validatePeriod(authDto.getPeriod());
     }
 
     private void checkUniqueData(boolean cpfExists, boolean emailExists) {
