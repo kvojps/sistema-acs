@@ -50,11 +50,11 @@ public class RequestService {
 
         Request request = new Request();
         request.setStatus(RequestStatusEnum.RASCUNHO);
-        request.setCreateIn(new Date());
+        request.setCreateAt(new Date());
         request.setUser(student);
 
         Request requestSaved = repository.save(request);
-        requestSaved.setIdentifier(String.format("%s-%05d", student.getCourse().getAcronym(), requestSaved.getId()));
+        requestSaved.setSemanticId(String.format("%s-%05d", student.getCourse().getAcronym(), requestSaved.getId()));
         repository.save(requestSaved);
 
         return requestSaved.getId();
@@ -86,7 +86,7 @@ public class RequestService {
         }
         String token = generateRequestToken();
         request.setToken(token);
-        request.setSentIn(new Date());
+        request.setSentAt(new Date());
         request.setStatus(RequestStatusEnum.TRANSITO);
         modifyCertificates(request.getCertificates());
         repository.save(request);

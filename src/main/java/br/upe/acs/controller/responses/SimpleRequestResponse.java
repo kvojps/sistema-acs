@@ -22,9 +22,9 @@ public class SimpleRequestResponse {
 
     public SimpleRequestResponse(Request request) {
         this.id = request.getId();
-        this.identifier = request.getIdentifier();
+        this.identifier = request.getSemanticId();
         this.status = request.getStatus();
-        this.sentIn = request.getSentIn();
+        this.sentIn = request.getSentAt();
         this.workload = (float) request.getCertificates().stream()
                 .mapToDouble(Certificate::getWorkload).sum();
     }

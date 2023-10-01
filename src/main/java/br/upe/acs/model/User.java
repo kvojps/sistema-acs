@@ -31,7 +31,7 @@ public class User implements UserDetails {
 	
 	private int period;
 	
-	private String telephone;
+	private String phone;
 	
 	private String email;
 	

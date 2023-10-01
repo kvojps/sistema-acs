@@ -20,16 +20,16 @@ public class Request {
 	private Long id;
 
 	@Column(unique = true)
-	private String identifier;
+	private String semanticId;
 	
 	@Temporal(TemporalType.DATE)
-	private Date createIn;
+	private Date createAt;
 	
 	@Column(columnDefinition = "TEXT")
 	private String note;
 	
 	@Temporal(TemporalType.DATE)
-	private Date sentIn;
+	private Date sentAt;
 
 	private String token;
 

@@ -25,7 +25,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 					"AND EXISTS (SELECT 1 FROM certificates certificate " +
 					"WHERE certificate.request.id = request.id " +
 					"AND certificate.activity.axle = :axle)" +
-					"ORDER BY request.sentIn"
+					"ORDER BY request.sentAt"
 	)
 	List<Request> findRequestsByUserIdAndAxle(Long userId, AxleEnum axle);
 }

@@ -1,5 +1,5 @@
 INSERT INTO public.requests(
-    id, archived, create_in, sent_in, identifier, note, signed_file, status, token, user_id)
+    id, archived, create_at, sent_at, semantic_id, note, signed_file, status, token, user_id)
 VALUES
     ('1',False,'2023-09-28',NULL,'ES-00001',NULL,NULL,'RASCUNHO',NULL, '1'),
     ('2',False,'2023-09-28',NULL,'ES-00002',NULL,NULL,'RASCUNHO',NULL, '1'),

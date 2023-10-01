@@ -64,7 +64,7 @@ public class UserService {
         User user = findUserById(id);
 
         user.setFullName(userUpdateDTO.getFullName());
-        user.setTelephone(userUpdateDTO.getPhone());
+        user.setPhone(userUpdateDTO.getPhone());
         Course course = courseService.findCourseById(userUpdateDTO.getCourseId());
         user.setCourse(course);
         repository.save(user);

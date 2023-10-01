@@ -15,9 +15,9 @@ public class RequestResponse {
 
 	private final Long id;
 
-	private final String identifier;
+	private final String semanticId;
 
-	private final Date sentIn;
+	private final Date sentAt;
 
 	private final String token;
 
@@ -34,8 +34,8 @@ public class RequestResponse {
 	public RequestResponse(Request request) {
 		super();
 		this.id = request.getId();
-		this.identifier = request.getIdentifier();
-		this.sentIn = request.getSentIn();
+		this.semanticId = request.getSemanticId();
+		this.sentAt = request.getSentAt();
 		this.token = request.getToken();
 		this.archived = request.isArchived();
 		this.status = request.getStatus();

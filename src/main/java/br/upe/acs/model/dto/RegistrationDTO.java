@@ -20,7 +20,7 @@ public class RegistrationDTO {
 	
 	private int period;
 	
-	private String telephone;
+	private String phone;
 
 	@Email(message = "Email invalid!")
 	private String email;

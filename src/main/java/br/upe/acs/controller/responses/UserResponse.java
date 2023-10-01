@@ -15,7 +15,7 @@ public class UserResponse {
 
 	private final String enrollment;
 
-	private final String telephone;
+	private final String phone;
 
 	private final String email;
 
@@ -31,7 +31,7 @@ public class UserResponse {
 		this.id = user.getId();
 		this.fullName = user.getFullName();
 		this.enrollment = user.getEnrollment();
-		this.telephone = user.getTelephone();
+		this.phone = user.getPhone();
 		this.email = user.getEmail();
 		this.role = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 		this.course = new CourseResponse(user.getCourse());
