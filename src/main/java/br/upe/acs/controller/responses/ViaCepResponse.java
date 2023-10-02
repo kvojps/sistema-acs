@@ -17,10 +17,10 @@ public class ViaCepResponse {
 
     public ViaCepResponse(ViaCepDTO viaCepDTO) {
         super();
-        this.cep = viaCepDTO.getCep();
-        this.street = viaCepDTO.getLogradouro();
-        this.district = viaCepDTO.getBairro();
-        this.city = viaCepDTO.getLocalidade();
-        this.uf = viaCepDTO.getUf();
+        this.cep = viaCepDTO.cep();
+        this.street = viaCepDTO.logradouro();
+        this.district = viaCepDTO.bairro();
+        this.city = viaCepDTO.localidade();
+        this.uf = viaCepDTO.uf();
     }
 }

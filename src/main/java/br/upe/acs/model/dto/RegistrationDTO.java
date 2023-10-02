@@ -1,46 +1,9 @@
 package br.upe.acs.model.dto;
 
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-public class RegistrationDTO {
-	
-	private String fullName;
-
-	@CPF(message = "CPF invalid!")
-	private String cpf;
-	
-	private String enrollment;
-	
-	private int period;
-	
-	private String phone;
-
-	@Email(message = "Email invalid!")
-	private String email;
-	
-	private String password;
-	
-	private String cep;
-	
-	private String street;
-	
-	private String district;
-	
-	private String city;
-	
-	private String uf;
-
-	private String complement;
-	
-	private int number;
-	
-	private Long courseId;
-
-}
+public record RegistrationDTO(String fullName, @CPF(message = "CPF invalid!") String cpf, String enrollment,
+							  int period, String phone, @Email(message = "Email invalid!") String email,
+							  String password, String cep, String street, String district, String city, String uf,
+							  String complement, int number, Long courseId) {}

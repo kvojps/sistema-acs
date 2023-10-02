@@ -80,22 +80,22 @@ public class CertificateService {
             throw new AcsException("Certificate not found");
         }
         Activity activity = null;
-        if (certificateDto.getActivityId() != 0) {
-            activity = activityService.findActivityById(certificateDto.getActivityId());
+        if (certificateDto.activityId() != 0) {
+            activity = activityService.findActivityById(certificateDto.activityId());
         }
 
-        certificate.setTitle(certificateDto.getTitle());
+        certificate.setTitle(certificateDto.title());
         certificate.setActivity(activity);
 
-        if (certificateDto.getStartDate() != null) {
-            certificate.setStartDate(convertDate(certificateDto.getStartDate()));
+        if (certificateDto.startDate() != null) {
+            certificate.setStartDate(convertDate(certificateDto.startDate()));
         }
 
-        if (certificateDto.getEndDate() != null) {
-            certificate.setEndDate(convertDate(certificateDto.getEndDate()));
+        if (certificateDto.endDate() != null) {
+            certificate.setEndDate(convertDate(certificateDto.endDate()));
         }
 
-        certificate.setWorkload((certificateDto.getWorkload()));
+        certificate.setWorkload((certificateDto.workload()));
 
         repository.save(certificate);
     }

@@ -1,26 +1,4 @@
 package br.upe.acs.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-public class AddressDTO {
-
-	private String cep;
-
-	private String street;
-
-	private String district;
-	
-	private String city;
-	
-	private String uf;
-
-	private int number;
-
-	private String complement;
-
-}
+public record AddressDTO(String cep, String street, String district, String city, String uf, int number,
+                         String complement) {}

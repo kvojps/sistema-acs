@@ -31,8 +31,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public AuthenticationResponse login(LoginDTO login) {
-        User user = repository.findByEmail(login.getEmail()).orElseThrow(() -> new AcsException("There is no user associated with this email"));
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+        User user = repository.findByEmail(login.email()).orElseThrow(() -> new AcsException("There is no user associated with this email"));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.email(), login.password()));
 
         return generateAuthResponse(user);
     }

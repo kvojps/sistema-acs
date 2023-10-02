@@ -40,11 +40,11 @@ public class ActivityService {
         Activity activityToUpdate = repository.findById(id).orElseThrow(() ->
                 new AcsException("Activity not found"));
 
-        activityToUpdate.setAxle(activity.getAxle());
-        activityToUpdate.setDescription(activity.getDescription());
-        activityToUpdate.setEvaluationMethods(activity.getEvaluationMethods());
-        activityToUpdate.setWorkloadMax(activity.getWorkloadMax());
-        activityToUpdate.setWorkloadCertificate(activity.getWorkloadCertificate());
+        activityToUpdate.setAxle(activity.axle());
+        activityToUpdate.setDescription(activity.description());
+        activityToUpdate.setEvaluationMethods(activity.evaluationMethods());
+        activityToUpdate.setWorkloadMax(activity.workloadMax());
+        activityToUpdate.setWorkloadCertificate(activity.workloadCertificate());
 
         repository.save(activityToUpdate);
     }

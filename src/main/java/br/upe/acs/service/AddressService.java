@@ -35,7 +35,7 @@ public class AddressService {
             String apiUrl = String.format("https://viacep.com.br/ws/%s/json/", cep);
             ViaCepDTO viaCepDTO = new RestTemplate().getForEntity(apiUrl, ViaCepDTO.class).getBody();
 
-            if (viaCepDTO != null && !viaCepDTO.getLocalidade().isEmpty()) {
+            if (viaCepDTO != null && !viaCepDTO.localidade().isEmpty()) {
                 return viaCepDTO;
             } else {
                 throw new CepInvalidException("CEP not found");

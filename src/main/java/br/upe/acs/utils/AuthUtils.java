@@ -65,10 +65,10 @@ public class AuthUtils {
 
     public void validateAuthData(RegistrationDTO authDto, boolean cpfExists, boolean emailExists) {
         checkUniqueData(cpfExists, emailExists);
-        validatePassword(authDto.getPassword());
-        validateInstitutionalEmail(authDto.getEmail());
-        validateEnrollment(authDto.getEnrollment());
-        validatePeriod(authDto.getPeriod());
+        validatePassword(authDto.password());
+        validateInstitutionalEmail(authDto.email());
+        validateEnrollment(authDto.enrollment());
+        validatePeriod(authDto.period());
     }
 
     private void checkUniqueData(boolean cpfExists, boolean emailExists) {

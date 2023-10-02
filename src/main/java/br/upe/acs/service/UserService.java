@@ -35,17 +35,17 @@ public class UserService {
 
         ModelMapper modelMapper = new ModelMapper();
         User userToSave = modelMapper.map(userDto, User.class);
-        userToSave.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userToSave.setPassword(passwordEncoder.encode(userDto.password()));
         userToSave.setVerificationCode(generateVerificationCode());
         userToSave.setVerified(false);
         userToSave.setEnabled(true);
         userToSave.setAddress(addUserAddress(userDto));
-        userToSave.setCourse(courseService.findCourseById(userDto.getCourseId()));
+        userToSave.setCourse(courseService.findCourseById(userDto.courseId()));
         userToSave.setRole(RoleEnum.ALUNO);
 
         User userSaved = repository.save(userToSave);
 
-        CompletableFuture.runAsync(() -> emailUtils.sendVerificationCode(userDto.getEmail(), userToSave.getVerificationCode()));
+        CompletableFuture.runAsync(() -> emailUtils.sendVerificationCode(userDto.email(), userToSave.getVerificationCode()));
 
         return userSaved;
     }
@@ -63,9 +63,9 @@ public class UserService {
     public void updateUser(Long id, UserUpdateDTO userUpdateDTO) {
         User user = findUserById(id);
 
-        user.setFullName(userUpdateDTO.getFullName());
-        user.setPhone(userUpdateDTO.getPhone());
-        Course course = courseService.findCourseById(userUpdateDTO.getCourseId());
+        user.setFullName(userUpdateDTO.fullName());
+        user.setPhone(userUpdateDTO.phone());
+        Course course = courseService.findCourseById(userUpdateDTO.courseId());
         user.setCourse(course);
         repository.save(user);
     }
@@ -81,9 +81,9 @@ public class UserService {
     }
 
     private void validateUser(RegistrationDTO authDto) {
-        String formattedCpf = authDto.getCpf().replaceAll("[^0-9]", "");
+        String formattedCpf = authDto.cpf().replaceAll("[^0-9]", "");
         boolean cpfExists = repository.findByCpf(formattedCpf).isPresent();
-        boolean emailExists = repository.findByEmail(authDto.getEmail()).isPresent();
+        boolean emailExists = repository.findByEmail(authDto.email()).isPresent();
         AuthUtils authValidation = new AuthUtils();
         authValidation.validateAuthData(authDto, cpfExists, emailExists);
     }

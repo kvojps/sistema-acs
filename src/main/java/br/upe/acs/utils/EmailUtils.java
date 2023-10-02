@@ -6,7 +6,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import br.upe.acs.model.dto.EmailDTO;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
@@ -22,50 +21,49 @@ public class EmailUtils {
     private final JavaMailSender emailSender;
 
     public void sendVerificationCode(String email, String verificationCode) {
-        EmailDTO emailDTO = new EmailDTO();
+        String to, subject, message;
 
-        emailDTO.setSubject("Código de verificação - Sistema ACs UPE");
-        emailDTO.setTo(email);
-        emailDTO.setMessage(
-                "Para confirmar seu email no Sistema ACs UPE:\n" +
+        subject = "Código de verificação - Sistema ACs UPE";
+        to = email;
+        message = "Para confirmar seu email no Sistema ACs UPE:\n" +
                         "1 - Realize o login no sistema\n" +
-                        "2 - Insira e envie este código na página de verificação do sistema: " + verificationCode);
-        sendEmail(emailDTO);
+                        "2 - Insira e envie este código na página de verificação do sistema: " + verificationCode;
+        sendEmail(to, subject, message);
     }
 
     public void sendRequestStatusChanged(Request request) {
-        EmailDTO emailDTO = new EmailDTO();
+        String to, subject, message;
 
-        emailDTO.setTo(request.getUser().getEmail());
-        emailDTO.setSubject("Modificação na sua requisição " + request.getId() + " - Sistema ACs UPE");
-        emailDTO.setMessage("Gostaríamos de informar que sua requisição " + request.getId()
+        to = request.getUser().getEmail();
+        subject = "Modificação na sua requisição " + request.getId() + " - Sistema ACs UPE";
+        message = "Gostaríamos de informar que sua requisição " + request.getId()
                 + " teve seu status alterado para " + request.getStatus().name() + ".\n" +
                 "Para mais informações acesse o Sistema de ACs. " +
                 "Em caso de erros entre em contato com o turmaestest@gmail.com.\n" +
-                "Atenciosamente,\nCoordenação de " + request.getUser().getCourse() + ".");
-        sendEmail(emailDTO);
+                "Atenciosamente,\nCoordenação de " + request.getUser().getCourse() + ".";
+        sendEmail(to, subject, message);
     }
 
     public void sendRequestRecoveryPassword(User user, String token) {
-        EmailDTO emailDTO = new EmailDTO();
+        String to, subject, message;
 
-        emailDTO.setTo(user.getEmail());
-        emailDTO.setSubject("Solicitação de recuperação de conta - Sistema ACs UPE");
-        emailDTO.setMessage("Olá, " + user.getFullName() + ", \n" +
+        to = user.getEmail();
+        subject = "Solicitação de recuperação de conta - Sistema ACs UPE";
+        message = "Olá, " + user.getFullName() + ", \n" +
                 "Nós recebemos um pedido para redefinir a senha do e-mail " + user.getEmail() + ".\n" +
                 "Clique no link abaixo para redefinir sua senha:\n" +
-                System.getenv("FRONTEND_URL") + "/account/reset/" + token);
-        sendEmail(emailDTO);
+                System.getenv("FRONTEND_URL") + "/account/reset/" + token;
+        sendEmail(to, subject, message);
     }
 
-    private void sendEmail(EmailDTO emailInfo) {
+    private void sendEmail(String to, String subject, String message) {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setFrom("lapesupe@gmail.com");
-        email.setTo(emailInfo.getTo());
-        email.setText(emailInfo.getMessage());
-        email.setSubject(emailInfo.getSubject());
+        email.setTo(to);
+        email.setText(message);
+        email.setSubject(subject);
 
-        if (!EMAILS_TEST.contains(emailInfo.getTo())) {
+        if (!EMAILS_TEST.contains(to)) {
             emailSender.send(email);
         }
     }
