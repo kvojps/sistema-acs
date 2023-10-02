@@ -1,6 +1,6 @@
 package br.upe.acs.service;
 
-import br.upe.acs.controller.responses.SimpleRequestResponse;
+import br.upe.acs.controller.responses.RequestResumeResponse;
 import br.upe.acs.model.Certificate;
 import br.upe.acs.model.Request;
 import br.upe.acs.model.User;
@@ -97,15 +97,15 @@ public class RequestService {
     }
 
     public Map<String, Object> listRequests(Boolean isArchived, RequestStatusEnum status, Long userId, Long courseId, int page, int amount) {
-        List<SimpleRequestResponse> requests = repository.findWithFilters(isArchived, status, userId, courseId)
-                .stream().map(SimpleRequestResponse::new).toList();
+        List<RequestResumeResponse> requests = repository.findWithFilters(isArchived, status, userId, courseId)
+                .stream().map(RequestResumeResponse::new).toList();
 
         return generatePagination(requests, page, amount);
     }
 
     public Map<String, Object> listStudentRequestsByAxle(Long studentId, AxleEnum axle, int page, int amount) {
-        List<SimpleRequestResponse> studentRequests = repository.findRequestsByUserIdAndAxle(studentId, axle)
-                .stream().map(SimpleRequestResponse::new).toList();
+        List<RequestResumeResponse> studentRequests = repository.findRequestsByUserIdAndAxle(studentId, axle)
+                .stream().map(RequestResumeResponse::new).toList();
 
         return generatePagination(studentRequests, page, amount);
     }

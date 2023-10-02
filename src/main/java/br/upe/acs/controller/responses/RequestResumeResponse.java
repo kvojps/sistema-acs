@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.util.Date;
 
 @Getter
-public class SimpleRequestResponse {
+public class RequestResumeResponse {
 
     private final Long id;
 
@@ -20,7 +20,7 @@ public class SimpleRequestResponse {
 
     private final float workload;
 
-    public SimpleRequestResponse(Request request) {
+    public RequestResumeResponse(Request request) {
         this.id = request.getId();
         this.identifier = request.getSemanticId();
         this.status = request.getStatus();
