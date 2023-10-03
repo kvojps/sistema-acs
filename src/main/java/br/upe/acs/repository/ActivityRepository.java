@@ -9,5 +9,4 @@ import br.upe.acs.model.enums.AxleEnum;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 	List<Activity> findByAxle(AxleEnum axle);
-
 }
