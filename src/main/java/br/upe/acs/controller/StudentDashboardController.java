@@ -12,10 +12,10 @@ import br.upe.acs.service.StudentService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/students")
+@RequestMapping("api/student-dashboard")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-public class StudentController {
+public class StudentDashboardController {
 
     private final StudentService service;
     private final JwtService jwtService;
@@ -28,7 +28,7 @@ public class StudentController {
     }
 
     @Operation(summary = "Buscar horas em atividade por token")
-    @GetMapping("/hours/{activityId}")
+    @GetMapping("/{activityId}")
     public ResponseEntity<MyHoursInActivityVO> getActivityHours(HttpServletRequest request, @PathVariable("activityId") Long activityId) {
         String email = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
         return ResponseEntity.ok(service.getHoursAcsStatusByActivity(email, activityId));
