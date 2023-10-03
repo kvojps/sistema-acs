@@ -1,161 +1,103 @@
-@startuml classes
-    class Atividade [[java:br.upe.acs.model.Atividade]] {
-        -id: Long
-        -eixo: EixoEnum
-        -descricao: String
-        -chMaxima: int
-    }
-
-    class Certificado {
-    }
-
-    Atividade --> "*" Certificado : certificados
-    class Certificado {
-    }
-
-    Atividade --> "*" Certificado : getCertificados()
-    class Certificado [[java:br.upe.acs.model.Certificado]] {
-        -id: Long
-        -titulo: String
-        -descricao: String
-        -data: Date
-        -horas: int
-        -chMaxima: int
-        -chTotal: int
-        -certificado: byte[]
-    }
-
-    class Requisicao {
-    }
-
-    Certificado --> "1" Requisicao : requisicao
-    class Atividade {
-    }
-
-    Certificado --> "1" Atividade : atividade
-    class Requisicao {
-    }
-
-    Certificado --> "1" Requisicao : getRequisicao()
-    class Atividade {
-    }
-
-    Certificado --> "1" Atividade : getAtividade()
-    class Curso [[java:br.upe.acs.model.Curso]] {
-        -id: Long
-        -nome: String
-    }
-
-    class Requisicao {
-    }
-
-    Curso --> "*" Requisicao : requisicoes
-    class Usuario {
-    }
-
-    Curso --> "*" Usuario : usuarios
-    class Requisicao {
-    }
-
-    Curso --> "*" Requisicao : getRequisicoes()
-    class Endereco [[java:br.upe.acs.model.Endereco]] {
-        -id: Long
-        -cep: String
-        -rua: String
-        -bairro: String
-        -cidade: String
-        -UF: String
-        -numero: int
-    }
-
-    class Usuario {
-    }
-
-    Endereco --> "*" Usuario : usuarios
-    class Usuario {
-    }
-
-    Endereco --> "*" Usuario : getUsuarios()
-    class Requisicao [[java:br.upe.acs.model.Requisicao]] {
-        -id: Long
-        -data: Date
-        -semestre: int
-        -qtdCertificados: int
-        -token: String
-        -requisicaoArquivoAssinada: byte[]
-        -statusRequisicao: requisicaoStatusEnum
-    }
-
-    class Usuario {
-    }
-
-    Requisicao --> "1" Usuario : usuario
-    class Curso {
-    }
-
-    Requisicao --> "1" Curso : curso
-    class Certificado {
-    }
-
-    Requisicao --> "*" Certificado : certificados
-    class Curso {
-    }
-
-    Requisicao --> "1" Curso : getCurso()
-    class Certificado {
-    }
-
-    Requisicao --> "*" Certificado : getCertificados()
-    class Usuario {
-    }
-
-    Requisicao --> "1" Usuario : getUsuario()
-    class Usuario [[java:br.upe.acs.model.Usuario]] {
-        -{static} serialVersionUID: long
-        -id: Long
-        -nomeCompleto: String
-        -cpf: String
-        -periodo: int
-        -telefone: String
-        -email: String
-        -senha: String
-        -codigoVerificacao: String
-        -verificado: boolean
-        -perfil: PerfilEnum
-        +getAuthorities(): Collection<? extends GrantedAuthority>
-        +getPassword(): String
-        +getUsername(): String
-        +isAccountNonExpired(): boolean
-        +isAccountNonLocked(): boolean
-        +isCredentialsNonExpired(): boolean
-        +isEnabled(): boolean
-    }
-
-    class Endereco {
-    }
-
-    Usuario --> "1" Endereco : endereco
-    class Curso {
-    }
-
-    Usuario --> "1" Curso : curso
-    class Requisicao {
-    }
-
-    Usuario --> "*" Requisicao : requisicoes
-    class Endereco {
-    }
-
-    Usuario --> "1" Endereco : getEndereco()
-    class Curso {
-    }
-
-    Usuario --> "1" Curso : getCurso()
-    class Requisicao {
-    }
-    
-    Usuario --> "*" Requisicao : getRequisicoes()
-    interface UserDetails {
-    }
-    UserDetails <|.. Usuario
+@startuml
+class Activity [[java:br.upe.acs.model.Activity]] {
+	-id: String
+	-axle: AxleEnum
+	-description: String
+	-evaluationMethods: String
+	-workloadMax: int
+	-workloadCertificate: Integer
+}
+class Certificate {
+}
+Activity -> "*" Certificate : certificates
+class Address [[java:br.upe.acs.model.Address]] {
+	-id: String
+	-cep: String
+	-street: String
+	-district: String
+	-city: String
+	-uf: String
+	-number: int
+	-complement: String
+}
+class User {
+}
+Address -> "*" User : users
+class Certificate [[java:br.upe.acs.model.Certificate]] {
+	-id: String
+	-title: String
+	-note: String
+	-startDate: Date
+	-endDate: Date
+	-workload: float
+	-certificate: byte[]
+	-status: CertificateStatusEnum
+}
+class Request {
+}
+Certificate -> "1" Request : request
+class Activity {
+}
+Certificate --> "1" Activity : activity
+class Course [[java:br.upe.acs.model.Course]] {
+	-id: String
+	-name: String
+	-acronym: String
+	-additionalHours: int
+}
+class User {
+}
+Course --> "*" User : users
+class Request [[java:br.upe.acs.model.Request]] {
+	-id: String
+	-createAt: Date
+	-note: String
+	-sentAt: Date
+	-token: String
+	-archived: boolean
+	-signedFile: byte[]
+	-status: RequestStatusEnum
+}
+class User {
+}
+Request --> "1" User : user
+class Certificate {
+}
+Request --> "*" Certificate : certificates
+class User [[java:br.upe.acs.model.User]] {
+	-id: String
+	-fullName: String
+	-cpf: String
+	-enrollment: String
+	-period: int
+	-phone: String
+	-email: String
+	-password: String
+	-verificationCode: String
+	-verified: boolean
+	-hoursEnsino: float
+	-hoursExtensao: float
+	-hoursGestao: float
+	-hoursPesquisa: float
+	-enabled: boolean
+	-role: RoleEnum
+	+getAuthorities(): Collection<? extends GrantedAuthority>
+	+getUsername(): String
+	+isAccountNonExpired(): boolean
+	+isAccountNonLocked(): boolean
+	+isCredentialsNonExpired(): boolean
+	+isEnabled(): boolean
+}
+class Request {
+}
+User --> "*" Request : requests
+class Address {
+}
+User --> "1" Address : address
+class Course {
+}
+User --> "1" Course : course
+interface UserDetails {
+}
+UserDetails <|.. User
 @enduml
