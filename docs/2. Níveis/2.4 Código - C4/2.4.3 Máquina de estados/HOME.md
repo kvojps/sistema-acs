@@ -1,4 +1,4 @@
-# 2.4.4 Máquina de estados
+# 2.4.3 Máquina de estados
 
 ![diagram](https://www.plantuml.com/plantuml/svg/0/PP0z3i8m38NtIhr3PgHUW06rghW0Z9J190OYDJR4YSHz63X8BuRBZyhFPbkVdzzpBGbYog4tBSRazzw2uxBOpBQcMfY6yAAzcPj6XAqVQ-WeuZbxKLJ9DrAD-253T42E6uBU2-hYEk-25nckt943CwrsP3aOErqL5ViJKDLbcDIMP25uEa90IcnE4DLEonmT4WmtlL8M4pzwMg7DyipmaL1zlCPVl4QmwDCl38zXMTH8Jbzr1m00)
 
