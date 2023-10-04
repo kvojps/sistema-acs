@@ -1,31 +1,42 @@
-@startuml sequencia
-    actor usuario as "Usuário"
+@startuml
+actor user as "User"
     collections front as "Front-end"
-    collections back as "Back-end"
-    entity controlador_req as "Requisicao\nControlador"
-    entity servico_req as "Requisicao\nCertificadoServico"
-    entity servico_cert as "Certificado\nServico"
-    entity repo_req as "Requisicao\nRepositorio"
-    entity repo_cert as "Certificado\nRepositorio"
+    entity controlador_cert as "Certificate\nController"
+    entity servico_cert as "Certificate\nService"
+    entity controlador_req as "Request\nController"
+    entity servico_req as "Request\nService"
+    entity repo_req as "Request\nRepository"
+    entity repo_cert as "Certificate\nRepository"
 
-    usuario -> front: Preenche dados\nda requisição
-    front -> back: headers(id do curso,\nsemestre, qtdCertificados)\nblob[] certificados\nblob certificadosMetadados
-    back -> controlador_req: headers(id do curso,\nsemestre, qtdCertificados)\nMultiPartFile[]certificados\nMultiPartFile[]certificadosMetadados
-    controlador_req -> servico_req: RequisicaoDTO\nrequisicao
-    servico_req -> servico_req: void validarRequisicao()
-    servico_req -> servico_req: CertificadosMetadadosDTO\nconverterMultParfile()
-    servico_req -> repo_req: Requisicao salvarRequisicao()
-    repo_req -> servico_req: Requisicao\nrequisicao
-    servico_req -> servico_req: void\nalidarCertificadosMetadados()
-    servico_req -> servico_cert: void\nadicionarCertificados\n(certificadosMetadados,\ncertificadosArquivos,\nrequisicao)
-    servico_cert -> repo_cert: void\nsalvarCertificado()
-    repo_cert -> servico_cert
-    servico_cert -> servico_req
-    servico_req -> servico_req: String\ngerarTokenRequisicao()
-    servico_req -> servico_req: requisicao.setToken(token)
-    servico_req -> repo_req: Requisicao\nsalvarRequisicao()
-    repo_req -> servico_req: Requisicao\nrequisicao
-    servico_req -> controlador_req: Requisicao\nrequisicao
-    controlador_req -> front: RequisicaoResposta\nrequisicaoResposta
+    user -> front: Cria uma requisição\nrascunho
+    front -> controlador_req: headers(email)
+    controlador_req -> servico_req: String email
+    servico_req -> repo_req: Request createRequest()
+    repo_req -> servico_req: Request request
+    servico_req -> controlador_req: Long requestId
+    controlador_req -> front: id da requisicao
+    front -> user: Informa o status da criacao
 
+    user -> front: Anexa o certificado
+    front-> controlador_cert: headers(email)\nLong requestId\nMultPartfile[] certificado
+    controlador_cert -> servico_cert: String email \nLong requestId \nMultpartFile certificado
+    servico_cert -> repo_cert: Certificate createCertificate()
+    repo_cert -> servico_cert: Certificate certificate
+    servico_cert -> front: certificados
+    front -> user: Informa o status da criacao
+
+    user -> front: Preenche dados \ndos certificados
+    front-> controlador_cert: headers(email) \nLong id \nCertificadoDTO certificadoDto
+    controlador_cert -> servico_cert: String email \nCertificadoDTO certificateDto \nLong certificateId
+    servico_cert -> repo_cert: Certificate updateCertificate()
+    repo_cert -> servico_cert: Certificate certificate
+
+    user-> front: Submete requisicao
+    front -> controlador_req: headers (id da requisicao)
+    controlador_req -> servico_req: Long requestId
+    servico_req -> repo_req: Request submitRequest()
+    repo_req -> servico_req: Request request
+    servico_req -> controlador_req: String token
+    controlador_req -> front: String token
+    front -> user: Informa o status e o \ntoken ao usuario
 @enduml
