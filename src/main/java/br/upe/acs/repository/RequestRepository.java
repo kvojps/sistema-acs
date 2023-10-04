@@ -11,8 +11,8 @@ import java.util.List;
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
 	@Query("SELECT r FROM requests r " +
-			"WHERE (:archived IS NULL OR r.archived = :arquivada) " +
-			"AND (:statusRequisicao IS NULL OR r.status = :status) " +
+			"WHERE (:archived IS NULL OR r.archived = :archived) " +
+			"AND (:status IS NULL OR r.status = :status) " +
 			"AND (:userId IS NULL OR r.user.id = :userId) " +
 			"AND (:courseId IS NULL OR r.user.course.id = :courseId)")
 	List<Request> findWithFilters(
