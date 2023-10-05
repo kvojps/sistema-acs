@@ -7,17 +7,11 @@ import lombok.Getter;
 public class AddressResponse {
 
 	private final Long id;
-	
 	private final String cep;
-	
 	private final String street;
-	
 	private final String district;
-	
 	private final String city;
-	
 	private final String uf;
-	
 	private final int number;
 
 	public AddressResponse(Address address) {
@@ -30,5 +24,4 @@ public class AddressResponse {
 		uf = address.getUf();
 		this.number = address.getNumber();
 	}
-	
 }

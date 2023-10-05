@@ -5,14 +5,11 @@ import lombok.Getter;
 
 @Getter
 public class ViaCepResponse {
+
     private final String cep;
-
     private final String street;
-
     private final String district;
-
     private final String city;
-
     private final String uf;
 
     public ViaCepResponse(ViaCepDTO viaCepDTO) {

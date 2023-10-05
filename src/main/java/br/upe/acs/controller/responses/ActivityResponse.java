@@ -8,15 +8,10 @@ import lombok.Getter;
 public class ActivityResponse {
 
     private final Long id;
-
     private final AxleEnum axle;
-
     private final String description;
-
     private final String evaluationMethods;
-
     private final Integer workloadCertificate;
-
     private final int workLoadMax;
 
     public ActivityResponse(Activity activity) {

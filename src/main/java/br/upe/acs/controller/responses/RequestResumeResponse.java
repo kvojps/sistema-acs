@@ -11,13 +11,9 @@ import java.util.Date;
 public class RequestResumeResponse {
 
     private final Long id;
-
     private final String identifier;
-
     private final RequestStatusEnum status;
-
     private final Date sentIn;
-
     private final float workload;
 
     public RequestResumeResponse(Request request) {

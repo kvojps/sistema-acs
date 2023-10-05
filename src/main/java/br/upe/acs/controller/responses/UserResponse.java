@@ -10,21 +10,13 @@ import java.util.List;
 public class UserResponse {
 
 	private final Long id;
-
 	private final String fullName;
-
 	private final String enrollment;
-
 	private final String phone;
-
 	private final String email;
-
 	private final List<String> role;
-
 	private final CourseResponse course;
-
 	private final int period;
-
 	private final boolean verified;
 
 	public UserResponse(User user) {

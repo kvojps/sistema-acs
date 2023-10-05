@@ -14,21 +14,13 @@ import lombok.Getter;
 public class RequestResponse {
 
 	private final Long id;
-
 	private final String semanticId;
-
 	private final Date sentAt;
-
 	private final String token;
-
 	private final boolean archived;
-	
 	private final RequestStatusEnum status;
-
 	private final String note;
-
 	private final float workload;
-
 	private final List<CertificateResponse> certificates;
 
 	public RequestResponse(Request request) {

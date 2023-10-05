@@ -11,21 +11,13 @@ import lombok.Getter;
 public class CertificateResponse {
 	
 	private final Long id;
-	
 	private final String title;
-	
 	private final String note;
-	
 	private final Date startDate;
-
 	private final Date endDate;
-	
 	private AxleEnum axle;
-
 	private String activity;
-	
 	private final CertificateStatusEnum status;
-	
 	private final float workload;
 
 	public CertificateResponse(Certificate certificate) {

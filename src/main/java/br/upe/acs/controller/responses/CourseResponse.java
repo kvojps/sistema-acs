@@ -7,7 +7,6 @@ import lombok.Getter;
 public class CourseResponse {
 
 	private final Long id;
-
 	private final String name;
 
 	public CourseResponse(Course course) {
