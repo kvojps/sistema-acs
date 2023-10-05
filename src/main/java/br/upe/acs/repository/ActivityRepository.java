@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.upe.acs.model.Activity;
 import br.upe.acs.model.enums.AxleEnum;
+import org.springframework.data.jpa.repository.Query;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
-	List<Activity> findByAxle(AxleEnum axle);
+
+    @Query("SELECT activitie FROM activities activitie " +
+            "WHERE :axle IS NULL OR activitie.axle = :axle")
+    List<Activity> findWithFilters(AxleEnum axle);
 }

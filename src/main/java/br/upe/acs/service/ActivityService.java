@@ -24,16 +24,12 @@ public class ActivityService {
         return repository.save(activityToSave);
     }
 
-    public List<Activity> listActivities() {
-        return repository.findAll();
+    public List<Activity> listActivities(AxleEnum axle) {
+        return repository.findWithFilters(axle);
     }
 
     public Activity findActivityById(Long id) {
         return repository.findById(id).orElseThrow(() -> new AcsException("Activity not found"));
-    }
-
-    public List<Activity> findActivityByAxle(AxleEnum axle) {
-        return repository.findByAxle(axle);
     }
 
     public void updateActivity(Long id, ActivityDTO activity) {

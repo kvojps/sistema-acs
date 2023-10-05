@@ -35,8 +35,8 @@ public class ActivityController {
 
     @Operation(summary = "Listar atividades")
     @GetMapping
-    public ResponseEntity<List<ActivityResponse>> listActivities() {
-        return ResponseEntity.ok(service.listActivities().stream().map(ActivityResponse::new)
+    public ResponseEntity<List<ActivityResponse>> listActivities(@RequestParam(required = false) AxleEnum axle) {
+        return ResponseEntity.ok(service.listActivities(axle).stream().map(ActivityResponse::new)
                 .collect(Collectors.toList()));
     }
 
@@ -44,12 +44,6 @@ public class ActivityController {
     @GetMapping("/{id}")
     public ResponseEntity<ActivityResponse> findActivityById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(new ActivityResponse(service.findActivityById(id)));
-    }
-
-    @Operation(summary = "Buscar atividade por eixo")
-    @GetMapping("/axle")
-    public ResponseEntity<List<ActivityResponse>> findActivityByAxle(@RequestParam AxleEnum axle) {
-        return ResponseEntity.ok(service.findActivityByAxle(axle).stream().map(ActivityResponse::new).toList());
     }
 
     @Operation(summary = "Atualizar atividade por id")
