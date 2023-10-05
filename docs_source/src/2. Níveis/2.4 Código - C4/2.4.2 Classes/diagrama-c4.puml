@@ -1,6 +1,6 @@
 @startuml
 class Activity [[java:br.upe.acs.model.Activity]] {
-	-id: String
+	-id: Long
 	-axle: AxleEnum
 	-description: String
 	-evaluationMethods: String
@@ -11,7 +11,7 @@ class Certificate {
 }
 Activity -> "*" Certificate : certificates
 class Address [[java:br.upe.acs.model.Address]] {
-	-id: String
+	-id: Long
 	-cep: String
 	-street: String
 	-district: String
@@ -24,7 +24,7 @@ class User {
 }
 Address -> "*" User : users
 class Certificate [[java:br.upe.acs.model.Certificate]] {
-	-id: String
+	-id: Long
 	-title: String
 	-note: String
 	-startDate: Date
@@ -40,7 +40,7 @@ class Activity {
 }
 Certificate --> "1" Activity : activity
 class Course [[java:br.upe.acs.model.Course]] {
-	-id: String
+	-id: Long
 	-name: String
 	-acronym: String
 	-additionalHours: int
@@ -49,7 +49,7 @@ class User {
 }
 Course --> "*" User : users
 class Request [[java:br.upe.acs.model.Request]] {
-	-id: String
+	-id: Long
 	-createAt: Date
 	-note: String
 	-sentAt: Date
@@ -65,7 +65,7 @@ class Certificate {
 }
 Request --> "*" Certificate : certificates
 class User [[java:br.upe.acs.model.User]] {
-	-id: String
+	-id: Long
 	-fullName: String
 	-cpf: String
 	-enrollment: String
