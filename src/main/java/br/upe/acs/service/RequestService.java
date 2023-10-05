@@ -88,7 +88,7 @@ public class RequestService {
         request.setToken(token);
         request.setSentAt(new Date());
         request.setStatus(RequestStatusEnum.TRANSITO);
-        modifyCertificates(request.getCertificates());
+        modifyCertificatesStatus(request.getCertificates());
         repository.save(request);
 
         CompletableFuture.runAsync(() -> emailUtils.sendRequestStatusChanged(request));
@@ -203,7 +203,7 @@ public class RequestService {
         return partialToken + Long.toString(epochSeconds);
     }
 
-    private void modifyCertificates(List<Certificate> certificates) {
+    private void modifyCertificatesStatus(List<Certificate> certificates) {
         for (Certificate certificate : certificates) {
             certificate.setStatus(CertificateStatusEnum.ENCAMINHADO_COORDENACAO);
             certificateRepository.save(certificate);
