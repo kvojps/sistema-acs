@@ -11,13 +11,8 @@ import lombok.NoArgsConstructor;
 public class ActivityDTO {
 
 	private AxleEnum axle;
-
 	private String description;
-
 	private String evaluationMethods;
-
 	private Integer workloadCertificate;
-
 	private int workloadMax;
-
 }

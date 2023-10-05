@@ -12,11 +12,7 @@ import lombok.NoArgsConstructor;
 public class RequestDTO {
 	
 	private int semester;
-	
 	private String note;
-
 	private RequestStatusEnum status;
-
 	private byte[] signedFile;
-
 }

@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 public class UserUpdateDTO {
 
     private String fullName;
-
     private String phone;
-
     private Long courseId;
-
 }

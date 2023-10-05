@@ -4,7 +4,7 @@ import br.upe.acs.config.JwtService;
 import br.upe.acs.controller.responses.AuthenticationResponse;
 import br.upe.acs.model.dto.ChangePasswordDTO;
 import br.upe.acs.model.dto.LoginDTO;
-import br.upe.acs.model.dto.AccountRecovery;
+import br.upe.acs.model.dto.AccountRecoveryDTO;
 import br.upe.acs.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -66,9 +66,9 @@ public class AuthController {
     @Operation(summary = "Recuperar senha por token")
     @PatchMapping("/password/recovery")
     public ResponseEntity<?> recoveryPassword(HttpServletRequest request,
-                                              @RequestBody AccountRecovery accountRecovery) {
+                                              @RequestBody AccountRecoveryDTO accountRecoveryDTO) {
         String token = request.getHeader("Authorization").substring(7);
-        service.recoveryPassword(token, accountRecovery.newPassword());
+        service.recoveryPassword(token, accountRecoveryDTO.newPassword());
 
         return ResponseEntity.noContent().build();
     }

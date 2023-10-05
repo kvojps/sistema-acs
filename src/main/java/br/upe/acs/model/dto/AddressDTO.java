@@ -10,17 +10,10 @@ import lombok.NoArgsConstructor;
 public class AddressDTO {
 
 	private String cep;
-
 	private String street;
-
 	private String district;
-	
 	private String city;
-	
 	private String uf;
-
 	private int number;
-
 	private String complement;
-
 }

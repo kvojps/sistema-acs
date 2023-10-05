@@ -10,12 +10,8 @@ import lombok.NoArgsConstructor;
 public class CertificateDTO {
 
 	private String title;
-		
 	private String startDate;
-
 	private String endDate;
-	
 	private float workload;
-	
 	private Long activityId;
 }

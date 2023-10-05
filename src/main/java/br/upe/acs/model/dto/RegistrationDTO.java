@@ -12,35 +12,20 @@ import org.hibernate.validator.constraints.br.CPF;
 public class RegistrationDTO {
 	
 	private String fullName;
-
 	@CPF(message = "CPF invalid!")
 	private String cpf;
-	
 	private String enrollment;
-	
 	private int period;
-	
 	private String phone;
-
 	@Email(message = "Email invalid!")
 	private String email;
-	
 	private String password;
-	
 	private String cep;
-	
 	private String street;
-	
 	private String district;
-	
 	private String city;
-	
 	private String uf;
-
 	private String complement;
-	
 	private int number;
-	
 	private Long courseId;
-
 }
