@@ -7,21 +7,13 @@ import lombok.Getter;
 public class AdditionalActivitiesVO {
 
     private final float hoursExtensao;
-
     private final float hoursGestao;
-
     private final float hoursEnsino;
-
     private final float hoursPesquisa;
-
     private final String hoursExtensaoPercentage;
-
     private final String hoursGestaoPercentage;
-
     private final String hoursEnsinoPercentage;
-
     private final String hoursPesquisaPercentage;
-
     private final int hoursCourse;
 
     public AdditionalActivitiesVO(User aluno) {
