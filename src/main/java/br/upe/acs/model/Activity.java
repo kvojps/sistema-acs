@@ -23,19 +23,12 @@ public class Activity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
 	@Enumerated(EnumType.STRING)
 	private AxleEnum axle;
-
 	private String description;
-
 	private String evaluationMethods;
-
 	private int workloadMax;
-
     private Integer workloadCertificate;
-
 	@OneToMany(mappedBy = "activity")
 	private List<Certificate> certificates;
-
 }

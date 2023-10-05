@@ -20,14 +20,9 @@ public class Course {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 	private String name;
-
 	private String acronym;
-
 	private int additionalHours;
-	
 	@OneToMany(mappedBy = "course")
 	private List<User> users;
-
 }

@@ -22,44 +22,26 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 	private String fullName;
-	
 	private String cpf;
-	
 	private String enrollment;
-	
 	private int period;
-	
 	private String phone;
-	
 	private String email;
-	
 	private String password;
-	
 	private String verificationCode;
-	
 	private boolean verified;
-	
     private float hoursEnsino;
-
     private float hoursExtensao;
-
     private float hoursGestao;
-
     private float hoursPesquisa;
-
 	private boolean enabled;
-
 	@Enumerated(EnumType.STRING)
     private RoleEnum role;
-    
     @OneToMany(mappedBy = "user")
     private List<Request> requests;
-    
     @ManyToOne
     private Address address;
-    
 	@ManyToOne
 	private Course course;
 
