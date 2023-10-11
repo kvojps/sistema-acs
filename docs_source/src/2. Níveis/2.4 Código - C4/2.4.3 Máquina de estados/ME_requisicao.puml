@@ -1,13 +1,12 @@
 @startuml Requisição
 
 [*] -> EmRascunho : Requisicao Criada
-EmRascunho --> EmSubmissao : Requisicao submetida
-EmSubmissao -> EmAnaliseCoordenacao : Requisicao encaminhada\npara coordenacao
+EmRascunho --> EmAnaliseCoordenacao : Requisicao submetida
 EmAnaliseCoordenacao -> EmAnaliseComissao : Enviado\npara comissao
-EmAnaliseComissao -> EmAnaliseCoordenacao : Analisado\npela comissao
-EmAnaliseCoordenacao --> EncaminhadoParaEscolaridade : AnalisadoCoordenacao
+EmAnaliseComissao --> EmAnaliseCoordenacao : Analisado\npela comissao
+EmAnaliseCoordenacao -> EncaminhadoParaEscolaridade : Analisado pela Coordenacao
 EncaminhadoParaEscolaridade --> EmRecurso : Pedido de\ncontagem
-EmRecurso --> EmSubmissao : Revisao aprovada
+EmRecurso --> EmAnaliseCoordenacao : Revisao aprovada
 EmRecurso --> Concluido : Revisao negada
 EncaminhadoParaEscolaridade --> Concluido : Finalizado
 Concluido --> [*]
