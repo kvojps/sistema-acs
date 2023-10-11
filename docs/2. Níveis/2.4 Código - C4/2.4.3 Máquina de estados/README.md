@@ -23,8 +23,14 @@
 
 ---
 
-![diagram](https://www.plantuml.com/plantuml/svg/0/PP0z3i8m38NtIhr3PgHUW06rghW0Z9J190OYDJR4YSHz63X8BuRBZyhFPbkVdzzpBGbYog4tBSRazzw2uxBOpBQcMfY6yAAzcPj6XAqVQ-WeuZbxKLJ9DrAD-253T42E6uBU2-hYEk-25nckt943CwrsP3aOErqL5ViJKDLbcDIMP25uEa90IcnE4DLEonmT4WmtlL8M4pzwMg7DyipmaL1zlCPVl4QmwDCl38zXMTH8Jbzr1m00)
+![diagram](https://www.plantuml.com/plantuml/svg/0/PL2zJWCn3DvFkdVmNAalm81wEdL7C78CRk8MInUxn8d4-p3qGVfYE41rfTqS-_lDnWhcKjCC8-N2UmuOjUzULs-mVeH1wDFVy023cGPkCqwIwQEoETIH5yYwmGyLSqI9EWZEREJ4bxfBR7R-qaaYmaAT96Y2iBYQYzq9kEesBMfR2PXOtZ6H58KZPeypgkP8WkUJk_JTWc-PdYbK--rmrH1QYR_3BMFKz9HrDrF2EnAtqCUPodyVhnw8owq9_YpxRaCI_Ok_0G00)
 
-![diagram](https://www.plantuml.com/plantuml/svg/0/XP8nRiCm34Lt0xw3vWAvG8SYXU7EWJis7LY9I0H8P29P7dAT33r8BbR9QcmvI9jDeDx_-XIvzZsuFbWZEZm6xVNb-tBckgghZwTFiNeHhUt0oq1x5izNHWABncbGK5V5_Mh4tyENrTx33UzZ6NkT9JCpIbu9ZFROC3k51F9MYoJ1Qjh71xTq00T2pcZoksEmD9uIjJJ4t3pPv8k5nyDakPXTqFpXKYH9JbC7l8aFjrwo0HT_Gs5fs2pQ-aUJlxf36PnFaJQej6AXS4kIgOSTsd4qly2zoGmwdU3WUBWEig0R9cb2yfnPmbqc7mGhjMywzNQAQ5tDzKJ5_KfhjaPISVr-0000)
+![diagram](https://www.plantuml.com/plantuml/svg/0/XP8nRiCm34Lt0xw3vWAvG8SYXU7EWTUc0oiH2G69J2NBGw_JeGV9nIfP3Y83hRjAxpz-ozo74VmOdLK3VaGATFs-VadRjCthmvlQFQdU3H1qvBEennkZGLJd2GoqJNM_c_5d1ai1En5la26pgs28xmv7AjbVuBN4KGYpeUSf3PGZNy23qil5oh6m6pNAOT6W_KEphi8Q7F4vPGvfS1-qMF2flS7QfsPTbKt6ZMIfEA2EFkHU1pIK90QFh8L7EA6RNtO1DXzselpHSF4otNv85Uk4jOrPVcSPJuNyfs6TVQ4y_JEXRNC_prJQaxmkUsIJrkW7)
 
-Foi reiterado que a "Solicitação de contagem" deve incluir um status específico (como rascunho, submetida, em análise pela coordenação, em análise pela comissão, em despacho pela coordenação, concluída ou em recurso). Além disso, foi ratificado que cada certificado possui o seu próprio status correspondente (anexado, aguardando análise, em análise, aceito ou recusado), acompanhado de observações pertinentes elaboradas pela comissão para melhor compreensão da análise. A Figura 1 representa o diagrama de máquina de estados do fluxo de certificados, enquanto a Figura 2 refere-se ao fluxo de requisições.
+Foi reiterado que a "Solicitação de contagem" deve incluir um status específico (como rascunho, em análise 
+pela coordenação, em análise pela comissão, encaminhado para escolaridade, em recurso ou concluída). Além disso, foi 
+ratificado que cada certificado possui o seu próprio status correspondente (anexado, aguardando análise, em análise, 
+aceito, recusado ou com problema), acompanhado de observações pertinentes elaboradas pela comissão para melhor 
+compreensão da análise. A Figura 1 representa o diagrama de máquina de estados do fluxo de certificados, enquanto a 
+Figura 2 refere-se ao fluxo
+de requisições.
